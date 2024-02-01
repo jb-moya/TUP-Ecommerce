@@ -1,6 +1,6 @@
 import express from "express";
 import mysql from "mysql";
-import SignUp from "./SignUp.js";
+import SignUpDatabase from "./SignUpDatabase.js";
 
 const app = express();
 
@@ -13,40 +13,31 @@ const db = mysql.createConnection({
 
 app.use(express.json());
 
-SignUp.getDBConnection(db);
+SignUpDatabase.getDBConnection(db);
 
 app.post("/signup", (req, res) => {
     const { student_id, name, email_address, contact, password } = req.body;
 
-    SignUp.retreiveStudentsDB();
+    SignUpDatabase.retreiveStudentsDB();
 
-    if (SignUp.validateStudentId(student_id)) {
-        return res
-            .status(400)
-            .json({ error: SignUp.validateStudentId(student_id) });
+    if (!student_id || !name || !email_address || !contact || !password) {
+        return res.status(400).json({ error: "All fields are required" });
     }
 
-    if (SignUp.validateName(name)) {
-        return res.status(400).json({ error: SignUp.validateName(name) });
+    const validationErrors = {
+        student_id: SignUpDatabase.validateStudentId(student_id),
+        name: SignUpDatabase.validateName(name),
+        email_address: SignUpDatabase.validateEmail(email_address),
+        contact: SignUpDatabase.validateContact(contact),
+    };
+
+    const hasErrors = Object.values(validationErrors).some((error) => !!error);
+
+    if (hasErrors) {
+        return res.status(400).json({ errors: validationErrors });
     }
 
-    if (SignUp.validateEmail(email_address)) {
-        return res
-            .status(400)
-            .json({ error: SignUp.validateEmail(email_address) });
-    }
-
-    if (SignUp.validateContact(contact)) {
-        return res.status(400).json({ error: SignUp.validateContact(contact) });
-    }
-
-    if (SignUp.validatePassword(password)) {
-        return res
-            .status(400)
-            .json({ error: SignUp.validatePassword(password) });
-    }
-
-    SignUp.signUp(req, res);
+    SignUpDatabase.insertData(req, res);
 });
 
 app.get("/api", (req, res) => {
