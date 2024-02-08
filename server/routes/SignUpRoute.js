@@ -1,8 +1,8 @@
 import express from "express";
-import StudentTableDB from "../StudentTableDB.js";
+import SignUp from "../SignUp.js";
 
 const signUpRouteHandler = (connection) => {
-    StudentTableDB.getDBConnection(connection);
+    // SignUp.getDBConnection(connection);
 
     const router = express.Router();
     router.post("/signup", (req, res) => {
@@ -30,7 +30,7 @@ const signUpRouteHandler = (connection) => {
         // }
 
         // StudentTableDB.insertData(req, res);
-        
+
         res.sendStatus(200);
     });
 

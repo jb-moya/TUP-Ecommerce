@@ -9,3 +9,9 @@ Mysql Database createPool
     - continue reading
     - https://mhagemann.medium.com/create-a-mysql-database-middleware-with-node-js-8-and-async-await-6984a09d49f4 
     - ^ Done
+
+Hashed password
+    - how to protect password from SELECT queries. feb 8
+    https://chat.openai.com/share/4de7ed26-e7da-440f-a718-d5225c7cc174
+    - databaseQueries.js is not modular
+    - WHY
