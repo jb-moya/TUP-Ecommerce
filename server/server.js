@@ -1,16 +1,15 @@
 import express from "express";
-import db from "./database.js";
-import SignUpRoute from "./routes/SignUpRoute.js";
-import LoginRoute from "./routes/LogInRoute.js";
+import connection from "./database.js";
+import signUpRouteHandler from "./routes/SignUpRoute.js";
+import logInRouteHandler from "./routes/LogInRoute.js";
 
 const app = express();
 
 app.use(express.json());
 
 // Pass the database connection to routes
-app.use("/signup", SignUpRoute(db));
-app.use("/login", LoginRoute(db));
-
+app.use("/signup", signUpRouteHandler(connection));
+app.use("/login", logInRouteHandler(connection));
 
 app.get("/api", (req, res) => {
     res.json({

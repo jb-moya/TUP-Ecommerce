@@ -1,11 +1,10 @@
-import passwordEncryptor from "./PasswordEncryptor.js";
+import PasswordEncryptor from "./PasswordEncryptor.js";
 
 export default class StudentTableDB {
     static sqlInsert = `INSERT INTO students (student_id, name, email_address, contact, password) VALUES (?, ?, ?, ?, ?)`;
     static sqlSelect = `SELECT * FROM students`;
     static students = [];
     static db = null;
-    static passwordEncryptor = passwordEncryptor;
 
     static getDBConnection(db) {
         StudentTableDB.db = db;
@@ -23,38 +22,44 @@ export default class StudentTableDB {
         }
     }
 
-    static isDataExists(fieldName, comparator) {
+    static isDataExists(comparator) {
         const foundStudent = StudentTableDB.students.find(comparator);
         return !!foundStudent;
     }
 
     static validateStudentIdExistence(studentId) {
-        return StudentTableDB.isDataExists(
-            "ID",
-            (s) => s.studentId === studentId
-        );
+        return StudentTableDB.isDataExists((s) => s.studentId === studentId);
     }
 
     static validateNameExistence(name) {
-        return StudentTableDB.isDataExists("name", (s) => s.name === name);
+        return StudentTableDB.isDataExists((s) => s.name === name);
     }
 
     static validateEmailExistence(email) {
-        return StudentTableDB.isDataExists(
-            "email",
-            (s) => s.email_address === email
-        );
+        return StudentTableDB.isDataExists((s) => s.email_address === email);
     }
 
     static validateContactExistence(contact) {
-        return StudentTableDB.isDataExists(
-            "contact",
-            (s) => s.contact === contact
-        );
+        return StudentTableDB.isDataExists((s) => s.contact === contact);
     }
 
     static getStudent(studentId) {
         return StudentTableDB.students.find((s) => s.studentId === studentId);
+    }
+
+    static getStudentName(studentId) {
+        return StudentTableDB.students.find((s) => s.studentId === studentId)
+            .name;
+    }
+
+    static getStudentEmail(studentId) {
+        return StudentTableDB.students.find((s) => s.studentId === studentId)
+            .email_address;
+    }
+
+    static getStudentContact(studentId) {
+        return StudentTableDB.students.find((s) => s.studentId === studentId)
+            .contact;
     }
 
     static async validatePassword(studentId, password) {
@@ -63,7 +68,7 @@ export default class StudentTableDB {
             return false;
         }
 
-        return await this.passwordEncryptor.comparePasswords(
+        return await PasswordEncryptor.comparePasswords(
             password,
             student.password
         );
@@ -72,9 +77,8 @@ export default class StudentTableDB {
     static async insertData(req, res) {
         const { studentId, name, emailAddress, contact, password } = req.body;
 
-        const encryptedPassword = await this.passwordEncryptor.encryptPassword(
-            password
-        );
+        const encryptedPassword =
+            await PasswordEncryptor.encryptPassword(password);
 
         const newStudent = {
             studentId,
@@ -84,7 +88,7 @@ export default class StudentTableDB {
             password: encryptedPassword,
         };
 
-        db.query(
+        StudentTableDB.db.query(
             StudentTableDB.sqlInsert,
             [studentId, name, emailAddress, contact, encryptedPassword],
             (error, result) => {

@@ -1,12 +1,11 @@
 import express from "express";
 import StudentTableDB from "../StudentTableDB.js";
 
-const router = express.Router();
-
-export default (db) => {
+const logInRouteHandler = (db) => {
     StudentTableDB.getDBConnection(db);
-
-    router.post("/login", (req, res) => {
+    
+    const router = express.Router();
+    router.get("/login", (req, res) => {
         const { student_id, password } = req.body;
 
         StudentTableDB.retreiveStudentsDB();
@@ -32,3 +31,5 @@ export default (db) => {
 
     return router;
 };
+
+export default logInRouteHandler;

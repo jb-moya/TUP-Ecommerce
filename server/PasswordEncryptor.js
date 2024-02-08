@@ -1,20 +1,18 @@
 import bcrypt from "bcryptjs";
 
 export default class PasswordEncryptor {
-    constructor() {
-        this.saltRounds = 10;
-    }
+    static saltRounds = 10;
 
-    async encryptPassword(password) {
+    static async encryptPassword(password) {
         try {
-            const hashedPassword = await bcrypt.hash(password, this.saltRounds);
+            const hashedPassword = await bcrypt.hash(password, PasswordEncryptor.saltRounds);
             return hashedPassword;
         } catch (error) {
             throw new Error("Error encrypting password");
         }
     }
 
-    async comparePasswords(plainPassword, hashedPassword) {
+    static async comparePasswords(plainPassword, hashedPassword) {
         try {
             const match = await bcrypt.compare(plainPassword, hashedPassword);
             return match;

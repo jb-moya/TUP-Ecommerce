@@ -1,0 +1,11 @@
+mocking
+    - don't mock third-party libraries.
+        - wrapping third-party library
+        - https://softwareengineering.stackexchange.com/questions/298145/wrapping-third-party-library-is-best-practice
+    https://stackoverflow.com/questions/63596277/mock-mysql-connection-with-jest
+    
+Mysql Database createPool
+    - feb 4
+    - continue reading
+    - https://mhagemann.medium.com/create-a-mysql-database-middleware-with-node-js-8-and-async-await-6984a09d49f4 
+    - ^ Done
