@@ -46,7 +46,7 @@ pool.query = util.promisify(pool.query);
 // const values = ["Your Shop Name", "shop@example.com", "123456789"]; // Replace these values with your actual data
 
 // const result = await pool.execute(query, values);
-
+// testing the databaseQueries class
 const exampleQueries = new databaseQueries(pool);
 const record = await exampleQueries.getRecord("student", {
     student_id: "tupm-21-1664",
