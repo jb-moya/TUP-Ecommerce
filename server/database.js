@@ -50,6 +50,7 @@ pool.query = util.promisify(pool.query);
 // testing the databaseQueries class
 // testing the databaseQueries class
 // testing the databaseQueries class
+// testing the databaseQueries class
 const exampleQueries = new databaseQueries(pool);
 const record = await exampleQueries.getRecord("student", {
     student_id: "tupm-21-1664",
