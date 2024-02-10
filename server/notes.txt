@@ -15,3 +15,36 @@ Hashed password
     https://chat.openai.com/share/4de7ed26-e7da-440f-a718-d5225c7cc174
     - databaseQueries.js is not modular
     - WHY
+
+
+-- Feb 9 --
+
+Composition over inheritance
+    - https://www.youtube.com/watch?v=hxGOiiR9ZKg
+    - https://medium.com/@abdy4lvarez/composition-of-every-kind-in-javascript-38b5f2111a54
+    - 
+
+Static or Instantiable: For student sign up module ????????????????
+    - static for now
+
+Interface in javascript?
+
+Dependency Injection
+    - https://www.youtube.com/watch?v=J1f5b4vcxCQ
+    - "Couple with interface rather than implementation'
+    - dependency injection in StudentSignUp module. Done.
+
+Still don't know how testing works.............................................
+IT WORKS BUT WHY??????
+
+-- Feb 10 --
+
+Database naming convention
+    - https://dev.to/ovid/database-naming-standards-2061
+
+I AM BEGINNING TO BELIEVE
+
+Auth0 for "sign up with" google or facebook.
+https://auth0.com/pricing -- Might not worth the while
+
+Train of Thoughts too far ahead into the future. Cannot see the bigger picture.

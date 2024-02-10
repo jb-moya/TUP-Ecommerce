@@ -2,38 +2,37 @@ import express from "express";
 import connection from "./database.js";
 import signUpRouteHandler from "./routes/SignUpRoute.js";
 import logInRouteHandler from "./routes/LogInRoute.js";
-import databaseQueries from "./databaseQueries.js";
+import Query from "./Query.js";
 
 const app = express();
 
 app.use(express.json());
 
 // Pass the database connection to routes
-databaseQueries.getDBConnection(connection);
+Query.getDBConnection(connection);
 
-const record = await databaseQueries.getRecord("student", {
-    student_id: "tupm-21-1664",
-});
 
-const recordStock = await databaseQueries.getRecord("stock", {
-    shop_id: "1",
-    product_id: "2",
-    // product_stock: null, // why
-});
 
-const user = await databaseQueries.authenticateUser(
-    "@gmail.com",
-    "hashedPassword"
-);
+// const record = await Query.getRecord("student", {
+//     student_id: "tupm-21-1664",
+// });
 
-console.log("user:: ", user);
+// const recordStock = await Query.getRecord("stock", {
+//     shop_id: "1",
+//     product_id: "2",
+//     // product_stock: null, // why
+// });
 
-console.log("record:: ", record);
-console.log("recordStock:: ", recordStock);
+// const user = await Query.authenticateUser("@gmail.com", "hashedPassword");
 
-const allRecords = await databaseQueries.getAllRecords("student");
+// console.log("user:: ", user);
 
-console.log("allRecords:: ", allRecords);
+// console.log("record:: ", record);
+// console.log("recordStock:: ", recordStock);
+
+// const allRecords = await Query.getAllRecords("student");
+
+// console.log("allRecords:: ", allRecords);
 
 app.use("/signup", signUpRouteHandler(connection));
 app.use("/login", logInRouteHandler(connection));
