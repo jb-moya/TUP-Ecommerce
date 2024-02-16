@@ -33,6 +33,10 @@ function App() {
     );
 }
 
-// HAYUP KA
+// HAYUP KAKAKAKAKA
+// HAYUP KAKAKAKAKA
+// HAYUP KAKAKAKAKA
+// HAYUP KAKAKAKAKA
+// HAYUP KAKAKAKAKA
 
 export default App;
