@@ -32,18 +32,21 @@ Query.getDBConnection(connection);
 
 // console.log("allRecords:: ", allRecords);
 
+// 
+// 
+// 
+// 
+// 
 // app.use("/signup", signUpRouteHandler(connection));
 // app.use("/login", logInRouteHandler(connection));
 
 app.get("/api", (req, res) => {
     res.json({
-        users: [
-            "user",
-            "userTwo",
-            "userThree",
-            "userFour",
-            "userSix",
-            "userSeven",
+        product: [
+            "tinapay",
+            "console",
+            "tshirt",
+            "house&lot",
         ],
     });
 });

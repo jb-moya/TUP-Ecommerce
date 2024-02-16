@@ -2,7 +2,7 @@ import StudentTableDB from "./StudentTableDB.js";
 import signUpRouteHandler from "./routes/SignUpRoute.js";
 import supertest from "supertest";
 import express from "express";
-import app from "./server.js";
+import app from "./Server.js";
 
 // jest.mock("./routes/SignUpRoute.js");
 
@@ -68,11 +68,11 @@ describe("StudentTableDB", () => {
                 },
             ];
         });
-    
+
         test("should have atleast one student", () => {
             expect(StudentTableDB.students.length).toBeGreaterThan(0);
         });
- 
+
         test("should return true for all variable existence", () => {
             expect(StudentTableDB.validateEmailExistence(email)).toEqual(true);
             expect(

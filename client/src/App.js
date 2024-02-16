@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-// asleep at the wheel here, forgot to import useState and useEffect from react to use them in the App component to fetch data from the backend API and display it in the frontend UI. I'll fix that now.
+import ProductCard from "./components/ProductCard.js";
+import "./App.css";
+import SignUp from "./components/StudentSignUp.js";
+
 function App() {
     const [backendData, setBackendData] = useState({});
 
@@ -17,12 +20,15 @@ function App() {
             });
     }, []);
 
-
     return (
         <div>
-            {typeof backendData.users === "undefined"
+            {typeof backendData.product === "undefined"
                 ? "Loading..."
-                : backendData.users.map((user, i) => <p key={i}>{user}</p>)}
+                : backendData.product.map((product, i) => (
+                      <ProductCard product={product} />
+                  ))}
+
+            <SignUp />
         </div>
     );
 }
