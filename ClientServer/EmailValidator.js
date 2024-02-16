@@ -25,7 +25,7 @@ export class EmailValidator {
     }
 
     static validateLength(value, minLength, maxLength, fieldName) {
-        if (value === '' || value === undefined || value === 'undefined') {
+        if (value === '' || value === undefined) {
             throw new Error(`${fieldName} is required`);
         }
         if (value.length < minLength) {

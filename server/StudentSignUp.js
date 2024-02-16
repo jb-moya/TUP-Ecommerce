@@ -1,17 +1,17 @@
 export default class StudentSignUp {
-    static query;
-    static passwordEncryptor;
-    static table = "student";
+    static QUERY;
+    static PASSWORD_ENCRYPTOR;
+    static TABLE = "student";
 
     static initialize(query, passwordEncryptor) {
-        StudentSignUp.query = query;
-        StudentSignUp.passwordEncryptor = passwordEncryptor;
+        StudentSignUp.QUERY = query;
+        StudentSignUp.PASSWORD_ENCRYPTOR = passwordEncryptor;
     }
 
     static async validateUniqueCredentials(details) {
         const { student_id, name, email_address, contact } = details;
 
-        const user = await StudentSignUp.query.getRecord(table, {
+        const user = await StudentSignUp.QUERY.getRecord(StudentSignUp.TABLE, {
             student_id: student_id,
             name: name,
             email_address: email_address,
@@ -25,8 +25,8 @@ export default class StudentSignUp {
 
     static async authenticateUser(email, password) {
         try {
-            const hashedPassword = StudentSignUp.passwordEncryptor.hashPassword(password);
-            const user = await StudentSignUp.query.getRecord(table, {
+            const hashedPassword = StudentSignUp.PASSWORD_ENCRYPTOR.hashPassword(password);
+            const user = await StudentSignUp.QUERY.getRecord(StudentSignUp.TABLE, {
                 email_address: email,
                 password_hash: hashedPassword,
             });
@@ -40,7 +40,7 @@ export default class StudentSignUp {
     static async createStudent(details) {
         try {
             const { student_id, name, email_address, contact, password } = details;
-            const hashedPassword = StudentSignUp.passwordEncryptor.hashPassword(password);
+            const hashedPassword = StudentSignUp.PASSWORD_ENCRYPTOR.hashPassword(password);
 
             const record = {
                 student_id: student_id,
@@ -50,7 +50,7 @@ export default class StudentSignUp {
                 password_hash: hashedPassword,
             };
 
-            const result = await StudentSignUp.query.createRecord(table, record);
+            const result = await StudentSignUp.QUERY.createRecord(StudentSignUp.TABLE, record);
 
             return result;
         } catch (error) {

@@ -11,8 +11,6 @@ app.use(express.json());
 // Pass the database connection to routes
 Query.getDBConnection(connection);
 
-
-
 // const record = await Query.getRecord("student", {
 //     student_id: "tupm-21-1664",
 // });
@@ -34,12 +32,19 @@ Query.getDBConnection(connection);
 
 // console.log("allRecords:: ", allRecords);
 
-app.use("/signup", signUpRouteHandler(connection));
-app.use("/login", logInRouteHandler(connection));
+// app.use("/signup", signUpRouteHandler(connection));
+// app.use("/login", logInRouteHandler(connection));
 
 app.get("/api", (req, res) => {
     res.json({
-        users: ["user", "userTwo", "userThree", "userFour", "userSix"],
+        users: [
+            "user",
+            "userTwo",
+            "userThree",
+            "userFour",
+            "userSix",
+            "userSeven",
+        ],
     });
 });
 
