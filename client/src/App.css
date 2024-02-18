@@ -19,4 +19,10 @@
   background-color: rgb(130, 130, 153);
 }
 
+.input-field {
+  display: block;
+  padding: 1rem;
+  background-color: #127190;
+}
+
 /*# sourceMappingURL=App.css.map */

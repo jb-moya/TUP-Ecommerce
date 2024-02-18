@@ -33,7 +33,7 @@ export default class Query {
                         return `${column} = ?`;
                     }
                 })
-                .join(" AND ");
+                .join(" OR ");
 
             const query = `SELECT * FROM ${table} WHERE ${whereClause}`;
 
@@ -42,9 +42,7 @@ export default class Query {
             if (rows.length > 0) {
                 return rows;
             } else {
-                throw new Error(
-                    `No record found with the specified composite key values`
-                );
+                return null;
             }
         } catch (error) {
             throw new Error(`Error fetching row: ${error.message}`);
@@ -52,24 +50,31 @@ export default class Query {
     }
 
     static async createRecord(table, record) {
-        try {
-            const columns = Object.keys(record);
-            const values = Object.values(record);
-            const placeholders = values.map(() => "?").join(", ");
-            const query = `INSERT INTO ${table} (${columns.join(
-                ", "
-            )}) VALUES (${placeholders})`;
+        // console.log("record", record);
 
-            const result = await Query.connection.query(query, values);
+        const columns = Object.keys(record);
+        const values = Object.values(record);
 
-            if (result.affectedRows > 0) {
-                return result.student_id;
-            } else {
-                throw new Error(`No record inserted`);
+        // console.log("columns", columns);
+        console.log("values", values);
+        console.log("values", [values]);
+
+        const placeholders = values.join(", ");
+
+        // console.log("placeholders", placeholders);
+
+        const query = `INSERT INTO ${table} (${columns.join(", ")}) VALUES (?)`;
+
+        // console.log(query);
+        console.log(query);
+
+        await Query.connection.query(query, [values], (err, res) => {
+            if (err) {
+                throw new Error(`Error inserting row: ${err.message}`);
             }
-        } catch (error) {
-            throw new Error(`Error inserting row: ${error.message}`);
-        }
+
+            return record;
+        });
     }
 
     static async updateRecord(table, primaryKeyValues, updateValues) {

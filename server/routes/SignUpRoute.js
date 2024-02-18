@@ -1,27 +1,49 @@
 import express from "express";
 import StudentSignUp from "../StudentSignUp.js";
 import MockPasswordEncryptor from "../__mocks__/MockPasswordEncryptor.js";
-// import PasswordEncryptor from "../PasswordEncryptor.js";
+import PasswordEncryptor from "../PasswordEncryptor.js";
+import {
+    EmailValidator,
+    TUPEmailValidator,
+} from "../../ClientServer/EmailValidator.js";
+import NameValidator from "../../ClientServer/NameValidator.js";
+import ContactValidator from "../../ClientServer/ContactValidator.js";
+import StudentIDValidator from "../../ClientServer/StudentIDValidator.js";
 
-const signUpRouteHandler = (connection) => {
-    StudentSignUp.initialize(connection, MockPasswordEncryptor);
+const isMockingPasswordEncryptor = true;
+
+TUPEmailValidator.setValidator(EmailValidator);
+
+const PasswordEncryptorUsed = isMockingPasswordEncryptor
+    ? MockPasswordEncryptor
+    : PasswordEncryptor;
+
+const signUpRouteHandler = (query) => {
+    StudentSignUp.initialize(query, PasswordEncryptorUsed);
 
     const router = express.Router();
     router.post("/signup", async (req, res) => {
-        const { student_id, name, email_address, contact, password } = req.body;
+        const { student_id, name, email_address, contact_number, password } =
+            req.body;
 
         try {
-            // Validate unique credentials
-            await StudentSignUp.validateUniqueCredentials(req.body);
-
-            // Create student
-            await StudentSignUp.createStudent(req.body);
-
-            // If everything is successful, send 200 OK
-            res.sendStatus(200);
+            StudentIDValidator.validate(student_id);
+            NameValidator.validate(name);
+            TUPEmailValidator.validate(email_address);
+            ContactValidator.validate(contact_number);
         } catch (error) {
-            // If any error occurs during validation or creation, respond with error status
-            res.status(400).json({ error: error.message }); // Specific error message from StudentSignUp
+            res.status(400).json({ error: `format error. ${error.message}` });
+            return;
+        }
+
+        try {
+            await StudentSignUp.validateUniqueCredentials(req.body);
+            await StudentSignUp.createStudent(req.body);
+            res.status(200).json({ message: "success" });
+            return;
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+            return;
         }
     });
 

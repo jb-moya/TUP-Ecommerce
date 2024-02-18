@@ -1,54 +1,33 @@
 import express from "express";
 import connection from "./database.js";
+import mockPool from "./__mocks__/MockDatabase.js";
 import signUpRouteHandler from "./routes/SignUpRoute.js";
 import logInRouteHandler from "./routes/LogInRoute.js";
 import Query from "./Query.js";
+import cors from "cors";
 
 const app = express();
 
+const port = 5000;
+
 app.use(express.json());
+app.use(cors());
 
 // Pass the database connection to routes
-Query.getDBConnection(connection);
 
-// const record = await Query.getRecord("student", {
-//     student_id: "tupm-21-1664",
-// });
+const mockConnection = await mockPool.getConnection();
+Query.getDBConnection(mockConnection);
 
-// const recordStock = await Query.getRecord("stock", {
-//     shop_id: "1",
-//     product_id: "2",
-//     // product_stock: null, // why
-// });
+const signUpRouter = signUpRouteHandler(Query, port);
+const logInRouter = logInRouteHandler(Query, port);
 
-// const user = await Query.authenticateUser("@gmail.com", "hashedPassword");
-
-// console.log("user:: ", user);
-
-// console.log("record:: ", record);
-// console.log("recordStock:: ", recordStock);
-
-// const allRecords = await Query.getAllRecords("student");
-
-// console.log("allRecords:: ", allRecords);
-
-// 
-// 
-// 
-// 
-// 
-// app.use("/signup", signUpRouteHandler(connection));
-// app.use("/login", logInRouteHandler(connection));
+app.use(signUpRouter);
+app.use(logInRouter);
 
 app.get("/api", (req, res) => {
     res.json({
-        product: [
-            "tinapay",
-            "console",
-            "tshirt",
-            "house&lot",
-        ],
+        product: ["tinapay", "console", "tshirt", "house&lot"],
     });
 });
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+app.listen(port, () => console.log("Server running on port 5000"));

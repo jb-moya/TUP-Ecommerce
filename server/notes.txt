@@ -48,3 +48,14 @@ Auth0 for "sign up with" google or facebook.
 https://auth0.com/pricing -- Might not worth the while
 
 Train of Thoughts too far ahead into the future. Cannot see the bigger picture.
+
+-- Feb 18 --
+NOTES FOR THE DEVS
+
+CSS naming convention
+    1. https://www.freecodecamp.org/news/css-naming-conventions-that-will-save-you-hours-of-debugging-35cea737d849/
+
+
+General naming convention
+    1. https://www.youtube.com/watch?v=-J3wNP6u5YU&t=6s
+    2. 

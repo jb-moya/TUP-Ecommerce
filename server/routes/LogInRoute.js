@@ -3,8 +3,8 @@ import StudentSignUp from "../StudentSignUp.js";
 import MockPasswordEncryptor from "../__mocks__/MockPasswordEncryptor.js";
 // import PasswordEncryptor from "../PasswordEncryptor.js";
 
-const logInRouteHandler = (connection) => {
-    StudentSignUp.initialize(connection, MockPasswordEncryptor);
+const logInRouteHandler = (query) => {
+    StudentSignUp.initialize(query, MockPasswordEncryptor);
 
     const router = express.Router();
     router.get("/login", async (req, res) => {

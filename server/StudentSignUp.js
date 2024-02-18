@@ -9,27 +9,45 @@ export default class StudentSignUp {
     }
 
     static async validateUniqueCredentials(details) {
-        const { student_id, name, email_address, contact } = details;
+        const { student_id, name, email_address, contact_number } = details;
 
-        const user = await StudentSignUp.QUERY.getRecord(StudentSignUp.TABLE, {
+        const existingUser = await StudentSignUp.QUERY.getRecord(StudentSignUp.TABLE, {
             student_id: student_id,
             name: name,
             email_address: email_address,
-            contact: contact,
+            contact_number: contact_number,
         });
 
-        if (user) {
-            throw new Error("User with the specified email address already exists");
+        console.log("existingUser: ", existingUser);
+
+        if (!existingUser || existingUser.length === 0) {
+            return;
+        }
+
+        for (const key in details) {
+            if (details.hasOwnProperty(key)) {
+                if (
+                    existingUser.some((user) => user[key] === details[key])
+                ) {
+                    throw new Error(
+                        `${key}: ${details[key]} already exists`
+                    );
+                }
+            }
         }
     }
 
     static async authenticateUser(email, password) {
         try {
-            const hashedPassword = StudentSignUp.PASSWORD_ENCRYPTOR.hashPassword(password);
-            const user = await StudentSignUp.QUERY.getRecord(StudentSignUp.TABLE, {
-                email_address: email,
-                password_hash: hashedPassword,
-            });
+            const hashedPassword =
+                StudentSignUp.PASSWORD_ENCRYPTOR.hashPassword(password);
+            const user = await StudentSignUp.QUERY.getRecord(
+                StudentSignUp.TABLE,
+                {
+                    email_address: email,
+                    password_hash: hashedPassword,
+                }
+            );
 
             return user;
         } catch (error) {
@@ -38,22 +56,38 @@ export default class StudentSignUp {
     }
 
     static async createStudent(details) {
+        const { student_id, name, email_address, contact_number, password } =
+            details;
+
         try {
-            const { student_id, name, email_address, contact, password } = details;
-            const hashedPassword = StudentSignUp.PASSWORD_ENCRYPTOR.hashPassword(password);
+            console.log("contact_number: ", contact_number);
+
+            const hashedPassword =
+                await StudentSignUp.PASSWORD_ENCRYPTOR.hashPassword(password);
+
+            console.log("detailsssss: ", details);
+
+            console.log("after defatils contact_number: ", contact_number);
 
             const record = {
                 student_id: student_id,
                 name: name,
                 email_address: email_address,
-                contact: contact,
+                contact_number: contact_number,
                 password_hash: hashedPassword,
             };
 
-            const result = await StudentSignUp.QUERY.createRecord(StudentSignUp.TABLE, record);
+            console.log("record: ", record);
+
+            const result = await StudentSignUp.QUERY.createRecord(
+                StudentSignUp.TABLE,
+                record
+            );
+            console.log("result: ", result);
 
             return result;
         } catch (error) {
+            console.log("error: ", error);
             throw new Error(`Error creating student: ${error.message}`);
         }
     }

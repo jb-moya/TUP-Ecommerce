@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard.js";
 import "./App.css";
-import SignUp from "./components/StudentSignUp.js";
+import SignUpForm from "./components/StudentSignUpForm.js";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SignUp } from "./pages/SignUp.js";
+import { LogIn } from "./pages/LogIn.js";
 
 function App() {
     const [backendData, setBackendData] = useState({});
@@ -22,13 +25,20 @@ function App() {
 
     return (
         <div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/login" element={<LogIn />} />
+                </Routes>
+            </BrowserRouter>
+
             {typeof backendData.product === "undefined"
                 ? "Loading..."
                 : backendData.product.map((product, i) => (
                       <ProductCard product={product} />
                   ))}
 
-            <SignUp />
+            <SignUpForm />
         </div>
     );
 }

@@ -9,7 +9,8 @@ export class EmailValidator {
     static MAX_DOMAIN_EXTENSION_LENGTH = 4;
 
     static errorMessage = {
-        containLettersAndNumbers: "only letters (a-z), numbers (0-9), and periods (.) are allowed",
+        containLettersAndNumbers:
+            "only letters (a-z), numbers (0-9), and periods (.) are allowed",
     };
 
     static isValidText(text, fieldName, errorMessage) {
@@ -25,7 +26,7 @@ export class EmailValidator {
     }
 
     static validateLength(value, minLength, maxLength, fieldName) {
-        if (value === '' || value === undefined) {
+        if (value === "" || value === undefined) {
             throw new Error(`${fieldName} is required`);
         }
         if (value.length < minLength) {
@@ -70,13 +71,13 @@ export class EmailValidator {
 
         EmailValidator.isValidCharacter(
             username.charAt(0),
-            'first character',
+            "first character",
             EmailValidator.errorMessage.containLettersAndNumbers
         );
 
         EmailValidator.isValidCharacter(
             username.charAt(username.length - 1),
-            'last character',
+            "last character",
             EmailValidator.errorMessage.containLettersAndNumbers
         );
 
@@ -99,10 +100,17 @@ export class TUPEmailValidator {
         }
     }
 
-    static validateTUPEmail(email) {
-        const [username, domain] = email.split("@");
+    static validateAtSign(email) {
+        if (email.split("@").length !== 2) {
+            throw new Error("Invalid email. Must contain exactly one @ sign");
+        }
 
+        return email.split("@");
+    }
+
+    static validate(email) {
         try {
+            const [username, domain] = TUPEmailValidator.validateAtSign(email);
             EmailValidator.validateEmailUsername(username);
             TUPEmailValidator.validateTUPdomain(domain);
         } catch (error) {

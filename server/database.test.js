@@ -4,7 +4,7 @@ import mockPool from "./__mocks__/MockDatabase.js";
 describe("MockDatabasePool", () => {
     it("should return mock records from the query", async () => {
         const connection = await mockPool.getConnection();
-        const records = await connection.query("some query");
+        const records = await connection.query("some query", "some values");
 
         expect(records).toEqual([
             { id: 1, name: "Mock Record 1" },

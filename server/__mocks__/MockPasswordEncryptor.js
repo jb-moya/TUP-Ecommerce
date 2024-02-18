@@ -1,5 +1,5 @@
 export default class MockPasswordEncryptor {
-    static async encryptPassword(password) {
+    static async hashPassword(password) {
         return password;
     }
 

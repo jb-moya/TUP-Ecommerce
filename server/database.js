@@ -32,4 +32,8 @@ pool.getConnection((err, connection) => {
 // Promisify for Node.js async/await.
 pool.query = util.promisify(pool.query);
 
+// example query
+const rows = await pool.query("SELECT 1 + 1 AS solution");
+console.log(rows[0].solution);
+
 export default pool;

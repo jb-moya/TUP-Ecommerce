@@ -5,10 +5,16 @@ const mockPool = {
             // Simulate successful connection
             const mockConnection = {
                 release: () => {}, // Mock implementation of release
-                query: async (query) => {
+                query: async (query, values) => {
                     // Mock implementation of query
                     return [
-                        { id: 1, name: "Mock Record 1" },
+                        {
+                            student_id: 'TUPM-21-1111',
+                            name: "admin",
+                            email_address: "1@tup.edu.ph",
+                            contact_number: "09111111111",
+                            password_hash: "1",
+                        },
                         // { id: 2, name: "Mock Record 2" },
                     ];
                 },

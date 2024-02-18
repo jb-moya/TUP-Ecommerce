@@ -2,7 +2,7 @@ export class NameValidator {
     static MIN_NAME_LENGTH = 1;
     static MAX_NAME_LENGTH = 30;
 
-    static validateName(name) {
+    static validate(name) {
         try {
             NameValidator.validateLength(
                 name,
@@ -45,3 +45,5 @@ export class NameValidator {
         return /^[a-zA-Z\s]*$/.test(value);
     }
 }
+
+export default NameValidator;
