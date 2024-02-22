@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard.js";
 import "./App.css";
 import SignUpForm from "./components/StudentSignUpForm.js";
+import LogInForm from "./components/StudentLogInForm.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignUp } from "./pages/SignUp.js";
 import { LogIn } from "./pages/LogIn.js";
@@ -39,6 +40,7 @@ function App() {
                   ))}
 
             <SignUpForm />
+            <LogInForm />
         </div>
     );
 }
