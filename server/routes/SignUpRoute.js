@@ -9,6 +9,7 @@ import {
 import NameValidator from "../../ClientServer/NameValidator.js";
 import ContactValidator from "../../ClientServer/ContactValidator.js";
 import StudentIDValidator from "../../ClientServer/StudentIDValidator.js";
+import mockPool from "../__mocks__/MockDatabase.js";
 
 const isMockingPasswordEncryptor = true;
 
@@ -18,8 +19,8 @@ const PasswordEncryptorUsed = isMockingPasswordEncryptor
     ? MockPasswordEncryptor
     : PasswordEncryptor;
 
-const signUpRouteHandler = (query) => {
-    StudentSignUp.initialize(query, PasswordEncryptorUsed);
+const signUpRouteHandler = (query, mockConnection) => {
+    StudentSignUp.initialize(query, mockConnection, PasswordEncryptorUsed);
 
     const router = express.Router();
     router.post("/signup", async (req, res) => {
@@ -42,7 +43,7 @@ const signUpRouteHandler = (query) => {
             res.status(200).json({ message: "success" });
             return;
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ error: `server: ${error.message}` });
             return;
         }
     });

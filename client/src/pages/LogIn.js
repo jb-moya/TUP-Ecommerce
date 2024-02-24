@@ -1,7 +1,11 @@
 import React from 'react'
+import LogInForm from '../components/StudentLogInForm.js'
 
 export const LogIn = () => {
   return (
-    <div>LogIn</div>
+    <div>LogIn
+
+      <LogInForm />
+    </div>
   )
 }

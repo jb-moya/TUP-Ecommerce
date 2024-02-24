@@ -34,9 +34,9 @@ export default class ProductReview {
     }
 
     static async togglelikeProductReview(details) {
-        const { rating_comment_id } = details;
+        const { studentId, ratingCommentId } = details;
 
-        const checkQuery = `
+        const checkCommentExist = `
             SELECT * FROM ${ProductReview.TABLE_product_likes}
             WHERE student_id = ? AND rating_comment_id = ?;
         `;
@@ -47,21 +47,38 @@ export default class ProductReview {
             ON DUPLICATE KEY UPDATE student_id = student_id;
         `;
 
-        try {
-            const like_record = {
-                rating_comment_id: rating_comment_id,
-                rating_comment_like: rating_comment_like + 1,
-            };
+        connection.query(
+            checkCommentExist,
+            [studentId, ratingCommentId],
+            (err, results) => {
+                if (err) throw err;
 
-            const result = await ProductReview.QUERY.updateRecord(
-                ProductReview.TABLE,
-                like_record
-            );
-
-            return result;
-        } catch (error) {
-            console.log("error: ", error);
-            throw new Error(`Error creating like: ${error.message}`);
-        }
+                if (results.length > 0) {
+                    // If the student has already liked the review, remove the like
+                    const deleteQuery = `
+                        DELETE FROM student_product_likes
+                        WHERE student_id = ? AND rating_comment_id = ?;
+                    `;
+                    connection.query(
+                        deleteQuery,
+                        [studentId, ratingCommentId],
+                        (err, results) => {
+                            if (err) throw err;
+                            console.log("Review unliked successfully");
+                        }
+                    );
+                } else {
+                    // If the student hasn't liked the review, add the like
+                    connection.query(
+                        toggleQuery,
+                        [studentId, ratingCommentId],
+                        (err, results) => {
+                            if (err) throw err;
+                            console.log("Review liked successfully");
+                        }
+                    );
+                }
+            }
+        );
     }
 }

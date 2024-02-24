@@ -13,13 +13,14 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 
-// Pass the database connection to routes
-
 const mockConnection = await mockPool.getConnection();
 Query.getDBConnection(mockConnection);
+ 
+const flm = await mockConnection.query("SELECT * FROM student", []);
+console.log("flm: ", flm);
 
-const signUpRouter = signUpRouteHandler(Query, port);
-const logInRouter = logInRouteHandler(Query, port);
+const signUpRouter = signUpRouteHandler(Query, mockConnection);
+const logInRouter = logInRouteHandler(Query, mockConnection);
 
 app.use(signUpRouter);
 app.use(logInRouter);

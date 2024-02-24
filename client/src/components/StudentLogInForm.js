@@ -19,17 +19,21 @@ const LogInForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [studentIDError, setStudentIDError] = useState(null);
-    const [passwordError, setPasswordError] = useState(null);
 
     const handleLogIn = async () => {
         if (isSubmitting) return;
         setIsSubmitting(true);
 
         try {
-            await axios.post("http://localhost:5000/signup", {
-                student_id: studentId,
-                password: password,
+            await axios.get("http://localhost:5000/login", {
+                params: {
+                    student_id: studentId,
+                    password: password,
+                },
             });
+
+            console.log("student_id11: ", studentId);
+            console.log("student_id111: ", studentId);
 
             setError(null);
             setSuccess(true);

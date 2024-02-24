@@ -4,9 +4,7 @@ export default class StudentSignUp {
     static PASSWORD_ENCRYPTOR;
     static TABLE = "student";
 
-    static async getStudentDetails(student_id) {
-        
-    }
+    static async getStudentDetails(student_id) {}
 
     static initialize(query, connection, passwordEncryptor) {
         StudentSignUp.QUERY = query;
@@ -22,21 +20,23 @@ export default class StudentSignUp {
             name: name,
             email_address: email_address,
             contact_number: contact_number,
-        }
+        };
 
         const keysColumns = Object.keys(existingStudentId);
         const values = Object.values(existingStudentId);
 
-        const whereClause = keysColumns.map((column) => {
-            if (existingStudentId[column] === null) {
-                return `${column} IS NULL`;
-            } else {
-                return `${column} = ?`;
-            }
-        }).join(" OR ");
+        const whereClause = keysColumns
+            .map((column) => {
+                if (existingStudentId[column] === null) {
+                    return `${column} IS NULL`;
+                } else {
+                    return `${column} = ?`;
+                }
+            })
+            .join(" OR ");
 
         const query = `SELECT * FROM ${StudentSignUp.TABLE} WHERE ${whereClause}`;
-        
+
         const existingUser = await StudentSignUp.CONNECTION.query(
             query,
             values
@@ -50,12 +50,8 @@ export default class StudentSignUp {
 
         for (const key in details) {
             if (details.hasOwnProperty(key)) {
-                if (
-                    existingUser.some((user) => user[key] === details[key])
-                ) {
-                    throw new Error(
-                        `${key}: ${details[key]} already exists`
-                    );
+                if (existingUser.some((user) => user[key] === details[key])) {
+                    throw new Error(`${key}: ${details[key]} already exists`);
                 }
             }
         }
