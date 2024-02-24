@@ -1,22 +1,46 @@
 export default class StudentSignUp {
     static QUERY;
+    static CONNECTION;
     static PASSWORD_ENCRYPTOR;
     static TABLE = "student";
 
-    static initialize(query, passwordEncryptor) {
+    static async getStudentDetails(student_id) {
+        
+    }
+
+    static initialize(query, connection, passwordEncryptor) {
         StudentSignUp.QUERY = query;
+        StudentSignUp.CONNECTION = connection;
         StudentSignUp.PASSWORD_ENCRYPTOR = passwordEncryptor;
     }
 
     static async validateUniqueCredentials(details) {
         const { student_id, name, email_address, contact_number } = details;
 
-        const existingUser = await StudentSignUp.QUERY.getRecord(StudentSignUp.TABLE, {
+        const existingStudentId = {
             student_id: student_id,
             name: name,
             email_address: email_address,
             contact_number: contact_number,
-        });
+        }
+
+        const keysColumns = Object.keys(existingStudentId);
+        const values = Object.values(existingStudentId);
+
+        const whereClause = keysColumns.map((column) => {
+            if (existingStudentId[column] === null) {
+                return `${column} IS NULL`;
+            } else {
+                return `${column} = ?`;
+            }
+        }).join(" OR ");
+
+        const query = `SELECT * FROM ${StudentSignUp.TABLE} WHERE ${whereClause}`;
+        
+        const existingUser = await StudentSignUp.CONNECTION.query(
+            query,
+            values
+        );
 
         console.log("existingUser: ", existingUser);
 

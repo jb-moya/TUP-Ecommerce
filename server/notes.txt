@@ -59,3 +59,8 @@ CSS naming convention
 General naming convention
     1. https://www.youtube.com/watch?v=-J3wNP6u5YU&t=6s
     2. 
+
+
+-- Feb 23 --
+
+Query is not final. It became apparent that whereClause in every query is diverse. Not fit to be reusable

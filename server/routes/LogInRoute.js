@@ -1,10 +1,11 @@
 import express from "express";
 import StudentSignUp from "../StudentSignUp.js";
 import MockPasswordEncryptor from "../__mocks__/MockPasswordEncryptor.js";
+import mockPool from "../__mocks__/MockDatabase.js.js";
 // import PasswordEncryptor from "../PasswordEncryptor.js";
 
 const logInRouteHandler = (query) => {
-    StudentSignUp.initialize(query, MockPasswordEncryptor);
+    StudentSignUp.initialize(query, mockPool, MockPasswordEncryptor);
 
     const router = express.Router();
     router.get("/login", async (req, res) => {
