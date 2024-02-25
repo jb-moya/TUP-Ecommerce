@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import LogInForm from "../components/StudentLogInForm.js";
+// import LogInForm from "../components/StudentLogInForm.js";
 import ProductCard from "../components/ProductCard.js";
+import NavBar from "../components/NavBar.js";
 
-export const Home = () => {
+const Home = () => {
     const [backendData, setBackendData] = useState({});
+
+    const fakeProductId = ["1", "2", "3", "4", "5"];
 
     useEffect(() => {
         fetch("/api")
@@ -21,13 +24,20 @@ export const Home = () => {
 
     return (
         <div>
-            Home
-            {typeof backendData.product === "undefined"
+            <NavBar />
+
+            {fakeProductId.map((product, i) => (
+                <ProductCard productID={product} />
+            ))}
+
+            {/* {typeof backendData.product === "undefined"
                 ? "Loading..."
                 : backendData.product.map((product, i) => (
                       <ProductCard product={product} />
-                  ))}
-            <LogInForm />
+                  ))} */}
+            {/* <LogInForm /> */}
         </div>
     );
 };
+
+export default Home;

@@ -1,7 +1,7 @@
 import React from "react";
 import SignUpForm from "../components/StudentSignUpForm.js";
 
-export const SignUp = () => {
+const SignUp = () => {
     return (
         <div>
             SignUp
@@ -9,3 +9,5 @@ export const SignUp = () => {
         </div>
     );
 };
+
+export default SignUp;
