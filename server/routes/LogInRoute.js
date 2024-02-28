@@ -1,8 +1,8 @@
 import express from "express";
 import StudentSignUp from "../StudentSignUp.js";
 import MockPasswordEncryptor from "../__mocks__/MockPasswordEncryptor.js";
-import StudentIDValidator from "../../ClientServer/StudentIDValidator.js";
-import NameValidator from "../../ClientServer/NameValidator.js";
+import StudentIDValidator from "../validator/StudentIDValidator.js";
+import NameValidator from "../validator/NameValidator.js";
 
 // import PasswordEncryptor from "../PasswordEncryptor.js";
 

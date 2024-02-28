@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import NameValidator from "validator/NameValidator.js";
-import StudentIDValidator from "validator/StudentIDValidator.js";
-import ContactValidator from "validator/ContactValidator.js";
-import { TUPEmailValidator } from "validator/EmailValidator.js";
+import NameValidator from "../validator/NameValidator.js";
+import StudentIDValidator from "../validator/StudentIDValidator.js";
+import ContactValidator from "../validator/ContactValidator.js";
+import { TUPEmailValidator } from "../validator/EmailValidator.js";
 
 import InputField from "./InputField.js";
 

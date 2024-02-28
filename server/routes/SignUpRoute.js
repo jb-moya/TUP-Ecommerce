@@ -5,10 +5,10 @@ import PasswordEncryptor from "../PasswordEncryptor.js";
 import {
     EmailValidator,
     TUPEmailValidator,
-} from "../../ClientServer/EmailValidator.js";
-import NameValidator from "../../ClientServer/NameValidator.js";
-import ContactValidator from "../../ClientServer/ContactValidator.js";
-import StudentIDValidator from "../../ClientServer/StudentIDValidator.js";
+} from "../validator/EmailValidator.js";
+import NameValidator from "../validator/NameValidator.js";
+import ContactValidator from "../validator/ContactValidator.js";
+import StudentIDValidator from "../validator/StudentIDValidator.js";
 import mockPool from "../__mocks__/MockDatabase.js";
 
 const isMockingPasswordEncryptor = true;

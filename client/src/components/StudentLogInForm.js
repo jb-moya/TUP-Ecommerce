@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import StudentIDValidator from "validator/StudentIDValidator.js";
+import StudentIDValidator from "../validator/StudentIDValidator.js";
 
 import InputField from "./InputField.js";
 
