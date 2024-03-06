@@ -41,7 +41,7 @@ const SignUpForm = () => {
         setIsSubmitting(true);
 
         try {
-            await axios.post("http://localhost:5000/signup", {
+            await axios.post("http://localhost:5000/customer/signup", {
                 student_id: studentId,
                 name: name,
                 email_address: email,

@@ -21,8 +21,8 @@ const PasswordEncryptorUsed = isMockingPasswordEncryptor
 
 const signUpRouteHandler = (query, mockConnection) => {
     StudentSignUp.initialize(query, mockConnection, PasswordEncryptorUsed);
-
     const router = express.Router();
+
     router.post("/signup", async (req, res) => {
         const { student_id, name, email_address, contact_number, password } =
             req.body;

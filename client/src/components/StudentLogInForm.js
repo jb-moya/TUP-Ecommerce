@@ -25,7 +25,7 @@ const LogInForm = () => {
         setIsSubmitting(true);
 
         try {
-            await axios.get("http://localhost:5000/login", {
+            await axios.post("http://localhost:5000/customer/login", {
                 params: {
                     student_id: studentId,
                     password: password,
