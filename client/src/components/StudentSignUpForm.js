@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NameValidator from "../validator/NameValidator.js";
-import StudentIDValidator from "../validator/StudentIDValidator.js";
+// import StudentIDValidator from "../validator/StudentIDValidator.js";
 import ContactValidator from "../validator/ContactValidator.js";
-import { TUPEmailValidator } from "../validator/EmailValidator.js";
+import EmailValidator from "../validator/EmailValidator.js";
 
 import InputField from "./InputField.js";
 
 const SignUpForm = () => {
     const mockCredentials = {
-        student_id: "TUPM-21-1664",
-        name: "John Doe",
-        email_address: "jb@tup.edu.ph",
+        // customer_id: "CID056897",
+        last_name: "Doe",
+        first_name: "John",
+        middle_name: "Dae",
         contact: "09123456789",
+        address: "26 Looping Boorts, Brgy. Maharlika, Biringan, Samar",
+        birthdate: "06-21-1990",
+        email_address: "john_dae_doe@tup.edu.ph",
         password: "password",
     };
 
-    const [studentId, setStudentId] = useState(mockCredentials.student_id);
-    const [name, setName] = useState(mockCredentials.name);
+    const [last_name, setLastName] = useState(mockCredentials.last_name);
+    const [first_name, setFirstName] = useState(mockCredentials.first_name);
+    const [middle_name, setMiddleName] = useState(mockCredentials.middle_name);
+    
     const [email, setEmail] = useState(mockCredentials.email_address);
     const [contactNumber, setContactNumber] = useState(mockCredentials.contact);
 
@@ -30,8 +36,10 @@ const SignUpForm = () => {
     const [success, setSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [nameError, setNameError] = useState(null);
-    const [studentIDError, setStudentIDError] = useState(null);
+    const [lastNameError, setLastNameError] = useState(null);
+    const [firstNameError, setFirstNameError] = useState(null);
+    const [middleNameError, setMiddleNameError] = useState(null);
+
     const [contactError, setContactError] = useState(null);
     const [emailError, setEmailError] = useState(null);
     const [passwordConfirmError, setPasswordConfirmError] = useState(null);
@@ -42,8 +50,9 @@ const SignUpForm = () => {
 
         try {
             await axios.post("http://localhost:5000/customer/signup", {
-                student_id: studentId,
-                name: name,
+                last_name: last_name,
+                first_name: first_name,
+                middle_name: middle_name,
                 email_address: email,
                 contact_number: contactNumber,
                 password: password,
@@ -68,7 +77,7 @@ const SignUpForm = () => {
         errorPrefix
     ) => {
         try {
-            validator.validate(value);
+            validator.validate(value, errorPrefix);
             setter(value);
             errorSetter(null);
         } catch (error) {
@@ -77,23 +86,33 @@ const SignUpForm = () => {
         }
     };
 
-    const handleNameChange = (e) => {
+    const handleLastNameChange = (e) => {
         handleInputChange(
             e.target.value,
             NameValidator,
-            setName,
-            setNameError,
-            "name"
+            setLastName,
+            setLastNameError,
+            "last name"
         );
     };
 
-    const handleStudentIDChange = (e) => {
+    const handleFirstNameChange = (e) => {
         handleInputChange(
             e.target.value,
-            StudentIDValidator,
-            setStudentId,
-            setStudentIDError,
-            "student_id"
+            NameValidator,
+            setFirstName,
+            setFirstNameError,
+            "first name"
+        );
+    };
+
+    const handleMiddleNameChange = (e) => {
+        handleInputChange(
+            e.target.value,
+            NameValidator,
+            setMiddleName,
+            setMiddleNameError,
+            "middle name"
         );
     };
 
@@ -110,7 +129,7 @@ const SignUpForm = () => {
     const handleEmailChange = (e) => {
         handleInputChange(
             e.target.value,
-            TUPEmailValidator,
+            EmailValidator,
             setEmail,
             setEmailError,
             "email_address"
@@ -136,20 +155,36 @@ const SignUpForm = () => {
     return (
         <div>
             <h1>Sign Up</h1>
-            <InputField
+            {/* <InputField
                 type="text"
                 value={studentId}
                 onChange={handleStudentIDChange}
                 placeholder="Student ID"
                 setError={studentIDError}
+            /> */}
+
+            <InputField
+                type="text"
+                value={last_name}
+                onChange={handleLastNameChange}
+                placeholder="Name"
+                setError={lastNameError}
             />
 
             <InputField
                 type="text"
-                value={name}
-                onChange={handleNameChange}
+                value={first_name}
+                onChange={handleFirstNameChange}
                 placeholder="Name"
-                setError={nameError}
+                setError={firstNameError}
+            />
+
+            <InputField
+                type="text"
+                value={middle_name}
+                onChange={handleMiddleNameChange}
+                placeholder="Name"
+                setError={middleNameError}
             />
 
             <InputField

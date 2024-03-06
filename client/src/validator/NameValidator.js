@@ -2,13 +2,13 @@ export class NameValidator {
     static MIN_NAME_LENGTH = 1;
     static MAX_NAME_LENGTH = 30;
 
-    static validate(name) {
+    static validate(name, fieldName = "Name") {
         try {
             NameValidator.validateLength(
                 name,
                 NameValidator.MIN_NAME_LENGTH,
                 NameValidator.MAX_NAME_LENGTH,
-                "Name"
+                fieldName
             );
 
             NameValidator.validateText(name, "Name");

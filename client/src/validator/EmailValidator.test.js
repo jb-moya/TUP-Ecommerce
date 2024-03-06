@@ -1,4 +1,4 @@
-import { EmailValidator, TUPEmailValidator } from "./EmailValidator.js";
+import { EmailValidator } from "./EmailValidator.js";
 
 const errorMessage =
     "only letters (a-z), numbers (0-9), and periods (.) are allowed";
