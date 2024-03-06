@@ -68,7 +68,7 @@ const SignUpForm = () => {
         errorPrefix
     ) => {
         try {
-            validator.validate(value);
+            validator.validate(value, errorPrefix);
             setter(value);
             errorSetter(null);
         } catch (error) {
