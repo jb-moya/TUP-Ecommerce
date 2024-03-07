@@ -4,14 +4,24 @@ import {
     getAllProducts,
     deleteProduct,
     updateProduct,
+    createProduct,
 } from "../controllers/productController.js";
 
 const router = express.Router();
 
 // Example Express.js route handlers
 
+router.route("/").get(getAllProducts).post(createProduct);
+router
+    .route("/:id")
+    .get(getSingleProduct)
+    .patch(updateProduct)
+    .delete(deleteProduct);
+
+// stop at 48:33 https://youtu.be/qwfE7fSVaZM?t=2913
+
 // GET /products - Retrieve all products
-router.route("/").get(getAllProducts);
+// router.route("/").get(getAllProducts);
 
 // GET /products/:id - Retrieve a specific product by ID
 // router.get("/:id", (req, res) => {
@@ -32,11 +42,5 @@ router.route("/").get(getAllProducts);
 // router.delete("/:id", (req, res) => {
 // Logic to delete a product by its ID from the database
 // });
-
-router
-    .route("/:id")
-    .get(getSingleProduct)
-    .patch(updateProduct)
-    .delete(deleteProduct);
 
 export default router;

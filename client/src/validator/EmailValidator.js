@@ -55,7 +55,7 @@ export class EmailValidator {
         }
     }
 
-    static validateEmailUsername(username) {
+    static validate(username) {
         EmailValidator.validateLength(
             username,
             EmailValidator.MIN_USERNAME_LENGTH,
