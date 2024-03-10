@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import CustomAPIError from "./custom-api.js";
+import { CustomAPIError } from "./custom-api.js";
 
 class BadRequestError extends CustomAPIError {
   constructor(message) {
@@ -9,4 +9,4 @@ class BadRequestError extends CustomAPIError {
 }
 
 // this might be problem
-export default BadRequestError;
+export { BadRequestError };

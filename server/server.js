@@ -1,34 +1,38 @@
 import connectDB from "./db/connect.js";
 
+// might use express-async-errors
+// might use express-async-errors
+
 import express from "express";
 // import connection from "./database.js";
 // import mockPool from "./__mocks__/MockDatabase.js";
 // import Query from "./Query.js";
 import cors from "cors";
-import CustomerRouter from "./routes/CustomerRoute.js";
+// import CustomerRouter from "./routes/CustomerRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
+import UserRouter from "./routes/RegisterRoute.js";
+
 
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 
 
-
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorMiddleware from "./middleware/error-handler.js";
 
 // CONTINUE AT 3:19:31 https://youtu.be/qwfE7fSVaZM?t=11971
+// https://www.youtube.com/watch?v=qwfE7fSVaZM&t=26857s
 
-app.use(express.json());
+app.use(express.json()); 
 
-// app.get("/", (req, res) => {
-//     res.send('<h1>Store API</h1><a href="/api/v1/products">Products route</a>');
-// });
-
+app.use("/api/v1/auth", UserRouter);
 app.use("/api/v1/products", ProductRouter);
+
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
+
 
 const port = process.env.PORT || 5000;
 

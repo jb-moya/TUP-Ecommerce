@@ -5,18 +5,33 @@ import {
     deleteProduct,
     updateProduct,
     createProduct,
+    tempProductRoute,
 } from "../controllers/productController.js";
 
 const router = express.Router();
 
+import { authorizeSeller } from "../middleware/authorization.js";
+import { authenticateUser } from "../middleware/authentication.js";
+
+
 // Example Express.js route handlers
 
-router.route("/").get(getAllProducts).post(createProduct);
+// might move the authorizeSeller middleware to the productController.js file
+
+router
+    .route("/")
+    .get(authenticateUser, authorizeSeller, getAllProducts)
+    // might combine the authorizeSeller and authenticateUser middleware into one middleware
+    .post(authenticateUser, authorizeSeller, createProduct);
 router
     .route("/:id")
-    .get(getSingleProduct)
-    .patch(updateProduct)
-    .delete(deleteProduct);
+    .get(authenticateUser, authorizeSeller, getSingleProduct)
+    .patch(authenticateUser, authorizeSeller, updateProduct)
+    .delete(authenticateUser, authorizeSeller, deleteProduct);
+
+
+
+router.route("/temp/").post(tempProductRoute);
 
 // stop at 48:33 https://youtu.be/qwfE7fSVaZM?t=2913
 
@@ -44,3 +59,4 @@ router
 // });
 
 export default router;
+
