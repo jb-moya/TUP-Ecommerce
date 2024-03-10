@@ -1,0 +1,529 @@
+[
+    {
+        "name": "Smartphone",
+        "price": [799.99, 899.99],
+        "featured": true,
+        "variationClass": ["Color", "Size"],
+        "description": "A powerful smartphone with advanced features",
+        "variation": [
+            {
+                "sku": "ABC123",
+                "option": {
+                    "color": "Red",
+                    "size": "Large"
+                },
+                "price": 799.99,
+                "stock": 10
+            },
+            {
+                "sku": "DEF456",
+                "option": {
+                    "color": "Red",
+                    "size": "Large"
+                },
+                "price": 899.99,
+                "stock": 5
+            }
+        ],
+        "category": "Electronics",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Laptop",
+        "price": [999.99, 1199.99],
+        "featured": true,
+        "variationClass": ["Color", "Size"],
+        "description": "A powerful laptop with advanced features",
+        "variation": [
+            {
+                "sku": "GHI789",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 999.99,
+                "stock": 10
+            },
+            {
+                "sku": "JKL012",
+                "option": {
+                    "color": "White",
+                    "size": "Large"
+                },
+                "price": 1099.99,
+                "stock": 5
+            },
+            {
+                "sku": "MNO345",
+                "option": {
+                    "color": "Black",
+                    "size": "Small"
+                },
+                "price": 1199.99,
+                "stock": 10
+            },
+            {
+                "sku": "PQR678",
+                "option": {
+                    "color": "White",
+                    "size": "Small"
+                },
+                "price": 1099.99,
+                "stock": 5
+            }
+        ],
+        "category": "Electronics",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "T-Shirt",
+        "price": [19.99, 29.99],
+        "featured": true,
+        "variationClass": ["Color", "Size"],
+        "description": "A comfortable t-shirt with advanced features",
+        "variation": [
+            {
+                "sku": "STU901",
+                "option": {
+                    "color": "Red",
+                    "size": "Large"
+                },
+                "price": 19.99,
+                "stock": 10
+            },
+            {
+                "sku": "VWX234",
+                "option": {
+                    "color": "Blue",
+                    "size": "Large"
+                },
+                "price": 29.99,
+                "stock": 5
+            },
+            {
+                "sku": "YZA567",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 19.99,
+                "stock": 10
+            },
+            {
+                "sku": "BCD890",
+                "option": {
+                    "color": "Black",
+                    "size": "Small"
+                },
+                "price": 29.99,
+                "stock": 5
+            }
+        ],
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Jeans",
+        "price": [39.99, 49.99],
+        "featured": false,
+        "variationClass": ["Color", "Size"],
+        "description": "A comfortable jeans with advanced features",
+        "variation": [
+            {
+                "sku": "EFG123",
+                "option": {
+                    "color": "Blue",
+                    "size": "Large"
+                },
+                "price": 39.99,
+                "stock": 10
+            },
+            {
+                "sku": "HIJ456",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 49.99,
+                "stock": 5
+            },
+            {
+                "sku": "KLM789",
+                "option": {
+                    "color": "Blue",
+                    "size": "Small"
+                },
+                "price": 39.99,
+                "stock": 10
+            },
+            {
+                "sku": "NOP012",
+                "option": {
+                    "color": "Black",
+                    "size": "Small"
+                },
+                "price": 49.99,
+                "stock": 25
+            }
+        ],
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Sneakers",
+        "price": [59.99],
+        "featured": false,
+        "variationClass": ["Color", "Size"],
+        "description": "A comfortable sneakers with advanced features",
+        "variation": [
+            {
+                "sku": "QRS345",
+                "option": {
+                    "color": "Red",
+                    "size": "Large"
+                },
+                "price": 59.99,
+                "stock": 10
+            },
+            {
+                "sku": "TUV678",
+                "option": {
+                    "color": "Blue",
+                    "size": "Large"
+                },
+                "price": 59.99,
+                "stock": 5
+            },
+            {
+                "sku": "WXY901",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 59.99,
+                "stock": 10
+            }
+        ],
+        "category": "Shoes",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Boots",
+        "price": [69.99],
+        "featured": false,
+        "variationClass": ["Color", "Size"],
+        "description": "A comfortable boots with advanced features",
+        "variation": [
+            {
+                "sku": "ZAB234",
+                "option": {
+                    "color": "Red",
+                    "size": "Large"
+                },
+                "price": 69.99,
+                "stock": 10
+            },
+            {
+                "sku": "FGH890",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 69.99,
+                "stock": 10
+            }
+        ],
+        "category": "Shoes",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Hat",
+        "price": [8.99, 9.99],
+        "featured": true,
+        "variationClass": ["Color"],
+        "description": "A comfortable hat with advanced features",
+        "variation": [
+            {
+                "sku": "IJK567",
+                "option": {
+                    "color": "Red"
+                },
+                "price": 9.99,
+                "stock": 10
+            },
+            {
+                "sku": "LMN890",
+                "option": {
+                    "color": "Black"
+                },
+                "price": 8.99,
+                "stock": 10
+            }
+        ],
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Sunglasses",
+        "price": [19.99],
+        "featured": true,
+        "variationClass": ["Type"],
+        "description": "A comfortable sunglasses with advanced features",
+        "variation": [
+            {
+                "sku": "OPQ123",
+                "option": {
+                    "type": "Aviator"
+                },
+                "price": 19.99,
+                "stock": 10
+            },
+            {
+                "sku": "RST456",
+                "option": {
+                    "type": "Wayfarer"
+                },
+                "price": 19.99,
+                "stock": 10
+            }
+        ],
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Watch",
+        "price": [29.99, 39.99],
+        "featured": true,
+        "variationClass": ["Color"],
+        "description": "A comfortable watch with advanced features",
+        "variation": [
+            {
+                "sku": "UVW789",
+                "option": {
+                    "color": "Black"
+                },
+                "price": 29.99,
+                "stock": 10
+            },
+            {
+                "sku": "XYZ012",
+                "option": {
+                    "color": "White"
+                },
+                "price": 39.99,
+                "stock": 10
+            }
+        ],
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Backpack",
+        "price": [49.99],
+        "featured": false,
+        "variationClass": ["Color"],
+        "description": "A comfortable backpack with advanced features",
+        "variation": [
+            {
+                "sku": "ABC345",
+                "option": {
+                    "color": "Black"
+                },
+                "price": 49.99,
+                "stock": 10
+            },
+            {
+                "sku": "DEF678",
+                "option": {
+                    "color": "Blue"
+                },
+                "price": 49.99,
+                "stock": 10
+            }
+        ],
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Jacket",
+        "price": [59.99, 69.99],
+        "featured": true,
+        "variationClass": ["Color", "Size"],
+        "description": "A comfortable jacket with advanced features",
+        "variation": [
+            {
+                "sku": "GHI901",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 59.99,
+                "stock": 10
+            },
+            {
+                "sku": "JKL234",
+                "option": {
+                    "color": "Black",
+                    "size": "Small"
+                },
+                "price": 69.99,
+                "stock": 10
+            },
+            {
+                "sku": "MNO567",
+                "option": {
+                    "color": "Blue",
+                    "size": "Large"
+                },
+                "price": 59.99,
+                "stock": 10
+            },
+            {
+                "sku": "PQR890",
+                "option": {
+                    "color": "Blue",
+                    "size": "Small"
+                },
+                "price": 69.99,
+                "stock": 10
+            }
+        ],
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Dress",
+        "price": [79.99, 89.99],
+        "featured": false,
+        "variationClass": ["Color", "Size"],
+        "description": "A comfortable dress with advanced features",
+        "variation": [
+            {
+                "sku": "STU123",
+                "option": {
+                    "color": "Black",
+                    "size": "Large"
+                },
+                "price": 79.99,
+                "stock": 10
+            },
+            {
+                "sku": "VWX456",
+                "option": {
+                    "color": "Black",
+                    "size": "Small"
+                },
+                "price": 89.99,
+                "stock": 10
+            },
+            {
+                "sku": "YZA789",
+                "option": {
+                    "color": "Blue",
+                    "size": "Large"
+                },
+                "price": 79.99,
+                "stock": 10
+            },
+            {
+                "sku": "BCD012",
+                "option": {
+                    "color": "Blue",
+                    "size": "Small"
+                },
+                "price": 89.99,
+                "stock": 10
+            }
+        ],
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Skirt",
+        "price": [39.99],
+        "featured": true,
+        "description": "A comfortable skirt with advanced features",
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Pants",
+        "price": [49.99],
+        "featured": true,
+        "description": "A comfortable pants with advanced features",
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Shorts",
+        "price": [29.99],
+        "featured": false,
+        "description": "A comfortable shorts with advanced features",
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Sweater",
+        "price": [39.99],
+        "featured": false,
+        "description": "A comfortable sweater with advanced features",
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Scarf",
+        "price": [19.99],
+        "featured": false,
+        "description": "A comfortable scarf with advanced features",
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Gloves",
+        "price": [9.99],
+        "featured": false,
+        "description": "A comfortable gloves with advanced features",
+        "category": "Clothing",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Belt",
+        "price": [9.99],
+        "featured": false,
+        "description": "A comfortable belt with advanced features",
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Necklace",
+        "price": [19.99],
+        "featured": false,
+        "description": "A comfortable necklace with advanced features",
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Earrings",
+        "price": [9.99],
+        "featured": false,
+        "description": "A comfortable earrings with advanced features",
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Bracelet",
+        "price": [9.99],
+        "featured": true,
+        "description": "A comfortable bracelet with advanced features",
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    },
+    {
+        "name": "Ring",
+        "price": [19.99],
+        "featured": true,
+        "description": "A comfortable ring with advanced features",
+        "category": "Accessories",
+        "createdBy": "65ec48144d8f314289363eb2"
+    }
+]

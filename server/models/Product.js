@@ -13,6 +13,7 @@ const productCategories = [
     "Sports",
     "Outdoors",
     "Automotive",
+    "Accessories",
     "Industrial",
     "Handmade",
     "Other",
@@ -24,7 +25,7 @@ const productVariationSchema = new mongoose.Schema({
         required: [true, "SKU is required"],
     },
     option: {
-        type: String,
+        type: mongoose.Schema.Types.Mixed,
         required: [true, "Option is required"],
     },
     price: {
@@ -53,36 +54,44 @@ const productSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        // has_variation: {
-        //     type: Boolean,
-        //     default: false,
-        // },
+        variationClass: {
+            type: [String],
+            default: [],
+        },
         description: {
             type: String,
             required: [true, "Please provide product description"],
             maxlength: [200, "Description cannot be more than 200 characters"],
         },
-        variation: [productVariationSchema],
-
-        // createdAt: {
-        //     type: Date,
-        //     default: Date.now(),
-        // },
-
-        // category: {
-        //     type: String,
-        //     required: [true, "Please select a category"],
-        //     enum: {
-        //         values: productCategories,
-        //         message: "{VALUE} is not valid category",
-        //     },
-        // },
-        
+        variation: { 
+            type: [productVariationSchema],
+            default: [],
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+        },
+        category: {
+            type: String,
+            required: [true, "Please select a category"],
+            enum: {
+                values: productCategories,
+                message: "{VALUE} is not valid category",
+            },
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
+
+
+        // Question:
+        // What is the way of access of Seller (organization) in this ecommerce.
+        // Can they be able to have multiple accounts, with each account having different roles?
+        // How can we implement this?
+        
+        // Or each organization can only have one account, and that account can have multiple roles?
     },
     { timestamps: true }
 );

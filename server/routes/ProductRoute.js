@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-import { authorizeSeller } from "../middleware/authorization.js";
+import { authorizePermissions } from "../middleware/authorization.js";
 import { authenticateUser } from "../middleware/authentication.js";
 
 
@@ -18,18 +18,16 @@ import { authenticateUser } from "../middleware/authentication.js";
 
 // might move the authorizeSeller middleware to the productController.js file
 
+// might combine the authorizeSeller and authenticateUser middleware into one middleware
 router
     .route("/")
-    .get(authenticateUser, authorizeSeller, getAllProducts)
-    // might combine the authorizeSeller and authenticateUser middleware into one middleware
-    .post(authenticateUser, authorizeSeller, createProduct);
+    .get(authenticateUser, getAllProducts)
+    .post([authenticateUser, authorizePermissions("seller")], createProduct);
 router
     .route("/:id")
-    .get(authenticateUser, authorizeSeller, getSingleProduct)
-    .patch(authenticateUser, authorizeSeller, updateProduct)
-    .delete(authenticateUser, authorizeSeller, deleteProduct);
-
-
+    .get(authenticateUser, getSingleProduct)
+    .patch([authenticateUser, authorizePermissions("seller")], updateProduct)
+    .delete([authenticateUser, authorizePermissions("seller")], deleteProduct);
 
 router.route("/temp/").post(tempProductRoute);
 
