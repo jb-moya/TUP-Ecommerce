@@ -11,6 +11,8 @@ import cors from "cors";
 // import CustomerRouter from "./routes/CustomerRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
 import UserRouter from "./routes/AuthenticationRoute.js";
+import ReviewRouter from "./routes/ReviewRoute.js";
+
 import cookieParser from "cookie-parser";
 
 import dotenv from "dotenv";
@@ -30,7 +32,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 
 app.use("/api/v1/auth", UserRouter);
 app.use("/api/v1/products", ProductRouter);
-
+app.use("/api/v1/reviews", ReviewRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

@@ -21,7 +21,7 @@ import { authenticateUser } from "../middleware/authentication.js";
 // might combine the authorizeSeller and authenticateUser middleware into one middleware
 router
     .route("/")
-    .get(authenticateUser, getAllProducts)
+    .get(getAllProducts)
     .post([authenticateUser, authorizePermissions("seller")], createProduct);
 router
     .route("/:id")
@@ -30,31 +30,6 @@ router
     .delete([authenticateUser, authorizePermissions("seller")], deleteProduct);
 
 router.route("/temp/").post(tempProductRoute);
-
-// stop at 48:33 https://youtu.be/qwfE7fSVaZM?t=2913
-
-// GET /products - Retrieve all products
-// router.route("/").get(getAllProducts);
-
-// GET /products/:id - Retrieve a specific product by ID
-// router.get("/:id", (req, res) => {
-// Logic to fetch a product by its ID from the database
-// });
-
-// POST /products - Create a new product
-// router.post("/", (req, res) => {
-// Logic to create a new product using the data in req.body
-// });
-
-// PUT /products/:id - Update an existing product
-// router.put("/:id", (req, res) => {
-// Logic to update an existing product by its ID using the data in req.body
-// });
-
-// DELETE /products/:id - Delete an existing product
-// router.delete("/:id", (req, res) => {
-// Logic to delete a product by its ID from the database
-// });
 
 export default router;
 

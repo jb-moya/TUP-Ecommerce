@@ -8,5 +8,4 @@ class BadRequestError extends CustomAPIError {
   }
 }
 
-// this might be problem
 export { BadRequestError };

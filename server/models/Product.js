@@ -63,7 +63,7 @@ const productSchema = new mongoose.Schema(
             required: [true, "Please provide product description"],
             maxlength: [200, "Description cannot be more than 200 characters"],
         },
-        variation: { 
+        variation: {
             type: [productVariationSchema],
             default: [],
         },
@@ -84,13 +84,22 @@ const productSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        
+        averageRating: {
+            type: Number,
+            default: 0,
+        },
 
-
+        numOfReviews: {
+            type: Number,
+            default: 0,
+        },
+        
         // Question:
         // What is the way of access of Seller (organization) in this ecommerce.
         // Can they be able to have multiple accounts, with each account having different roles?
         // How can we implement this?
-        
+
         // Or each organization can only have one account, and that account can have multiple roles?
     },
     { timestamps: true }

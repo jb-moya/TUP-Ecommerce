@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
         maxlength: [40, "Name cannot be more than 40 characters"],
         minlength: [3, "Name cannot be less than 3 characters"],
     },
+
     email: {
         type: String,
         required: [true, "Email is required"],
@@ -35,7 +36,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "user",
         enum: {
-            values: ["customer", "seller"],
+            values: ["customer", "seller", "admin"],
             message: "Please select a valid role",
         },
     },

@@ -1,20 +1,36 @@
 import User from "../models/User.js";
 import StatusCodes from "http-status-codes";
 import asyncWrapper from "../middleware/async.js";
-import jwt from "jsonwebtoken";
-import { BadRequestError } from "../errors/bad-request.js";
-import { UnauthenticatedError } from "../errors/unauthenticated.js";
-import { attachCookiesToResponse, createTokenUser } from "../utils/jwt.js";
+// import jwt from "jsonwebtoken";
+import { BadRequestError } from "../errors/index.js";
+import { UnauthenticatedError } from "../errors/index.js";
+import { attachCookiesToResponse, createTokenUser } from "../utils/index.js";
 
 const register = asyncWrapper(async (req, res) => {
-    const user = await User.create({ ...req.body });
+    // const user = await User.create({ ...req.body });
 
-    const token = user.createJWT();
+    // const token = user.createJWT();
 
-    res.status(StatusCodes.CREATED).json({
-        user: { name: user.name },
-        token,
+    // res.status(StatusCodes.CREATED).json({
+    //     user: { name: user.name },
+    //     token,
+    // });
+
+    const { email, name, password, role } = req.body;
+
+    const emailAlreadyExists = await User.findOne({
+        email,
     });
+
+    if (emailAlreadyExists) {
+        throw new BadRequestError("Email already exists");
+    }
+
+    const user = await User.create({ email, name, password, role });
+    const tokenUser = createTokenUser(user);
+    attachCookiesToResponse({ res, user: tokenUser });
+
+    res.status(StatusCodes.CREATED).json({ user: tokenUser });
 });
 
 // TO DO COOKIE IMPLEMENTATION
@@ -38,7 +54,6 @@ const login = asyncWrapper(async (req, res) => {
     }
 
     const tokenUser = createTokenUser(user);
-    
     attachCookiesToResponse({ res, user: tokenUser });
     
     console.log("tokenUser: ", tokenUser);

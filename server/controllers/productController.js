@@ -1,6 +1,6 @@
 import Product from "../models/Product.js";
 import asyncWrapper from "../middleware/async.js";
-import { createCustomError, CustomAPIError } from "../errors/custom-api.js";
+import { createCustomError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
 
 // FOR SELLER ONLY
@@ -72,7 +72,7 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     const { featured, name, sort, fields, numericFilters } = req.query;
     const queryObject = {};
 
-    if (req.user.role === "seller") {
+    if (req.user && req.user.role === "seller") {
         queryObject.createdBy = req.user.userId;
     }
 
@@ -137,8 +137,6 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 });
 
 const deleteProduct = asyncWrapper(async (req, res, next) => {
-    console.log("DELETINGGGGGGGGGGGGGGG")
-
     const { id: ProductID } = req.params;
     const product = await Product.findOneAndDelete({ _id: ProductID });
 
