@@ -1,0 +1,52 @@
+import Cart from "../models/Cart.js";
+import Product from "../models/Product.js";
+import { StatusCodes } from "http-status-codes";
+import { createCustomError, CustomAPIError } from "../errors/index.js";
+import { checkPermissions } from "../utils/index.js";
+import asyncWrapper from "../middleware/async.js";
+
+const addToCart = asyncWrapper(async (req, res, next) => {
+
+    if (req.user.role !== 'customer') {
+        return next(createCustomError("Only customers are allowed to add items to the cart", 403));
+    }
+
+    const { orderItems } = req.body;
+    const { productId, quantity } = orderItems[0];
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+        return next(createCustomError(`Product with ID ${productId} not found`, 404));
+    }
+
+    const newItem = {
+        name: product.name,
+        sku: product.sku,
+        price: product.price[0],
+        quantity: quantity,
+        product: product._id
+    };
+
+    let cart = await Cart.findOne({ user: req.user.userId });
+
+    if (!cart) {
+        cart = new Cart({
+            user: req.user.userId,
+            orderItems: [newItem],
+            status: "pending",
+            total: 0
+        });
+    } else {
+
+        cart.orderItems.push(newItem);
+    }
+
+    await cart.save();
+
+    res.status(200).json({ cart });
+});
+
+export {
+    addToCart
+};

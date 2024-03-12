@@ -9,6 +9,7 @@ import express from "express";
 // import Query from "./Query.js";
 import cors from "cors";
 // import CustomerRouter from "./routes/CustomerRoute.js";
+import CartRouter from "./routes/CartRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
 import UserRouter from "./routes/AuthenticationRoute.js";
 import ReviewRouter from "./routes/ReviewRoute.js";
@@ -33,6 +34,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use("/api/v1/auth", UserRouter);
 app.use("/api/v1/products", ProductRouter);
 app.use("/api/v1/reviews", ReviewRouter);
+app.use("/api/v1/cart", CartRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
