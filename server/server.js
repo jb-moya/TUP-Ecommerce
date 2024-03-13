@@ -13,7 +13,7 @@ import CartRouter from "./routes/CartRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
 import UserRouter from "./routes/AuthenticationRoute.js";
 import ReviewRouter from "./routes/ReviewRoute.js";
-
+import FeedbackRouter from "./routes/FeedbackRoute.js";
 import cookieParser from "cookie-parser";
 
 import dotenv from "dotenv";
@@ -35,6 +35,7 @@ app.use("/api/v1/auth", UserRouter);
 app.use("/api/v1/products", ProductRouter);
 app.use("/api/v1/reviews", ReviewRouter);
 app.use("/api/v1/cart", CartRouter);
+app.use("/api/v1/feedback", FeedbackRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

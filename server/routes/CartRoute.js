@@ -7,6 +7,6 @@ import {
     addToCart,
 } from "../controllers/cartController.js";
 
-router.route("/").post(authenticateUser, addToCart);
+router.route("/").post([authenticateUser, authorizePermissions('customer')], addToCart);
 
 export default router;

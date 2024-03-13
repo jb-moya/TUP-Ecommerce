@@ -6,36 +6,37 @@ import { checkPermissions } from "../utils/index.js";
 import asyncWrapper from "../middleware/async.js";
 
 const addToCart = asyncWrapper(async (req, res, next) => {
-
-    if (req.user.role !== 'customer') {
-        return next(createCustomError("Only customers are allowed to add items to the cart", 403));
-    }
-
     const { orderItems } = req.body;
     const { productId, sku, quantity } = orderItems[0];
 
     const product = await Product.findById(productId);
 
     if (!product) {
-        return next(createCustomError(`Product with ID ${productId} not found`, 404));
+        return next(
+            createCustomError(`Product with ID ${productId} not found`, 404)
+        );
     }
 
     let newItem;
 
-    if(sku.length === 0) {
+    if (sku.length === 0) {
         newItem = {
             name: product.name,
-            sku: '',
+            sku: "",
             option: {},
             price: product.price[0],
             quantity: quantity,
-            product: product._id
+            product: product._id,
         };
     } else {
-        const skuSearch = product.variation.find(variation => variation.sku === sku);
-        
+        const skuSearch = product.variation.find(
+            (variation) => variation.sku === sku
+        );
+
         if (!skuSearch) {
-            return next(createCustomError(`Product ${productId} has no SKU ${sku}`, 404));
+            return next(
+                createCustomError(`Product ${productId} has no SKU ${sku}`, 404)
+            );
         }
 
         const { option, price } = skuSearch;
@@ -45,8 +46,8 @@ const addToCart = asyncWrapper(async (req, res, next) => {
             option: option,
             price: price,
             quantity: quantity,
-            product: product._id
-        }
+            product: product._id,
+        };
     }
 
     let cart = await Cart.findOne({ user: req.user.userId });
@@ -56,7 +57,7 @@ const addToCart = asyncWrapper(async (req, res, next) => {
             user: req.user.userId,
             orderItems: [newItem],
             status: "unpaid",
-            total: 0
+            total: 0,
         });
     } else {
         cart.orderItems.push(newItem);
@@ -66,6 +67,4 @@ const addToCart = asyncWrapper(async (req, res, next) => {
     res.status(200).json({ cart });
 });
 
-export {
-    addToCart
-};
+export { addToCart };
