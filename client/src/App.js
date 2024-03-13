@@ -7,7 +7,7 @@ import LogIn from "./pages/LogIn.js";
 import Home from "./pages/Home.js";
 import ProductDetail from "./pages/ProductDetail.js";
 
-function App() {
+function App() {    
     return (
         <div>
             <BrowserRouter>
@@ -15,9 +15,14 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
-                    <Route path="/product/:id" element={<ProductDetail />}/>
+                    <Route
+                        path="/product/:productID"
+                        element={<ProductDetail />}
+                    />
                 </Routes>
             </BrowserRouter>
+
+            
         </div>
     );
 }

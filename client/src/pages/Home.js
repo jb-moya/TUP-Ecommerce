@@ -2,39 +2,44 @@ import React, { useEffect, useState } from "react";
 // import LogInForm from "../components/StudentLogInForm.js";
 import ProductCard from "../components/ProductCard.js";
 import NavBar from "../components/NavBar.js";
+import Button from "../components/Button.js";
+import axios from "axios";
 
 const Home = () => {
-    const [backendData, setBackendData] = useState({});
+    // const [backendData, setBackendData] = useState({});
 
-    const fakeProductId = ["1", "2", "3", "4", "5"];
+    // const fakeProductId = ["1", "2", "3", "4", "5"];
 
     useEffect(() => {
-        fetch("/api")
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then((data) => setBackendData(data))
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
+        const fetchProduct = async () => {
+            try {
+                const fetchProduct = await axios.get(
+                    "http://localhost:5000/api"
+                );
+                console.log(fetchProduct.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchProduct();
     }, []);
 
     return (
         <div>
             <NavBar />
-
+            {/* 
             {fakeProductId.map((product, i) => (
                 <ProductCard productID={product} />
-            ))}
+            ))} */}
 
             {/* {typeof backendData.product === "undefined"
                 ? "Loading..."
                 : backendData.product.map((product, i) => (
-                      <ProductCard product={product} />
-                  ))} */}
+                      <h1>{product}</h1>
+                      //   <ProductCard product={product} /> */}
+            {/* ))} */}
+
             {/* <LogInForm /> */}
         </div>
     );

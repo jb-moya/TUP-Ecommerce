@@ -1,39 +1,41 @@
 import React, { useState } from "react";
 import axios from "axios";
 import StudentIDValidator from "../validator/StudentIDValidator.js";
+import EmailValidator from "../validator/EmailValidator.js";
 
 import InputField from "./InputField.js";
 
 const LogInForm = () => {
     const mockCredentials = {
-        student_id: "TUPM-21-1664",
+        email: "john.doe@gmail.com",
         password: "password",
     };
 
-    const [studentId, setStudentId] = useState(mockCredentials.student_id);
+    // const [studentId, setStudentId] = useState(mockCredentials.student_id);
 
+    const [email, setEmail] = useState(mockCredentials.email);
     const [password, setPassword] = useState(mockCredentials.password);
 
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const [studentIDError, setStudentIDError] = useState(null);
+    const [emailError, setEmailError] = useState(null);
 
     const handleLogIn = async () => {
         if (isSubmitting) return;
         setIsSubmitting(true);
 
         try {
-            await axios.get("http://localhost:5000/login", {
+            await axios.post("http://localhost:5000/customer/login", {
                 params: {
-                    student_id: studentId,
+                    email: email,
                     password: password,
                 },
             });
 
-            console.log("student_id11: ", studentId);
-            console.log("student_id111: ", studentId);
+            console.log("email11: ", email);
+            console.log("email111: ", email);
 
             setError(null);
             setSuccess(true);
@@ -63,12 +65,12 @@ const LogInForm = () => {
         }
     };
 
-    const handleStudentIDChange = (e) => {
+    const handleEmailChange = (e) => {
         handleInputChange(
             e.target.value,
-            StudentIDValidator,
-            setStudentId,
-            setStudentIDError,
+            EmailValidator,
+            setEmail,
+            setEmailError,
             "student_id"
         );
     };
@@ -82,10 +84,10 @@ const LogInForm = () => {
             <h1>Log-In</h1>
             <InputField
                 type="text"
-                value={studentId}
-                onChange={handleStudentIDChange}
+                value={email}
+                onChange={handleEmailChange}
                 placeholder="Student ID"
-                setError={studentIDError}
+                setError={emailError}
             />
 
             <InputField

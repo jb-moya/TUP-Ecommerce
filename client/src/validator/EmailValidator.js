@@ -55,7 +55,7 @@ export class EmailValidator {
         }
     }
 
-    static validateEmailUsername(username) {
+    static validate(username) {
         EmailValidator.validateLength(
             username,
             EmailValidator.MIN_USERNAME_LENGTH,
@@ -85,36 +85,4 @@ export class EmailValidator {
     }
 }
 
-export class TUPEmailValidator {
-    static EMAIL_VALIDATOR;
-
-    static ACCEPTABLE_TUP_DOMAINS = ["tup.edu.ph"];
-
-    static setValidator(validator) {
-        TUPEmailValidator.EMAIL_VALIDATOR = validator;
-    }
-
-    static validateTUPdomain(domain) {
-        if (!TUPEmailValidator.ACCEPTABLE_TUP_DOMAINS.includes(domain)) {
-            throw new Error(`Invalid domain`);
-        }
-    }
-
-    static validateAtSign(email) {
-        if (email.split("@").length !== 2) {
-            throw new Error("Invalid email. Must contain exactly one @ sign");
-        }
-
-        return email.split("@");
-    }
-
-    static validate(email) {
-        try {
-            const [username, domain] = TUPEmailValidator.validateAtSign(email);
-            EmailValidator.validateEmailUsername(username);
-            TUPEmailValidator.validateTUPdomain(domain);
-        } catch (error) {
-            throw new Error(`${error.message}`);
-        }
-    }
-}
+export default EmailValidator;
