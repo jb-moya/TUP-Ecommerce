@@ -1,0 +1,196 @@
+.first-name,
+.last-name, 
+.birthday,
+.email-address,
+.password,
+.confirm-password{
+    position: relative;
+    font-size: var(--body2-size);
+    font-family: var(--body2);
+    color: var(--blue);
+    text-align: left;
+    user-select: none;
+  }
+
+  .firstnameinput,
+  .lastnameinput,
+  .bdayinput,
+  .eminput{
+    border: 1px solid var(--color-gray-200);
+    outline: 0;
+    background-color: var(--color-gray-100);
+    align-self: stretch;
+    height: 51px;
+    position: relative;
+    border-radius: var(--br-3xs);
+    box-sizing: border-box;
+    min-width: 250px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: var(--body2);
+    font-size:medium;
+  }
+
+  .pinput {
+    user-select: none;
+    border: 1px solid var(--color-gray-200);
+    outline: 0;
+    font-size:medium;
+    background-color: var(--color-gray-100);
+    align-self: stretch;
+    height: 51px;
+    position: relative;
+    border-radius: var(--br-3xs);
+    box-sizing: border-box;
+    min-width: 250px;
+    padding-left: 20px;
+    font-family: var(--body2);
+  }
+
+
+  .cpinput {
+    user-select: none;
+    border: 1px solid var(--color-gray-200);
+    outline: 0;
+    font-size:medium;
+    background-color: var(--color-gray-100);
+    align-self: stretch;
+    position: relative;
+    height: 51px;
+    border-radius: var(--br-3xs);
+    box-sizing: border-box;
+    min-width: 250px;
+    padding-left: 20px;
+    font-family: var(--body2);
+  }
+
+  .firstnameinput:focus,
+  .lastnameinput:focus,
+  .bdayinput:focus,
+  .eminput:focus,
+  .pinput:focus,
+  .cpinput:focus {
+      border: 2px solid black;
+      outline: none; 
+  }
+  .passwordContainer {
+    align-self: stretch;
+    min-width: 250px;
+    position: relative;
+    font-size: small;
+    font-family: var(--body2);
+    color: var(--blue);
+    text-align: left;
+    user-select: none;
+
+  }
+  .input-with-icon {
+    position: relative;
+  }
+
+  .password-icon {
+    position: absolute;
+    right: 8px; /* Adjust this value as needed */
+    top: 50%;
+    padding-right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .password-toggle-text {
+    position: absolute;
+    right: 8px; /* Adjust this value as needed */
+    top: 50%;
+    padding-right: 30px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+  }
+
+
+
+
+  .confirm-account,
+  .input-frames {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 5px 0;
+  }
+  .input-frames {
+    padding: 0 0 var(--padding-8xl);
+  }
+  .sign-up-now {
+    position: relative;
+    font-size: var(--body2-size);
+    font-family: var(--body2);
+    color: var(--color-white);
+    text-align: left;
+  }
+  .sign-up-button {
+    cursor: pointer;
+    border: 1px solid var(--color-gray-200);
+    padding: var(--padding-xs);
+    background-color: var(--blue);
+    align-self: stretch;
+    border-radius: var(--br-3xs);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .sign-up-button:hover {
+    background-color: var(--color-darkslateblue);
+    border: 1px solid var(--color-darkslategray);
+    box-sizing: border-box;
+  }
+  .already-have-an {
+    width: 294px;
+    position: relative;
+    font-size: var(--body2-size);
+    font-weight: 200;
+    font-family: var(--body2);
+    color: var(--blue);
+    text-align: center;
+    display: inline-block;
+    text-decoration: underline; 
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer;
+  }
+
+  .already-have-an:hover {
+    color: black; 
+  }
+
+  .footer-rectangle,
+  .info-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .footer-rectangle {
+    align-self: stretch;
+    gap: 21px 0;
+  }
+  .info-frame {
+    margin: 0;
+    width: 590px;
+    padding: 0 var(--padding-xl);
+    box-sizing: border-box;
+    gap: 49px 0;
+    max-width: 100%;
+  }
+
+
+  @media screen and (max-width: 750px) {
+    .info-frame {
+      gap: 24px 0;
+    }
+  }
+  

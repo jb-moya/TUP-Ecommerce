@@ -1,0 +1,142 @@
+.navbar {
+  height: 143px;
+  width: 1440px;
+  position: relative;
+  background-color: var(--blue);
+  display: none;
+  max-width: 100%;
+}
+.logo-icon {
+  height: 72px;
+  width: 96px;
+  position: relative;
+  object-fit: cover;
+}
+.tup-merch-co {
+  margin: 0;
+  flex: 1;
+  position: relative;
+  font-size: inherit;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.company-text {
+  width: 334px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0 10px;
+  max-width: 100%;
+}
+.about,
+.contact,
+.home1,
+.shop-now {
+  position: relative;
+}
+.shop-now {
+  white-space: nowrap;
+}
+.home-about-contact {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--padding-smi);
+  box-sizing: border-box;
+  gap: var(--gap-5xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--body2-size);
+  color: var(--color-white);
+  font-family: var(--body2);
+}
+.carticon,
+.searchicon {
+  height: 40px;
+  width: 40px;
+  position: relative;
+  object-fit: cover;
+}
+.login {
+  position: relative;
+  font-size: var(--body2-size);
+  font-family: var(--body2);
+  color: var(--blue);
+  text-align: left;
+}
+.difficulty,
+.max-altitude {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.difficulty {
+  cursor: pointer;
+  border: 0;
+  padding: var(--padding-3xs);
+  background-color: var(--color-white);
+  height: 42px;
+  flex: 1;
+  border-radius: var(--br-mini);
+  box-sizing: border-box;
+}
+.difficulty:hover {
+  background-color: var(--color-gainsboro);
+}
+.max-altitude {
+  width: 204px;
+  gap: 0 8px;
+}
+.div {
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-xl);
+}
+.div,
+.frame-sign-up,
+.header,
+.main-f-r-a-m-e {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+}
+.header {
+  width: 1117px;
+  align-items: center;
+  justify-content: center;
+  gap: 0 28px;
+  z-index: 1;
+}
+.frame-sign-up,
+.main-f-r-a-m-e {
+  box-sizing: border-box;
+}
+.main-f-r-a-m-e {
+  flex: 1;
+  background-color: var(--blue);
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-18xl) var(--padding-4xl) var(--padding-15xl)
+    var(--padding-xl);
+  text-align: left;
+  font-size: var(--font-size-7xl);
+  color: var(--color-white);
+  font-family: var(--body2);
+}
+.frame-sign-up {
+  align-self: stretch;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 0 var(--padding-xs);
+}
+@media screen and (max-width: 1100px) {
+  .home-about-contact {
+    display: none;
+  }
+}
