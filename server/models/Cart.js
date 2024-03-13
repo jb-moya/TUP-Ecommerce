@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ProductSchema = mongoose.Schema({
+const CartItemSchema = mongoose.Schema({
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -8,6 +8,10 @@ const ProductSchema = mongoose.Schema({
     sku: {
         type: String,
         default: '',
+    },
+    option: {
+        type: Object,
+        default: {},
     },
     price: {
         type: Number,
@@ -32,7 +36,7 @@ const CartSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    orderItems: [ProductSchema],
+    orderItems: [CartItemSchema],
     total: {
         type: Number,
         default: 0,
@@ -53,18 +57,3 @@ CartSchema.pre('save', function(next) {
 });
 
 export default mongoose.model("Cart", CartSchema);
-
-/*
-{
-
-    "orderItems": [
-        {
-            "name": "Skirt",
-            "sku":,
-            "price": 39.99,
-            "quantity": 1,
-            "product": "65ee78d04cfbe7e546c10561",
-        }
-    ],
-}
-*/
