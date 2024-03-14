@@ -3,7 +3,7 @@ import "./LogoFrame.css";
 
 // Images and Icons
 
-import BigLogo from '../../Assets/Logo.png'
+import BigLogo from '../../Assets/LogoWhiteBg.png'
 
 const LogoFrame = () => {
   return (

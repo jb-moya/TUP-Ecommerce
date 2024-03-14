@@ -30,15 +30,22 @@
   gap: 0 10px;
   max-width: 100%;
 }
-.about,
-.contact,
-.home1,
-.shop-now {
+.navBarItems {
   position: relative;
+  color: #fff;
+  padding: 10px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
 }
-.shop-now {
-  white-space: nowrap;
+
+.navBarItems:hover
+{
+  background-color: #392697;
 }
+
 .home-about-contact {
   margin: 0;
   display: flex;
@@ -66,26 +73,32 @@
   font-size: var(--body2-size);
   font-family: var(--body2);
   color: var(--blue);
-  text-align: left;
+  text-align: center;
+
+  text-decoration: none;
+  padding: 8px 17px 9px 17px;
+  
 }
-.difficulty,
+.loginBtn,
 .max-altitude {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 }
-.difficulty {
+.loginBtn {
   cursor: pointer;
   border: 0;
+  text-decoration: none;
   padding: var(--padding-3xs);
   background-color: var(--color-white);
   height: 42px;
   flex: 1;
   border-radius: var(--br-mini);
   box-sizing: border-box;
+
 }
-.difficulty:hover {
+.loginBtn:hover {
   background-color: var(--color-gainsboro);
 }
 .max-altitude {
@@ -119,6 +132,7 @@
 }
 .main-f-r-a-m-e {
   flex: 1;
+  height: 103px;
   background-color: var(--blue);
   align-items: center;
   justify-content: center;

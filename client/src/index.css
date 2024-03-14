@@ -1,4 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap");
+
+@font-face{
+
+  font-family: 'Cubao';
+  src: url("./Assets/Cubao Font/Cubao_Free_Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
   line-height: normal;
@@ -6,6 +15,7 @@ body {
 :root {
   /* fonts */
   --body2: Poppins;
+  --cubaoFont: Cubao;
 
   /* font sizes */
   --body2-size: 18px;

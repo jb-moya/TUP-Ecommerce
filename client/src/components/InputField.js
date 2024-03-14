@@ -1,7 +1,12 @@
-const InputField = ({ type, name, value, onChange, placeholder, validator, setError }) => {
+import "./SignUpComponents/InfoFrame.css";
+
+
+const InputField = ({ type, name, value, onChange, placeholder, validator, setError, title}) => {
     return (
-        <div className="input-field">
+        <div className="input-frames">
+            <b className="titles">{title}</b> 
             <input
+                className="input-field"
                 type={type}
                 value={value}
                 onChange={onChange}

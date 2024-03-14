@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import "./LinkRoute.css"
-const LinkRoute = ({ to, image = null, text = '' }) => {
+const LinkRoute = ({ to, image = null, text = '', className}) => {
     return (
-        <Link to={to} className="link-route">
+        <Link to={to} className={className}>
             {image}
             {text}
         </Link>
@@ -10,3 +10,5 @@ const LinkRoute = ({ to, image = null, text = '' }) => {
 };
 
 export default LinkRoute;
+
+// className="link-route"

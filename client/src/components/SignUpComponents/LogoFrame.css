@@ -1,9 +1,10 @@
 .biglogo-icon {
-    width: 360px;
-    height: 221px;
+    width: 300px;
+    height: 160px;
     position: relative;
     object-fit: cover;
     max-width: 100%;
+    image-rendering: smooth;
   }
   .creating-your-account,
   .welcome-to-our {
@@ -13,6 +14,7 @@
   }
   .creating-your-account {
     margin: 0;
+    user-select: none;
     height: 27px;
     font-size: inherit;
     font-weight: 700;
@@ -20,6 +22,7 @@
   }
   .welcome-to-our {
     width: 487px;
+    user-select: none;
     height: 81px;
     font-size: var(--body2-size);
     text-align: center;
