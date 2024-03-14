@@ -1,9 +1,4 @@
-.first-name,
-.last-name, 
-.birthday,
-.email-address,
-.password,
-.confirm-password{
+.titles{
     position: relative;
     font-size: var(--body2-size);
     font-family: var(--body2);
@@ -12,10 +7,7 @@
     user-select: none;
   }
 
-  .firstnameinput,
-  .lastnameinput,
-  .bdayinput,
-  .eminput{
+  .input-field{
     border: 1px solid var(--color-gray-200);
     outline: 0;
     background-color: var(--color-gray-100);
@@ -29,47 +21,10 @@
     padding-right: 20px;
     font-family: var(--body2);
     font-size:medium;
+    overflow: hidden;
   }
 
-  .pinput {
-    user-select: none;
-    border: 1px solid var(--color-gray-200);
-    outline: 0;
-    font-size:medium;
-    background-color: var(--color-gray-100);
-    align-self: stretch;
-    height: 51px;
-    position: relative;
-    border-radius: var(--br-3xs);
-    box-sizing: border-box;
-    min-width: 250px;
-    padding-left: 20px;
-    font-family: var(--body2);
-  }
-
-
-  .cpinput {
-    user-select: none;
-    border: 1px solid var(--color-gray-200);
-    outline: 0;
-    font-size:medium;
-    background-color: var(--color-gray-100);
-    align-self: stretch;
-    position: relative;
-    height: 51px;
-    border-radius: var(--br-3xs);
-    box-sizing: border-box;
-    min-width: 250px;
-    padding-left: 20px;
-    font-family: var(--body2);
-  }
-
-  .firstnameinput:focus,
-  .lastnameinput:focus,
-  .bdayinput:focus,
-  .eminput:focus,
-  .pinput:focus,
-  .cpinput:focus {
+  .input-field:focus {
       border: 2px solid black;
       outline: none; 
   }
@@ -92,6 +47,7 @@
     position: absolute;
     right: 8px; /* Adjust this value as needed */
     top: 50%;
+    padding-top: 40px;
     padding-right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
@@ -103,16 +59,15 @@
     right: 8px; /* Adjust this value as needed */
     top: 50%;
     padding-right: 30px;
+    padding-top: 40px;
     transform: translateY(-50%);
     cursor: pointer;
     z-index: 1;
   }
 
-
-
-
   .confirm-account,
-  .input-frames {
+  .input-frames,
+  .input-frames-padding {
     align-self: stretch;
     display: flex;
     flex-direction: column;
@@ -120,9 +75,12 @@
     justify-content: flex-start;
     gap: 5px 0;
   }
-  .input-frames {
+  
+  .input-frames-padding {
     padding: 0 0 var(--padding-8xl);
-  }
+    
+  } 
+
   .sign-up-now {
     position: relative;
     font-size: var(--body2-size);
@@ -185,6 +143,7 @@
     box-sizing: border-box;
     gap: 49px 0;
     max-width: 100%;
+    
   }
 
 

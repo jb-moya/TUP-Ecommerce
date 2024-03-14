@@ -27,10 +27,10 @@ const NavBar = () => {
           </div>
           <div className="div">
             <nav className="home-about-contact">
-              <b className="home1"><LinkRoute to="/" text="Home" /></b>
-              <b className="about"><LinkRoute to="/" text="About" /></b>
-              <b className="contact"><LinkRoute to="/" text="Contact" /></b>
-              <b className="shop-now"><LinkRoute to="/" text="Shop Now!" /></b>
+              <b><LinkRoute to="/" text="Home" className="navBarItems" /></b>
+              <b><LinkRoute to="/" text="About" className="navBarItems"/></b>
+              <b><LinkRoute to="/" text="Contact" className="navBarItems"/></b>
+              <b><LinkRoute to="/" text="Shop Now!"  className="navBarItems"/></b>
             </nav>
             <div className="max-altitude">
               <img
@@ -45,9 +45,8 @@ const NavBar = () => {
                 alt=""
                 src={SearchButton}
               />
-              <button className="difficulty">
-                <b className="login">Login</b>
-              </button>
+               <LinkRoute to="/login" text={<b className="login">Login</b> } className="loginBtn"></LinkRoute>
+            
             </div>
           </div>
         </div>
