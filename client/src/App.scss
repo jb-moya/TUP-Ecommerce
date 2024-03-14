@@ -1,3 +1,14 @@
+$enable-important-utilities: false; //this disables !important
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap");
+
+* {
+    box-sizing: border-box;
+    font-family: var(--body2);
+    font-size: var(--body2-size);
+    // font-weight: 700;
+}
+
 .productCard {
     display: flex;
     flex-direction: column;
@@ -27,6 +38,74 @@
 
 .link-route {
     padding: 0 1rem;
+}
+
+.product-detail {
+    .image-container {
+        // border-radius: 10px;
+        img {
+            // background-color: #e6e6e6;
+        }
+    }
+
+    .details {
+        // background-color: blue;
+        // background-color: blue;
+        padding: 10px;
+
+        .product-name {
+            background-color: violet;
+            // text-wrap: wrap;
+            overflow: anywhere;
+            font-weight: 700;
+            font-size: 3rem;
+        }
+
+        .rating {
+            // background-color: black;
+        }
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            // margin: 10px;
+            border-radius: 10px;
+        }
+    }
+    .mySwiper2 {
+        width: 100%;
+        height: 450px;
+    }
+    .mySwiper {
+        width: 90%;
+        height: 110px;
+        margin-top: 10px;
+        padding: 10px 0;
+
+        .swiper-slide {
+            width: 25%;
+            height: 100%;
+            opacity: 0.5;
+            padding: 6px;
+        }
+
+        .swiper-slide-thumb-active {
+            opacity: 1;
+            padding: 0px;
+        }
+    }
 }
 
 /*# sourceMappingURL=App.scss.map */
