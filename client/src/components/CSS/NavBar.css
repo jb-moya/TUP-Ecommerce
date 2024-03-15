@@ -30,7 +30,7 @@
     gap: 0 10px;
     max-width: 100%;
 }
-.navBarItems {
+/* .navBarItems {
     position: relative;
     color: #fff;
     padding: 10px 10px;
@@ -59,14 +59,14 @@
     font-size: var(--body2-size);
     color: var(--color-white);
     font-family: var(--body2);
-}
-.carticon,
+} */
+/* .carticon,
 .searchicon {
     height: 40px;
     width: 40px;
     position: relative;
     object-fit: cover;
-}
+} */
 .login {
     position: relative;
     font-size: var(--body2-size);
@@ -77,8 +77,8 @@
     text-decoration: none;
     padding: 8px 17px 9px 17px;
 }
-.loginBtn,
-.IconHolder {
+/* .loginBtn,
+.IconHolder{ 
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -97,18 +97,18 @@
 }
 .loginBtn:hover {
     background-color: var(--color-gainsboro);
-}
-.IconHolder {
+} */
+/* .IconHolder {
     width: 204px;
     gap: 0 8px;
-}
-.div {
+} */
+/* .div {
     flex: 1;
     align-items: center;
     justify-content: space-between;
     gap: var(--gap-xl);
-}
-.div,
+} */
+/* .div, */
 .navBarSection,
 .containerNavBar,
 .navBarHeader {
@@ -152,8 +152,8 @@
     padding: 0 0 var(--padding-nav);
     z-index: 999999;
 }
-@media screen and (max-width: 1100px) {
+/* @media screen and (max-width: 1100px) {
     .home-about-contact {
         display: none;
     }
-}
+} */

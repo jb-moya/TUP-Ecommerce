@@ -33,6 +33,7 @@ const NavBar = () => {
               <b><LinkRoute to="/" text="Contact" className="navBarItems"/></b>
               <b><LinkRoute to="/" text="Shop Now!"  className="navBarItems"/></b>
             </nav>
+            
             <div className="IconHolder">
               <img
                 className="carticon"
