@@ -1,18 +1,19 @@
-.navbar {
+/* .navbar {
   height: 143px;
   width: 1440px;
   position: relative;
   background-color: var(--blue);
   display: none;
   max-width: 100%;
-}
+} */
 .logo-icon {
   height: 72px;
   width: 96px;
   position: relative;
   object-fit: cover;
 }
-.tup-merch-co {
+.titleText {
+  
   margin: 0;
   flex: 1;
   position: relative;
@@ -21,7 +22,7 @@
   font-family: inherit;
   white-space: nowrap;
 }
-.company-text {
+.logoIcon {
   width: 334px;
   display: flex;
   flex-direction: row;
@@ -80,7 +81,7 @@
   
 }
 .loginBtn,
-.max-altitude {
+.IconHolder{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -101,7 +102,7 @@
 .loginBtn:hover {
   background-color: var(--color-gainsboro);
 }
-.max-altitude {
+.IconHolder {
   width: 204px;
   gap: 0 8px;
 }
@@ -112,28 +113,32 @@
   gap: var(--gap-xl);
 }
 .div,
-.frame-sign-up,
-.header,
-.main-f-r-a-m-e {
+.navBarSection,
+.containerNavBar,
+.navBarHeader {
   display: flex;
   flex-direction: row;
   max-width: 100%;
 }
-.header {
+.containerNavBar {
   width: 1117px;
   align-items: center;
   justify-content: center;
   gap: 0 28px;
   z-index: 1;
 }
-.frame-sign-up,
-.main-f-r-a-m-e {
+.navBarSection,
+.navBarHeader {
   box-sizing: border-box;
 }
-.main-f-r-a-m-e {
+.navBarHeader {
   flex: 1;
   height: 103px;
   background-color: var(--blue);
+  
+  position: fixed;
+  width: 100%;
+
   align-items: center;
   justify-content: center;
   padding: var(--padding-18xl) var(--padding-4xl) var(--padding-15xl)
@@ -143,11 +148,12 @@
   color: var(--color-white);
   font-family: var(--body2);
 }
-.frame-sign-up {
+.navBarSection {
   align-self: stretch;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 0 0 var(--padding-xs);
+  padding: 0 0 var(--padding-nav);
+  z-index: 10;
 }
 @media screen and (max-width: 1100px) {
   .home-about-contact {

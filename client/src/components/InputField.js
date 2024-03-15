@@ -1,4 +1,4 @@
-import "./SignUpComponents/InfoFrame.css";
+import "./CSS/LoginSignForm.css"
 
 
 const InputField = ({ type, name, value, onChange, placeholder, validator, setError, title}) => {

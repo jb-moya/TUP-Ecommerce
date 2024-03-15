@@ -65,7 +65,7 @@
     z-index: 1;
   }
 
-  .confirm-account,
+  /* .confirm-account, */
   .input-frames,
   .input-frames-padding {
     align-self: stretch;
@@ -152,4 +152,74 @@
       gap: 24px 0;
     }
   }
+
+
+  /* Some CSS for LoginFrame */
+
+  
+  .login5 {
+    font-size: var(--body2-size);
+    text-align: left;
+  }
+
+  .login5 {
+    position: relative;
+    font-family: var(--body2);
+    color: var(--color-white);
+  }
+  .login-container {
+    cursor: pointer;
+    border: 1px solid var(--color-gray-200);
+    padding: var(--padding-xs) var(--padding-xl);
+    background-color: var(--blue);
+    align-self: stretch;
+    border-radius: var(--br-3xs);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .create-an-account-wrapper:hover,
+  .login-container:hover {
+    background-color: var(--color-darkslateblue);
+    border: 1px solid var(--color-darkslategray);
+    box-sizing: border-box;
+  }
+  .create-an-account {
+    position: relative;
+    font-size: var(--body2-size);
+    font-family: var(--body2);
+    color: var(--blue);
+    text-align: left;
+  }
+  .create-an-account-wrapper {
+    cursor: pointer;
+    border: 1px solid var(--color-gray-200);
+    padding: var(--padding-xs) var(--padding-xl);
+    background-color: var(--color-white);
+    align-self: stretch;
+    border-radius: var(--br-3xs);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .create-an-account-wrapper:hover {
+    background-color: var(--color-gainsboro);
+  }
+  .frame-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .frame-container {
+    align-self: stretch;
+    gap: var(--gap-smi);
+  }
+
+
+  
   

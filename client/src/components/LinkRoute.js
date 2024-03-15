@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./LinkRoute.css"
+import "./CSS/LinkRoute.css"
 const LinkRoute = ({ to, image = null, text = '', className}) => {
     return (
         <Link to={to} className={className}>

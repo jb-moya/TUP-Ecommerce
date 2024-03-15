@@ -1,5 +1,6 @@
-import LogoFrame from "./LogoFrame";
-import "./InfoFrame.css";
+import LogoFrame from "../SignUpComponents/LogoFrame"
+import "../CSS/LoginSignForm.css"
+
 import React, { useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -42,7 +43,7 @@ const InfoFrame = () => {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-
+ 
 
   return (
     <form className="info-frame">
@@ -52,9 +53,6 @@ const InfoFrame = () => {
           title="First Name"
           type="text"
           placeholder="Enter your first name"
-          value=''
-          onChange=''
-          setError=''
          />
         <InputField 
           title="Last Name"
@@ -76,7 +74,6 @@ const InfoFrame = () => {
           type="text"
           placeholder="Enter your contact number"
          />
-        <div className="confirm-account">
         <div className="passwordContainer">
         <FontAwesomeIcon
           icon={showPassword ? faEyeSlash : faEye}
@@ -108,8 +105,7 @@ const InfoFrame = () => {
           placeholder="Enter to confirm your password"
          />
       </div>
-      </div> 
-  
+    
   
       <div className="footer-rectangle">
         <button className="sign-up-button">
