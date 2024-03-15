@@ -4,7 +4,8 @@ import ProductCard from "../components/ProductCard.js";
 import NavBar from "../components/NavBar.js";
 import CustomButton from "../components/Button.js";
 import axios from "axios";
-import Footer from "../components/Footer.js"
+import Footer from "../components/Footer.js";
+import { ProgressBar, Container, Row, Col } from "react-bootstrap";
 
 const Home = () => {
     // const [backendData, setBackendData] = useState({});
@@ -29,6 +30,18 @@ const Home = () => {
     return (
         <div>
             <NavBar />
+            <ProgressBar now={60} />
+            <Container className="">
+                <Row>
+                    <ProgressBar now={60} />
+                </Row>
+
+                <Col>
+                    <ProgressBar now={60} />
+                    <ProgressBar now={60} />
+                </Col>
+                <ProgressBar now={60} />
+            </Container>
             {/* 
             {fakeProductId.map((product, i) => (
                 <ProductCard productID={product} />
@@ -42,8 +55,8 @@ const Home = () => {
             {/* ))} */}
 
             {/* <LogInForm /> */}
-            
-            <Footer />
+
+            {/* <Footer /> */}
         </div>
     );
 };

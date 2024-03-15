@@ -3,20 +3,38 @@ import NavBar from "../components/NavBar.js";
 import ProductDetail from "../components/ProductDetail.js";
 // import "../customBootstrap/css/bootstrap.min.css";
 import ImageSwiper from "../components/Swiper.js";
-import { Container, Row, Col, Stack, Button, Image } from "react-bootstrap";
+import {
+    Container,
+    Row,
+    Col,
+    Stack,
+    Button,
+    Image,
+    ProgressBar,
+} from "react-bootstrap";
 import StarRating from "../components/StarRating.js";
 
 import image from "../components/images/lake-louise-51543_1280.jpg";
 import RatingOverview from "../components/RatingOverview.js";
 import ProductVariation from "../components/ProductVariation.js";
+import { useLocation } from "react-router-dom";
+import BreadCrumb from "../components/BreadCrumb.js";
+import { FaStar } from "react-icons/fa";
+import Review from "../components/Review.js";
 
 const ProductDetailPage = (props) => {
+    const location = useLocation();
+    const currentPath = location.pathname;
+
+    console.log(currentPath);
+
     return (
         <div className="product-detail-page">
             <NavBar />
 
             <Container className="product-detail">
-                <Row className="main-container">
+                <BreadCrumb currentPath={currentPath} />
+                <Row className="first-container main-container">
                     <Col className="image-container" xs={5}>
                         <Col className="main-image">
                             <ImageSwiper />
@@ -28,17 +46,17 @@ const ProductDetailPage = (props) => {
                                 <Stack direction="horizontal" gap={3}>
                                     <Stack>
                                         <div className="product-name">
-                                            DILDO NAMEN
+                                            MIDO NAMEN
                                         </div>
                                         <div className="product-sub-name">
-                                            Pero Dildo talaga 'to ni Aleng Mare,
+                                            Pero MIDO talaga 'to ni Aleng Mare,
                                             inarbor lang
                                         </div>
                                     </Stack>
                                     <div className="ms-auto" />
                                     <div className="col-md-4 text-end">
                                         <Stack className="">
-                                            <div className="product-price p-0">
+                                            <div className="product-price p-0 w-600">
                                                 ₱ 199,999.99
                                             </div>
                                             <div className="star-rating p-0">
@@ -96,7 +114,7 @@ const ProductDetailPage = (props) => {
                                     <Button
                                         size="lg"
                                         className="add-to-cart"
-                                        variant="primary"
+                                        variant="secondary"
                                     >
                                         Add to Cart
                                     </Button>
@@ -159,33 +177,24 @@ const ProductDetailPage = (props) => {
                 </Row>
 
                 <Row className="main-container product-ratings justify-content-md-center">
-                    <Col xs lg="2" className="w-600 s-16">
+                    <Col xs lg="2" className="title w-600 s-16">
                         Product Ratings
                     </Col>
 
                     <Row>
-                        <Stack direction="horizontal">
-                            <div className="p-1">
-                                <RatingOverview />
-                            </div>
-                            <div className="vr" />
-                            <div className="p-1"></div>
-                        </Stack>
+                        <RatingOverview />
                     </Row>
+
+                    <div className="custom-horizontal-separator"></div>
+
+                    <Stack className="review-container-stack">
+                        <Review />
+                        <Review />
+                        <Review />
+                        <Review />
+                    </Stack>
                 </Row>
             </Container>
-
-            {/* <Container className="main-container product-ratings" fluid="lg">
-                <Row>
-                    <Col>1 of 2</Col>
-                </Row>
-                <Row>
-                    <Col>2 of 2</Col>
-                    {/* <Col>1 of 3</Col>
-                    <Col>2 of 3</Col>
-                    <Col>3 of 3</Col>
-                </Row>
-            </Container> */}
         </div>
     );
 };
