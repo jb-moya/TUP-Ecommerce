@@ -1,13 +1,8 @@
-.footer,
-.signup {
+.LoginSignUp{
   position: relative;
 }
-.footer {
-  align-self: stretch;
-  height: 253px;
-  background-color: var(--blue);
-}
-.signup {
+
+.LoginSignUp {
   width: 100%;
   background-color: var(--color-white);
   overflow: hidden;
@@ -19,12 +14,12 @@
   letter-spacing: normal;
 }
 @media screen and (max-width: 750px) {
-  .signup {
+  .LoginSignUp {
     gap: 35px 0;
   }
 }
 @media screen and (max-width: 450px) {
-  .signup {
+  .LoginSignUp {
     gap: 17px 0;
   }
 }

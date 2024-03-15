@@ -1,13 +1,14 @@
-import NavBar from "../components/NavBar";
-import InfoFrame from "../components/SignUpComponents/InfoFrame";
-import "./SignUp.css";
+import NavBar from "../components/NavBar"
+import InfoFrame from "../components/SignUpComponents/InfoFrame"
+import Footer from "../components/Footer"
+import "./LoginSignUp.css";
 
 const SignUp = () => {
   return (
-    <div className="signup">
+    <div className="LoginSignUp">
       <NavBar />
       <InfoFrame />
-      <section className="footer" />
+      <Footer />
     </div>
   );
 };

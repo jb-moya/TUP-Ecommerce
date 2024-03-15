@@ -1,4 +1,4 @@
-import './NavBar.css'
+import "./CSS/NavBar.css"
 import React from 'react'
 import LinkRoute from "./LinkRoute.js";
 
@@ -12,19 +12,20 @@ import SearchButton from "../Assets/SearchButton.png"
 const NavBar = () => {
     return (
         
-      <section className="frame-sign-up">
-      <header className="main-f-r-a-m-e">
-        <div className="navbar" />
-        <div className="header">
-          <div className="company-text">
+      <section className="navBarSection">
+      <header className="navBarHeader">
+       {/* <div className="navbar" /> */}
+        <div className="containerNavBar">
+        <div className="logoIcon">
             <img
               className="logo-icon"
               loading="lazy"
               alt=""
               src={LogoBlueBg}
             />
-            <h3 className="tup-merch-co">TUP Merch Co.</h3>
+            <h3 className="titleText">TUP Merch Co.</h3>
           </div>
+
           <div className="div">
             <nav className="home-about-contact">
               <b><LinkRoute to="/" text="Home" className="navBarItems" /></b>
@@ -32,7 +33,7 @@ const NavBar = () => {
               <b><LinkRoute to="/" text="Contact" className="navBarItems"/></b>
               <b><LinkRoute to="/" text="Shop Now!"  className="navBarItems"/></b>
             </nav>
-            <div className="max-altitude">
+            <div className="IconHolder">
               <img
                 className="carticon"
                 loading="lazy"
