@@ -45,8 +45,6 @@ const InfoFrame = () => {
 
 
   return (
-
-    
     <form className="info-frame">
       <LogoFrame />
        <div className="input-frames-padding">

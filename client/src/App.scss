@@ -4,9 +4,40 @@ $enable-important-utilities: false; //this disables !important
 
 * {
     box-sizing: border-box;
-    font-family: var(--body2);
-    font-size: var(--body2-size);
+    font-family: "Poppins", sans-serif;
+    // font-family: var(--body2);
+    // font-size: var(--body2-size);
+    // font spacing
+    letter-spacing: 0.5px;
     // font-weight: 700;
+}
+
+.app {
+    background-color: var(--color-gray-100);
+}
+
+.w-600 {
+    // font-size: 1.6rem;
+    font-weight: 600;
+    // margin: 1rem 0;
+}
+
+.s-16 {
+    font-size: 1.6rem;
+}
+
+.font {
+    // font-family: var(--body2);
+    font-weight: 600;
+}
+
+.poppins {
+    font-size: 1.5rem;
+}
+
+// https://react-bootstrap.netlify.app/docs/getting-started/theming
+.btn-primary {
+    background-color: pink !important;
 }
 
 .productCard {
@@ -40,6 +71,111 @@ $enable-important-utilities: false; //this disables !important
     padding: 0 1rem;
 }
 
+hr {
+    border: 1px solid var(--blue) !important;
+    margin: 0 !important;
+}
+
+.main-container {
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+
+    box-shadow: 0.2px 0.2px 0.2px -13px rgba(0, 0, 0, 0.099),
+        0.4px 0.4px 0.4px -13px rgba(0, 0, 0, 0.144),
+        0.6px 0.6px 0.7px -13px rgba(0, 0, 0, 0.178),
+        0.9px 0.9px 1px -13px rgba(0, 0, 0, 0.206),
+        1.4px 1.4px 1.5px -13px rgba(0, 0, 0, 0.234),
+        2px 2px 2.2px -13px rgba(0, 0, 0, 0.262),
+        3px 3px 3.3px -13px rgba(0, 0, 0, 0.296),
+        4.8px 4.8px 5.3px -13px rgba(0, 0, 0, 0.341),
+        9px 9px 10px -13px rgba(0, 0, 0, 0.44);
+}
+
+.btn-primary {
+    // background-color: var(--blue2) !important;
+    border: none;
+}
+
+.variation-radio-buttons {
+    // border: 1px solid var(--blue2);
+    color: var(--blue2);
+
+    // &.active {
+    //     background-color: var(--blue2) !important;
+    //     color: #fff !important;
+    // }
+
+    .btn-outline-primary {
+        // margin: 6px;
+        background-color: violet;
+        border-radius: 15px !important;
+    }
+
+    .btn {
+        border: 1px solid var(--blue2);
+        margin: 0 10px;
+    }
+
+    .btn-check + .btn:hover {
+        background-color: pink;
+    }
+}
+
+.circle {
+    .profile {
+        width: 100%; /* Ensure the image covers the whole circle */
+        height: 100%;
+        object-fit: cover;
+    }
+
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #828282;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 1rem;
+}
+
+.seller-details-container {
+    .seller-details {
+        .view-seller {
+            // padding: 1rem;
+            border: none;
+            background-color: var(--blue3);
+        }
+
+        display: flex;
+
+        justify-content: start;
+        align-items: start;
+        padding: 1rem;
+        // background-color: var(--blue3);
+    }
+
+    color: var(--blue);
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    text-align: center;
+}
+
+.product-ratings {
+    color: var(--blue);
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    text-align: center;
+    // padding: 1rem;
+    // background-color: #127190;
+}
+
 .product-detail {
     .image-container {
         // border-radius: 10px;
@@ -49,22 +185,93 @@ $enable-important-utilities: false; //this disables !important
     }
 
     .details {
+        .quantity-stack {
+            input {
+                width: 100px;
+                // padding: 10px;
+                text-align: center;
+                border: 1px solid #127190;
+                border-radius: 5px;
+            }
+            // display: flex;
+            // justify-content: space-between;
+            // align-items: center;
+            // padding: 1rem;
+            // background-color: #127190;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            // padding: 10px;
+            // background-color: var(--blue3);
+        }
+
+        .customer-buttons {
+            // padding: 1rem;
+
+            .buy-now {
+                background-color: var(--blue2);
+                border: none;
+            }
+
+            .add-to-cart {
+                background-color: var(--blue3);
+                border: none;
+            }
+        }
+
+        .product-description {
+            // same with product-sub-name
+            font-size: 1.5rem;
+        }
+
+        color: var(--blue);
         // background-color: blue;
         // background-color: blue;
         padding: 10px;
 
         .product-name {
-            background-color: violet;
+            // background-color: violet;
             // text-wrap: wrap;
-            overflow: anywhere;
-            font-weight: 700;
+            // overflow: anywhere;
+            word-break: break-all;
+            font-weight: 900;
             font-size: 3rem;
         }
 
-        .rating {
-            // background-color: black;
+        .product-sub-name {
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        .star-rating {
+            .rating {
+                padding-right: 3px;
+            }
+
+            padding-right: 6px;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+
+            border-radius: 5px;
+            background: rgb(67, 9, 121);
+            background: linear-gradient(
+                90deg,
+                rgba(67, 9, 121, 0) 45%,
+                rgba(255, 222, 0, 1) 100%
+            );
+            input[type="radio"] {
+                display: none;
+            }
+        }
+
+        .rating-num,
+        .sold-count {
+            font-size: 1.4rem;
         }
     }
+
     .swiper-slide {
         text-align: center;
         font-size: 18px;
@@ -86,11 +293,11 @@ $enable-important-utilities: false; //this disables !important
     }
     .mySwiper2 {
         width: 100%;
-        height: 450px;
+        height: 550px;
     }
     .mySwiper {
         width: 90%;
-        height: 110px;
+        height: 130px;
         margin-top: 10px;
         padding: 10px 0;
 

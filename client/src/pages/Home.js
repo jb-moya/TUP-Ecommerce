@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import LogInForm from "../components/StudentLogInForm.js";
 import ProductCard from "../components/ProductCard.js";
 import NavBar from "../components/NavBar.js";
-import Button from "../components/Button.js";
+import CustomButton from "../components/Button.js";
 import axios from "axios";
 
 const Home = () => {

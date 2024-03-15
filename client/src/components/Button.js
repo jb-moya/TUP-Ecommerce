@@ -1,10 +1,10 @@
-const Button = ({ text, icon, onClick }) => {
+const CustomButton = ({ text, icon, onClick }) => {
     return (
-        <button className="button" onClick={onClick}>
+        <button className="custom-button" onClick={onClick}>
             {icon}
             {text}
         </button>
     );
 };
 
-export default Button;
+export default CustomButton;
