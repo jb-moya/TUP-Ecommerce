@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const StarRating = ({ defaultRating = null, disableAction = false }) => {
+const StarRating = ({
+    staticColor = false,
+    defaultRating = null,
+    disableAction = false,
+}) => {
     const [rating, setRating] = useState(defaultRating);
     const [hover, setHover] = useState(null);
 
@@ -24,12 +28,12 @@ const StarRating = ({ defaultRating = null, disableAction = false }) => {
     };
 
     return (
-        <div>
+        <div className="star-rating">
             {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
 
                 return (
-                    <label key={i}>
+                    <label className="" key={i}>
                         <input
                             type="radio"
                             name="rating"
@@ -40,7 +44,9 @@ const StarRating = ({ defaultRating = null, disableAction = false }) => {
 
                         <FaStar
                             color={
-                                ratingValue <= (hover || rating)
+                                staticColor
+                                    ? "#ffc107"
+                                    : ratingValue <= (hover || rating)
                                     ? "#ffc107"
                                     : "#211c6a"
                             }

@@ -11,7 +11,7 @@ import { Button, ThemeProvider } from "react-bootstrap";
 
 function App() {
     return (
-        <div className="app">
+        <div className="app" id="overriding-bootstrap-css">
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -21,7 +21,7 @@ function App() {
                 </Routes>
             </BrowserRouter>
             {/* https://react-bootstrap.netlify.app/docs/getting-started/theming */}
-            {/* <Button variant="primary">Primary</Button>{" "}
+            <Button variant="primary">Primary</Button>{" "}
             <Button variant="secondary">Secondary</Button>{" "}
             <Button variant="success">Success</Button>{" "}
             <Button variant="warning">Warning</Button>{" "}
@@ -29,7 +29,7 @@ function App() {
             <Button variant="info">Info</Button>{" "}
             <Button variant="light">Light</Button>{" "}
             <Button variant="dark">Dark</Button>
-            <Button variant="link">Link</Button> */}
+            <Button variant="link">Link</Button>
         </div>
     );
 }
