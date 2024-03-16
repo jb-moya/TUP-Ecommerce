@@ -22,6 +22,7 @@ $enable-important-utilities: false; //this disables !important
     display: flex;
     flex-direction: row;
     max-width: 100%;
+
     .home-about-contact{
         margin: 0;
         display: flex;
@@ -38,7 +39,7 @@ $enable-important-utilities: false; //this disables !important
         font-family: var(--body2);
 
         .navBarItems {
-            position: relative;
+            position: flex;
             color: #fff;
             padding: 10px 10px;
             border: none;
