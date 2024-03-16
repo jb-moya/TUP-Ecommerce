@@ -187,12 +187,7 @@ const ProductDetailPage = (props) => {
 
                     <div className="custom-horizontal-separator"></div>
 
-                    <Stack className="review-container-stack">
-                        <Review />
-                        <Review />
-                        <Review />
-                        <Review />
-                    </Stack>
+                    <Review />
                 </Row>
             </Container>
         </div>

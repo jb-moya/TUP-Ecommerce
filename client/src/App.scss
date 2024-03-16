@@ -14,7 +14,7 @@ $enable-important-utilities: false; //this disables !important
 
 // Testing
 
-.div{
+.div {
     flex: 1;
     align-items: center;
     justify-content: space-between;
@@ -22,7 +22,7 @@ $enable-important-utilities: false; //this disables !important
     display: flex;
     flex-direction: row;
     max-width: 100%;
-    .home-about-contact{
+    .home-about-contact {
         margin: 0;
         display: flex;
         flex-direction: row;
@@ -47,11 +47,10 @@ $enable-important-utilities: false; //this disables !important
             transition: background-color 0.3s ease;
             text-decoration: none;
         }
-        
+
         .navBarItems:hover {
             background-color: #392697;
         }
-        
     }
 
     @media screen and (max-width: 1100px) {
@@ -61,7 +60,7 @@ $enable-important-utilities: false; //this disables !important
     }
 
     .loginBtn,
-    .IconHolder{ 
+    .IconHolder {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -92,11 +91,9 @@ $enable-important-utilities: false; //this disables !important
             width: 40px;
             position: relative;
             object-fit: cover;
-}   
+        }
     }
-    
 }
-
 
 .app {
     background-color: var(--color-gray-100);
@@ -140,14 +137,12 @@ $enable-important-utilities: false; //this disables !important
     }
 
     .btn-outline-primary {
-        margin: 0 4px;
         color: var(--blue2);
         border: 1px solid var(--blue2);
         border-radius: 5px;
     }
 
     .btn-outline-secondary {
-        margin: 0 4px;
         color: var(--blue3);
         border: 1px solid var(--blue3);
         border-radius: 5px;
@@ -218,7 +213,7 @@ $enable-important-utilities: false; //this disables !important
         .star-rating {
             .star {
                 font-size: 3.5rem;
-                color: orange;
+                // color: #ffc107;
             }
 
             .overall-rating {
@@ -251,7 +246,7 @@ $enable-important-utilities: false; //this disables !important
 
             .star-symbol {
                 margin: 0 0px 0 4px;
-                color: orange;
+                color: #ffc107;
             }
 
             display: flex;
@@ -260,7 +255,7 @@ $enable-important-utilities: false; //this disables !important
         }
 
         .checked {
-            color: orange;
+            color: #ffc107;
         }
 
         /* Three column layout */
@@ -339,7 +334,90 @@ $enable-important-utilities: false; //this disables !important
 }
 
 .review-container-stack {
+    .star-rating-container {
+        padding: 0;
+    }
+
+    .like-button-container {
+        // padding: 1px 0;
+
+        .like-button {
+            line-height: 1;
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .like-count {
+                padding-left: 4px;
+            }
+        }
+
+        .like-icon {
+            font-size: 1.5rem;
+            // color: #127190;
+            // border: 1px solid #127190;
+        }
+    }
+
+    .main-review-body {
+        .star-rating {
+            background: none;
+            justify-content: start;
+            padding: 0;
+        }
+
+        .profile-pic-container {
+            padding: 0 8px 0 0;
+
+            .circle {
+                margin: 0;
+                width: 3rem;
+                height: 3rem;
+            }
+        }
+    }
+
+    .user-name {
+        padding: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .date {
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .review-title-container {
+        font-weight: 500;
+    }
+
+    .review-body {
+        font-weight: 400;
+        font-size: 1.2rem;
+        text-align: left;
+        padding-bottom: 5px;
+    }
+
+    .user-review {
+        padding: 5px 0;
+    }
+
+    .column {
+        // background-color: rgba(255, 192, 203, 0.057);
+    }
+
     .review-container {
+        .col-md-2,
+        .col-md-1 {
+            // background-color: rgba(255, 192, 203, 0.057);
+
+            // background-color: pink;
+        }
         // width: 500px !important;
         .container {
             max-width: 500px;
@@ -400,30 +478,11 @@ $enable-important-utilities: false; //this disables !important
     border: none;
 }
 
-// .variation-radio-buttons {
-//     // border: 1px solid var(--blue2);
-//     color: var(--blue2);
-
-//     // &.active {
-//     //     background-color: var(--blue2) !important;
-//     //     color: #fff !important;
-//     // }
-
-//     .btn-outline-primary {
-//         // margin: 6px;
-//         background-color: violet;
-//         border-radius: 15px !important;
-//     }
-
-//     .btn {
-//         border: 1px solid var(--blue2);
-//         margin: 0 10px;
-//     }
-
-//     .btn-check + .btn:hover {
-//         background-color: pink;
-//     }
-// }
+.variation-radio-buttons {
+    .btn-outline-primary {
+        margin: 0 6px;
+    }
+}
 
 .circle {
     .profile {

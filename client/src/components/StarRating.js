@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 
-const StarRating = ({ staticColor= false, defaultRating = null, disableAction = false }) => {
+const StarRating = ({
+    staticColor = false,
+    defaultRating = null,
+    disableAction = false,
+}) => {
     const [rating, setRating] = useState(defaultRating);
     const [hover, setHover] = useState(null);
 
@@ -24,7 +28,7 @@ const StarRating = ({ staticColor= false, defaultRating = null, disableAction = 
     };
 
     return (
-        <div>
+        <div className="star-rating">
             {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
 
@@ -39,12 +43,6 @@ const StarRating = ({ staticColor= false, defaultRating = null, disableAction = 
                         />
 
                         <FaStar
-                            // color={
-                            //     ratingValue <= (hover || rating)
-                            //         ? "#ffc107"
-                            //         : "#211c6a"
-                            // }
-
                             color={
                                 staticColor
                                     ? "#ffc107"
@@ -52,7 +50,6 @@ const StarRating = ({ staticColor= false, defaultRating = null, disableAction = 
                                     ? "#ffc107"
                                     : "#211c6a"
                             }
-                            
                             className="star"
                             onMouseEnter={() => handleStarHover(ratingValue)}
                             onMouseLeave={handleStarLeave}

@@ -12074,13 +12074,11 @@ textarea.form-control-lg {
   background-color: var(--blue3);
 }
 #overriding-bootstrap-css .btn-outline-primary {
-  margin: 0 4px;
   color: var(--blue2);
   border: 1px solid var(--blue2);
   border-radius: 5px;
 }
 #overriding-bootstrap-css .btn-outline-secondary {
-  margin: 0 4px;
   color: var(--blue3);
   border: 1px solid var(--blue3);
   border-radius: 5px;
@@ -12131,7 +12129,6 @@ textarea.form-control-lg {
 }
 .rating-overview-container .star-rating-container .star-rating .star {
   font-size: 3.5rem;
-  color: orange;
 }
 .rating-overview-container .star-rating-container .star-rating .overall-rating {
   padding-right: 5px;
@@ -12166,10 +12163,10 @@ textarea.form-control-lg {
 }
 .rating-overview-container .rating-overview .legend .star-symbol {
   margin: 0 0px 0 4px;
-  color: orange;
+  color: #ffc107;
 }
 .rating-overview-container .rating-overview .checked {
-  color: orange;
+  color: #ffc107;
 }
 .rating-overview-container .rating-overview .side {
   float: left;
@@ -12230,6 +12227,59 @@ textarea.form-control-lg {
   }
 }
 
+.review-container-stack .star-rating-container {
+  padding: 0;
+}
+.review-container-stack .like-button-container .like-button {
+  line-height: 1;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.review-container-stack .like-button-container .like-button .like-count {
+  padding-left: 4px;
+}
+.review-container-stack .like-button-container .like-icon {
+  font-size: 1.5rem;
+}
+.review-container-stack .main-review-body .star-rating {
+  background: none;
+  justify-content: start;
+  padding: 0;
+}
+.review-container-stack .main-review-body .profile-pic-container {
+  padding: 0 8px 0 0;
+}
+.review-container-stack .main-review-body .profile-pic-container .circle {
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+}
+.review-container-stack .user-name {
+  padding: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+.review-container-stack .date {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+.review-container-stack .review-title-container {
+  font-weight: 500;
+}
+.review-container-stack .review-body {
+  font-weight: 400;
+  font-size: 1.2rem;
+  text-align: left;
+  padding-bottom: 5px;
+}
+.review-container-stack .user-review {
+  padding: 5px 0;
+}
 .review-container-stack .review-container .container {
   max-width: 500px;
 }
@@ -12275,6 +12325,10 @@ textarea.form-control-lg {
 
 .btn-primary {
   border: none;
+}
+
+.variation-radio-buttons .btn-outline-primary {
+  margin: 0 6px;
 }
 
 .circle {
