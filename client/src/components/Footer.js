@@ -54,6 +54,7 @@ const Footer = () => {
             <div className="terms-conditions">{`Terms & Conditions`}</div>
           </div>
         </div>
+        
       </div>
     </footer>
   );
