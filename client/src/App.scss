@@ -22,7 +22,7 @@ $enable-important-utilities: false; //this disables !important
     display: flex;
     flex-direction: row;
     max-width: 100%;
-    .home-about-contact{
+    .home-about-contact {
         margin: 0;
         display: flex;
         flex-direction: row;
@@ -38,7 +38,7 @@ $enable-important-utilities: false; //this disables !important
         font-family: var(--body2);
 
         .navBarItems {
-            position: flex;
+            position: relative;
             color: #fff;
             padding: 10px 10px;
             border: none;
@@ -122,6 +122,7 @@ $enable-important-utilities: false; //this disables !important
 
 // ---------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
 // -- OVERRIDING BOOTSTRAP VARIABLES --
 // -- OVERRIDING BOOTSTRAP VARIABLES --
 // -- OVERRIDING BOOTSTRAP VARIABLES --
@@ -145,7 +146,6 @@ $enable-important-utilities: false; //this disables !important
     .btn-outline-secondary {
         color: var(--blue3);
         border: 1px solid var(--blue3);
-        border-radius: 5px;
     }
 
     .btn-check + .btn:hover {
@@ -176,6 +176,13 @@ $enable-important-utilities: false; //this disables !important
 // -- EMD OVERRIDING BOOTSTRAP VARIABLES END --
 // ---------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------
+
+.cart-container {
+    .cart-item {
+        background-color: pink;
+    }
+}
 
 .home-about-contact {
     .navBarItems {
@@ -334,6 +341,21 @@ $enable-important-utilities: false; //this disables !important
 }
 
 .review-container-stack {
+    .filter-buttons {
+        margin-right: 1rem;
+    }
+
+    .filter-rating-dropdown {
+        .dropdown-menu {
+            --bs-dropdown-link-active-bg: var(--blue2);
+            // background-color: #ffc107;
+        }
+    }
+
+    .col {
+        padding: 4px 0;
+    }
+
     .star-rating-container {
         padding: 0;
     }
@@ -390,6 +412,7 @@ $enable-important-utilities: false; //this disables !important
         font-size: 1.2rem;
         display: flex;
         align-items: center;
+        // padding: 0;
     }
 
     .review-title-container {
@@ -405,6 +428,7 @@ $enable-important-utilities: false; //this disables !important
 
     .user-review {
         padding: 5px 0;
+        padding-bottom: 1rem;
     }
 
     .column {
@@ -423,6 +447,17 @@ $enable-important-utilities: false; //this disables !important
             max-width: 500px;
         }
     }
+}
+
+.login {
+    position: relative;
+    font-size: var(--body2-size);
+    font-family: var(--body2);
+    color: var(--blue);
+    text-align: center;
+
+    text-decoration: none;
+    padding: 8px 17px 9px 17px;
 }
 
 .productCard {
@@ -473,14 +508,14 @@ $enable-important-utilities: false; //this disables !important
         9px 9px 10px -13px rgba(0, 0, 0, 0.44);
 }
 
-.btn-primary {
-    // background-color: var(--blue2) !important;
-    border: none;
-}
-
 .variation-radio-buttons {
-    .btn-outline-primary {
-        margin: 0 6px;
+    &.btn-group {
+        .btn {
+            &.btn-outline-primary {
+                margin: 6px;
+                border-radius: 6px;
+            }
+        }
     }
 }
 
@@ -595,7 +630,40 @@ $enable-important-utilities: false; //this disables !important
     }
 
     .details {
-        .quantity-stack {
+        .order-quantity-stack {
+            .variation-class {
+                font-weight: 600;
+                padding: 0 10px 0 0;
+                display: flex;
+                justify-content: start;
+                align-items: start;
+                text-align: left;
+            }
+
+            .btn-outline-secondary {
+                // border-radius: 0;
+            }
+
+            .quantity-input {
+                font-size: 2rem;
+                border-radius: 0;
+                border-color: var(--blue3);
+            }
+            .plus-button {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            .minus-button {
+                // background-color: blue;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
             input {
                 width: 100px;
                 // padding: 10px;

@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/NavBar.js";
-import ProductDetail from "../components/ProductDetail.js";
 // import "../customBootstrap/css/bootstrap.min.css";
 import ImageSwiper from "../components/Swiper.js";
 import {
@@ -11,6 +10,9 @@ import {
     Button,
     Image,
     ProgressBar,
+    InputGroup,
+    Form,
+    ButtonGroup,
 } from "react-bootstrap";
 import StarRating from "../components/StarRating.js";
 
@@ -21,12 +23,52 @@ import { useLocation } from "react-router-dom";
 import BreadCrumb from "../components/BreadCrumb.js";
 import { FaStar } from "react-icons/fa";
 import Review from "../components/Review.js";
+import OrderQuantity from "../components/OrderQuantity.js";
+import { rootUrl } from "../App.js";
+
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
     const location = useLocation();
     const currentPath = location.pathname;
 
     console.log(currentPath);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const root = `${rootUrl}/products/65ee78d04cfbe7e546c10544`;
+
+            try {
+                const response = await axios.get(root);
+
+                console.log("response", response);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        console.log("cookie", document.cookie);
+        // fetchData();
+    }, []);
+
+    const options1 = [
+        { value: "option1", label: "Option 1" },
+        { value: "option2", label: "Option 2" },
+        { value: "option3", label: "Option 3" },
+        { value: "option4", label: "Option 4" },
+        { value: "option5", label: "Option 5" },
+        { value: "option6", label: "Option 6" },
+        { value: "option7", label: "Option 7" },
+        { value: "option8", label: "Option 8" },
+        { value: "option9", label: "Option 9" },
+    ];
+
+    const options2 = [
+        { value: "option4", label: "Option 4" },
+        { value: "option5", label: "Option 5" },
+        { value: "option6", label: "Option 6" },
+    ];
 
     return (
         <div className="product-detail-page">
@@ -78,33 +120,16 @@ const ProductDetailPage = (props) => {
                                     </div>
                                 </Stack>
 
-                                <Stack
-                                    className="quantity-stack"
-                                    direction="horizontal"
-                                    gap={4}
-                                >
-                                    <ProductVariation />
-                                </Stack>
+                                <ProductVariation
+                                    id="component1"
+                                    options={options1}
+                                />
+                                <ProductVariation
+                                    id="component2"
+                                    options={options2}
+                                />
 
-                                <Stack
-                                    className="quantity-stack"
-                                    direction="horizontal"
-                                    gap={4}
-                                >
-                                    <div className="font">Quantity: </div>
-                                    <div className="quantity">
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            max="10"
-                                            step="1"
-                                            defaultValue="1"
-                                        />
-                                    </div>
-                                    <div className="poppins">
-                                        999 stocks available
-                                    </div>
-                                </Stack>
+                                <OrderQuantity maximum={999} />
 
                                 <Stack
                                     className="customer-buttons mx-auto"
@@ -135,14 +160,6 @@ const ProductDetailPage = (props) => {
                                     Medyo gamit na. 4 years na ata to ewan ko.
                                     Marami rin gumagamit, sabay sabay kasi kami
                                     hehe ULUL afasdf asdjflk;jasdlk;fj as;ldkfj
-                                    ajsdl;kfjasdlk;fjsd asjdfl;kasjdflkjasd
-                                    fjasdfjas dfjas dfjassdajf sdajfs
-                                    dajfdfsdfdlkfjsdafl;ksdjfkld;fjsdl;k asdf
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Sed do eiusmod tempor
                                 </div>
                             </Stack>
                         </Row>

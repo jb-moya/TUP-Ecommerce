@@ -12081,7 +12081,6 @@ textarea.form-control-lg {
 #overriding-bootstrap-css .btn-outline-secondary {
   color: var(--blue3);
   border: 1px solid var(--blue3);
-  border-radius: 5px;
 }
 #overriding-bootstrap-css .btn-check + .btn:hover {
   background-color: var(--blue4);
@@ -12099,6 +12098,10 @@ textarea.form-control-lg {
 #overriding-bootstrap-css .vr {
   border-left: 2px solid black;
   margin: 0 30px 0 10px;
+}
+
+.cart-container .cart-item {
+  background-color: pink;
 }
 
 .home-about-contact .navBarItems {
@@ -12227,6 +12230,15 @@ textarea.form-control-lg {
   }
 }
 
+.review-container-stack .filter-buttons {
+  margin-right: 1rem;
+}
+.review-container-stack .filter-rating-dropdown .dropdown-menu {
+  --bs-dropdown-link-active-bg: var(--blue2);
+}
+.review-container-stack .col {
+  padding: 4px 0;
+}
 .review-container-stack .star-rating-container {
   padding: 0;
 }
@@ -12279,9 +12291,20 @@ textarea.form-control-lg {
 }
 .review-container-stack .user-review {
   padding: 5px 0;
+  padding-bottom: 1rem;
 }
 .review-container-stack .review-container .container {
   max-width: 500px;
+}
+
+.login {
+  position: relative;
+  font-size: var(--body2-size);
+  font-family: var(--body2);
+  color: var(--blue);
+  text-align: center;
+  text-decoration: none;
+  padding: 8px 17px 9px 17px;
 }
 
 .productCard {
@@ -12323,12 +12346,9 @@ textarea.form-control-lg {
   box-shadow: 0.2px 0.2px 0.2px -13px rgba(0, 0, 0, 0.099), 0.4px 0.4px 0.4px -13px rgba(0, 0, 0, 0.144), 0.6px 0.6px 0.7px -13px rgba(0, 0, 0, 0.178), 0.9px 0.9px 1px -13px rgba(0, 0, 0, 0.206), 1.4px 1.4px 1.5px -13px rgba(0, 0, 0, 0.234), 2px 2px 2.2px -13px rgba(0, 0, 0, 0.262), 3px 3px 3.3px -13px rgba(0, 0, 0, 0.296), 4.8px 4.8px 5.3px -13px rgba(0, 0, 0, 0.341), 9px 9px 10px -13px rgba(0, 0, 0, 0.44);
 }
 
-.btn-primary {
-  border: none;
-}
-
-.variation-radio-buttons .btn-outline-primary {
-  margin: 0 6px;
+.variation-radio-buttons.btn-group .btn.btn-outline-primary {
+  margin: 6px;
+  border-radius: 6px;
 }
 
 .circle {
@@ -12412,7 +12432,32 @@ textarea.form-control-lg {
   color: var(--blue);
   padding: 10px;
 }
-.product-detail .details .quantity-stack input {
+.product-detail .details .order-quantity-stack .variation-class {
+  font-weight: 600;
+  padding: 0 10px 0 0;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  text-align: left;
+}
+.product-detail .details .order-quantity-stack .quantity-input {
+  font-size: 2rem;
+  border-radius: 0;
+  border-color: var(--blue3);
+}
+.product-detail .details .order-quantity-stack .plus-button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.product-detail .details .order-quantity-stack .minus-button {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.product-detail .details .order-quantity-stack input {
   width: 100px;
   text-align: center;
   border: 1px solid #127190;

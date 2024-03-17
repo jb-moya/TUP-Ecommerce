@@ -1,37 +1,36 @@
 import React, { useState } from "react";
-import { Button, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { ButtonGroup, ToggleButton } from "react-bootstrap";
 
-const ProductVariation = () => {
-    const [checked, setChecked] = useState(false);
-    const [radioValue, setRadioValue] = useState("1");
+import { Stack } from "react-bootstrap";
 
-    const radios = [
-        { name: "Active", value: "1" },
-        { name: "Radio", value: "2" },
-        { name: "Radio", value: "3" },
-    ];
+const ToggleButtonsComponent = ({ id, options }) => {
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const handleOptionChange = (value) => {
+        setSelectedOption(value);
+    };
 
     return (
-        <>
-            <div className="w-600 s-16">Color: </div>
-            <ButtonGroup className={`variation-radio-buttons`}>
-                {radios.map((radio, idx) => (
+        <Stack className="order-quantity-stack" direction="horizontal">
+            <div className="variation-class">fasdfsadjkl</div>
+            <ButtonGroup className={`variation-radio-buttons ${id}`} toggle="true">
+                {options.map((option, idx) => (
                     <ToggleButton
                         key={idx}
-                        id={`radio-${idx}`}
+                        id={`radio-${id}-${idx}`} // Use a unique ID for each radio button
                         type="radio"
-                        variant={"outline-primary"}
-                        name="radio"
-                        value={radio.value}
-                        checked={radioValue === radio.value}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        variant="outline-primary"
+                        name={`options-${id}`} // Use a unique name for the radio group
+                        value={option.value}
+                        checked={selectedOption === option.value}
+                        onChange={() => handleOptionChange(option.value)}
                     >
-                        {radio.name}
+                        {option.label}
                     </ToggleButton>
                 ))}
             </ButtonGroup>
-        </>
+        </Stack>
     );
 };
 
-export default ProductVariation;
+export default ToggleButtonsComponent;

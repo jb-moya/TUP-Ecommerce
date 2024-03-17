@@ -57,10 +57,10 @@ const login = asyncWrapper(async (req, res) => {
     attachCookiesToResponse({ res, user: tokenUser });
     
     console.log("tokenUser: ", tokenUser);
-    // const token = user.createJWT();
+    const token = user.createJWT({payload: tokenUser});
 
     // res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
-    res.status(StatusCodes.OK).json({ user: tokenUser });
+    res.status(StatusCodes.OK).json({ user: tokenUser, token });
 });
 
 const logout = asyncWrapper(async (req, res) => {

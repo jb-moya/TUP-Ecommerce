@@ -7,6 +7,8 @@ import { StatusCodes } from "http-status-codes";
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
     console.log("req.user", req.user);
 
+    
+
     // res.status(StatusCodes.OK).json({ msg: "getSingleProduct works" });
     // return;
 

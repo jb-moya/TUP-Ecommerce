@@ -30,4 +30,4 @@ const attachCookiesToResponse = ({ res, user }) => {
     });
 };
 
-export { attachCookiesToResponse, createTokenUser };
+export { createJWT, attachCookiesToResponse, createTokenUser };
