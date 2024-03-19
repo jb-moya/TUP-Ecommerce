@@ -61,12 +61,19 @@ const NavBar = () => {
                         </nav>
 
                         <div className="IconHolder">
-                            <img
-                                className="carticon"
-                                loading="lazy"
-                                alt=""
-                                src={CartButton}
+                            <LinkRoute
+                                to="/cart"
+                                // text="ff"
+                                image={
+                                    <img
+                                        className="carticon"
+                                        loading="lazy"
+                                        alt=""
+                                        src={CartButton}
+                                    />
+                                }
                             />
+
                             <img
                                 className="searchicon"
                                 loading="lazy"

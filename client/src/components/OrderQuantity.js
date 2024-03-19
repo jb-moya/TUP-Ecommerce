@@ -2,8 +2,14 @@ import React, { useState } from "react";
 
 import { Stack, Button, Form } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 
 const OrderQuantity = ({ id = null, maximum }) => {
+    if (id === null) {
+        // throw new Error("id is required");
+    }
+
+    const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(1);
 
     const handleMinus = () => {
@@ -40,7 +46,7 @@ const OrderQuantity = ({ id = null, maximum }) => {
                             setQuantity(e.target.value);
                         }
                     }}
-                    // aria-describedby="basic-addon1"
+                    aria-describedby="basic-addon1"
                 />
 
                 <Button

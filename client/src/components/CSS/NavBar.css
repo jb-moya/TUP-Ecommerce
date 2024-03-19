@@ -60,7 +60,8 @@
     font-size: var(--body2-size);
     color: var(--color-white);
     font-family: var(--body2);
-} */
+}
+*/
 /* .carticon,
 .searchicon {
     height: 40px;
@@ -110,6 +111,10 @@
     gap: var(--gap-xl);
 } */
 /* .div, */
+.narBarSection {
+    z-index: 1049;
+}
+
 .navBarSection,
 .containerNavBar,
 .navBarHeader {
@@ -122,7 +127,7 @@
     align-items: center;
     justify-content: center;
     gap: 0 28px;
-    z-index: 999999;
+    /* z-index: 999999; */
 }
 .navBarSection,
 .navBarHeader {
@@ -144,14 +149,14 @@
     font-size: var(--font-size-7xl);
     color: var(--color-white);
     font-family: var(--body2);
-    z-index: 999999;
+    /* z-index: 999999; */
 }
 .navBarSection {
     align-self: stretch;
     align-items: flex-start;
     justify-content: flex-start;
     padding: 0 0 var(--padding-nav);
-    z-index: 999999;
+    /* z-index: 999999; */
 }
 /* @media screen and (max-width: 1100px) {
     .home-about-contact {

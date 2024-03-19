@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axious from "axios";
 // example data
 const cartItems = [
     {
@@ -39,6 +39,13 @@ const initialState = {
     isLoading: true,
 };
 
+
+export const getAllItems = createAsyncThunk("cart/getAllItems", async () => {
+    const response = await axious.get("localhost:5000/api/v1/temp");
+    console.log("response", response);
+    // return response.data;
+});
+
 const cartSlice = createSlice({
     name: "cart",
     initialState,
@@ -46,17 +53,12 @@ const cartSlice = createSlice({
         addToCart: (state, action) => {
             state.cart.push(action.payload);
         },
-        removeFromCart: (state, action) => {
-            state.cart = state.cart.filter(
-                (item) => item.id !== action.payload.id
-            );
-        },
         clearCart: (state) => {
             state.cartItems = [];
             console.log("clear cart");
         },
         removeItem: (state, action) => {
-            const id = action.payload;
+            const { id } = action.payload;
             state.cartItems = state.cartItems.filter((item) => item.id !== id);
         },
         increaseQuantity: (state, { payload }) => {
@@ -77,9 +79,39 @@ const cartSlice = createSlice({
                 cartItem.quantity--;
             }
         },
+        calculateTotals: (state) => {
+            let { total, amount } = state.cartItems.reduce(
+                (cartTotal, cartItem) => {
+                    const { price, quantity } = cartItem;
+                    const itemTotal = price * quantity;
+
+                    cartTotal.total += itemTotal;
+                    cartTotal.amount += quantity;
+
+                    return cartTotal;
+                },
+                {
+                    total: 0,
+                    amount: 0,
+                }
+            );
+
+            total = parseFloat(total.toFixed(2));
+
+            state.total = total;
+            state.amount = amount;
+        },
     },
 });
 
 console.log(cartSlice);
 export default cartSlice.reducer;
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+
+export const {
+    addToCart,
+    clearCart,
+    removeItem,
+    increaseQuantity,
+    decreaseQuantity,
+    calculateTotals,
+} = cartSlice.actions;

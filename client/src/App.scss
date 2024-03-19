@@ -1,6 +1,8 @@
 $enable-important-utilities: false; //this disables !important
-@import "../node_modules/bootstrap/scss/bootstrap.scss";
+// @import "../node_modules/bootstrap/scss/bootstrap.scss";
 // @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap");
+
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 * {
     box-sizing: border-box;
@@ -128,6 +130,10 @@ $enable-important-utilities: false; //this disables !important
 // -- OVERRIDING BOOTSTRAP VARIABLES --
 
 #overriding-bootstrap-css {
+    .modal {
+        overflow: hidden;
+    }
+
     .btn-primary {
         background-color: var(--blue2);
         border: none;
