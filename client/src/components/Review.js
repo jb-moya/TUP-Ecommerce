@@ -33,8 +33,8 @@ const Review = () => {
 
     return (
         <>
-            <Stack className="review-container-stack">
-                <Row xs="auto">
+            <div className="review-container-stack">
+                {/* <Row xs="auto">
                     <Col md={{ offset: 2 }}>
                         <Dropdown className="filter-buttons filter-rating-dropdown">
                             <Dropdown.Toggle
@@ -77,11 +77,11 @@ const Review = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
-                </Row>
+                </Row> */}
                 <UserReview />
                 <UserReview />
                 <UserReview />
-            </Stack>
+            </div>
         </>
     );
 };
