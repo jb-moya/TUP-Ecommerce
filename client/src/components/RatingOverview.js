@@ -4,21 +4,19 @@ import StarRating from "./StarRating";
 
 const RatingOverview = () => {
     return (
-        <div className="">
-            <div className="">
-                <div className="flex ">
-                    <div className="text-7xl font-extrabold text-[#211c6a] pr-1">
-                        5
-                    </div>
-                    <div className="text-4xl m-auto flex flex-col">
-                        <StarRating staticColor disableAction />
-                        <div className="text-base">based on 254 reviews.</div>
-                    </div>
+        <div className="flex">
+            <div className="flex pr-8 items-center">
+                <div className="text-7xl font-extrabold text-[#211c6a] pr-1">
+                    5
+                </div>
+                <div className="text-4xl flex flex-col">
+                    <StarRating staticColor disableAction />
+                    <div className="text-base">based on 254 reviews.</div>
                 </div>
             </div>
-            <div className="vr" />
-            {/* <div className="rating-overview">
-                <div className="row">
+
+            <div className="">
+                <div className="table clear-both">
                     <div className="side">
                         <div className="legend">
                             <div className="star-number">5</div>
@@ -90,12 +88,13 @@ const RatingOverview = () => {
                         <div>150</div>
                     </div>
                 </div>
-            </div> */}
-            {/* <div className="vr-margin" /> */}
-            {/* <button variant="primary" className="write-review">
-                Write a Review
-            </button> */}
-            {/* <div className="ms-auto"></div> */}
+            </div>
+
+            <div className="pl-8 flex justify-center items-center">
+                <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">
+                    Write a Review
+                </button>
+            </div>
         </div>
     );
 };

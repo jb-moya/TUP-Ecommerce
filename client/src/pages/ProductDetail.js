@@ -74,7 +74,7 @@ const ProductDetailPage = (props) => {
 
     return (
         <div className="px-28">
-            {/* <NavBar /> */}
+            <NavBar />
 
             <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-md shadow-md">
                 <div className="w-5/12 pl-8">
@@ -166,6 +166,19 @@ const ProductDetailPage = (props) => {
                     <div>
                         <RatingOverview />
                     </div>
+                </div>
+                <div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Nulla debitis, voluptates voluptate illo distinctio sint.
+                    Officiis deleniti temporibus quia vel, libero exercitationem
+                    sequi! Mollitia molestias ipsa quis tenetur quae possimus?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Hic odio accusamus qui corporis rerum alias provident
+                    commodi totam ratione inventore, dolorem id ea porro fugit!
+                    Optio vero iste quos adipisci quia repellendus sint et
+                    sapiente earum quo rem recusandae, blanditiis laudantium
+                    nulla ut dignissimos beatae officia facere sunt laboriosam?
+                    Maiores.
                 </div>
             </div>
         </div>
