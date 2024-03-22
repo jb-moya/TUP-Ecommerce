@@ -1,125 +1,61 @@
-// import "./CSS/NavBar.css";
-import React from "react";
+
+import React from 'react'
 import LinkRoute from "./LinkRoute.js";
+import TMCBlueBGLogo from "../Assets/LogoBlueBg.png"
+import { useNavigate } from 'react-router-dom';
 
-//Images and Icons
+//Icons
 
-import LogoBlueBg from "../Assets/LogoBlueBg.png";
-import CartButton from "../Assets/CartButton.png";
-import SearchButton from "../Assets/SearchButton.png";
-import { useSelector } from "react-redux";
+import { FaShoppingCart, FaSearch} from "react-icons/fa"
 
 const NavBar = () => {
-    const amount = useSelector((store) => store.cart.amount);
 
-    console.log(useSelector((store) => store.cart.amount));
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+      // Navigate to the desired route
+      navigate('/login');
+    };
 
     return (
-        <section className="navBarSection">
-            <header className="navBarHeader">
-                <div className="containerNavBar">
-                    <div className="logoIcon">
-                        <img
-                            className="logo-icon"
-                            loading="lazy"
-                            alt=""
-                            src={LogoBlueBg}
-                        />
-                        <h3 className="titleText">TUP Merch Co.</h3>
-                    </div>
+      // content wrapper
+      <div className="fixed top-0 left-0 w-full bg-[#211C6A]">
+          <div className="flex overflow-hidden max-w-[1240px] px-4 h-24 text-white justify-between items-center font-bold mx-auto text-nowrap">
+              <div className='flex items-center select-none'>
+                <img 
+                className="w-20 h-20"
+                src={TMCBlueBGLogo}
+                alt="Logo Here"
+                loading="lazy"
+                /> 
+                <h1 className="text-xl">TUP Merch Co.</h1>
+              </div>
 
-                    <div className="div">
-                        <nav className="home-about-contact">
-                            <b>
-                                <LinkRoute
-                                    to="/"
-                                    text="Home"
-                                    className="navBarItems"
-                                />
-                            </b>
-                            <b>
-                                <LinkRoute
-                                    to="/"
-                                    text="About"
-                                    className="navBarItems"
-                                />
-                            </b>
-                            <b>
-                                <LinkRoute
-                                    to="/"
-                                    text="Contact"
-                                    className="navBarItems"
-                                />
-                            </b>
-                            <b>
-                                <LinkRoute
-                                    to="/"
-                                    text="Shop Now!"
-                                    className="navBarItems"
-                                />
-                            </b>
-                        </nav>
+              <ul className='hidden md:flex text-based'>
+                <li className="p-4"><LinkRoute to="/" text="Home"/></li>
+                <li className="p-4" ><LinkRoute to="/" text="About" /></li>
+                <li className="p-4"><LinkRoute to="/" text="Contact" /></li>
+                <li className="p-4"><LinkRoute to="/login" text="Shop Now!" /></li>
+              </ul>
 
-                        <div className="IconHolder">
-                            <LinkRoute
-                                to="/cart"
-                                // text="ff"
-                                image={
-                                    <img
-                                        className="carticon"
-                                        loading="lazy"
-                                        alt=""
-                                        src={CartButton}
-                                    />
-                                }
-                            />
+              <div className='flex p-2 items-center justify-between'> 
+                
+                      <div className='pr-4'> 
+                      <FaShoppingCart size={28}/>
+                      </div>
+                      <div className='pr-6'>
+                        <FaSearch  size={28}/>
+                      </div>
+                 
+                  <button onClick={handleClick} className='bg-white hover:bg-[#EFEFEF] text-[#211C6A] font-bold py-3 px-5 rounded-2xl text-sm'  >
+                     Login
+                  </button>
 
-                            <img
-                                className="searchicon"
-                                loading="lazy"
-                                alt=""
-                                src={SearchButton}
-                            />
-                            <LinkRoute
-                                to="/login"
-                                text={<b className="login">Login</b>}
-                                className="loginBtn"
-                            ></LinkRoute>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        </section>
+              </div>
+            
+          </div>
+      </div>
 
-        /* <div className={'navBar'}>
-
-<div className='LogoContainer'>  
-    <img src={LogoBlueBg} alt="Logo" />
-    <div className='title'>TUP Merch Co.</div>
-</div>
-
-<div className='container2'>
-    <LinkRoute to="/" text="Home" />
-    <LinkRoute to="" text="About" />
-    <LinkRoute to="" text="Shop Now!" />
-</div>
-
-<div className='container3'>
-
-<LinkRoute to="/signup" text="Sign Up" />
-    <input
-    type="text"
-    id="searchInput"
-    placeholder="Enter your search query"
-    ></input>
-    <LinkRoute to="/login" text="Log In" />
-</div>
-
-
-
-
-
-</div> */
     );
 };
 

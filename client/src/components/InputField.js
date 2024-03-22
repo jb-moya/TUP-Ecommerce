@@ -1,9 +1,8 @@
-const InputField = ({ type, name, value, onChange, placeholder, validator, setError, title}) => {
+const InputField = ({ type, name, value, onChange, placeholder, validator, setError }) => {
     return (
-        <div className="input-frames">
-            <b className="titles">{title}</b> 
+        <div className="pb-4">
             <input
-                className="input-field"
+                className="rounded-lg bg-[#EFEFEF] p-[16px] border border-gray-400 w-[530px]"
                 type={type}
                 value={value}
                 onChange={onChange}

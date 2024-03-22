@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-const LinkRoute = ({ to, image = null, text = '', className}) => {
+const LinkRoute = ({ to, image = null, text = '' }) => {
     return (
-        <Link to={to} className={className}>
+        <Link to={to} className="hover:text-[#5DBAFF]">
             {image}
             {text}
         </Link>
@@ -10,5 +10,3 @@ const LinkRoute = ({ to, image = null, text = '', className}) => {
 };
 
 export default LinkRoute;
-
-// className="link-route"

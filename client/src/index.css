@@ -3,11 +3,14 @@
 @tailwind utilities;
 
 body {
-    /* @apply font-sans; */
-    /* @apply p-4; */
-    background-color: #eeeeee;
+  background-color: #EFEFEF;
+  font-family: var(--body);
 }
-
+:root {
+    /* Font Style */
+    --body: Poppins;
+  }
+  
 .mySwiper {
     /* padding: 10px 0; */
     width: 90%;

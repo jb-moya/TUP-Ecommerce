@@ -1,16 +1,15 @@
 import NavBar from "../components/NavBar";
-import InfoFrame from "../components/SignUpComponents/InfoFrame";
+import SignupForm  from "../components/SignupForm";
 import Footer from "../components/Footer";
-// import "./LoginSignUp.css";
 
 const SignUp = () => {
-    return (
-        <div className="LoginSignUp">
-            <NavBar />
-            <InfoFrame />
-            <Footer />
-        </div>
-    );
+  return (
+    <div>
+    <NavBar />
+    <SignupForm />
+    <Footer />
+    </div>
+  );
 };
 
 export default SignUp;

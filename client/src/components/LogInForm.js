@@ -1,0 +1,71 @@
+import React, {useState} from 'react'
+import TMCLogo from '../Assets/Logo.png'
+import InputField from './InputField';
+import { FaEye, FaEyeSlash} from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+
+const LogInForm = () => {
+
+  const [showPassword, setPassword] = useState(false)
+
+  const handleShowPassword = () =>{
+    setPassword(!showPassword)
+  }
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Navigate to the desired route
+    navigate('/signup');
+  };
+
+  return (
+    
+    <div className='text-[#211C6A] items-center mt-[96px]'>
+
+     <form className='flex flex-col max-w-[800px] w-full h-full mx-auto text-center items-center select-none'>
+        <img 
+            className='w-56 h-56'
+            src={TMCLogo}
+            alt=''
+            loading='lazy'/>
+
+        <h2 className='w-96 text-2xl mt-[-26px] font-bold p-2'>Login</h2>
+        <h4 className='w-[420px]'> Hey, welcome back! Ready to score some awesome deals? Let's dive in
+                and find the perfect ones for you!</h4>
+
+        <div className='flex-start flex-col mt-[28px] w-[560px] text-left px-4 items-center'>
+           <h3 className='font-bold pb-1 px-2'>Email Address</h3>
+           <InputField 
+                type="Email"
+                placeholder="Enter your email address"/>
+            <div className='flex items-center w-full justify-between px-2'>
+                <h3 className='font-bold pb-1'>Password</h3>
+                <span onClick={handleShowPassword}>
+                    {!showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                    </span>
+            </div>
+            <InputField 
+                    type={!showPassword ? "Password" : "Email" }
+                    placeholder="Enter your password"/>
+        </div>
+
+        <div className='flex flex-col mt-4 items-center w-[560px] px-2'>
+            <button className='rounded-2xl text-white font-semibold mb-3 bg-[#211C6A] p-[14px] w-[530px] hover:bg-[#3C35AB]'>
+                LOGIN
+            </button>
+
+            <button onClick={handleClick} className='rounded-2xl border border-gray-400 text-[#211C6A]  hover:bg-gray-200 font-semibold mb-3 bg-[#EFEFEF] p-[14px] w-[530px]'>
+                CREATE AN ACCOUNT
+            </button>
+        </div>
+        
+
+        </form>
+
+      
+     </div>
+  )
+}
+
+export default LogInForm
