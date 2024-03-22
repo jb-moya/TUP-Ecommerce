@@ -28,7 +28,7 @@ const StarRating = ({
     };
 
     return (
-        <div className="star-rating">
+        <div className="flex leading-none">
             {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
 
@@ -37,6 +37,7 @@ const StarRating = ({
                         <input
                             type="radio"
                             name="rating"
+                            className="hidden"
                             value={ratingValue}
                             onClick={() => handleStarClick(ratingValue)}
                             disabled={disableAction}

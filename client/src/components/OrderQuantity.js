@@ -24,41 +24,52 @@ const OrderQuantity = ({ id = null, maximum }) => {
         setQuantity(quantity + 1);
     };
 
+    const handleQuantityChange = (e) => {
+        const value = e.target.value;
+        const parsedValue = parseInt(value);
+
+        if (parsedValue < 1) {
+            setQuantity(1);
+        } else if (parsedValue > maximum) {
+            setQuantity(maximum);
+        } else {
+            setQuantity(parsedValue);
+        }
+    };
+
     return (
-        <Stack className="order-quantity-stack" direction="horizontal" gap={4}>
-            <div className="font">Quantity: </div>
-            <Stack direction="horizontal">
-                <Button
-                    className="minus-button"
-                    variant="outline-secondary"
+        <div className="w-full flex mt-2">
+            <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
+                Quantity:{" "}
+            </div>
+            <div className="flex pr-2">
+                <button
+                    className="border border-gray-400 p-2"
                     onClick={handleMinus}
                 >
-                    <FaMinus />
-                </Button>
+                    <FaMinus size={10} />
+                </button>
 
-                <Form.Control
+                <input
                     value={quantity}
-                    className="quantity-input"
+                    class="w-12 h-full text-center border border-l-0 border-r-0 border-gray-400"
                     placeholder="0"
                     aria-label="0"
-                    onChange={(e) => {
-                        if (e.target.value <= maximum) {
-                            setQuantity(e.target.value);
-                        }
-                    }}
+                    onChange={handleQuantityChange}
                     aria-describedby="basic-addon1"
                 />
 
-                <Button
-                    className="plus-button"
-                    variant="outline-secondary"
+                <button
+                    className="border border-gray-400 p-2"
                     onClick={handlePlus}
                 >
-                    <FaPlus />
-                </Button>
-            </Stack>
-            <div className="poppins">{maximum} stocks available</div>
-        </Stack>
+                    <FaPlus size={10} />
+                </button>
+            </div>
+            <div className="leading-none flex items-center">
+                <div className="">{maximum} stock available</div>
+            </div>
+        </div>
     );
 };
 

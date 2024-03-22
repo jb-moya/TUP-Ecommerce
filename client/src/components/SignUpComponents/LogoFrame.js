@@ -1,8 +1,3 @@
-import "../CSS/LogoFrame.css"
-
-
-// Images and Icons
-
 // import BigLogo from '../../Assets/LogoWhiteBg.png'
 import BigLogo from '../../Assets/LogoWhiteBg.png'
 

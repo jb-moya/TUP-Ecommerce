@@ -1,92 +1,24 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap");
-
-@font-face {
-    font-family: "Cubao";
-    src: url("./Assets/Cubao Font/Cubao_Free_Regular.otf");
-    font-weight: normal;
-    font-style: normal;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
-    margin: 0;
-    line-height: normal;
+    /* @apply font-sans; */
+    /* @apply p-4; */
+    background-color: #eeeeee;
 }
-:root {
-    /* fonts */
-    --body2: Poppins;
-    --cubaoFont: Cubao;
 
-    --footerfontlink-size: 16px;
-    --font-size-21xl: 40px;
-    --font-size-13xl: 32px;
+.mySwiper {
+    /* padding: 10px 0; */
+    width: 90%;
 
-    /* font sizes */
-    --body2-size: 18px;
-    --font-size-6xl: 25px;
-    --font-size-xl: 20px;
-    --font-size-7xl: 26px;
-    --body-size: 24px;
-    --title-size: 64px;
+    .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.5;
+    }
 
-    /* Colors */
-    --color-white: #fff;
-    --blue: #211c6a;
-    --blue3: #a6bec2;
-    --blue2: #59b4c3;
-    --blue4: #5e9897;
-    --color-gray-100: #efefef;
-    --color-gray-200: rgba(0, 0, 0, 0.53);
-    --color-darkslateblue: #544f9e;
-    --color-darkslategray: rgba(51, 51, 51, 0.53);
-    --color-gainsboro: #e6e6e6;
-    --purple: #9180e5;
-
-    /* Gaps */
-    --gap-30xl: 49px;
-    --gap-5xl: 24px;
-    --gap-2xl: 21px;
-    --gap-8xs: 5px;
-    --gap-6xl: 25px;
-    --gap-9xl: 28px;
-    --gap-0: 0px;
-    --gap-xl: 20px;
-
-    --gap-5xs: 8px;
-    --gap-3xs: 10px;
-    --gap-127xl: 146px;
-    --gap-lgi: 19px;
-    --gap-71xl: 90px;
-    --gap-26xl: 45px;
-    --gap-mini: 15px;
-    --gap-25xl: 44px;
-    --gap-3xl: 22px;
-    --gap-9xs: 4px;
-    --gap-37xl: 56px;
-    --gap-smi: 13px;
-
-    /* Paddings */
-    --padding-xl: 20px;
-    --padding-xs: 12px;
-    --padding-nav: 100px;
-    --padding-8xl: 27px;
-    --padding-18xl: 37px;
-    --padding-4xl: 23px;
-    --padding-15xl: 34px;
-    --padding-3xs: 10px;
-    --padding-smi: 13px;
-    --padding-11xl: 30px;
-
-    --padding-35xl: 54px;
-    --padding-sm: 14px;
-    --padding-8xs: 5px;
-    --padding-12xl: 31px;
-    --padding-12xl-5: 31.5px;
-    --padding-44xl: 63px;
-    --padding-44xl-5: 63.5px;
-    --padding-14xl: 33px;
-    --padding-12xs-5: 0.5px;
-
-    /* Border radiuses */
-    --br-3xs: 10px;
-    --br-mini: 15px;
+    .swiper-slide-thumb-active {
+        opacity: 1;
+    }
 }

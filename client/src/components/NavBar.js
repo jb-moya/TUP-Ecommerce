@@ -1,4 +1,4 @@
-import "./CSS/NavBar.css";
+// import "./CSS/NavBar.css";
 import React from "react";
 import LinkRoute from "./LinkRoute.js";
 

@@ -1,6 +1,6 @@
-import "./App.css";
+// import "./App.css";
 import React, { useState } from "react";
-import "./customBootstrap/css/bootstrap.min.css";
+// import "./customBootstrap/css/bootstrap.min.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUp.js";
@@ -23,7 +23,7 @@ function App() {
     const handleShow = () => setShow(true);
 
     return (
-        <div className="app">
+        <div className="box-border">
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
@@ -34,7 +34,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
-            <Button variant="primary">Primary</Button>{" "}
+            {/* <Button variant="primary">Primary</Button>{" "}
             <Button variant="secondary">Secondary</Button>{" "}
             <Button variant="success">Success</Button>{" "}
             <Button variant="warning">Warning</Button>{" "}
@@ -42,7 +42,7 @@ function App() {
             <Button variant="info">Info</Button>{" "}
             <Button variant="light">Light</Button>{" "}
             <Button variant="dark">Dark</Button>
-            <Button variant="link">Link</Button>
+            <Button variant="link">Link</Button> */}
         </div>
     );
 }

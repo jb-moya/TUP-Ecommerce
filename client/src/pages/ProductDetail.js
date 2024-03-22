@@ -62,6 +62,8 @@ const ProductDetailPage = (props) => {
         { value: "option7", label: "Option 7" },
         { value: "option8", label: "Option 8" },
         { value: "option9", label: "Option 9" },
+        { value: "option10", label: "Option 10" },
+        { value: "option11", label: "Option 11" },
     ];
 
     const options2 = [
@@ -71,10 +73,104 @@ const ProductDetailPage = (props) => {
     ];
 
     return (
-        <div className="product-detail-page">
-            <NavBar />
+        <div className="px-28">
+            {/* <NavBar /> */}
 
-            <Container className="product-detail">
+            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-md shadow-md">
+                <div className="w-5/12 pl-8">
+                    <ImageSwiper />
+                </div>
+
+                <div className="w-7/12">
+                    <div className="w-full flex h-min">
+                        <div className="w-7/12">
+                            <div className="text-3xl px-8 font-bold text-[#211c6a]">
+                                MIDO
+                            </div>
+                            <div className="px-8 text-base font-light leading-none">
+                                Pero MIDO talaga 'to ni Aleng Mare, inarbor lang
+                            </div>
+                        </div>
+                        <div className="w-5/12 text-right">
+                            <div className="text-2xl px-8 font-semibold text-red-700">
+                                ₱599,999.99
+                            </div>
+                            <div className="flex align-baseline justify-end">
+                                <div className="leading-none underline pr-1 underline-offset-4 text-[#211c6a]">
+                                    4.9
+                                </div>
+                                <div className="pr-8">
+                                    <StarRating
+                                        defaultRating={3}
+                                        disableAction={true}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="w-full flex mt-2">
+                        <div className="pl-8 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
+                            <span className="text-lg leading-none font-light pr-1">
+                                1.2K+
+                            </span>{" "}
+                            <span className="font-extralight">Rating</span>
+                        </div>
+                        <div className="pl-2 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
+                            <span className="text-lg leading-none font-light pr-1">
+                                5.5K+
+                            </span>{" "}
+                            <span className="font-extralight">Sold</span>
+                        </div>
+                    </div>
+
+                    <div className="w-full mt-10">
+                        <ProductVariation
+                            id={"component1"}
+                            options={options1}
+                            variationClass={"Color"}
+                        />
+                        <ProductVariation
+                            id={"component2"}
+                            options={options2}
+                            variationClass={"Model and Size"}
+                        />
+                    </div>
+                    <div className="mt-8">
+                        <OrderQuantity maximum={999} />
+                    </div>
+                    <div className="flex px-8 py-7 justify-center items-center">
+                        <button className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500">
+                            Add to Cart
+                        </button>
+                        <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">
+                            Buy Now
+                        </button>
+                    </div>
+
+                    <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
+
+                    <div className="w-full">
+                        <div className="px-8 font-semibold text-sm leading-relaxed text-[#211c6a]">
+                            Product Details
+                        </div>
+                        <div className="px-8">
+                            Medyo gamit na. 4 years na ata to ewan ko. Marami
+                            rin gumagamit, sabay sabay kasi kami hehe ULUL
+                            afasdf asdjflk;jasdlk;fj as;ldkfj
+                        </div>
+                    </div>
+                </div>
+
+                <div className="w-full flex justify-around">
+                    <div>
+                        <RatingOverview />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        /* <Container className="product-detail">
                 <BreadCrumb currentPath={currentPath} />
                 <Row className="first-container main-container">
                     <Col className="image-container" xs={5}>
@@ -166,7 +262,6 @@ const ProductDetailPage = (props) => {
                     </Col>
                 </Row>
 
-                {/* <img src={image} alt="" /> */}
                 <Row className="main-container seller-details-container">
                     <Stack className="" direction="horizontal" gap={3}>
                         <div className="circle">
@@ -206,8 +301,7 @@ const ProductDetailPage = (props) => {
 
                     <Review />
                 </Row>
-            </Container>
-        </div>
+            </Container> */
     );
 };
 

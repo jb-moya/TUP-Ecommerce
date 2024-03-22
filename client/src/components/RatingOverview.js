@@ -1,25 +1,23 @@
 import React from "react";
-import { Stack } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
-import { ProgressBar, Button } from "react-bootstrap";
 import StarRating from "./StarRating";
 
 const RatingOverview = () => {
     return (
-        <Stack className="rating-overview-container" direction="horizontal">
-            <div className="star-rating-container ms-auto">
-                <div className="star-rating">
-                    <div className="overall-rating">5</div>
-                    <div>
+        <div className="">
+            <div className="">
+                <div className="flex ">
+                    <div className="text-7xl font-extrabold text-[#211c6a] pr-1">
+                        5
+                    </div>
+                    <div className="text-4xl m-auto flex flex-col">
                         <StarRating staticColor disableAction />
-                        <div className="based-on-reviews">
-                            based on 254 reviews.
-                        </div>
+                        <div className="text-base">based on 254 reviews.</div>
                     </div>
                 </div>
             </div>
             <div className="vr" />
-            <div className="rating-overview">
+            {/* <div className="rating-overview">
                 <div className="row">
                     <div className="side">
                         <div className="legend">
@@ -92,13 +90,13 @@ const RatingOverview = () => {
                         <div>150</div>
                     </div>
                 </div>
-            </div>
-            <div className="vr-margin" />
-            <Button variant="primary" className="write-review">
+            </div> */}
+            {/* <div className="vr-margin" /> */}
+            {/* <button variant="primary" className="write-review">
                 Write a Review
-            </Button>
-            <div className="ms-auto"></div>
-        </Stack>
+            </button> */}
+            {/* <div className="ms-auto"></div> */}
+        </div>
     );
 };
 
