@@ -7,19 +7,26 @@ import { checkPermissions } from "../utils/index.js";
 import asyncWrapper from "../middleware/async.js";
 
 const createOrder = asyncWrapper(async (req, res, next) => {
-    let order = await Order.findOne({ user: req.user.userId });
 
-    if (!order) {
-        order = new Order({
+    let order = new Order({
             user: req.user.userId,
             orders: [],
+            total: 0,
+            status: 'N/A',
+            shippingMethod: 'N/A',
+            shippingAddress: {
+                street: '',
+                barangay: '',
+                city: '',
+                province: '',
+                zip: '',
+                country: '',
+            }
         });
 
-        await order.save();
-        res.status(200).json({ order });
-    } else {
-        res.status(400).json({ message: "An order already exists for this user." });
-    }
+    await order.save();
+    res.status(200).json({ order });
+
 });
 
 const getSingleOrder = asyncWrapper(async (req, res, next) => {
@@ -50,9 +57,17 @@ const updateOrder = asyncWrapper(async (req, res, next) => {
     let cart = await Cart.findOne({ user: req.user.userId });
 
     if (cart) {
-        let order = await Order.findOne({ user: req.user.userId });
+
+        const { id: orderID } = req.params;
+        let order = await Order.findById(orderID);
+
+        const { shippingMethod, shippingAddress } = req.body;
 
         if (order) {
+
+            order.shippingMethod = shippingMethod;
+            order.shippingAddress = shippingAddress;
+            order.status = 'PENDING';
             
             for (const item of cart.orderItems) {
 
@@ -98,13 +113,14 @@ const updateOrder = asyncWrapper(async (req, res, next) => {
                 }
             }
             await order.save();
-
-            // await cart.remove();
+            
     
             res.status(200).json({ order });
         } else {
             res.status(400).json({ message: "An order does not exist for this user." });
         }
+
+        await Cart.deleteOne({ user: req.user.userId });
         
     } else {
         res.status(400).json({ message: "A cart does not exist for this user." });

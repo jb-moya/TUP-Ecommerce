@@ -59,6 +59,40 @@ const OrderSchema = new mongoose.Schema(
             required: true,
         },
         orders: [SingleSellerSchema],
+        total: {
+            type: Number,
+            default: 0,
+        },
+        status: {
+            type: String,
+            enum: ['N/A', 'PENDING', 'PROCESSING', 'COMPLETED', 'CANCELLED'],
+            default: 'N/A',
+        },
+        shippingMethod: {
+            type: String,
+            enum: ['N/A', 'Pick-up at TUP Manila', 'Deliver at specified shipping address'],
+            default: 'N/A',
+        },
+        shippingAddress: {
+            street: {
+                type: String,
+            },
+            barangay: {
+                type: String,
+            },
+            city: {
+                type: String,
+            },
+            province: {
+                type: String,
+            },
+            zip: {
+                type: String,
+            },
+            country: {
+                type: String,
+            },
+        },
     },
     { timestamps: true }
 );
@@ -71,6 +105,28 @@ OrderSchema.pre('save', function(next) {
         });
         order.total = total;
     });
+    next();
+});
+
+OrderSchema.pre('save', function(next) {
+    let total = 0;
+    this.orders.forEach(order => {
+        total += order.total;
+    });
+    this.total = total;
+    next();
+});
+
+OrderSchema.pre('save', async function(next) {
+    if (this.shippingMethod === 'Pick-up at TUP Manila') {
+        this.shippingAddress = {
+            street: 'Ayala Blvd., corner San Marcelino St.',
+            barangay: 'Ermita',
+            city: 'Manila',
+            zip: '1000',
+            country: 'Philippines'
+        };
+    } 
     next();
 });
 
