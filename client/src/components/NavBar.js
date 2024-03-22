@@ -35,7 +35,7 @@ const NavBar = () => {
                 <li className="p-4"><LinkRoute to="/" text="Home"/></li>
                 <li className="p-4" ><LinkRoute to="/" text="About" /></li>
                 <li className="p-4"><LinkRoute to="/" text="Contact" /></li>
-                <li className="p-4"><LinkRoute to="/login" text="Shop Now!" /></li>
+                <li className="p-4"><LinkRoute to="/" text="Shop Now!" /></li>
               </ul>
 
               <div className='flex p-2 items-center justify-between'> 

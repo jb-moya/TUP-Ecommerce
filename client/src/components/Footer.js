@@ -11,7 +11,6 @@ const Footer = () => {
        <div className="flex flex-col justify-between">
           <h1 className="text-xl sm:text-2xl md:text-3xl">REPRESENT YOUR</h1>
           <h1 className="text-xl sm:text-2xl md:text-3xl">SCHOOL ORGANIZATION</h1>
-          <h1 className="text-xl sm:text-2xl md:text-3xl">REPRESENT YOUR</h1>
           <div className='flex items-center'>
               <h1 className="text-lg sm:text-xl md:text-2xl">IN</h1>
               <h1 className='text-[#5DBAFF] ml-[4px] text-lg sm:text-xl md:text-2xl'>STYLE</h1>
