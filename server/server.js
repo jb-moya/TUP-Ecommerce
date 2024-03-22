@@ -10,6 +10,7 @@ import express from "express";
 import cors from "cors";
 // import CustomerRouter from "./routes/CustomerRoute.js";
 import CartRouter from "./routes/CartRoute.js";
+import OrderRouter from "./routes/OrderRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
 import UserRouter from "./routes/AuthenticationRoute.js";
 import ReviewRouter from "./routes/ReviewRoute.js";
@@ -43,6 +44,7 @@ app.use("/api/v1/reviews", ReviewRouter);
 app.use("/api/v1/cart", CartRouter);
 app.use("/api/v1/feedback", FeedbackRouter);
 app.use("/api/v1/temp", TempRoute);
+app.use("/api/v1/order", OrderRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);

@@ -9,14 +9,6 @@ const CartItemSchema = mongoose.Schema({
         type: String,
         default: '',
     },
-    option: {
-        type: Object,
-        default: {},
-    },
-    price: {
-        type: Number,
-        required: [true, "Price is required"],
-    },
     quantity: {
         type: Number,
         required: [true, "Quantity is required"],
@@ -28,7 +20,9 @@ const CartItemSchema = mongoose.Schema({
         required: true,
     },
     _id: false
-})
+    },
+    { timestamps: true }
+)
 
 const CartSchema = new mongoose.Schema({
     user: {
@@ -37,23 +31,8 @@ const CartSchema = new mongoose.Schema({
         required: true,
     },
     orderItems: [CartItemSchema],
-    total: {
-        type: Number,
-        default: 0,
     },
-    status: {
-        type: String,
-        default: 'pending'
-    }
-})
-
-CartSchema.pre('save', function(next) {
-    let total = 0;
-    this.orderItems.forEach(item => {
-        total += item.price * item.quantity;
-    });
-    this.total = total;
-    next();
-});
+    { timestamps: true }
+)
 
 export default mongoose.model("Cart", CartSchema);

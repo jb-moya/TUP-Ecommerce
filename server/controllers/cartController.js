@@ -12,8 +12,6 @@ const createCart = asyncWrapper(async (req, res, next) => {
         cart = new Cart({
             user: req.user.userId,
             orderItems: [],
-            status: "unpaid",
-            total: 0,
         });
 
         await cart.save();
@@ -48,7 +46,8 @@ const getAllCarts = asyncWrapper(async (req, res, next) => {
 });
 
 const updateCart = asyncWrapper(async (req, res, next) => {
-    let cart = await Cart.findOne({ user: req.user.userId });
+    const { id: CartID } = req.params;
+    let cart = await Cart.findById(CartID);
 
     if (cart) {
         
@@ -66,7 +65,6 @@ const updateCart = asyncWrapper(async (req, res, next) => {
         const existingItem = cart.orderItems.find(item => item.product.toString() === productId && item.sku === sku);
 
         if (existingItem) {
-            // return res.status(400).json({ message: "Product with this SKU or productId already exists in the cart." });
             existingItem.quantity += quantity;
         } else {
             let newItem;
@@ -75,8 +73,6 @@ const updateCart = asyncWrapper(async (req, res, next) => {
                 newItem = {
                     name: product.name,
                     sku: "",
-                    option: {},
-                    price: product.price[0],
                     quantity: quantity,
                     product: product._id,
                 };
@@ -95,8 +91,6 @@ const updateCart = asyncWrapper(async (req, res, next) => {
                 newItem = {
                     name: product.name,
                     sku: sku,
-                    option: option,
-                    price: price,
                     quantity: quantity,
                     product: product._id,
                 };
