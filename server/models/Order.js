@@ -43,8 +43,8 @@ const SingleSellerSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['pending', 'processing', 'completed', 'cancelled'],
-            default: 'pending',
+            enum: ['N/A', 'PROCESSING', 'COMPLETED', 'CANCELLED'],
+            default: 'N/A',
         },
         _id: false
     },
@@ -62,11 +62,6 @@ const OrderSchema = new mongoose.Schema(
         total: {
             type: Number,
             default: 0,
-        },
-        status: {
-            type: String,
-            enum: ['N/A', 'PENDING', 'PROCESSING', 'COMPLETED', 'CANCELLED'],
-            default: 'N/A',
         },
         shippingMethod: {
             type: String,
