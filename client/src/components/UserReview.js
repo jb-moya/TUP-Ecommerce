@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 import { Row, Col, Image, Button } from "react-bootstrap";
 import StarRating from "./StarRating.js";
@@ -6,45 +6,43 @@ import image from "../components/images/lake-louise-51543_1280.jpg";
 import { AiFillLike } from "react-icons/ai";
 
 const UserReview = () => {
-  return (
-      <Row className="review-container user-review">
-          <Col className="main-review-body column" md={{ span: 8, offset: 2 }}>
-              <Row xs="auto">
-                  <Col className="profile-pic-container">
-                      <div className="circle">
-                          <Image
-                              className="profile"
-                              src={image}
-                              roundedCircle
-                              fluid
-                          />
-                      </div>
-                  </Col>
-                  <Col className="user-name">John Smilga</Col>
-                  <Col className="column date ms-auto">Apr 1, 2024</Col>
-              </Row>
-              <Row className="review-title-container" xs="auto">
-                  <Col className="star-rating-container">
-                      <StarRating staticColor disableAction />
-                  </Col>
-                  <Col className="review-title">
-                      WHAT THE FUCK IS THIS SHIT?
-                  </Col>
-              </Row>
-              <Row className="review-body">
-                  ANG BAHO. Putangina diko na-enjoy. Pero dahil Horney na horney
-                  nako ginamit ko parin. tiniis ko ung amoy. pero sa bandang
-                  huli nakaramdam ako ng disgust at emptiness. #neverAgain
-              </Row>
-              <Row className="custom-row like-button-container" xs="auto">
-                  <Button variant="outline-secondary like-button">
-                      <AiFillLike className="like-icon" />
-                      <div className="like-count">5</div>
-                  </Button>
-              </Row>
-          </Col>
-      </Row>
-  );
-}
+    return (
+        <div className="w-[700px] mb-2">
+            <div className="flex justify-between items-center mb-1">
+                <div className="">
+                    <div className="w-10 h-10">
+                        <img
+                            className="w-full h-full rounded-full object-cover overflow-hidden"
+                            src={image}
+                            alt=""
+                        />
+                    </div>
+                </div>
+                <div className="pl-2">John Smilga</div>
+                <div className="ml-auto">Apr 1, 2024</div>
+            </div>
+            <div className="flex items-center">
+                <div className="pr-2 mb-1">
+                    <StarRating staticColor disableAction />
+                </div>
+                <div className="text-[#211c6a]">
+                    WHAT THE FUCK IS THIS SHIT?
+                </div>
+            </div>
+            <div className="">
+                ANG BAHO. Putangina diko na-enjoy. Pero dahil Horney na horney
+                nako ginamit ko parin. tiniis ko ung amoy. pero sa bandang huli
+                nakaramdam ako ng disgust at emptiness. #neverAgain
+            </div>
+            <div className="mt-2">
+                <button className="flex items-center rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none">
+                    <AiFillLike className="mr-1" />
+                    <div className="">5</div>
+                </button>
+            </div>
+            <hr className="w-full m-auto mt-2 rounded border-t-1 border-black border-opacity-10 mb-4"></hr>
+        </div>
+    );
+};
 
-export default UserReview
+export default UserReview;

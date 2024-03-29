@@ -73,8 +73,8 @@ const ProductDetailPage = (props) => {
     ];
 
     return (
-        <div className="px-28">
-            {/* <NavBar /> */}
+        <div className="px-28 mt-32">
+            <NavBar />
 
             <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-md shadow-md">
                 <div className="w-5/12 pl-8">
@@ -149,24 +149,82 @@ const ProductDetailPage = (props) => {
                     </div>
 
                     <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
+                </div>
 
-                    <div className="w-full">
-                        <div className="px-8 font-semibold text-sm leading-relaxed text-[#211c6a]">
-                            Product Details
+                {/* <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr> */}
+
+                <div className="w-full">
+                    <div className="px-8 mt-4 font-semibold text-lg leading-relaxed text-[#211c6a]">
+                        Product Details
+                    </div>
+                    <div className="px-8">
+                        Medyo gamit na. 4 years na ata to ewan ko. Marami rin
+                        gumagamit, sabay sabay kasi kami hehe ULUL afasdf
+                        asdjflk;jasdlk;fj as;ldkfj Lorem ipsum dolor sit, amet
+                        consectetur adipisicing elit. Quas facere ut molestias
+                        soluta! Placeat repellendus eum minima est. Perspiciatis
+                        expedita corporis dolorem repellat. Repellat corporis
+                        itaque possimus non qui molestias tempora accusamus in
+                        obcaecati delectus fugiat quas a ad numquam odit
+                        provident ex harum quod et officia dolorum sequi, quae
+                        voluptatibus optio! Deserunt nemo eius mollitia debitis,
+                        harum quibusdam! Error quisquam commodi, cum ipsa,
+                        labore iure earum mollitia quos ex impedit ut odio
+                        voluptatum magni tempore dolorem! Maiores cumque beatae
+                        ipsam delectus aliquid labore quo odit. Expedita dolores
+                        deleniti enim quidem beatae consectetur perspiciatis
+                        mollitia rem. Sed, voluptas animi aliquid totam et eius,
+                        quasi assumenda illo quam impedit dignissimos iusto
+                        temporibus consequatur cum iure voluptates. Minus
+                        aliquid pariatur perspiciatis voluptatum fuga asperiores
+                        aliquam quas ipsam voluptate debitis? Nulla nihil
+                        tempora, iusto sunt adipisci itaque in quas, expedita
+                        obcaecati delectus incidunt praesentium culpa
+                        repudiandae quo molestias nisi optio neque! Temporibus
+                        sint quibusdam quae, minus ea vero veritatis facere
+                        excepturi reprehenderit illo aspernatur debitis sit,
+                        neque quas eius aperiam sapiente exercitationem soluta
+                        aliquid voluptate repellat minima voluptatem! Numquam ex
+                        mollitia porro vitae. Doloribus accusamus incidunt
+                        tempore eius similique beatae corrupti cupiditate
+                        architecto? Vitae, voluptatibus. Molestias doloribus
+                        tenetur ipsa animi, enim velit saepe.
+                    </div>
+                </div>
+
+                <div className="w-full m-8 p-4 border border-black border-opacity-25 rounded shadow-md">
+                    <div className="flex items-center">
+                        <div className="w-20 h-20">
+                            <img
+                                className="w-full h-full rounded-full object-cover overflow-hidden"
+                                src={image}
+                                alt=""
+                            />
                         </div>
-                        <div className="px-8">
-                            Medyo gamit na. 4 years na ata to ewan ko. Marami
-                            rin gumagamit, sabay sabay kasi kami hehe ULUL
-                            afasdf asdjflk;jasdlk;fj as;ldkfj
+                        <div className="p-4 ">
+                            <div>Shop ni Aleng Mare</div>
+                            <button className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none">
+                                View Seller
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div className="w-full flex justify-around">
-                    <div>
-                        <RatingOverview />
+                <hr className="w-full rounded border-t-1 border-black border-opacity-25 mt-4"></hr>
+
+                <div className="w-full flex flex-col items-center my-4">
+                    <div className="font-semibold text-lg mb-4 leading-relaxed text-[#211c6a]">
+                        Product Ratings
                     </div>
+                    <RatingOverview />
                 </div>
+
+                <hr className="w-full rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
+
+                <div>
+                    <Review />
+                </div>
+
             </div>
         </div>
 
