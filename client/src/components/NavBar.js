@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import LinkRoute from "./LinkRoute.js";
 import TMCBlueBGLogo from "../Assets/LogoBlueBg.png"
 import { useNavigate } from 'react-router-dom';
@@ -37,18 +37,20 @@ const NavBar = () => {
     }, []);
 
     return (
+
+        
       // content wrapper
-      <div className="fixed top-0 left-0 w-full bg-[#211C6A]">
-          <div className="flex overflow-hidden max-w-[1240px] px-4 h-24 text-white justify-between items-center font-bold mx-auto text-nowrap">
-              <div className='flex items-center select-none'>
-                <img 
-                className="w-20 h-20"
-                src={TMCBlueBGLogo}
-                alt="Logo Here"
-                loading="lazy"
-                /> 
-                <h1 className="text-xl">TUP Merch Co.</h1>
-              </div>
+      <div className="fixed top-0 left-0 w-full bg-[#211C6A] z-50" style={{ backgroundColor: `rgba(33, 28, 106, ${scrollOpacity === 0 ? 1 : 0.8})` }}>
+            <div className="flex overflow-hidden max-w-[1240px] px-4 h-24 text-white justify-between items-center font-bold mx-auto text-nowrap">
+                <div className='flex items-center select-none'>
+                    <img 
+                    className="w-20 h-20"
+                    src={TMCBlueBGLogo}
+                    alt="Logo Here"
+                    loading="lazy"
+                    /> 
+                    <h1 className="text-xl">TUP Merch Co.</h1>
+                </div>
 
                 <ul className="hidden md:flex text-based">
                     <li className="p-4">
