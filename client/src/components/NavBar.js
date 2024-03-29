@@ -1,7 +1,7 @@
 
 import React, {useEffect, useState} from 'react'
 import LinkRoute from "./LinkRoute.js";
-import TMCBlueBGLogo from "../Assets/LogoBlueBg.png"
+import TMCBlueBGLogo from "../Assets/LogoBlue.png"
 import { useNavigate } from 'react-router-dom';
 
 //Icons

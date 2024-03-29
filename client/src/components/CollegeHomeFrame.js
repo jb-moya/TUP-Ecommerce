@@ -15,9 +15,8 @@ const CollegeHomeFrame = () => {
   return (
   <div>
 
-    <div className='flex items-center justify-center flex-col h-[600px] bg-[#EFEFEF]'>
-    <h1 className='text-[#211C6A] font-extrabold mt-[40px] mb-12 text-[50px]'>COLLEGE OF SCIENCE</h1>
-
+    <div className='flex items-center justify-center flex-col h-[650px] bg-[#EFEFEF]'>
+    <h1 className='text-[#211C6A] font-extrabold mt-[20px] mb-12 text-[30px] md:text-[50px] sm:text-[40px]'>COLLEGE OF SCIENCE</h1>
       {/* College of Science Organizations */}
         <Swiper 
          breakpoints={{
@@ -60,7 +59,7 @@ const CollegeHomeFrame = () => {
         <div className='flex items-center justify-center flex-col h-[600px] bg-[#EFEFEF]'>
 
         {/* College of Engineering Organizations */}
-        <h1 className='text-[#211C6A] font-extrabold mt-[20px] mb-12 text-[50px]'>COLLEGE OF ENGINEERING</h1>
+        <h1 className='text-[#211C6A] font-extrabold mt-[20px] mb-12 text-[30px] md:text-[50px] sm:text-[40px]'>COLLEGE OF ENGINEERING</h1>
           <Swiper 
          breakpoints={{
           340: {
