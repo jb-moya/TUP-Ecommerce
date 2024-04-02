@@ -1,30 +1,15 @@
 import React, { useEffect } from "react";
 import NavBar from "../components/NavBar.js";
-// import "../customBootstrap/css/bootstrap.min.css";
 import ImageSwiper from "../components/Swiper.js";
-import {
-    Container,
-    Row,
-    Col,
-    Stack,
-    Button,
-    Image,
-    ProgressBar,
-    InputGroup,
-    Form,
-    ButtonGroup,
-} from "react-bootstrap";
 import StarRating from "../components/StarRating.js";
-
 import image from "../components/images/lake-louise-51543_1280.jpg";
 import RatingOverview from "../components/RatingOverview.js";
 import ProductVariation from "../components/ProductVariation.js";
 import { useLocation } from "react-router-dom";
-import BreadCrumb from "../components/BreadCrumb.js";
-import { FaStar } from "react-icons/fa";
 import Review from "../components/Review.js";
 import OrderQuantity from "../components/OrderQuantity.js";
 import { rootUrl } from "../App.js";
+import Footer from "../components/Footer.js";
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -224,8 +209,9 @@ const ProductDetailPage = (props) => {
                 <div>
                     <Review />
                 </div>
-
             </div>
+
+            <Footer />
         </div>
 
         /* <Container className="product-detail">

@@ -1,83 +1,92 @@
 import React, { useState } from "react";
-import {
-    Container,
-    Row,
-    Col,
-    Stack,
-    Image,
-    Button,
-    DropdownButton,
-    ButtonGroup,
-    Dropdown,
-} from "react-bootstrap";
-import StarRating from "./StarRating.js";
-import image from "../components/images/lake-louise-51543_1280.jpg";
-import { AiFillLike } from "react-icons/ai";
 import UserReview from "./UserReview.js";
-import ProductVariation from "./ProductVariation.js";
 
 const Review = () => {
-    const filerRating = {
-        "All Ratings": null,
-        "5 Stars": 5,
-        "4 Stars": 4,
-        "3 Stars": 3,
-        "2 Stars": 2,
-        "1 Star": 1,
+    const filterRating = {
+        null: "All",
+        1: "1 star",
+        2: "2 stars",
+        3: "3 stars",
+        4: "4 stars",
+        5: "5 stars",
     };
 
     const filterDate = ["Latest", "Oldest"];
 
-    const [starFilter, setStarFilter] = useState("Filter by Rating");
-    const [dateFilter, setDateFilter] = useState("Latest");
+    const [starFilter, setStarFilter] = useState(filterRating[null]);
+    const [dateFilter, setDateFilter] = useState(0);
 
     return (
         <>
-            <div className="review-container-stack">
-                {/* <Row xs="auto">
-                    <Col md={{ offset: 2 }}>
-                        <Dropdown className="filter-buttons filter-rating-dropdown">
-                            <Dropdown.Toggle
-                                variant="primary"
-                                id="dropdown-basic"
-                            >
-                                {starFilter}
-                            </Dropdown.Toggle>
+            <div className="">
+                <div class="relative inline-block group pr-4 pb-4">
+                    <button class="w-[140px] py-1 rounded-md text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
+                        {starFilter === null ? "Rating" : starFilter}
+                    </button>
+                    <div class="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
+                        {Object.keys(filterRating).map(
+                            (rating, index, array) => (
+                                <button
+                                    onClick={() =>
+                                        setStarFilter(filterRating[rating])
+                                    }
+                                    class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                    style={{
+                                        backgroundColor:
+                                            starFilter === filterRating[rating]
+                                                ? "#59b5c3"
+                                                : "white",
+                                        color:
+                                            starFilter === filterRating[rating]
+                                                ? "white"
+                                                : "black",
+                                        borderRadius:
+                                            index === 0
+                                                ? "4px 4px 0 0"
+                                                : index === array.length - 1
+                                                ? "0 0 4px 4px"
+                                                : "",
+                                    }}
+                                >
+                                    {filterRating[rating]}
+                                </button>
+                            )
+                        )}
+                    </div>
+                </div>
 
-                            <Dropdown.Menu>
-                                {Object.keys(filerRating).map((key, idx) => (
-                                    <Dropdown.Item
-                                        key={idx}
-                                        onClick={() => setStarFilter(key)}
-                                    >
-                                        {key}
-                                    </Dropdown.Item>
-                                ))}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Col>
-                    <Col>
-                        <Dropdown className="filter-buttons filter-date-dropdown">
-                            <Dropdown.Toggle
-                                variant="primary"
-                                id="dropdown-basic"
+                <div class="relative inline-block group pr-4 pb-4">
+                    <button class="w-[140px] py-1 rounded-md text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
+                        {filterDate[dateFilter]}
+                    </button>
+                    <div class="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
+                        {Object.keys(filterDate).map((date, index, array) => (
+                            <button
+                                onClick={() => setDateFilter(date)}
+                                class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                style={{
+                                    backgroundColor:
+                                        starFilter === filterDate[date]
+                                            ? "#59b5c3"
+                                            : "white",
+                                    color:
+                                        starFilter === filterDate[date]
+                                            ? "white"
+                                            : "black",
+                                    borderRadius:
+                                        index === 0
+                                            ? "4px 4px 0 0"
+                                            : index === array.length - 1
+                                            ? "0 0 4px 4px"
+                                            : "",
+                                }}
                             >
-                                {dateFilter}
-                            </Dropdown.Toggle>
+                                {filterDate[date]}
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
-                            <Dropdown.Menu>
-                                {filterDate.map((date, idx) => (
-                                    <Dropdown.Item
-                                        key={idx}
-                                        onClick={() => setDateFilter(date)}
-                                    >
-                                        {date}
-                                    </Dropdown.Item>
-                                ))}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Col>
-                </Row> */}
                 <UserReview />
                 <UserReview />
                 <UserReview />
