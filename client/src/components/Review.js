@@ -1,6 +1,39 @@
 import React, { useState } from "react";
 import UserReview from "./UserReview.js";
 
+const FilterButton = ({ label, options, selectedOption, onSelectOption }) => {
+    return (
+        <div className="relative inline-block group pr-4 pb-4">
+            <button className="w-[140px] py-1 rounded text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
+                {options[selectedOption] || label}
+            </button>
+            <div className="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
+                {Object.keys(options).map((option, index, array) => (
+                    <button
+                        key={option}
+                        onClick={() => onSelectOption(option)}
+                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                        style={{
+                            backgroundColor:
+                                selectedOption === option ? "#59b5c3" : "white",
+                            color:
+                                selectedOption === option ? "white" : "black",
+                            borderRadius:
+                                index === 0
+                                    ? "4px 4px 0 0"
+                                    : index === array.length - 1
+                                    ? "0 0 4px 4px"
+                                    : "",
+                        }}
+                    >
+                        {options[option]}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const Review = () => {
     const filterRating = {
         null: "All",
@@ -11,81 +44,30 @@ const Review = () => {
         5: "5 stars",
     };
 
-    const filterDate = ["Latest", "Oldest"];
+    const filterDate = {
+        0: "Latest",
+        1: "Oldest",
+    };
 
     const [starFilter, setStarFilter] = useState(filterRating[null]);
-    const [dateFilter, setDateFilter] = useState(0);
+    const [dateFilter, setDateFilter] = useState(filterDate[0]);
 
     return (
         <>
             <div className="">
-                <div class="relative inline-block group pr-4 pb-4">
-                    <button class="w-[140px] py-1 rounded-md text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
-                        {starFilter === null ? "Rating" : starFilter}
-                    </button>
-                    <div class="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
-                        {Object.keys(filterRating).map(
-                            (rating, index, array) => (
-                                <button
-                                    onClick={() =>
-                                        setStarFilter(filterRating[rating])
-                                    }
-                                    class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                    style={{
-                                        backgroundColor:
-                                            starFilter === filterRating[rating]
-                                                ? "#59b5c3"
-                                                : "white",
-                                        color:
-                                            starFilter === filterRating[rating]
-                                                ? "white"
-                                                : "black",
-                                        borderRadius:
-                                            index === 0
-                                                ? "4px 4px 0 0"
-                                                : index === array.length - 1
-                                                ? "0 0 4px 4px"
-                                                : "",
-                                    }}
-                                >
-                                    {filterRating[rating]}
-                                </button>
-                            )
-                        )}
-                    </div>
-                </div>
+                <FilterButton
+                    label={starFilter === null ? "Rating" : starFilter}
+                    options={filterRating}
+                    selectedOption={starFilter}
+                    onSelectOption={setStarFilter}
+                />
 
-                <div class="relative inline-block group pr-4 pb-4">
-                    <button class="w-[140px] py-1 rounded-md text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
-                        {filterDate[dateFilter]}
-                    </button>
-                    <div class="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
-                        {Object.keys(filterDate).map((date, index, array) => (
-                            <button
-                                onClick={() => setDateFilter(date)}
-                                class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                style={{
-                                    backgroundColor:
-                                        starFilter === filterDate[date]
-                                            ? "#59b5c3"
-                                            : "white",
-                                    color:
-                                        starFilter === filterDate[date]
-                                            ? "white"
-                                            : "black",
-                                    borderRadius:
-                                        index === 0
-                                            ? "4px 4px 0 0"
-                                            : index === array.length - 1
-                                            ? "0 0 4px 4px"
-                                            : "",
-                                }}
-                            >
-                                {filterDate[date]}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+                <FilterButton
+                    label={dateFilter}
+                    options={filterDate}
+                    selectedOption={dateFilter}
+                    onSelectOption={setDateFilter}
+                />
 
                 <UserReview />
                 <UserReview />
