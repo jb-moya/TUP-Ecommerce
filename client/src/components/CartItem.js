@@ -11,30 +11,43 @@ const CartItem = ({ id, name, sub_name, price, quantity }) => {
     const dispatch = useDispatch();
 
     return (
-        <Stack>
-            <div>{name}</div>
-            <div>Price: ${price}</div>
-            <div>sub_name: {sub_name}</div>
-            <div>quantity: {quantity}</div>
-            <Button
-                variant="secondary"
+        <>
+            <div className="col-span-8 flex items-center">
+                <input className="w-4 h-4 mr-4" type="checkbox" />
+                <div>{name}</div>
+            </div>
+            <div className="col-span-4 grid grid-cols-12 items-center">
+                <div className="col-span-4">{price}</div>
+                <div className="col-span-4">
+                    <OrderQuantity maximum={999} />
+                </div>
+                <div className="col-span-4">hehe</div>
+            </div>
+
+            <hr className="col-span-full my-2"></hr>
+
+            {/* <div>Price: ${price}</div> */}
+            {/* <div>sub_name: {sub_name}</div> */}
+            {/* <div>quantity: {quantity}</div> */}
+            {/* <button
+                className="border border-red-500 p-1"
                 onClick={() => {
                     dispatch(removeItem({ id }));
                 }}
             >
                 remove
-            </Button>
-            <Button
-                variant="secondary"
+            </button>
+            <button
+                className="border border-red-500 p-1"
                 onClick={() => {
                     dispatch(increaseQuantity({ id }));
                 }}
             >
                 increase
-            </Button>
+            </button>
 
-            <Button
-                variant="secondary"
+            <button
+                className="border border-red-500 p-1"
                 onClick={() => {
                     if (quantity === 1) {
                         dispatch(removeItem({ id }));
@@ -45,11 +58,11 @@ const CartItem = ({ id, name, sub_name, price, quantity }) => {
                 }}
             >
                 decrease
-            </Button>
+            </button> */}
 
             {/* <OrderQuantity id={id} maximum={quantity} /> */}
-            <Button variant="secondary"></Button>
-        </Stack>
+            {/* <button className="border border-red-500 p-1"></button> */}
+        </>
     );
 };
 

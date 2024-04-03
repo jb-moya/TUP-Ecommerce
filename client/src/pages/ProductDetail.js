@@ -10,7 +10,6 @@ import Review from "../components/Review.js";
 import OrderQuantity from "../components/OrderQuantity.js";
 import { rootUrl } from "../App.js";
 import Footer from "../components/Footer.js";
-
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -119,8 +118,14 @@ const ProductDetailPage = (props) => {
                             variationClass={"Model and Size"}
                         />
                     </div>
-                    <div className="mt-8">
-                        <OrderQuantity maximum={999} />
+                    <div className="mt-8 flex items-center">
+                        <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
+                            Quantity:{" "}
+                        </div>
+                        <div className="pr-2">
+                            <OrderQuantity maximum={999} />
+                        </div>
+                        <div>12 stock available</div>
                     </div>
                     <div className="flex px-8 py-7 justify-center items-center">
                         <button className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500">
