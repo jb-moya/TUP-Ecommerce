@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUp.js";
 import LogIn from "./pages/LogIn.js";
 import Home from "./pages/Home.js";
+import About from "./pages/About.js";
 import Cart from "./pages/Cart.js";
 import ProductDetail from "./pages/ProductDetail.js";
 import NotFound from "./pages/NotFound.js";
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/product" element={<ProductDetail />} />
+                    <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

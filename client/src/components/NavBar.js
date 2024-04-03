@@ -57,7 +57,7 @@ const NavBar = () => {
                         <LinkRoute to="/" text="Home" />
                     </li>
                     <li className="p-4">
-                        <LinkRoute to="/" text="About" />
+                        <LinkRoute to="/about" text="About" />
                     </li>
                     <li className="p-4">
                         <LinkRoute to="/" text="Contact" />
