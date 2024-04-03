@@ -38,11 +38,8 @@ const OrderQuantity = ({ id = null, maximum }) => {
     };
 
     return (
-        <div className="w-full flex mt-2">
-            <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
-                Quantity:{" "}
-            </div>
-            <div className="flex pr-2">
+        <div className="w-full flex justify-center">
+            <div className="flex">
                 <button
                     className="border border-gray-400 p-2"
                     onClick={handleMinus}
@@ -65,9 +62,6 @@ const OrderQuantity = ({ id = null, maximum }) => {
                 >
                     <FaPlus size={10} />
                 </button>
-            </div>
-            <div className="leading-none flex items-center">
-                <div className="">{maximum} stock available</div>
             </div>
         </div>
     );

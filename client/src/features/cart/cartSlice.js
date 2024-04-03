@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axious from "axios";
-// example data
+
 const cartItems = [
     {
         name: "laptop",
@@ -38,7 +38,6 @@ const initialState = {
     total: 0,
     isLoading: true,
 };
-
 
 export const getAllItems = createAsyncThunk("cart/getAllItems", async () => {
     const response = await axious.get("localhost:5000/api/v1/temp");

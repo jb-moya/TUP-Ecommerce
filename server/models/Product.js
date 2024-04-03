@@ -79,18 +79,15 @@ const productSchema = new mongoose.Schema(
                 message: "{VALUE} is not valid category",
             },
         },
-        
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
-        
         averageRating: {
             type: Number,
             default: 0,
         },
-
         numOfReviews: {
             type: Number,
             default: 0,

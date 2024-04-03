@@ -11,8 +11,6 @@ import Cart from "./pages/Cart.js";
 import ProductDetail from "./pages/ProductDetail.js";
 import NotFound from "./pages/NotFound.js";
 
-import { Button, Modal } from "react-bootstrap";
-
 import ConfirmModel from "./components/Modal.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
@@ -36,15 +34,6 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
-            {/* <Button variant="primary">Primary</Button>{" "}
-            <Button variant="secondary">Secondary</Button>{" "}
-            <Button variant="success">Success</Button>{" "}
-            <Button variant="warning">Warning</Button>{" "}
-            <Button variant="danger">Danger</Button>{" "}
-            <Button variant="info">Info</Button>{" "}
-            <Button variant="light">Light</Button>{" "}
-            <Button variant="dark">Dark</Button>
-            <Button variant="link">Link</Button> */}
         </div>
     );
 }
