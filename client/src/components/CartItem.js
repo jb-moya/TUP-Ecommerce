@@ -7,19 +7,67 @@ import {
     removeItem,
 } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
-const CartItem = ({ id, name, sub_name, price, quantity }) => {
+
+const NoImage = () => {
+    return (
+        <div className="w-full h-full bg-slate-200 flex text-[#abb7c5] justify-center items-center rounded">
+            Unavailable Image
+        </div>
+    );
+};
+
+const ItemStock = ({ stock }) => {
+    const InStockStyle = "text-green-500";
+    const OutOfStockStyle = "text-red-500";
+
+    return (
+        <div className={stock === 0 ? OutOfStockStyle : InStockStyle}>
+            {stock === 0 ? "Out of Stock" : `${stock} In Stock`}
+        </div>
+    );
+};
+
+const CartItem = ({ id, name, sub_name, price, quantity, image = null }) => {
     const dispatch = useDispatch();
 
     return (
         <>
-            <div className="col-span-8 flex items-center">
-                <input className="w-4 h-4 mr-4" type="checkbox" />
-                <div>{name}</div>
+            <div className="col-span-8 flex">
+                <input className="w-4 h-4 mr-4 self-center" type="checkbox" />
+                <div className="w-32 h-32 mr-4 rounded">
+                    {image ? (
+                        <img
+                            className="w-full h-full object-cover"
+                            src={image}
+                            alt={name}
+                        />
+                    ) : (
+                        <NoImage />
+                    )}
+                </div>
+                <div className="flex flex-1 flex-col">
+                    <div className="font-medium text-lg text-left leading-tight">
+                        {name}as fas df sd asdl;fjsal;kdf jklsdjfl sdj f;lasjdfl
+                        ;kjfl jfl jlf jldfj dl fj alsdj flskjd fl;kdj
+                    </div>
+
+                    <div className="text-left leading-6">{name} as;l j kj</div>
+
+                    <div className="flex flex-1 items-end">
+                        <button className="px-[2px] py-[1px] w-max text-[#211c6a] hover:text-violet-500 border hover:border-violet-500">
+                            Delete
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div className="col-span-4 grid grid-cols-12 items-center">
+
+            <div className="col-span-4 grid grid-cols-12 self-start items-baseline">
                 <div className="col-span-4">{price}</div>
                 <div className="col-span-4">
                     <OrderQuantity maximum={999} />
+                    <div className="mt-2">
+                        <ItemStock stock={1} />
+                    </div>
                 </div>
                 <div className="col-span-4">hehe</div>
             </div>

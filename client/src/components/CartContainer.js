@@ -37,7 +37,7 @@ const CartContainer = () => {
                 {/* <div className=""> */}
                 <div className="col-span-8 flex items-center text-gray-500">
                     <input className="w-4 h-4 mr-4" type="checkbox" />
-                    <div>laptop</div>
+                    <div>Products</div>
                 </div>
                 <div className="col-span-4 grid grid-cols-12 text-gray-500">
                     <div className="col-span-4">Unit Price</div>
