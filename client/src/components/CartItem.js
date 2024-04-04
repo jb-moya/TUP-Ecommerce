@@ -5,6 +5,7 @@ import {
     decreaseQuantity,
     increaseQuantity,
     removeItem,
+    setQuantity,
 } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
 
@@ -27,13 +28,21 @@ const ItemStock = ({ stock }) => {
     );
 };
 
-const CartItem = ({ id, name, sub_name, price, quantity, image = null }) => {
+const CartItem = ({ id, name, sub_name, price, quantity, checked, image = null }) => {
     const dispatch = useDispatch();
 
+    const handleQuantityChange = (newQuantity) => {
+        dispatch(setQuantity({ id, quantity: newQuantity }));
+    };
+
+    const handleCheck = () => {
+        dispatch(setQuantity({ id, checked: !checked }));
+    };
+
     return (
-        <>
-            <div className="col-span-8 flex">
-                <input className="w-4 h-4 mr-4 self-center" type="checkbox" />
+        <div className="grid grid-cols-12 auto-rows-min gap-2 items-center text-center leading-none mx-4">
+            <div className="col-span-8 flex self-start">
+                <input className="w-4 h-4 mr-4 self-center" type="checkbox" checked={checked}/>
                 <div className="w-32 h-32 mr-4 rounded">
                     {image ? (
                         <img
@@ -47,14 +56,20 @@ const CartItem = ({ id, name, sub_name, price, quantity, image = null }) => {
                 </div>
                 <div className="flex flex-1 flex-col">
                     <div className="font-medium text-lg text-left leading-tight">
-                        {name}as fas df sd asdl;fjsal;kdf jklsdjfl sdj f;lasjdfl
-                        ;kjfl jfl jlf jldfj dl fj alsdj flskjd fl;kdj
+                        {name} Lorem ipsum dolor sit, amet consectetur
+                        adipisicing elit. Distinctio, ut. Neque, tempora! Amet
+                        ex ea voluptates sapiente nobis molestias laudantium?
                     </div>
 
                     <div className="text-left leading-6">{name} as;l j kj</div>
 
                     <div className="flex flex-1 items-end">
-                        <button className="px-[2px] py-[1px] w-max text-[#211c6a] hover:text-violet-500 border hover:border-violet-500">
+                        <button
+                            className="px-[2px] py-[1px] w-max text-[#211c6a] hover:text-violet-500 border hover:border-violet-500"
+                            onClick={() => {
+                                dispatch(removeItem({ id }));
+                            }}
+                        >
                             Delete
                         </button>
                     </div>
@@ -64,12 +79,16 @@ const CartItem = ({ id, name, sub_name, price, quantity, image = null }) => {
             <div className="col-span-4 grid grid-cols-12 self-start items-baseline">
                 <div className="col-span-4">{price}</div>
                 <div className="col-span-4">
-                    <OrderQuantity maximum={999} />
+                    <OrderQuantity
+                        maximum={999}
+                        quantity={quantity}
+                        onQuantityChange={handleQuantityChange}
+                    />
                     <div className="mt-2">
                         <ItemStock stock={1} />
                     </div>
                 </div>
-                <div className="col-span-4">hehe</div>
+                <div className="col-span-4">{price * quantity}</div>
             </div>
 
             <hr className="col-span-full my-2"></hr>
@@ -110,7 +129,7 @@ const CartItem = ({ id, name, sub_name, price, quantity, image = null }) => {
 
             {/* <OrderQuantity id={id} maximum={quantity} /> */}
             {/* <button className="border border-red-500 p-1"></button> */}
-        </>
+        </div>
     );
 };
 
