@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar.js";
 import ImageSwiper from "../components/Swiper.js";
 import StarRating from "../components/StarRating.js";
@@ -16,6 +16,12 @@ axios.defaults.withCredentials = true;
 const ProductDetailPage = (props) => {
     const location = useLocation();
     const currentPath = location.pathname;
+
+    const [quantity, setQuantity] = useState(1);
+
+    const handleQuantityChange = (newQuantity) => {
+        setQuantity(newQuantity);
+    };
 
     console.log(currentPath);
 
@@ -123,7 +129,11 @@ const ProductDetailPage = (props) => {
                             Quantity:{" "}
                         </div>
                         <div className="pr-2">
-                            <OrderQuantity maximum={999} />
+                            <OrderQuantity
+                                maximum={999}
+                                quantity={quantity}
+                                onQuantityChange={handleQuantityChange}
+                            />
                         </div>
                         <div>12 stock available</div>
                     </div>

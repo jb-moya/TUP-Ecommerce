@@ -19,6 +19,10 @@ const CartItemSchema = mongoose.Schema({
         ref: "Product",
         required: true,
     },
+    checked: {
+        type: Boolean,
+        default: false,
+    },
     _id: false
     },
     { timestamps: true }

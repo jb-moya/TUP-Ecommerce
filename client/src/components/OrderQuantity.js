@@ -4,24 +4,22 @@ import { Stack, Button, Form } from "react-bootstrap";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
-const OrderQuantity = ({ id = null, maximum }) => {
+const OrderQuantity = ({ id = null, quantity, maximum, onQuantityChange }) => {
     if (id === null) {
         // throw new Error("id is required");
     }
 
-    const dispatch = useDispatch();
-    const [quantity, setQuantity] = useState(1);
-
     const handleMinus = () => {
         if (quantity === 1) return;
 
-        setQuantity(quantity - 1);
+        onQuantityChange(quantity - 1);
     };
+
 
     const handlePlus = () => {
         if (quantity === maximum) return;
 
-        setQuantity(quantity + 1);
+        onQuantityChange(quantity + 1);
     };
 
     const handleQuantityChange = (e) => {
@@ -29,11 +27,11 @@ const OrderQuantity = ({ id = null, maximum }) => {
         const parsedValue = parseInt(value);
 
         if (parsedValue < 1) {
-            setQuantity(1);
+            onQuantityChange(1);
         } else if (parsedValue > maximum) {
-            setQuantity(maximum);
+            onQuantityChange(maximum);
         } else {
-            setQuantity(parsedValue);
+            onQuantityChange(parsedValue);
         }
     };
 

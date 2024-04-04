@@ -1,15 +1,16 @@
 // import "./App.css";
 import React, { useState } from "react";
+
 // import "./customBootstrap/css/bootstrap.min.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUp from "./pages/SignUp.js";
-import LogIn from "./pages/LogIn.js";
-import Home from "./pages/Home.js";
-import About from "./pages/About.js";
-import Cart from "./pages/Cart.js";
-import ProductDetail from "./pages/ProductDetail.js";
-import NotFound from "./pages/NotFound.js";
+import SignUp from "./pages/SignUpPage.js";
+import LogIn from "./pages/LogInPage.js";
+import Home from "./pages/HomePage.js";
+import About from "./pages/AboutPage.js";
+import Cart from "./pages/CartPage.js";
+import ProductDetail from "./pages/ProductDetailPage.js";
+import NotFound from "./pages/NotFoundPage.js";
 
 import ConfirmModel from "./components/Modal.js";
 const rootUrl = "http://localhost:5000/api/v1";

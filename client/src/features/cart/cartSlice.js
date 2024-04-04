@@ -8,6 +8,7 @@ const cartItems = [
         id: 1,
         price: 599.99,
         quantity: 1,
+        checked: true,
     },
     {
         name: "laptop",
@@ -15,6 +16,7 @@ const cartItems = [
         id: 2,
         price: 299.99,
         quantity: 3,
+        checked: true,
     },
     {
         name: "laptop",
@@ -22,6 +24,7 @@ const cartItems = [
         id: 3,
         price: 399.99,
         quantity: 2,
+        checked: true,
     },
     {
         name: "laptop",
@@ -29,6 +32,31 @@ const cartItems = [
         id: 4,
         price: 499.99,
         quantity: 1,
+        checked: false,
+    },
+    {
+        name: "laptop",
+        sub_name: "adjbul babi",
+        id: 5,
+        price: 499.99,
+        quantity: 1,
+        checked: false,
+    },
+    {
+        name: "laptop",
+        sub_name: "adjbul babi",
+        id: 6,
+        price: 499.99,
+        quantity: 1,
+        checked: false,
+    },
+    {
+        name: "laptop",
+        sub_name: "adjbul babi",
+        id: 7,
+        price: 499.99,
+        quantity: 1,
+        checked: true,
     },
 ];
 
@@ -40,8 +68,8 @@ const initialState = {
 };
 
 export const getAllItems = createAsyncThunk("cart/getAllItems", async () => {
-    const response = await axious.get("localhost:5000/api/v1/temp");
-    console.log("response", response);
+    // const response = await axious.get("localhost:5000/api/v1/temp");
+    // console.log("response", response);
     // return response.data;
 });
 
@@ -59,6 +87,20 @@ const cartSlice = createSlice({
         removeItem: (state, action) => {
             const { id } = action.payload;
             state.cartItems = state.cartItems.filter((item) => item.id !== id);
+        },
+        setQuantity: (state, { payload }) => {
+            const cartItem = state.cartItems.find(
+                (item) => item.id === payload.id
+            );
+
+            if (cartItem) {
+                cartItem.quantity = payload.quantity;
+            }
+        },
+        checkAll: (state) => {
+            state.cartItems.forEach((item) => {
+                item.checked = true;
+            });
         },
         increaseQuantity: (state, { payload }) => {
             const cartItem = state.cartItems.find(
@@ -81,11 +123,14 @@ const cartSlice = createSlice({
         calculateTotals: (state) => {
             let { total, amount } = state.cartItems.reduce(
                 (cartTotal, cartItem) => {
-                    const { price, quantity } = cartItem;
-                    const itemTotal = price * quantity;
+                    // Check if the cart item is checked
+                    if (cartItem.checked) {
+                        const { price, quantity } = cartItem;
+                        const itemTotal = price * quantity;
 
-                    cartTotal.total += itemTotal;
-                    cartTotal.amount += quantity;
+                        cartTotal.total += itemTotal;
+                        cartTotal.amount += quantity;
+                    }
 
                     return cartTotal;
                 },
@@ -109,7 +154,9 @@ export default cartSlice.reducer;
 export const {
     addToCart,
     clearCart,
+    checkAll,
     removeItem,
+    setQuantity,
     increaseQuantity,
     decreaseQuantity,
     calculateTotals,
