@@ -48,9 +48,15 @@ const getSingleOrder = asyncWrapper(async (req, res, next) => {
     res.status(StatusCodes.OK).json({ order });
 });
 
-const getAllSellerOrders = asyncWrapper(async (req, res, next) => {
+const getSellerOrders = asyncWrapper(async (req, res) => {
 
     const sellerId = req.user.userId;
+    const { status } = req.body;
+
+    let matchCondition = {};
+    if (status && status !== "N/A") {
+        matchCondition = { "orders.status": status };
+    }
 
     const orders = await Order.aggregate([
         { $unwind: "$orders" },
@@ -61,6 +67,7 @@ const getAllSellerOrders = asyncWrapper(async (req, res, next) => {
                 }
             }
         },
+        { $match: matchCondition },
         {
             $project: {
                 order_id: "$orders._id",
@@ -177,7 +184,7 @@ const deleteOrder = asyncWrapper(async (req, res, next) => {
 
 export { createOrder,
         getSingleOrder,
-        getAllSellerOrders,
+        getSellerOrders,
         updateOrder,
         deleteOrder,
          };

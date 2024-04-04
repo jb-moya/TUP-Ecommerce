@@ -6,14 +6,14 @@ import { authenticateUser } from "../middleware/authentication.js";
 import {
     createOrder,
     getSingleOrder,
-    getAllSellerOrders,
+    getSellerOrders,
     updateOrder,
     deleteOrder,
 } from "../controllers/orderController.js";
 
 router
     .route("/")
-    .get([authenticateUser, authorizePermissions('seller')], getAllSellerOrders)
+    .get([authenticateUser, authorizePermissions('seller')], getSellerOrders)
     .post([authenticateUser, authorizePermissions('customer')], createOrder);
 
 router
