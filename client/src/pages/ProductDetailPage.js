@@ -13,6 +13,56 @@ import Footer from "../components/Footer.js";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
+const exampleProduct = {
+    product: {
+        _id: "65ee78d04cfbe7e546c10544",
+        name: "Sneakers",
+        price: [59.99],
+        featured: false,
+        variationClass: ["Color", "Size"],
+        description: "A comfortable sneakers with advanced features",
+        variation: [
+            {
+                sku: "QRS345",
+                option: {
+                    color: "Red",
+                    size: "Large",
+                },
+                price: 59.99,
+                stock: 10,
+                _id: "65ee78d04cfbe7e546c10545",
+            },
+            {
+                sku: "TUV678",
+                option: {
+                    color: "Blue",
+                    size: "Large",
+                },
+                price: 59.99,
+                stock: 5,
+                _id: "65ee78d04cfbe7e546c10546",
+            },
+            {
+                sku: "WXY901",
+                option: {
+                    color: "Black",
+                    size: "Large",
+                },
+                price: 59.99,
+                stock: 10,
+                _id: "65ee78d04cfbe7e546c10547",
+            },
+        ],
+        createdAt: "2024-03-11T03:21:50.798Z",
+        category: "Shoes",
+        createdBy: "65ec48144d8f314289363eb2",
+        averageRating: 0,
+        numOfReviews: 0,
+        updatedAt: "2024-03-12T00:26:49.438Z",
+        __v: 0,
+    },
+};
+
 const ProductDetailPage = (props) => {
     const location = useLocation();
     const currentPath = location.pathname;
@@ -40,25 +90,30 @@ const ProductDetailPage = (props) => {
         console.log("cookie", document.cookie);
     }, []);
 
-    const options1 = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-        { value: "option3", label: "Option 3" },
-        { value: "option4", label: "Option 4" },
-        { value: "option5", label: "Option 5" },
-        { value: "option6", label: "Option 6" },
-        { value: "option7", label: "Option 7" },
-        { value: "option8", label: "Option 8" },
-        { value: "option9", label: "Option 9" },
-        { value: "option10", label: "Option 10" },
-        { value: "option11", label: "Option 11" },
-    ];
+    const variations = {}
+    exampleProduct.product.variation.forEach((variation) => {
+        const { option } = variation;
+        const optionKeys = Object.keys(option);
 
-    const options2 = [
-        { value: "option4", label: "Option 4" },
-        { value: "option5", label: "Option 5" },
-        { value: "option6", label: "Option 6" },
-    ];
+        optionKeys.forEach((key) => {
+            if (variations[key]) {
+                if (!variations[key].includes(option[key])) {
+                    variations[key].push(option[key]);
+                }
+            } else {
+                variations[key] = [option[key]];
+            }
+        });    
+    });
+
+    console.log(variations)
+
+
+    // const options2 = [
+    //     { value: "option4", label: "Option 4" },
+    //     { value: "option5", label: "Option 5" },
+    //     { value: "option6", label: "Option 6" },
+    // ];
 
     return (
         <div className="mt-32">
@@ -113,16 +168,16 @@ const ProductDetailPage = (props) => {
                     </div>
 
                     <div className="w-full mt-10">
-                        <ProductVariation
+                        {/* <ProductVariation
                             id={"component1"}
                             options={options1}
                             variationClass={"Color"}
-                        />
-                        <ProductVariation
+                        /> */}
+                        {/* <ProductVariation
                             id={"component2"}
                             options={options2}
                             variationClass={"Model and Size"}
-                        />
+                        /> */}
                     </div>
                     <div className="mt-8 flex items-center">
                         <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
