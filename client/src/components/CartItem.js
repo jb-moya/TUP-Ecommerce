@@ -6,6 +6,7 @@ import {
     increaseQuantity,
     removeItem,
     setQuantity,
+    toggleCheck,
 } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
 
@@ -36,13 +37,15 @@ const CartItem = ({ id, name, sub_name, price, quantity, checked, image = null }
     };
 
     const handleCheck = () => {
-        dispatch(setQuantity({ id, checked: !checked }));
+        dispatch(toggleCheck({ id }));
     };
 
     return (
         <div className="grid grid-cols-12 auto-rows-min gap-2 items-center text-center leading-none mx-4">
             <div className="col-span-8 flex self-start">
-                <input className="w-4 h-4 mr-4 self-center" type="checkbox" checked={checked}/>
+                <input className="w-4 h-4 mr-4 self-center" 
+                    onClick={handleCheck}
+                type="checkbox" checked={checked}/>
                 <div className="w-32 h-32 mr-4 rounded">
                     {image ? (
                         <img
@@ -88,7 +91,7 @@ const CartItem = ({ id, name, sub_name, price, quantity, checked, image = null }
                         <ItemStock stock={1} />
                     </div>
                 </div>
-                <div className="col-span-4">{price * quantity}</div>
+                <div className="col-span-4">{(price * quantity).toFixed(2)}</div>
             </div>
 
             <hr className="col-span-full my-2"></hr>

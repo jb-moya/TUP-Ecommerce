@@ -17,11 +17,11 @@ import ConfirmModel from "./components/Modal.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function App() {
-    const [modalShow, setModalShow] = React.useState(false);
-    const [show, setShow] = useState(false);
+    // const [modalShow, setModalShow] = React.useState(false);
+    // const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
 
     return (
         <div className="box-border">

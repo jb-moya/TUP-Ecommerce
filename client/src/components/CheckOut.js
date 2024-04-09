@@ -1,7 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setQuantity, calculateTotals } from "../features/cart/cartSlice";
+import { setQuantity, calculateTotals, checkAll, removeAllItems } from "../features/cart/cartSlice";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CheckOut = () => {
     const { total } = useSelector((store) => store.cart);
@@ -16,13 +19,20 @@ const CheckOut = () => {
                             onClick={() => {
                                 dispatch(setQuantity(1));
                                 dispatch(calculateTotals());
+                                dispatch(checkAll());
                             }}
                         >
                             Select All
                         </button>
                     </div>
                     <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
-                        <button>Clear Cart</button>
+                        <button
+                            onClick={() => {
+                                dispatch(removeAllItems());
+                            }}
+                        >
+                            Clear Cart
+                        </button>
                     </div>
                 </div>
 

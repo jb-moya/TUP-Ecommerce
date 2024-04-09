@@ -47,7 +47,7 @@ const OrderQuantity = ({ id = null, quantity, maximum, onQuantityChange }) => {
 
                 <input
                     value={quantity}
-                    class="w-12 h-full text-center border border-l-0 border-r-0 border-gray-400"
+                    className="w-12 h-full text-center border border-l-0 border-r-0 border-gray-400"
                     placeholder="0"
                     aria-label="0"
                     onChange={handleQuantityChange}
