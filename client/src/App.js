@@ -11,6 +11,7 @@ import About from "./pages/AboutPage.js";
 import Cart from "./pages/CartPage.js";
 import { CustomerAccountSettings, CustomerPasswordSettings, SellerAccountSettings} from "./pages/AccountSettings.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
+import Organization from "./pages/OrganizationPage.js";
 import NotFound from "./pages/NotFoundPage.js";
 
 import ConfirmModel from "./components/Modal.js";
@@ -35,6 +36,7 @@ function App() {
                     <Route path="/customeraccount" element={<CustomerAccountSettings/>}/>
                     <Route path="/customeraccount=password" element={<CustomerPasswordSettings/>}/>
                     <Route path="/adc231" element={<SellerAccountSettings/>}/>
+                    <Route path="/org" element={<Organization  />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFound />} />
