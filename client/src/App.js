@@ -10,6 +10,7 @@ import Home from "./pages/HomePage.js";
 import About from "./pages/AboutPage.js";
 import Cart from "./pages/CartPage.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
+import Organization from "./pages/OrganizationPage.js";
 import NotFound from "./pages/NotFoundPage.js";
 
 import ConfirmModel from "./components/Modal.js";
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/product" element={<ProductDetail />} />
+                    <Route path="/org" element={<Organization  />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFound />} />
