@@ -1,7 +1,10 @@
 import React from 'react'
+import ListItem from '../components/ItemsList'
 import SampleLogo from '../OrganizationAssets/SampleLogo.png'
 import BGTUP from '../OrganizationAssets/TUPBG.jpg'
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
 
 const OrganizationSection = () => {
 
@@ -10,6 +13,12 @@ const OrganizationSection = () => {
     const handleClick = () => {
         // Navigate to the desired route
         navigate('/');
+    };
+
+    const [clickedButton, setClickedButton] = useState(0);
+
+    const buttonClicked = (index) => {
+        setClickedButton(index);
     };
 
     return (
@@ -59,7 +68,46 @@ const OrganizationSection = () => {
 
             </div>
 
-            <div className='text-white bg-[#EFEFEF] h-screen select-none'>
+            <div className='flex flex-col text-[#211C6A] bg-[#EFEFEF] h-screen mx-auto max-w-[1300px]'>
+          
+            <ul className='flex text-[30px] font-bold w-full justify-center h-[70px] mt-[40px]'>
+                    <li className='p-4 mx-[60px]'>
+                        <button
+                            className={`text-${clickedButton === 0 ? 'blue' : 'gray'}-500 transform ${clickedButton === 0 ? 'scale-110' : ''} duration-300 ease-in-out`}
+                            onClick={() => buttonClicked(0)}
+                        >
+                            TOP SALES!
+                        </button>
+                        
+                    </li>
+                    <li className='p-4 mx-[60px]'>
+                        <button
+                            className={`text-${clickedButton === 1 ? 'blue' : 'gray'}-500 transform ${clickedButton === 1 ? 'scale-110' : ''}  duration-300 ease-in-out`}
+                            onClick={() => buttonClicked(1)}
+                        >
+                            NEW MERCH!
+                        </button>
+                    </li>
+                    <li className='p-4 mx-[60px]'>
+                        <button
+                            className={`text-${clickedButton === 2 ? 'blue' : 'gray'}-500 transform ${clickedButton === 2 ? 'scale-110' : ''}  duration-300 ease-in-out`}
+                            onClick={() => buttonClicked(2)}
+                        >
+                            ALL MERCH!
+                        </button>
+                    </li>
+                </ul>
+
+            {clickedButton === 0 && (
+            <ListItem />
+            )}
+            {clickedButton === 1 && (
+                <div>Wala pa</div>
+            )}
+            {clickedButton === 2 && (
+                 <div>Wala pa</div>
+            )}
+
 
             </div>
 
