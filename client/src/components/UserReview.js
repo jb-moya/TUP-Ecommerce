@@ -26,13 +26,11 @@ const UserReview = () => {
                     <StarRating staticColor disableAction />
                 </div>
                 <div className="text-[#211c6a]">
-                    WHAT THE FUCK IS THIS SHIT?
+                    WOW
                 </div>
             </div>
             <div className="">
-                ANG BAHO. Putangina diko na-enjoy. Pero dahil Horney na horney
-                nako ginamit ko parin. tiniis ko ung amoy. pero sa bandang huli
-                nakaramdam ako ng disgust at emptiness. #neverAgain
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum veniam quo officia neque, magnam deleniti repellat nam animi odio. Nam.
             </div>
             <div className="mt-2">
                 <button className="flex items-center rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none">
