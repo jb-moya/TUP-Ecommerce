@@ -21,7 +21,7 @@ import { authenticateUser } from "../middleware/authentication.js";
 // might combine the authorizeSeller and authenticateUser middleware into one middleware
 router
     .route("/")
-    .get(getAllProducts)
+    .get([authenticateUser, authorizePermissions("admin")], getAllProducts)
     .post([authenticateUser, authorizePermissions("seller")], createProduct);
 router
     .route("/:id")

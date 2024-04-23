@@ -7,11 +7,6 @@ import { StatusCodes } from "http-status-codes";
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
     console.log("req.user", req.user);
 
-    
-
-    // res.status(StatusCodes.OK).json({ msg: "getSingleProduct works" });
-    // return;
-
     const {
         user: { userId },
         params: { id: productID },
@@ -21,17 +16,13 @@ const getSingleProduct = asyncWrapper(async (req, res, next) => {
         createdBy: userId,
     });
 
-    // const product = await Product.findOne({ _id: productID });
-
     if (!product) {
         return next(
             createCustomError(`No product with id : ${productID}`, 404)
         );
     }
 
-    // res.status(200).json({ product, amount: 1});
     res.status(StatusCodes.OK).json({ product });
-    // res.status(200).json({ status: "success", data: { product } });
 });
 
 const createProduct = asyncWrapper(async (req, res, next) => {
@@ -40,11 +31,8 @@ const createProduct = asyncWrapper(async (req, res, next) => {
     req.body.createdBy = req.user.userId;
 
     const product = await Product.create(req.body);
-    // res.status(201).json({ product });
+
     res.status(StatusCodes.CREATED).json({ product });
-    // res.status(201).json({ reqBody: req.user });
-    // {product} === {product: product}
-    // res.status(StatusCodes.CREATED);
 });
 
 const tempProductRoute = async (req, res) => {
@@ -61,15 +49,9 @@ const tempProductRoute = async (req, res) => {
     // {product} === {product: product}
 };
 
-// if (req.user.role === "seller") {
-//     products = await Product.find({ createdBy: req.user.userId }).sort(
-//         "createdAt"
-//     );
-// }
 // FOR SELLER ONLY
 const getAllProducts = asyncWrapper(async (req, res, next) => {
     let products;
-
 
     const { featured, name, sort, fields, numericFilters } = req.query;
     const queryObject = {};

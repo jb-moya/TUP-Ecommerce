@@ -13,12 +13,12 @@ import {
 
 router
     .route("/")
-    .get(getAllCarts)
+    .get([authenticateUser, authorizePermissions("admin")], getAllCarts)
     .post([authenticateUser, authorizePermissions('customer')], createCart);
 
 router
     .route("/:id")
-    .get(authenticateUser, getSingleCart)
+    .get([authenticateUser, authorizePermissions("admin")], getSingleCart)
     .patch([authenticateUser, authorizePermissions('customer')], updateCart)
     .delete([authenticateUser, authorizePermissions('customer')], deleteCart);
 

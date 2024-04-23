@@ -4,15 +4,21 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
-const userSchema = new mongoose.Schema({
-    name: {
+const customerSchema = mongoose.Schema ({
+    firstName: {
         type: String,
         required: [true, "Name is required"],
         trim: true,
         maxlength: [40, "Name cannot be more than 40 characters"],
         minlength: [3, "Name cannot be less than 3 characters"],
     },
-
+    lastName: {
+        type: String,
+        required: [true, "Name is required"],
+        trim: true,
+        maxlength: [40, "Name cannot be more than 40 characters"],
+        minlength: [3, "Name cannot be less than 3 characters"],
+    },   
     email: {
         type: String,
         required: [true, "Email is required"],
@@ -24,108 +30,103 @@ const userSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
     },
-
     password: {
         type: String,
         required: [true, "Password is required"],
         minlength: [6, "Password cannot be less than 6 characters"],
-        // maxlength: [12, "Password cannot be more than 15 characters"],
     },
-
     role: {
         type: String,
-        default: "user",
-        enum: {
-            values: ["customer", "seller", "admin"],
-            message: "Please select a valid role",
-        },
+        required: true
     },
-});
-
-// ` WORK IN PROGRESS `
-const customerSchema = new Schema ({
-    name: {
+    
+    gender: {
         type: String,
-        required: [true, "Name is required"],
-        trim: true,
-        maxlength: [40, "Name cannot be more than 40 characters"],
-        minlength: [3, "Name cannot be less than 3 characters"],
-    },
-    email: {
-        type: String,
-        required: [true, "Email is required"],
-        match: [
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            "Please provide a valid email",
-        ],
-        unique: true,
-        trim: true,
-        lowercase: true,
+        default: '',
     },
     dateOfBirth: {
         type: Date,
-        required: [true, "Date of Birth is required"],
+        default: '',
     },
     contactNumber: {
         type: String,
-        required: [true, "Contact number is required"],
+        default: '',
         match: [
-            /^[0-9]{10}$/,
-            "Please provide a valid 10-digit contact number",
+            /^(\+63|0)[0-9]{10}$/,
+            "Please provide a valid Philippine contact number starting with +63 or 0 and followed by 10 digits",
         ],
     },
-    password: {
+    image: {
         type: String,
-        required: [true, "Password is required"],
-        minlength: [6, "Password cannot be less than 6 characters"],
-        // maxlength: [12, "Password cannot be more than 15 characters"],
+        default: '', // Optional field
     },
-    role: {
-        type: String,
-        default: "customer"
-    }
 });
 
-const organizationSchema = new Schema ({
-    name: {
+const organizationSchema = mongoose.Schema ({
+    orgName: {
         type: String,
         required: [true, "Name is required"],
         trim: true,
         maxlength: [100, "Name cannot be more than 100 characters"],
         minlength: [3, "Name cannot be less than 3 characters"],
     },
-    credentials: [{
-        email: {
+    email: {
+        type: String,
+        required: [true, "Email is required"],
+        match: [
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            "Please provide a valid email",
+        ],
+        unique: true,
+        trim: true,
+        lowercase: true,
+    },
+    password: {
+        type: String,
+        required: [true, "Password is required"],
+        minlength: [6, "Password cannot be less than 6 characters"],
+    },
+    sellerRoles: [{
+        username: {
             type: String,
-            required: [true, "Email is required"],
-            match: [
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                "Please provide a valid email",
-            ],
             unique: true,
-            trim: true,
-            lowercase: true,
         },
         password: {
             type: String,
-            required: [true, "Password is required"],
             minlength: [6, "Password cannot be less than 6 characters"],
         },
     }],
     role: {
         type: String,
-        default: "seller"
-    }
+        required: true
+    },
+
+    contactNumbers: [{
+        type: String,
+        required: false,
+        match: [
+            /^[0-9]{10}$/,
+            "Please provide a valid 10-digit contact number",
+        ],
+    }],
+    emails: [{
+        type: String,
+        required: false,
+        match: [
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            "Please provide a valid email",
+        ],
+        unique: true,
+        trim: true,
+        lowercase: true,
+    }],
+    image: {
+        type: String,
+        default: '',
+    },
 });
 
-const adminSchema = new Schema ({
-    name: {
-        type: String,
-        required: [true, "Name is required"],
-        trim: true,
-        maxlength: [100, "Name cannot be more than 100 characters"],
-        minlength: [3, "Name cannot be less than 3 characters"],
-    },
+const adminSchema = mongoose.Schema ({
     email: {
         type: String,
         required: [true, "Email is required"],
@@ -144,7 +145,7 @@ const adminSchema = new Schema ({
     },
     role: {
         type: String,
-        default: "admin"
+        required: true
     }
 });
 
@@ -159,7 +160,7 @@ customerSchema.pre("save", async function (next) {
 
 customerSchema.methods.createJWT = function () {
     return jwt.sign(
-        { userId: this._id, name: this.name, role: this.role },
+        { userId: this._id, firstName: this.firstName, lastName: this.lastName,role: this.role },
         process.env.JWT_SECRET,
         {
             expiresIn: process.env.JWT_LIFETIME,
@@ -167,8 +168,12 @@ customerSchema.methods.createJWT = function () {
     );
 };
 
-customerSchema.methods.getName = function () {
-    return this.name;
+customerSchema.methods.getFirstName = function () {
+    return this.firstName;
+};
+
+customerSchema.methods.getLastName = function () {
+    return this.lastName;
 };
 
 customerSchema.methods.getPassword = function () {
@@ -181,21 +186,17 @@ customerSchema.methods.comparePassword = async function (candidatePassword) {
 };
 
 organizationSchema.pre("save", async function (next) {
-    if (!this.isModified("credentials")) {
+    if (!this.isModified("password")) {
         return next();
     }
     const salt = await bcrypt.genSalt(10);
-    const hashedCredentials = await Promise.all(this.credentials.map(credential => ({
-        email: credential.email,
-        password: bcrypt.hash(credential.password, salt),
-    })));
-    this.credentials = hashedCredentials;
+    this.password = await bcrypt.hash(this.password, salt);
     next();
 });
 
 organizationSchema.methods.createJWT = function () {
     return jwt.sign(
-        { userId: this._id, name: this.name, role: this.role },
+        { userId: this._id, name: this.orgName, role: this.role },
         process.env.JWT_SECRET,
         {
             expiresIn: process.env.JWT_LIFETIME,
@@ -204,18 +205,22 @@ organizationSchema.methods.createJWT = function () {
 };
 
 organizationSchema.methods.getName = function () {
-    return this.name;
+    return this.orgName;
 };
 
-organizationSchema.methods.compareCredentials = async function (email, password) {
-    const credential = this.credentials.find(cred => cred.email === email);
-    if (!credential) {
-        return false; // Email not found
-    }
-
-    const isMatch = await bcrypt.compare(password, credential.password);
+organizationSchema.methods.comparePassword = async function (candidatePassword) {
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
 };
+
+adminSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        return next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
 
 adminSchema.methods.createJWT = function () {
     return jwt.sign(
@@ -239,42 +244,9 @@ adminSchema.methods.comparePassword = async function (candidatePassword) {
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
 };
-// ^ WORK IN PROGRESS ^
 
-
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) {
-        // next();
-        return
-    }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    // next();
-});
-
-userSchema.methods.createJWT = function () {
-    return jwt.sign(
-        { userId: this._id, name: this.name, role: this.role },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: process.env.JWT_LIFETIME,
-        }
-    );
+export default {
+    Customer: mongoose.model("Customer", customerSchema),
+    Organization: mongoose.model("Organization", organizationSchema),
+    Admin: mongoose.model("Admin", adminSchema)
 };
-
-userSchema.methods.getName = function () {
-    return this.name;
-};
-
-userSchema.methods.getPassword = function () {
-    return this.password;
-};
-
-userSchema.methods.comparePassword = async function (candidatePassword) {
-    const isMatch = await bcrypt.compare(candidatePassword, this.password);
-
-    // return await bcrypt.compare(candidatePassword, this.password);
-    return isMatch;
-};
-
-export default mongoose.model("User", userSchema);
