@@ -9,7 +9,7 @@
   export const ProductSample = [
     {
       
-      title: "Brief ni Gaspar",
+      title: "Damit ni Gaspar",
       price: "₱100.00",
       backgroundImage: SpaceCity9,
     },
@@ -20,7 +20,7 @@
     },
     {
      
-        title: "One of a kind libag",
+        title: "One of a kind wallet",
         price: "₱80.00",
       backgroundImage: SpaceCity6,
     },
@@ -32,12 +32,12 @@
     },
     {
       
-      title: "Pangkamot sa singit",
+      title: "Toy Car",
       price: "₱200.00",
       backgroundImage: SpaceCity5,
     },
     {
-      title: "Maluwag na panty",
+      title: "Dress",
       price: "₱69.00",
       backgroundImage: SpaceCity8,
     },
