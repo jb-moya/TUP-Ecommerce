@@ -19,11 +19,11 @@ const CollegeHomeSection = ({ title }) => {
             <Swiper
                 breakpoints={{
                     340: {
-                        slidesPerView: 3,
+                        slidesPerView: 2,
                         spaceBetween: 10,
                     },
                     700: {
-                        slidesPerView: 4,
+                        slidesPerView: 3,
                         spaceBetween: 10,
                     },
                 }}
@@ -32,14 +32,13 @@ const CollegeHomeSection = ({ title }) => {
                     clickable: true,
                 }}
                 modules={[FreeMode, Pagination]}
-                className="max-w-[90%] lg:max-w-[70%]"
+                className="max-w-[90%] lg:max-w-[70%] "
             >
                 {ServiceData.map((item) => (
                     <SwiperSlide
                         key={item.title}
-                        className=""
                     >
-                        <div className="flex flex-col gap-6 mx-auto mb-12 group relative shadow-lg text-white rounded-xl px-6 py-8 h-[220px] w-[195px] lg:h-[350px] lg:w-[300px] overflow-hidden cursor-pointer">
+                        <div className="flex flex-col gap-6 mx-auto mb-12 group relative shadow-lg text-white rounded-xl px-6 py-8 h-[220px] w-[295px] lg:h-[350px] lg:w-[300px] overflow-hidden cursor-pointer">
                             <div
                                 className="absolute inset-0 bg-cover bg-center flex items-center justify-center"
                                 style={{

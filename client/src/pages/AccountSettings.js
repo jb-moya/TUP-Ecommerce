@@ -1,6 +1,7 @@
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { UserAccountDetails, UserPassword } from "../components/AccountDetails";
+import {SellerSettings} from "../components/SellerSettings";
 
 export const CustomerAccountSettings = () => {
   return (
@@ -24,38 +25,9 @@ export const CustomerPasswordSettings = () => {
 
 export const SellerAccountSettings = () => {
   return (
-    <div>
+    <div className="mt-28">
     <NavBar />
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <p>sa seller to hahaha</p>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
+    <SellerSettings />
     <Footer />
     </div>
   );

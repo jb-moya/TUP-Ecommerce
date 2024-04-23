@@ -128,10 +128,10 @@ const ProductDetailPage = (props) => {
                     <div className="w-full flex h-min">
                         <div className="w-7/12">
                             <div className="text-3xl px-8 font-bold text-[#211c6a]">
-                                MIDO
+                                PRODUCT NAME
                             </div>
                             <div className="px-8 text-base font-light leading-none">
-                                Pero MIDO talaga 'to ni Aleng Mare, inarbor lang
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci accusamus
                             </div>
                         </div>
                         <div className="w-5/12 text-right">
@@ -211,9 +211,7 @@ const ProductDetailPage = (props) => {
                         Product Details
                     </div>
                     <div className="px-8">
-                        Medyo gamit na. 4 years na ata to ewan ko. Marami rin
-                        gumagamit, sabay sabay kasi kami hehe ULUL afasdf
-                        asdjflk;jasdlk;fj as;ldkfj Lorem ipsum dolor sit, amet
+                        Lorem ipsum dolor sit, amet
                         consectetur adipisicing elit. Quas facere ut molestias
                         soluta! Placeat repellendus eum minima est. Perspiciatis
                         expedita corporis dolorem repellat. Repellat corporis
