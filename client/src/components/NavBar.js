@@ -90,11 +90,11 @@ const NavBar = () => {
                 </ul>
 
                 <div className="flex p-2 items-center justify-between">
-                    <div className="pr-4">
-                        <FaShoppingCart className="hover:scale-110" size={28} />
+                    <div className="pr-4 cursor-pointer">
+                        <FaShoppingCart className="hover:scale-110 transition duration-200 ease-in-out" size={28} />
                     </div>
                     <div className="pr-6 cursor-pointer" onClick={handleNav}>
-                        <FaSearch className="hover:scale-110" size={28} />
+                        <FaSearch className="hover:scale-110 transition duration-200 ease-in-out" size={28} />
                     </div>
 
                     <div

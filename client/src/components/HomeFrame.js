@@ -21,13 +21,13 @@ const HomeFrame = () => {
     <div className='text-white items-center bg-[#211C6A] pt-[96px]'>
      
       <div class="hidden md:block absolute top-0 right-0 w-[690px] h-[600px] bg-[#EFEFEF] rounded-bl-full"></div>
-      <img className='absolute h-[400px] w-[400px] left-[970px] top-[200px]' src={cartCartoon} loading="lazy" />
-      <img className='absolute h-[100px] w-[100px] left-[1350px] top-[500px]' src={basketCartoon} loading="lazy" />
-      <img className='absolute h-[100px] w-[100px] left-[1380px] top-[200px]' src={bagCartoon} loading="lazy" />
-      <img className='absolute h-[100px] w-[100px] left-[1150px] top-[100px]' src={hangerCartoon} loading="lazy" />
+      <img className='absolute h-[400px] w-[400px] left-[900px] top-[200px]' src={cartCartoon} loading="lazy" />
+      <img className='absolute h-[100px] w-[100px] left-[1290px] top-[500px]' src={basketCartoon} loading="lazy" />
+      <img className='absolute h-[100px] w-[100px] left-[1320px] top-[200px]' src={bagCartoon} loading="lazy" />
+      <img className='absolute h-[100px] w-[100px] left-[1090px] top-[100px]' src={hangerCartoon} loading="lazy" />
 
-      <div className='flex w-full h-[680px] max-w-[1240px] mx-auto select-none items-center z-1'>
-        <div className='hidden md:flex flex-col mt-[-150px]'>
+      <div className='flex w-full h-[600px] max-w-[1240px] mx-auto select-none items-center z-1'>
+        <div className='hidden md:flex flex-col mt-[-100px]'>
           <h1 className='font-bold text-4xl'>
             Elevate Your University Experience
           </h1>
@@ -43,7 +43,7 @@ const HomeFrame = () => {
             </button>
         </div>
 
-        <div className='hidden md:block absolute left-[35%] right-[35%] top-[650px]'>
+        <div className='hidden md:block absolute left-[35%] right-[35%] top-[590px]'>
           <div className='flex items-center justify-between mb-3'>
             <MdComputer size={50} />
             <hr className="border-t-2 border-white w-[120px] z-50 mx-2 " />

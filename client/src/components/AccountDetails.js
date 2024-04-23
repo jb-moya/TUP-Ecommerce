@@ -76,7 +76,7 @@ export const UserAccountDetails = () => {
                     <p className="mb-6">Date of Birth</p>
                     <p className="mb-3"></p>
                     </div>
-                    <div className="w-3/4 flex-wrap flex flex-wrap flex-col px-5 py-6">
+                    <div className="w-3/4 flex-wrap flex flex-col px-5 py-6">
                     <div>
                         <input className="w-11/12 mb-5 h-6 border" type="text" />
                     </div>
