@@ -35,7 +35,7 @@ function App() {
                     <Route path="/product" element={<ProductDetail />} />
                     <Route path="/customeraccount" element={<CustomerAccountSettings/>}/>
                     <Route path="/customeraccount=password" element={<CustomerPasswordSettings/>}/>
-                    <Route path="/adc231" element={<SellerAccountSettings/>}/>
+                    <Route path="/selleraccount" element={<SellerAccountSettings/>}/>
                     <Route path="/org" element={<Organization  />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
