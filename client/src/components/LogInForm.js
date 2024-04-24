@@ -3,19 +3,51 @@ import TMCLogo from '../Assets/Logo.png'
 import InputField from './InputField';
 import { FaEye, FaEyeSlash} from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import { LoginFailure } from './AUTHENTICATION/Failure';
 
 const LogInForm = () => {
 
-  const [showPassword, setPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
 
+  const [showPassword, setPassword] = useState(false)
+  const [loginErrorMessage, setLoginErrorMessage] = useState('');
+  
   const handleShowPassword = () =>{
     setPassword(!showPassword)
   }
 
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:5000/api/v1/auth/login', formData)
+    .then(res => {
+      setTimeout(() => {
+        navigate('/'); // GO TO HOME PAGE
+      }, 1000);   
+    }).catch(err => {
+      if (err.response && err.response.data && err.response.data.error) {
+        setLoginErrorMessage(err.response.data.error); 
+      } else {
+        setLoginErrorMessage('An error occurred. Please try again.'); 
+      }
+    })
+  };
+
   const handleClick = () => {
-    // Navigate to the desired route
     navigate('/signup');
   };
 
@@ -23,7 +55,7 @@ const LogInForm = () => {
     
     <div className='text-[#211C6A] items-center mt-[96px]'>
 
-     <form className='flex flex-col max-w-[800px] w-full h-full mx-auto text-center items-center select-none'>
+     <form onSubmit={handleSubmit} className='flex flex-col max-w-[800px] w-full h-full mx-auto text-center items-center select-none'>
         <img 
             className='w-56 h-56'
             src={TMCLogo}
@@ -34,11 +66,17 @@ const LogInForm = () => {
         <h4 className='w-[420px]'> Hey, welcome back! Ready to score some awesome deals? Let's dive in
                 and find the perfect ones for you!</h4>
 
-        <div className='flex-start flex-col mt-[28px] w-[560px] text-left px-4 items-center'>
+        {loginErrorMessage && <LoginFailure errorMessage={loginErrorMessage}/>}
+
+        <div className='flex-start flex-col mt-[5px] w-[560px] text-left px-4 items-center'>
            <h3 className='font-bold pb-1 px-2'>Email Address</h3>
            <InputField 
-                type="Email"
-                placeholder="Enter your email address"/>
+                type="text"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email address"
+            />
             <div className='flex items-center w-full justify-between px-2'>
                 <h3 className='font-bold pb-1'>Password</h3>
                 <span onClick={handleShowPassword}>
@@ -46,8 +84,12 @@ const LogInForm = () => {
                     </span>
             </div>
             <InputField 
-                    type={!showPassword ? "Password" : "Email" }
-                    placeholder="Enter your password"/>
+                type={!showPassword ? "Password" : "text" }
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+            />
         </div>
 
         <div className='flex flex-col mt-4 items-center w-[560px] px-2'>
@@ -59,8 +101,6 @@ const LogInForm = () => {
                 CREATE AN ACCOUNT
             </button>
         </div>
-        
-
         </form>
 
       

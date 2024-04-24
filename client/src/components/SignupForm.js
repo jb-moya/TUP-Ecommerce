@@ -3,6 +3,10 @@ import TMCLogo from '../Assets/Logo.png'
 import { FaEye, FaEyeSlash} from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import InputField from './InputField';
+import axios from 'axios';
+
+import { RegistrationSuccess } from './AUTHENTICATION/Success';
+import { RegistrationFailure } from './AUTHENTICATION/Failure';
 
 const SignupForm = () => {
 
@@ -12,11 +16,15 @@ const SignupForm = () => {
     dateOfBirth: '',
     email: '',
     contactNumber: '',
-    password: ''
+    password: '',
+    role: 'customer'
   });
 
   const [showPassword, setPassword] = useState(false)
   const [showConfirmPassword, setConfirmPassword] = useState(false)
+
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [registrationErrorMessage, setRegistrationErrorMessage] = useState('');
 
   const handleShowPassword = () =>{
     setPassword(!showPassword)
@@ -35,16 +43,29 @@ const SignupForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(JSON.stringify(formData, null, 2));
-    //setSubmittedData(formData);
+    axios.post('http://localhost:5000/api/v1/auth/register', formData)
+    .then(res => {
+      setRegistrationSuccess(true);
+    }).catch(err => {
+      if (err.response && err.response.data && err.response.data.error) {
+        setRegistrationErrorMessage(err.response.data.error); 
+      } else {
+        setRegistrationErrorMessage('An error occurred. Please try again.'); 
+      }
+    })
   };
 
   const handleClick = () => {
     // Navigate to the desired route
     navigate('/login');
   };
+
+  const handleTryAgainClick = () => {
+    setRegistrationErrorMessage(''); // Reset the errorMessage state
+  };
+
   return (
 
   <div className='text-[#211C6A] mt-[96px]'>
@@ -133,7 +154,8 @@ const SignupForm = () => {
           </div>
           
           </form>
-      
+          {registrationSuccess && <RegistrationSuccess />}
+          {registrationErrorMessage && <RegistrationFailure errorMessage={registrationErrorMessage} onTryAgainClick={handleTryAgainClick} />}
       </div>
   )
 }
