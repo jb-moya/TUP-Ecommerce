@@ -63,7 +63,7 @@ const LogInForm = () => {
             loading='lazy'/>
 
         <h2 className='w-96 text-2xl mt-[-26px] font-bold p-2'>Login</h2>
-        <h4 className='w-[420px]'> Hey, welcome back! Ready to score some awesome deals? Let's dive in
+        <h4 className='w-[420px] mb-4'> Hey, welcome back! Ready to score some awesome deals? Let's dive in
                 and find the perfect ones for you!</h4>
 
         {loginErrorMessage && <LoginFailure errorMessage={loginErrorMessage}/>}

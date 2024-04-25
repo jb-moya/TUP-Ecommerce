@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar";
+import {NavBar} from "../components/NavBar.js";
 import SignupForm  from "../components/SignupForm";
 import Footer from "../components/Footer";
 

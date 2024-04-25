@@ -1,13 +1,14 @@
 import React from 'react'
-import NavBar from "../components/NavBar"
+import {ColoredNavBar} from "../components/NavBar.js";
 import Footer from "../components/Footer";
-import OrganizationSection from '../components/OrganizationSection';
+import OrganizationFrame from '../components/OrganizationFrame.js';
+
 
 const OrganizationPage = () => {
   return (
     <div>
-    <NavBar />
-    <OrganizationSection />
+    <ColoredNavBar />
+    <OrganizationFrame />
     <Footer />
     </div>
   )

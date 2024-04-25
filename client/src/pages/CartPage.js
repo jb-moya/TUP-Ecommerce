@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import CartContainer from "../components/CartContainer";
-import NavBar from "../components/NavBar";
+import {NavBar} from "../components/NavBar.js";
 import Footer from "../components/Footer";
 import CheckOut from "../components/CheckOut";
 

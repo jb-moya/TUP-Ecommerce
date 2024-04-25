@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 // import LogInForm from "../components/StudentLogInForm.js";
 import ProductCard from "../components/ProductCard.js";
-import NavBar from "../components/NavBar.js";
+import {NavBar} from "../components/NavBar.js";
 import CustomButton from "../components/Button.js";
 import axios from "axios";
 import Footer from "../components/Footer.js";
 import { ProgressBar, Container, Row, Col } from "react-bootstrap";
 import HomeFrame from "../components/HomeFrame.js";
-import CollegeHomeFrame from '../components/CollegeHomeFrame.js'
+
+
+
 
 const Home = () => {
     return (
         <div>
-            <NavBar />
+            <NavBar /> 
             <HomeFrame />
-            <CollegeHomeFrame />
             <Footer />
         </div>
     );

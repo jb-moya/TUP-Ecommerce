@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../components/NavBar.js";
+import {NavBar} from "../components/NavBar.js";
 import ImageSwiper from "../components/Swiper.js";
 import StarRating from "../components/StarRating.js";
 import image from "../components/images/lake-louise-51543_1280.jpg";
