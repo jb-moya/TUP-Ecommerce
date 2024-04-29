@@ -1,6 +1,6 @@
 const DropDownMenu = ({ label, options, selectedOption, onSelectOption }) => {
     return (
-        <div className="relative inline-block group pr-4 pb-4">
+        <div className="relative inline-block group pr-4 pb-4 z-10">
             <button className="w-[140px] py-1 rounded text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
                 {options[selectedOption] || label}
             </button>

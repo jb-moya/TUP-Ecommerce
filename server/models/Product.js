@@ -47,8 +47,7 @@ const productSchema = new mongoose.Schema(
             maxlength: [40, "Name cannot be more than 40 characters"],
         },
         price: {
-            type: [Number],
-            required: [true, "Price is required"],
+            type: Number,
         },
         featured: {
             type: Boolean,

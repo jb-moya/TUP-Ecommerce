@@ -36,13 +36,10 @@ const VariationHolder = ({
 
             <button
                 type="button"
-                className="absolute bottom-[100%] left-[100%]"
+                className="absolute bottom-[85%] left-[95%]"
                 onClick={() => handleRemoveVariation(index)}
             >
-                <MdCancel
-                    size={25}
-                    className="text-white drop-shadow-md hover:text-red-600"
-                />
+                remove
             </button>
         </div>
     );

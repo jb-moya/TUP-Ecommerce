@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import defaultProductImage from "../Assets/NoImage.png";
 import convertToBase64 from "./utils/convertToBase64";
 import axios from "axios";
@@ -27,6 +27,7 @@ const productCategories = {
 };
 
 export const SellerSettings = () => {
+    const priceRef = useRef(null);
     const [selectedCategory, setSelectedCategory] = useState(
         productCategories[16]
     );
@@ -65,8 +66,41 @@ export const SellerSettings = () => {
     // }, [postImage]);
 
     useEffect(() => {
+        // calculate the range of prices of the variation, edit the priceRef
+        console.log("priceRef: ", priceRef.current);
+
+        // check if theres only one variation
+        if (variation.length === 1) {
+            priceRef.current.value = variation[0].price;
+        } 
+
+        if (variation.length > 1) {
+            let minPrice = Number.MAX_VALUE;
+            let maxPrice = Number.MIN_VALUE;
+            
+            variation.forEach((item) => {
+                const price = parseFloat(item.price);
+                if (price < minPrice) {
+                    minPrice = price;
+                }
+
+                if (price > maxPrice) {
+                    maxPrice = price;
+
+                }
+
+                // check if price is null or undefined
+                if (isNaN(price)) {
+                    minPrice = 0;
+                    maxPrice = 0;
+                }
+            });
+
+            priceRef.current.value = `${minPrice} - ${maxPrice}`;
+        }
+
         console.log("variation: ", variation);
-    }, [variation]);
+    }, [variation, priceRef]);
 
     const handleAddImage = () => {
         setPostImage((prev) => [
@@ -125,7 +159,6 @@ export const SellerSettings = () => {
     };
 
     const handleVariationNameChange = (e, index) => {
-        console.log("handleVariationNameChange")
         setVariation((prev) => {
             const newVariation = [...prev];
             newVariation[index].name = e.target.value;
@@ -135,7 +168,6 @@ export const SellerSettings = () => {
     };
 
     const handleVariationPriceChange = (e, index) => {
-        console.log("Price")
         setVariation((prev) => {
             const newVariation = [...prev];
             newVariation[index].price = e.target.value;
@@ -145,7 +177,6 @@ export const SellerSettings = () => {
     };
 
     const handleVariationStockChange = (e, index) => {
-        console.log("Stock")
         setVariation((prev) => {
             const newVariation = [...prev];
             newVariation[index].stock = e.target.value;
@@ -191,11 +222,10 @@ export const SellerSettings = () => {
                         className="flex flex-row flex-wrap"
                         onSubmit={handleSubmit}
                     >
-                        {/* {imageHolders} */}
                         {postImage.map((item) => (
                             <div className="relative" key={item.key}>
                                 <ImageHolder
-                                    key={item.key} // Use the key from item
+                                    key={item.key}
                                     index={item.key}
                                     handleFileUpload={handleFileUpload}
                                     source={item.base64}
@@ -241,8 +271,11 @@ export const SellerSettings = () => {
 
                 <div>
                     <input
+                        ref={priceRef}
                         className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5"
                         type="text"
+                        // disable if one variaiton is added
+                        disabled={variation.length > 0}
                     />
                 </div>
 
@@ -272,6 +305,8 @@ export const SellerSettings = () => {
                         cols="80"
                     />
                 </div>
+
+                <button className="border-2 w-full h-10 p-2 hover:bg-pink-600"> CONFIRM ADD PRODUCT</button>
             </div>
         </div>
     );
