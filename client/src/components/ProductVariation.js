@@ -11,7 +11,7 @@ const ToggleButtonsComponent = ({ id, options, variationClass }) => {
 
     return (
         <div className="w-full flex mt-4">
-            <div className="w-3/12 pl-8 pr-4 text-sm break-normal font-medium text-[#211c6a]">
+            <div className="w-3/12 pl-8 pr-4 text-sm break-normal self-center font-medium text-[#211c6a]">
                 {variationClass}
             </div>
             <form className="w-9/12 flex flex-wrap pr-8">

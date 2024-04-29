@@ -27,7 +27,7 @@ const HomeFrame = () => {
 
     const navigate = useNavigate();
 
-    const handleClick = () => {
+    const handleSignUpClick = () => {
         // Navigate to the desired route
         navigate('/signup');
     };
@@ -69,7 +69,7 @@ const HomeFrame = () => {
                         Show your school pride and support your peers with every purchase. <br />
                         Let's elevate our campus experience together!
                     </p>
-                    <button onClick={handleClick} className='border border-[#211C6A] text-[#211C6A] mt-5 hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]'>
+                    <button onClick={handleSignUpClick} className='border border-[#211C6A] text-[#211C6A] mt-5 hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]'>
                         Sign Up
                     </button>
                 </div>
@@ -206,7 +206,7 @@ const HomeFrame = () => {
                 </h1>
                 <hr className='border-[#211C6A]'></hr>
                 <div className='grid grid-cols-6 gap-4 m-4'>
-                <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -218,7 +218,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -230,7 +230,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -242,7 +242,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -254,7 +254,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -266,7 +266,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -278,7 +278,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -290,7 +290,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -302,7 +302,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -314,7 +314,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -326,7 +326,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -338,7 +338,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -350,7 +350,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -362,7 +362,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -374,7 +374,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -386,7 +386,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -398,7 +398,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
@@ -410,7 +410,7 @@ const HomeFrame = () => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col h-[250px] border border-[#211C6A]">
+                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img className="h-[150px] w-full" src={imgUrl()} alt="Logo Here" loading="lazy" />
                         <div className='flex flex-col m-2 text-sm overflow-hidden'>
                             <p className='line-clamp-2'>
