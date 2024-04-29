@@ -24,7 +24,7 @@ function App() {
 
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
-
+    // 662f45a2754796a0ccf03c71
     return (
         <div className="box-border">
             <BrowserRouter>
@@ -33,6 +33,7 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/product" element={<ProductDetail />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
                     <Route path="/customeraccount" element={<CustomerAccountSettings/>}/>
                     <Route path="/customeraccount=password" element={<CustomerPasswordSettings/>}/>
                     <Route path="/selleraccount" element={<SellerAccountSettings/>}/>

@@ -4,11 +4,12 @@ import connectDB from "./db/connect.js";
 // might use express-async-errors
 
 import express from "express";
+import bodyParser from "body-parser";
 // import connection from "./database.js";
 // import mockPool from "./__mocks__/MockDatabase.js";
 // import Query from "./Query.js";
 import cors from "cors";
-// import CustomerRouter from "./routes/CustomerRoute.js";
+// import CustomerRouter from "./routes/CustomerRoute.js";1
 import CartRouter from "./routes/CartRoute.js";
 import OrderRouter from "./routes/OrderRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
@@ -35,6 +36,8 @@ app.use(
     })
 );
 
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 

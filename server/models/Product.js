@@ -22,10 +22,10 @@ const productCategories = [
 const productVariationSchema = new mongoose.Schema({
     sku: {
         type: String,
-        required: [true, "SKU is required"],
+        // required: [true, "SKU is required"],
     },
     name: {
-        type: mongoose.Schema.Types.Mixed,
+        type: String,
         required: [true, "Option is required"],
     },
     price: {
@@ -53,10 +53,6 @@ const productSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        variationClass: {
-            type: [String],
-            default: [],
-        },
         description: {
             type: String,
             required: [true, "Please provide product description"],
@@ -73,10 +69,10 @@ const productSchema = new mongoose.Schema(
         category: {
             type: String,
             required: [true, "Please select a category"],
-            enum: {
-                values: productCategories,
-                message: "{VALUE} is not valid category",
-            },
+            // enum: {
+            //     values: productCategories,
+            //     message: "{VALUE} is not valid category",
+            // },
         },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
@@ -102,7 +98,7 @@ const productSchema = new mongoose.Schema(
 
         // Or each organization can only have one account, and that account can have multiple roles?
     },
-    { timestamps: true }
+    { timestamps: true}
 );
 
 export default mongoose.model("Product", productSchema);

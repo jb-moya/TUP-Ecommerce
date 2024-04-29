@@ -7,7 +7,8 @@ const authenticateUser = async (req, res, next) => {
     // console.log("res", res);
     // console.log("req.cookies", req.cookies);
     // console.log("req.signedCookies", req.signedCookies);
-
+    // console.log('req', req)
+    console.log("req", req.cookies);
     const token = req.signedCookies.token;
 
     // const token = req.headers.authorization.split(" ")[1];
@@ -18,7 +19,6 @@ const authenticateUser = async (req, res, next) => {
         throw new UnauthenticatedError("Authentication invalid");
     }
 
-    
     try {
         const { name, userId, role } = jwt.verify(
             token,

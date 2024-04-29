@@ -26,11 +26,35 @@ const productCategories = {
     16: "Other",
 };
 
+const example = {
+    name: "Smartphone",
+    featured: true,
+    description: "A powerful smartphone with advanced features",
+    variation: [
+        {
+            sku: "ABC123",
+            name: "hehe",
+            price: 799.99,
+            stock: 10,
+        },
+    ],
+    category: "Electronics",
+};
+
 export const SellerSettings = () => {
     const priceRef = useRef(null);
-    const [selectedCategory, setSelectedCategory] = useState(
-        productCategories[16]
-    );
+    const [selectedCategory, setSelectedCategory] = useState(16);
+    const [formData, setFormData] = useState({
+        name: "",
+        price: null,
+        featured: false,
+        description: "",
+        variation: [],
+        category: productCategories[16],
+    });
+
+    console.log("Toys: ", productCategories[9]);
+
     const maxImageCount = 4;
     const [postImage, setPostImage] = useState([]);
     const [variation, setVariation] = useState([]);
@@ -61,23 +85,34 @@ export const SellerSettings = () => {
         });
     };
 
-    // useEffect(() => {
-    //     console.log("postImage: ", postImage);
-    // }, [postImage]);
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            image: postImage.filter((item) => item.base64).map((item) => item.base64),
+        }));
+    }, [postImage]);
 
     useEffect(() => {
-        // calculate the range of prices of the variation, edit the priceRef
-        console.log("priceRef: ", priceRef.current);
+        console.log("formData: ", formData);
+    }, [formData]);
 
-        // check if theres only one variation
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            category: productCategories[selectedCategory],
+        }));
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        console.log("priceRef: ", priceRef.current);
         if (variation.length === 1) {
             priceRef.current.value = variation[0].price;
-        } 
+        }
 
         if (variation.length > 1) {
             let minPrice = Number.MAX_VALUE;
             let maxPrice = Number.MIN_VALUE;
-            
+
             variation.forEach((item) => {
                 const price = parseFloat(item.price);
                 if (price < minPrice) {
@@ -86,7 +121,6 @@ export const SellerSettings = () => {
 
                 if (price > maxPrice) {
                     maxPrice = price;
-
                 }
 
                 // check if price is null or undefined
@@ -99,7 +133,11 @@ export const SellerSettings = () => {
             priceRef.current.value = `${minPrice} - ${maxPrice}`;
         }
 
-        console.log("variation: ", variation);
+        // update FormData
+        setFormData((prev) => ({
+            ...prev,
+            variation: variation,
+        }));
     }, [variation, priceRef]);
 
     const handleAddImage = () => {
@@ -127,7 +165,13 @@ export const SellerSettings = () => {
 
     const createPost = async () => {
         try {
-            // ...
+            // send example using axios
+            const response = await axios.post(
+                "http://localhost:5000/api/v1/products",
+                formData
+            );
+
+            console.log(response);
         } catch (error) {
             console.log(error);
         }
@@ -140,6 +184,8 @@ export const SellerSettings = () => {
     };
 
     const handleFileUpload = async (e) => {
+        e.preventDefault(); // Prevent the default behavior of the click event
+
         console.log("e.target index: ", e.target.id);
         console.log("postImage", postImage);
         const file = e.target.files[0];
@@ -155,6 +201,13 @@ export const SellerSettings = () => {
             };
 
             return newPostImage;
+        });
+    };
+
+    const handleChangeProductName = (e) => {
+        setFormData({
+            ...formData,
+            name: e.target.value,
         });
     };
 
@@ -182,6 +235,13 @@ export const SellerSettings = () => {
             newVariation[index].stock = e.target.value;
 
             return newVariation;
+        });
+    };
+
+    const handleDescriptionChange = (e) => {
+        setFormData({
+            ...formData,
+            description: e.target.value,
         });
     };
 
@@ -220,7 +280,7 @@ export const SellerSettings = () => {
                 <div className="flex">
                     <form
                         className="flex flex-row flex-wrap"
-                        onSubmit={handleSubmit}
+                        // onSubmit={handleSubmit}
                     >
                         {postImage.map((item) => (
                             <div className="relative" key={item.key}>
@@ -245,6 +305,7 @@ export const SellerSettings = () => {
 
                         {postImage.length < maxImageCount && (
                             <button
+                                type="button"
                                 className="border-2 w-20 h-20 mx-2 mb-[15px]"
                                 onClick={handleAddImage}
                             >
@@ -257,6 +318,8 @@ export const SellerSettings = () => {
                     <input
                         className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5"
                         type="text"
+                        placeholder="Enter product name"
+                        onChange={handleChangeProductName}
                     />
                 </div>
 
@@ -303,10 +366,18 @@ export const SellerSettings = () => {
                         className="border-2 px-3 w-11/12"
                         rows="5"
                         cols="80"
+                        placeholder="Enter product description"
+                        onChange={handleDescriptionChange}
                     />
                 </div>
 
-                <button className="border-2 w-full h-10 p-2 hover:bg-pink-600"> CONFIRM ADD PRODUCT</button>
+                <button
+                    className="border-2 w-full h-10 p-2 hover:bg-pink-600"
+                    onClick={handleSubmit}
+                >
+                    {" "}
+                    CONFIRM ADD PRODUCT
+                </button>
             </div>
         </div>
     );
