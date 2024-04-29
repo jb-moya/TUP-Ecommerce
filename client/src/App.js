@@ -10,6 +10,7 @@ import Home from "./pages/HomePage.js";
 import About from "./pages/AboutPage.js";
 import Cart from "./pages/CartPage.js";
 import { CustomerAccountSettings, CustomerPasswordSettings, SellerAccountSettings} from "./pages/AccountSettings.js";
+import SellerRegistration from "./pages/SellerRegistration.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
 import Organization from "./pages/OrganizationPage.js";
 import NotFound from "./pages/NotFoundPage.js";
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/customeraccount" element={<CustomerAccountSettings/>}/>
                     <Route path="/customeraccount=password" element={<CustomerPasswordSettings/>}/>
                     <Route path="/selleraccount" element={<SellerAccountSettings/>}/>
+                    <Route path="/sellercenter" element={<SellerRegistration />}/>
                     <Route path="/org" element={<Organization  />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />

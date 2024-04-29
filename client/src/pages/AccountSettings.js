@@ -1,4 +1,4 @@
-import {NavBar} from "../components/NavBar.js";
+import {NavBar, NavbarUser} from "../components/NavBar.js";
 import Footer from "../components/Footer";
 import { UserAccountDetails, UserPassword } from "../components/AccountDetails";
 import {SellerSettings} from "../components/SellerSettings";

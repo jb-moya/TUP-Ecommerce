@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import LogInForm from "../components/StudentLogInForm.js";
 import ProductCard from "../components/ProductCard.js";
-import {NavBar} from "../components/NavBar.js";
+import {NavBar, NavbarUser} from "../components/NavBar.js";
 import CustomButton from "../components/Button.js";
 import axios from "axios";
 import Footer from "../components/Footer.js";
@@ -12,9 +12,12 @@ import HomeFrame from "../components/HomeFrame.js";
 
 
 const Home = () => {
+
+    const isLoggedIn = true;
+    
     return (
         <div>
-            <NavBar /> 
+            {isLoggedIn ? <NavbarUser /> : <NavBar />}
             <HomeFrame />
             <Footer />
         </div>
