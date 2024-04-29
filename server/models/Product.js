@@ -24,7 +24,7 @@ const productVariationSchema = new mongoose.Schema({
         type: String,
         required: [true, "SKU is required"],
     },
-    option: {
+    name: {
         type: mongoose.Schema.Types.Mixed,
         required: [true, "Option is required"],
     },
@@ -35,7 +35,7 @@ const productVariationSchema = new mongoose.Schema({
     stock: {
         type: Number,
         required: [true, "Stock is required"],
-    },
+    }
 });
 
 const productSchema = new mongoose.Schema(
@@ -47,8 +47,7 @@ const productSchema = new mongoose.Schema(
             maxlength: [40, "Name cannot be more than 40 characters"],
         },
         price: {
-            type: [Number],
-            required: [true, "Price is required"],
+            type: Number,
         },
         featured: {
             type: Boolean,
@@ -92,7 +91,10 @@ const productSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-        
+        image: {
+            type: [String],
+            default: [],
+        },
         // Question:
         // What is the way of access of Seller (organization) in this ecommerce.
         // Can they be able to have multiple accounts, with each account having different roles?

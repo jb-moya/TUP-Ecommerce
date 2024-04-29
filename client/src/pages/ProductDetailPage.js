@@ -23,31 +23,19 @@ const exampleProduct = {
         description: "A comfortable sneakers with advanced features",
         variation: [
             {
-                sku: "QRS345",
-                option: {
-                    color: "Red",
-                    size: "Large",
-                },
+                option: "Red, Small",
                 price: 59.99,
                 stock: 10,
                 _id: "65ee78d04cfbe7e546c10545",
             },
             {
-                sku: "TUV678",
-                option: {
-                    color: "Blue",
-                    size: "Large",
-                },
+                option: "Red, Large",
                 price: 59.99,
                 stock: 5,
                 _id: "65ee78d04cfbe7e546c10546",
             },
             {
-                sku: "WXY901",
-                option: {
-                    color: "Black",
-                    size: "Large",
-                },
+                option: "Blue, Small",
                 price: 59.99,
                 stock: 10,
                 _id: "65ee78d04cfbe7e546c10547",
@@ -109,11 +97,11 @@ const ProductDetailPage = (props) => {
     console.log(variations)
 
 
-    // const options2 = [
-    //     { value: "option4", label: "Option 4" },
-    //     { value: "option5", label: "Option 5" },
-    //     { value: "option6", label: "Option 6" },
-    // ];
+    const options2 = [
+        { value: "option4", label: "Option 4" },
+        { value: "option5", label: "Option 5" },
+        { value: "option6", label: "Option 6" },
+    ];
 
     return (
         <div className="mt-32">
@@ -127,11 +115,8 @@ const ProductDetailPage = (props) => {
                 <div className="w-7/12">
                     <div className="w-full flex h-min">
                         <div className="w-7/12">
-                            <div className="text-3xl px-8 font-bold text-[#211c6a]">
-                                PRODUCT NAME
-                            </div>
-                            <div className="px-8 text-base font-light leading-none">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci accusamus
+                            <div className="text-2xl px-8 font-bold text-[#211c6a]">
+                                PRODUCT NAME Lorem ipsum dolor sit amet.
                             </div>
                         </div>
                         <div className="w-5/12 text-right">
@@ -173,11 +158,11 @@ const ProductDetailPage = (props) => {
                             options={options1}
                             variationClass={"Color"}
                         /> */}
-                        {/* <ProductVariation
+                        <ProductVariation
                             id={"component2"}
                             options={options2}
                             variationClass={"Model and Size"}
-                        /> */}
+                        />
                     </div>
                     <div className="mt-8 flex items-center">
                         <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
