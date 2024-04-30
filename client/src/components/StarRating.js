@@ -5,6 +5,7 @@ const StarRating = ({
     staticColor = false,
     defaultRating = null,
     disableAction = false,
+    setStarRating = null,
 }) => {
     const [rating, setRating] = useState(defaultRating);
     const [hover, setHover] = useState(null);
@@ -12,6 +13,9 @@ const StarRating = ({
     const handleStarClick = (ratingValue) => {
         if (!disableAction) {
             setRating(ratingValue);
+            if (setStarRating) {
+                setStarRating(ratingValue);
+            }
         }
     };
 

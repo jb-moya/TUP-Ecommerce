@@ -26,8 +26,14 @@ const RatingAverageBar = ({ star, percentage, count }) => {
     );
 };
 
-const RatingOverview = () => {
+const RatingOverview = ({ handleWriteReview }) => {
+    const [toggleWriteReview, setToggleWriteReview] = useState(false);
     const [barWidth, setBarWidth] = useState([15, 4, 10, 30, 60]);
+
+    const clickWriteReview = () => {
+        setToggleWriteReview(!toggleWriteReview);
+        handleWriteReview(toggleWriteReview);
+    };
 
     return (
         <div className="w-full flex justify-center">
@@ -72,8 +78,12 @@ const RatingOverview = () => {
             </div>
 
             <div className="w-3/12 flex justify-center items-center">
-                <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">
-                    Write a Review
+                <button
+                    type="button"
+                    className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
+                    onClick={clickWriteReview}
+                >
+                    {toggleWriteReview ? "Cancel" : "Write a review"}
                 </button>
             </div>
         </div>

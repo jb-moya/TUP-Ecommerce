@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {NavBar} from "../components/NavBar.js";
+import { NavBar } from "../components/NavBar.js";
 import ImageSwiper from "../components/Swiper.js";
 import StarRating from "../components/StarRating.js";
 import image from "../components/images/lake-louise-51543_1280.jpg";
@@ -11,6 +11,7 @@ import OrderQuantity from "../components/OrderQuantity.js";
 import { rootUrl } from "../App.js";
 import Footer from "../components/Footer.js";
 import axios from "axios";
+import WriteReview from "../WriteReview.js";
 axios.defaults.withCredentials = true;
 
 const exampleProduct = {
@@ -56,6 +57,7 @@ const ProductDetailPage = (props) => {
     const currentPath = location.pathname;
 
     const [quantity, setQuantity] = useState(1);
+    const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
 
     const handleQuantityChange = (newQuantity) => {
         setQuantity(newQuantity);
@@ -78,7 +80,7 @@ const ProductDetailPage = (props) => {
         console.log("cookie", document.cookie);
     }, []);
 
-    const variations = {}
+    const variations = {};
     exampleProduct.product.variation.forEach((variation) => {
         const { option } = variation;
         const optionKeys = Object.keys(option);
@@ -91,11 +93,13 @@ const ProductDetailPage = (props) => {
             } else {
                 variations[key] = [option[key]];
             }
-        });    
+        });
     });
 
-    console.log(variations)
-
+    const handleWriteReview = () => {
+        console.log("Write a review");
+        setIsOpenWriteReview(!isOpenWriteReview);
+    };
 
     const options2 = [
         { value: "option4", label: "Option 4" },
@@ -196,11 +200,11 @@ const ProductDetailPage = (props) => {
                         Product Details
                     </div>
                     <div className="px-8">
-                        Lorem ipsum dolor sit, amet
-                        consectetur adipisicing elit. Quas facere ut molestias
-                        soluta! Placeat repellendus eum minima est. Perspiciatis
-                        expedita corporis dolorem repellat. Repellat corporis
-                        itaque possimus non qui molestias tempora accusamus in
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Quas facere ut molestias soluta! Placeat
+                        repellendus eum minima est. Perspiciatis expedita
+                        corporis dolorem repellat. Repellat corporis itaque
+                        possimus non qui molestias tempora accusamus in
                         obcaecati delectus fugiat quas a ad numquam odit
                         provident ex harum quod et officia dolorum sequi, quae
                         voluptatibus optio! Deserunt nemo eius mollitia debitis,
@@ -252,13 +256,19 @@ const ProductDetailPage = (props) => {
                     <div className="font-semibold text-lg mb-4 leading-relaxed text-[#211c6a]">
                         Product Ratings
                     </div>
-                    <RatingOverview />
+                    <RatingOverview handleWriteReview={handleWriteReview} />
                 </div>
 
                 <hr className="w-full rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
 
-                <div>
-                    <Review />
+                <div className="flex flex-col">
+                    {isOpenWriteReview && (
+                        <WriteReview />
+                    )}
+
+                    <div>
+                        <Review />
+                    </div>
                 </div>
             </div>
 
