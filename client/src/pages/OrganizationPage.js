@@ -9,7 +9,7 @@ const OrganizationPage = () => {
   const isLoggedIn = true;
   return (
     <div>
-    {isLoggedIn ? <ColoredNavBarUser /> : <ColoredNavBar />}
+    {/* {isLoggedIn ? <ColoredNavBarUser /> : <ColoredNavBar />} */}
     <OrganizationFrame />
     <Footer />
     </div>

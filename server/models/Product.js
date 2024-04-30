@@ -74,6 +74,10 @@ const productSchema = new mongoose.Schema(
             //     message: "{VALUE} is not valid category",
             // },
         },
+        soldCount: {
+            type: Number,
+            default: 0,
+        },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

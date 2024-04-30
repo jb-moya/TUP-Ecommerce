@@ -13,7 +13,7 @@ import cors from "cors";
 import CartRouter from "./routes/CartRoute.js";
 import OrderRouter from "./routes/OrderRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
-import UserRouter from "./routes/AuthenticationRoute.js";
+import AuthenticationRoute from "./routes/AuthenticationRoute.js";
 import ReviewRouter from "./routes/ReviewRoute.js";
 import FeedbackRouter from "./routes/FeedbackRoute.js";
 import cookieParser from "cookie-parser";
@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
-app.use("/api/v1/auth", UserRouter);
+app.use("/api/v1/auth", AuthenticationRoute);
 app.use("/api/v1/products", ProductRouter);
 app.use("/api/v1/reviews", ReviewRouter);
 app.use("/api/v1/cart", CartRouter);

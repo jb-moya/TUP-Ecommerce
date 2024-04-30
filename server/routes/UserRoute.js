@@ -3,10 +3,10 @@ const router = express.Router();
 
 import {
     getAllUsers,
-    // showCurrentUser,
+    showCurrentUser,
     // updateUser,
     // updateUserPassword,
-    // getSingleUser,
+    getSingleUser,
 } from "../controllers/userController.js";
 
 import { authenticateUser } from "../middleware/authentication.js";
@@ -15,8 +15,8 @@ import { authorizePermissions } from "../middleware/authorization.js";
 router
     .route("/")
     .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
-
-// router.route("/showMe").get(authenticateUser, showCurrentUser);
+router.route("/showMe").get(authenticateUser, showCurrentUser);
+router.route("/getAccountDetails").get(authenticateUser, getSingleUser);
 // router.route("/updateUser").patch(authenticateUser, updateUser);
 // router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
 

@@ -10,7 +10,7 @@ const SellerRegistration = () => {
   
   return (
     <div>
-        {isLoggedIn ? <NavbarUser /> : <NavBar />}
+        {/* {isLoggedIn ? <NavbarUser /> : <NavBar />} */}
         <SellerRegistrationFrame />     
         <Footer />
     </div>

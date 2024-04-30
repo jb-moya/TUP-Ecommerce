@@ -12,12 +12,12 @@ import HomeFrame from "../components/HomeFrame.js";
 
 
 const Home = () => {
-
     const isLoggedIn = true;
     
     return (
         <div>
-            {isLoggedIn ? <NavbarUser /> : <NavBar />}
+            {/* {isLoggedIn ? <NavbarUser /> : <NavBar />} */}
+            <NavBar />
             <HomeFrame />
             <Footer />
         </div>
@@ -25,11 +25,6 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-
-
     // // const [backendData, setBackendData] = useState({});
 
     // // const fakeProductId = ["1", "2", "3", "4", "5"];

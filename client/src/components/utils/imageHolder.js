@@ -1,6 +1,6 @@
 import defaultProductImage from "../../Assets/NoImage.png";
 
-const ImageHolder = ({ index, source, handleFileUpload }) => {
+const ImageHolder = ({ index = "0", source, handleFileUpload }) => {
     return (
         <>
             <label className="" htmlFor={index}>
