@@ -54,7 +54,9 @@ const ProfileMenu = ({
 
 export const NavBar = ({
     bgColor = "bg-[#EFEFEF]",
+    bgColorAnnouncement = "bg-[#211C6A]",
     textColor = "text-[#211C6A]",
+    textColorAnnouncement = "text-[#EFEFEF]",
     logo = TMCLogo,
 }) => {
     const [profilePicture, setProfilePicture] = useState("");
@@ -159,9 +161,11 @@ export const NavBar = ({
         <div
             className={`${bgColor} border-b-[1px] border-b-[#211C6A] fixed top-0 left-0 w-full z-50`}
         >
-            <div className=" flex w-full h-[25px] bg-[#211C6A] justify-center p-1 ">
-                <p className="text-white text-sm font-light">
-                    FREE SHIPPING ON YOUR FIRST PURCHASE. FEB. 25–28.
+            <div
+                className={`flex w-full h-[25px] ${bgColorAnnouncement} justify-center p-1 `}
+            >
+                <p className={`${textColorAnnouncement} text-sm font-light`}>
+                    FREE SHIPPING ON YOUR FIRST PURCHASE. FEB. 25-28.
                 </p>
             </div>
             <div
