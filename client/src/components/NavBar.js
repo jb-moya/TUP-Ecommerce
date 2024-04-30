@@ -68,14 +68,14 @@ export const NavBar = ({
             // Parse the JSON string back into an object
 
             const userObject = JSON.parse(storedUser);
-            console.log("User data found in localStorage:", userObject);
+            // console.log("User data found in localStorage:", userObject);
 
             // Now you can access properties of the user object
-            console.log("User ID:", userObject.user._id);
-            console.log("First Name:", userObject.user.firstName);
-            console.log("Last Name:", userObject.user.lastName);
-            console.log("Email:", userObject.user.email);
-            console.log("Role:", userObject.user.role);
+            // console.log("User ID:", userObject.user._id);
+            // console.log("First Name:", userObject.user.firstName);
+            // console.log("Last Name:", userObject.user.lastName);
+            // console.log("Email:", userObject.user.email);
+            // console.log("Role:", userObject.user.role);
 
             setProfilePicture(userObject.user.image);
             setUserName(userObject.user.firstName);
@@ -100,11 +100,11 @@ export const NavBar = ({
     };
     const logOut = () => {
         // Log out the user
-        console.log("Logging out...");
+        // console.log("Logging out...");
         try {
             axios.post("http://localhost:5000/api/v1/auth/logout");
             localStorage.setItem("isLoggedIn", "false");
-            console.log("Logged O U T", localStorage.getItem("isLoggedIn"));
+            // console.log("Logged O U T", localStorage.getItem("isLoggedIn"));
 
             // Remove the user object from localStorage
             localStorage.removeItem("user");
@@ -122,14 +122,14 @@ export const NavBar = ({
     const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem("isLoggedIn")
     );
-    console.log("isLoggedIn from localStorage:", isLoggedIn);
+    // console.log("isLoggedIn from localStorage:", isLoggedIn);
     useEffect(() => {
-        console.log("User ", localStorage.getItem("isLoggedIn"));
+        // console.log("User ", localStorage.getItem("isLoggedIn"));
         setIsLoggedIn(localStorage.getItem("isLoggedIn"));
     }, []);
 
     useEffect(() => {
-        console.log("HANEP KA: ", isLoggedIn);
+        // console.log("HANEP KA: ", isLoggedIn);
     }, [isLoggedIn]);
 
     console.log(isLoggedIn);

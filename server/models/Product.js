@@ -20,10 +20,6 @@ const productCategories = [
 ];
 
 const productVariationSchema = new mongoose.Schema({
-    sku: {
-        type: String,
-        // required: [true, "SKU is required"],
-    },
     name: {
         type: String,
         required: [true, "Option is required"],
@@ -48,6 +44,14 @@ const productSchema = new mongoose.Schema(
         },
         price: {
             type: Number,
+            default: -1,
+        },
+        stock: {
+            type: Number,
+        },
+        variationClass: {
+            type: String,
+            default: "",
         },
         featured: {
             type: Boolean,
@@ -62,10 +66,6 @@ const productSchema = new mongoose.Schema(
             type: [productVariationSchema],
             default: [],
         },
-        createdAt: {
-            type: Date,
-            default: Date.now(),
-        },
         category: {
             type: String,
             required: [true, "Please select a category"],
@@ -77,11 +77,6 @@ const productSchema = new mongoose.Schema(
         soldCount: {
             type: Number,
             default: 0,
-        },
-        createdBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
         },
         averageRating: {
             type: Number,
@@ -95,6 +90,15 @@ const productSchema = new mongoose.Schema(
             type: [String],
             default: [],
         },
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+        },
+        createdBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         // Question:
         // What is the way of access of Seller (organization) in this ecommerce.
         // Can they be able to have multiple accounts, with each account having different roles?
@@ -102,7 +106,7 @@ const productSchema = new mongoose.Schema(
 
         // Or each organization can only have one account, and that account can have multiple roles?
     },
-    { timestamps: true}
+    { timestamps: true }
 );
 
 export default mongoose.model("Product", productSchema);

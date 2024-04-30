@@ -39,24 +39,25 @@ const example1 = {
         },
         {
             // dagdag ka, maximum of 5, minimum of 1
-        }
+        },
     ],
     category: "Electronics",
 };
 
 export const SellerSettings = () => {
     const priceRef = useRef(null);
+    const stockRef = useRef(null);
     const [selectedCategory, setSelectedCategory] = useState(16);
     const [formData, setFormData] = useState({
         name: "",
-        price: null,
+        price: -1,
         featured: false,
+        image: [],
+        variationClass: "",
         description: "",
         variation: [],
         category: productCategories[16],
     });
-
-    console.log("Toys: ", productCategories[9]);
 
     const maxImageCount = 4;
     const [postImage, setPostImage] = useState([]);
@@ -64,8 +65,7 @@ export const SellerSettings = () => {
     const [space, setSpace] = useState(0);
 
     const handleRemoveVariation = (index) => {
-        console.log("handleRemoveVariation index: ", index);
-        setSpace(prevSpace => prevSpace - 120);
+        setSpace((prevSpace) => prevSpace - 120);
         setVariation((prev) => {
             const newPostImage = [...prev];
             newPostImage.splice(index, 1);
@@ -92,7 +92,9 @@ export const SellerSettings = () => {
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
-            image: postImage.filter((item) => item.base64).map((item) => item.base64),
+            image: postImage
+                .filter((item) => item.base64)
+                .map((item) => item.base64),
         }));
     }, [postImage]);
 
@@ -108,14 +110,16 @@ export const SellerSettings = () => {
     }, [selectedCategory]);
 
     useEffect(() => {
-        console.log("priceRef: ", priceRef.current);
         if (variation.length === 1) {
-            priceRef.current.value = variation[0].price;
+            priceRef.current.value = parseFloat(variation[0].price);
+            stockRef.current.value = parseInt(variation[0].stock);
         }
 
         if (variation.length > 1) {
             let minPrice = Number.MAX_VALUE;
             let maxPrice = Number.MIN_VALUE;
+
+            let totalStock = 0;
 
             variation.forEach((item) => {
                 const price = parseFloat(item.price);
@@ -127,6 +131,11 @@ export const SellerSettings = () => {
                     maxPrice = price;
                 }
 
+                const stock = parseInt(item.stock, 10);
+                if (!isNaN(stock)) {
+                    totalStock += stock;
+                }
+
                 // check if price is null or undefined
                 if (isNaN(price)) {
                     minPrice = 0;
@@ -135,14 +144,17 @@ export const SellerSettings = () => {
             });
 
             priceRef.current.value = `${minPrice} - ${maxPrice}`;
+            stockRef.current.value = totalStock;
         }
 
         // update FormData
         setFormData((prev) => ({
             ...prev,
             variation: variation,
+            price: parseFloat(priceRef.current.value) || -1,
+            stock: parseInt(stockRef.current.value),
         }));
-    }, [variation, priceRef]);
+    }, [variation, priceRef, stockRef]);
 
     const handleAddImage = () => {
         setPostImage((prev) => [
@@ -155,12 +167,11 @@ export const SellerSettings = () => {
     };
 
     const handleAddVariation = () => {
-        setSpace(prevSpace => prevSpace + 120);
+        setSpace((prevSpace) => prevSpace + 120);
         setVariation((prev) => [
             ...prev,
             {
                 key: prev.length.toString(),
-                sku: "",
                 name: "",
                 price: "",
                 stock: "",
@@ -185,15 +196,15 @@ export const SellerSettings = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         createPost();
-        console.log(postImage);
+        // console.log(postImage);
     };
 
     const handleFileUpload = async (e) => {
         e.preventDefault(); // Prevent the default behavior of the click event
 
-        console.log("e.target index: ", e.target.id);
-        console.log("postImage", postImage);
-        
+        // console.log("e.target index: ", e.target.id);
+        // console.log("postImage", postImage);
+
         // Check if files were selected
         if (e.target.files.length === 0) {
             console.log("No file selected");
@@ -202,8 +213,8 @@ export const SellerSettings = () => {
 
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
-        console.log("base64");
-        console.log(base64);
+        // console.log("base64");
+        // console.log(base64);
 
         setPostImage((prev) => {
             const newPostImage = [...prev];
@@ -257,145 +268,175 @@ export const SellerSettings = () => {
         });
     };
 
+    const handleVariationClassChange = (e) => {
+        setFormData({
+            ...formData,
+            variationClass: e.target.value,
+        });
+    };
+
     return (
-
         <div className="flex w-[1000px] mx-auto bg-white ">
-
-                <div className="ml-[60px] w-[200px] flex-wrap flex flex-col">
-                    <div className="flex-wrap flex font-bold flex-row px-5 py-6 border-gray-300">
-                        Basic Information
-                    </div>
-
-                    <div className="w-full flex justify-center ">
-                        <hr className="border-t border-gray-300 w-[200px]" />
-                    </div>
-                    <br></br>
-
-                    <ul className="flex flex-col items-end px-5">
-                        <li className="text-left mb-[66px] w-full">
-                            Product Images:
-                            <br></br>
-                            *1:1 Image
-                        </li>
-                        <li className="mb-[20px] w-full">Product Name:</li>
-                        <li className="mb-[30px] w-full">Product Category:</li>
-                        <li className="mb-[30px] w-full">Price: </li>
-                        <li style={{ marginBottom: `${space + 70}px` }} className="w-full">Variations:</li>
-                        <li className="mb-[40px] w-full text-left">
-                            Product Description:
-                        </li>
-                    </ul>
+            <div className="ml-[60px] w-[200px] flex-wrap flex flex-col">
+                <div className="flex-wrap flex font-bold flex-row px-5 py-6 border-gray-300">
+                    Basic Information
                 </div>
 
-                <div className="flex flex-col w-full ">
-                    <div className="px-5 py-9"></div>
-                    <br></br>
+                <div className="w-full flex justify-center ">
+                    <hr className="border-t border-gray-300 w-[200px]" />
+                </div>
+                <br></br>
 
-                    <div className="flex">
-                        <form
-                            className="flex flex-row flex-wrap"
-                            // onSubmit={handleSubmit}
-                        >
-                            {postImage.map((item) => (
-                                <div className="relative" key={item.key}>
-                                    <ImageHolder
-                                        key={item.key}
-                                        index={item.key}
-                                        handleFileUpload={handleFileUpload}
-                                        source={item.base64}
-                                    />
-                                    <button
-                                        type="button"
-                                        className="absolute bottom-[80%] left-[70%]"
-                                        onClick={() => handleRemoveImage(item.key)}
-                                    >
-                                        <MdCancel
-                                            size={25}
-                                            className="text-white drop-shadow-md hover:text-red-600"
-                                        />
-                                    </button>
-                                </div>
-                            ))}
+                <ul className="flex flex-col items-end px-5">
+                    <li className="text-left mb-[66px] w-full">
+                        Product Images:
+                        <br></br>
+                        *1:1 Image
+                    </li>
+                    <li className="mb-[20px] w-full">Product Name:</li>
+                    <li className="mb-[30px] w-full">Product Category:</li>
+                    <li className="mb-[30px] w-full">Price: </li>
+                    <li className="mb-[30px] w-full">Stock: </li>
+                    <li className="mb-[30px] w-full">Variation Class: </li>
+                    <li
+                        style={{ marginBottom: `${space + 70}px` }}
+                        className="w-full"
+                    >
+                        Variations:
+                    </li>
+                    <li className="mb-[40px] w-full text-left">
+                        Product Description:
+                    </li>
+                </ul>
+            </div>
 
-                            {postImage.length < maxImageCount && (
+            <div className="flex flex-col w-full ">
+                <div className="px-5 py-9"></div>
+                <br></br>
+
+                <div className="flex">
+                    <form
+                        className="flex flex-row flex-wrap"
+                        // onSubmit={handleSubmit}
+                    >
+                        {postImage.map((item) => (
+                            <div className="relative" key={item.key}>
+                                <ImageHolder
+                                    key={item.key}
+                                    index={item.key}
+                                    handleFileUpload={handleFileUpload}
+                                    source={item.base64}
+                                />
                                 <button
                                     type="button"
-                                    className="border-2 w-20 h-20 mx-2 mb-[15px]"
-                                    onClick={handleAddImage}
+                                    className="absolute bottom-[80%] left-[70%]"
+                                    onClick={() => handleRemoveImage(item.key)}
                                 >
-                                    Add Image
+                                    <MdCancel
+                                        size={25}
+                                        className="text-white drop-shadow-md hover:text-red-600"
+                                    />
                                 </button>
-                            )}
-                        </form>
-                    </div>
-                    <div>
-                        <input
-                            className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5 text-sm"
-                            type="text"
-                            placeholder="Enter product name"
-                            onChange={handleChangeProductName}
-                        />
-                    </div>
+                            </div>
+                        ))}
 
-                    <div>
-                        <DropDownMenu_1
-                            label={selectedCategory}
-                            options={productCategories}
-                            selectedOption={selectedCategory}
-                            onSelectOption={setSelectedCategory}
-                        />
-                    </div>
-
-                    <div>
-                        <input
-                            ref={priceRef}
-                            className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
-                            type="text"
-                            placeholder="Enter price"
-                            // disable if one variaiton is added
-                            disabled={variation.length > 0}
-                        />
-                    </div>
-
-                    {variation.map((item) => (
-                        <VariationHolder
-                            key={item.key}
-                            index={item.key}
-                            variation={item}
-                            handleRemoveVariation={handleRemoveVariation}
-                            handleVariationNameChange={handleVariationNameChange}
-                            handleVariationPriceChange={handleVariationPriceChange}
-                            handleVariationStockChange={handleVariationStockChange}
-                        />
-                    ))}
-
-                    <button
-                        className="border-2 w-20 h-20 mx-2 mt-2 mb-[15px]"
-                        onClick={handleAddVariation}
-                    >
-                        Add Variation
-                    </button>
-
-                    <div className="pb-[20px]">
-                        <textarea
-                            className="border-2 px-3 w-11/12 text-sm py-1"
-                            rows="5"
-                            cols="80"
-                            placeholder="Enter product description"
-                            onChange={handleDescriptionChange}
-                        />
-                    </div>
-
-                    <div className="flex justify-end pr-16">
-                        <button
-                            className="mb-5 border-2 w-1/3 h-10 p-2 hover:bg-pink-600"
-                            onClick={handleSubmit}
-                        >
-                            CONFIRM ADD PRODUCT
-                        </button>
-                    </div>
-
+                        {postImage.length < maxImageCount && (
+                            <button
+                                type="button"
+                                className="border-2 w-20 h-20 mx-2 mb-[15px]"
+                                onClick={handleAddImage}
+                            >
+                                Add Image
+                            </button>
+                        )}
+                    </form>
                 </div>
+                <div>
+                    <input
+                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5 text-sm"
+                        type="text"
+                        placeholder="Enter product name"
+                        onChange={handleChangeProductName}
+                    />
+                </div>
+
+                <div>
+                    <DropDownMenu_1
+                        label={selectedCategory}
+                        options={productCategories}
+                        selectedOption={selectedCategory}
+                        onSelectOption={setSelectedCategory}
+                    />
+                </div>
+
+                <div>
+                    <input
+                        ref={priceRef}
+                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                        type="text"
+                        placeholder="Enter price"
+                        disabled={variation.length > 0}
+                    />
+                </div>
+
+                <div>
+                    <input
+                        ref={stockRef}
+                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                        type="text"
+                        placeholder="Enter stock"
+                        disabled={variation.length > 0}
+                    />
+                </div>
+
+                <div>
+                    <input
+                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                        type="text"
+                        placeholder="Make it descriptive!"
+                        disabled={variation.length === 0}
+                        onChange={handleVariationClassChange}
+                    />
+                </div>
+
+                {variation.map((item) => (
+                    <VariationHolder
+                        key={item.key}
+                        index={item.key}
+                        variation={item}
+                        handleRemoveVariation={handleRemoveVariation}
+                        handleVariationNameChange={handleVariationNameChange}
+                        handleVariationPriceChange={handleVariationPriceChange}
+                        handleVariationStockChange={handleVariationStockChange}
+                    />
+                ))}
+
+                <button
+                    className="border-2 w-20 h-20 mx-2 mt-2 mb-[15px]"
+                    onClick={handleAddVariation}
+                >
+                    Add Variation
+                </button>
+
+                <div className="pb-[20px]">
+                    <textarea
+                        className="border-2 px-3 w-11/12 text-sm py-1"
+                        rows="5"
+                        cols="80"
+                        placeholder="Enter product description"
+                        onChange={handleDescriptionChange}
+                    />
+                </div>
+
+                <div className="flex justify-end pr-16">
+                    <button
+                        className="mb-5 border-2 w-1/3 h-10 p-2 hover:bg-pink-600"
+                        onClick={handleSubmit}
+                    >
+                        CONFIRM ADD PRODUCT
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

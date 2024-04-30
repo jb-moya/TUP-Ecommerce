@@ -12,6 +12,8 @@ import { rootUrl } from "../App.js";
 import Footer from "../components/Footer.js";
 import axios from "axios";
 import WriteReview from "../WriteReview.js";
+import logoUnsaturated from "../Assets/LogoUnSaturated.png";
+import { useParams } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const exampleProduct = {
@@ -51,8 +53,66 @@ const exampleProduct = {
         __v: 0,
     },
 };
-
+// 6630cc6217b27ddd2a9cc769
+// 662785b7c7382ba59dd04cb1 customer
 const ProductDetailPage = (props) => {
+    const { id } = useParams();
+
+    const [productDetails, setProductDetails] = useState({});
+    const [userID, setUserID] = useState("");
+    const [productReviews, setProductReviews] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // Track loading state
+
+    const [profilePicture, setProfilePicture] = useState("");
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        // Retrieve user data from localStorage
+        const storedUser = localStorage.getItem("user");
+
+        if (storedUser) {
+            // Parse the JSON string back into an object
+
+            const userObject = JSON.parse(storedUser);
+            // console.log("User data found in localStorage:", userObject);
+
+            // Now you can access properties of the user object
+            // console.log("User ID:", userObject.user._id);
+            // console.log("First Name:", userObject.user.firstName);
+            // console.log("Last Name:", userObject.user.lastName);
+            // console.log("Email:", userObject.user.email);
+            // console.log("Role:", userObject.user.role);
+
+            setUserID(userObject.user._id);
+            // Access other properties as needed
+
+            // Set the user object in your component state if necessary
+            // setUser(userObject);
+        } else {
+            console.log("User data not found in localStorage.");
+        }
+    }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const root = `${rootUrl}/products/${id}`;
+
+            try {
+                const response = await axios.get(root);
+
+                console.log("response", response);
+                setProductDetails(response.data.product);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        console.log("cookie", document.cookie);
+
+        fetchData();
+    }, [id]);
+
     const location = useLocation();
     const currentPath = location.pathname;
 
@@ -64,21 +124,6 @@ const ProductDetailPage = (props) => {
     };
 
     console.log(currentPath);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const root = `${rootUrl}/products/65ee78d04cfbe7e546c10544`;
-
-            try {
-                const response = await axios.get(root);
-
-                console.log("response", response);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        console.log("cookie", document.cookie);
-    }, []);
 
     const variations = {};
     exampleProduct.product.variation.forEach((variation) => {
@@ -96,9 +141,27 @@ const ProductDetailPage = (props) => {
         });
     });
 
+    const handleSubmitReview = () => {
+        console.log("Submit review");
+        try {
+            axios.post("http://localhost:5000/api/v1/reviews", {
+                product: id,
+                title: "title",
+                comment: "review",
+                rating: 4,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const handleWriteReview = () => {
         console.log("Write a review");
         setIsOpenWriteReview(!isOpenWriteReview);
+    };
+
+    const handleVariationPick = (variation) => {
+        console.log("Variation picked", variation);
     };
 
     const options2 = [
@@ -113,19 +176,37 @@ const ProductDetailPage = (props) => {
 
             <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-md shadow-md">
                 <div className="w-5/12 pl-8">
-                    <ImageSwiper />
+                    {isLoading ? (
+                        <div className="w-full h-full flex items-center justify-center">
+                            Loading Images...
+                        </div>
+                    ) : productDetails.image.length > 0 ? (
+                        <ImageSwiper images={productDetails.image} />
+                    ) : (
+                        <div>
+                            <img
+                                src={logoUnsaturated}
+                                alt=""
+                                className="w-full h-full rounded-xl object-cover"
+                            />
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-7/12">
                     <div className="w-full flex h-min">
                         <div className="w-7/12">
                             <div className="text-2xl px-8 font-bold text-[#211c6a]">
-                                PRODUCT NAME Lorem ipsum dolor sit amet.
+                                {productDetails.name}
                             </div>
                         </div>
                         <div className="w-5/12 text-right">
                             <div className="text-2xl px-8 font-semibold text-red-700">
-                                ₱599,999.99
+                                {productDetails.price !== -1
+                                    ? "₱ " + productDetails.price
+                                    : productDetails.variation.length !== 0
+                                    ? "₱ " + productDetails.variation[0].price
+                                    : "Unavailable"}
                             </div>
                             <div className="flex align-baseline justify-end">
                                 <div className="leading-none underline pr-1 underline-offset-4 text-[#211c6a]">
@@ -144,29 +225,33 @@ const ProductDetailPage = (props) => {
                     <div className="w-full flex mt-2">
                         <div className="pl-8 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
                             <span className="text-lg leading-none font-light pr-1">
-                                1.2K+
+                                {productDetails.numOfReviews}
                             </span>{" "}
                             <span className="font-extralight">Rating</span>
                         </div>
                         <div className="pl-2 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
                             <span className="text-lg leading-none font-light pr-1">
-                                5.5K+
+                                {productDetails.soldCount}
                             </span>{" "}
                             <span className="font-extralight">Sold</span>
                         </div>
                     </div>
 
                     <div className="w-full mt-10">
-                        {/* <ProductVariation
-                            id={"component1"}
-                            options={options1}
-                            variationClass={"Color"}
-                        /> */}
-                        <ProductVariation
-                            id={"component2"}
-                            options={options2}
-                            variationClass={"Model and Size"}
-                        />
+                        {isLoading ? (
+                            <div>loading variation...</div>
+                        ) : (
+                            productDetails.variation > 0 && (
+                                <ProductVariation
+                                    id={"component2"}
+                                    options={productDetails.variation}
+                                    handleVariationPick={handleVariationPick}
+                                    variationClass={
+                                        productDetails.variationClass
+                                    }
+                                />
+                            )
+                        )}
                     </div>
                     <div className="mt-8 flex items-center">
                         <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
@@ -200,35 +285,9 @@ const ProductDetailPage = (props) => {
                         Product Details
                     </div>
                     <div className="px-8">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Quas facere ut molestias soluta! Placeat
-                        repellendus eum minima est. Perspiciatis expedita
-                        corporis dolorem repellat. Repellat corporis itaque
-                        possimus non qui molestias tempora accusamus in
-                        obcaecati delectus fugiat quas a ad numquam odit
-                        provident ex harum quod et officia dolorum sequi, quae
-                        voluptatibus optio! Deserunt nemo eius mollitia debitis,
-                        harum quibusdam! Error quisquam commodi, cum ipsa,
-                        labore iure earum mollitia quos ex impedit ut odio
-                        voluptatum magni tempore dolorem! Maiores cumque beatae
-                        ipsam delectus aliquid labore quo odit. Expedita dolores
-                        deleniti enim quidem beatae consectetur perspiciatis
-                        mollitia rem. Sed, voluptas animi aliquid totam et eius,
-                        quasi assumenda illo quam impedit dignissimos iusto
-                        temporibus consequatur cum iure voluptates. Minus
-                        aliquid pariatur perspiciatis voluptatum fuga asperiores
-                        aliquam quas ipsam voluptate debitis? Nulla nihil
-                        tempora, iusto sunt adipisci itaque in quas, expedita
-                        obcaecati delectus incidunt praesentium culpa
-                        repudiandae quo molestias nisi optio neque! Temporibus
-                        sint quibusdam quae, minus ea vero veritatis facere
-                        excepturi reprehenderit illo aspernatur debitis sit,
-                        neque quas eius aperiam sapiente exercitationem soluta
-                        aliquid voluptate repellat minima voluptatem! Numquam ex
-                        mollitia porro vitae. Doloribus accusamus incidunt
-                        tempore eius similique beatae corrupti cupiditate
-                        architecto? Vitae, voluptatibus. Molestias doloribus
-                        tenetur ipsa animi, enim velit saepe.
+                        {/* <p className="text-[#211c6a]"> */}
+                        {productDetails.description}
+                        {/* </p> */}
                     </div>
                 </div>
 
@@ -262,9 +321,7 @@ const ProductDetailPage = (props) => {
                 <hr className="w-full rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
 
                 <div className="flex flex-col">
-                    {isOpenWriteReview && (
-                        <WriteReview />
-                    )}
+                    {isOpenWriteReview && <WriteReview />}
 
                     <div>
                         <Review />

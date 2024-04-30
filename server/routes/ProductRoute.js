@@ -26,7 +26,7 @@ router
     .post([authenticateUser, authorizePermissions("seller")], createProduct);
 router
     .route("/:id")
-    .get(authenticateUser, getSingleProduct)
+    .get(getSingleProduct)
     .patch([authenticateUser, authorizePermissions("seller")], updateProduct)
     .delete([authenticateUser, authorizePermissions("seller")], deleteProduct);
 

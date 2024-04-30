@@ -7,13 +7,19 @@ import { StatusCodes } from "http-status-codes";
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
     console.log("req.user", req.user);
 
-    const {
-        user: { userId },
-        params: { id: productID },
-    } = req;
+    const productId = req.params.id; // Access the ID from req.params.id
+
+    console.log("Product ID:", productId);
+    console.log("Product params:", req.params);
+
+    // const {
+    //     user: { userId },
+    //     params: { id: productID },
+    // } = req;
+
     const product = await Product.findOne({
-        _id: productID,
-        createdBy: userId,
+        _id: productId,
+        // createdBy: userId,
     });
 
     if (!product) {
@@ -22,6 +28,7 @@ const getSingleProduct = asyncWrapper(async (req, res, next) => {
         );
     }
 
+    // res.status(StatusCodes.OK).json({});
     res.status(StatusCodes.OK).json({ product });
 });
 

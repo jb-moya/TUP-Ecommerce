@@ -1,21 +1,16 @@
 import { Link } from "react-router-dom";
-function rand(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-function imgUrl() {
-    const id = rand(1, 200);
-    return `https://picsum.photos/id/${id}/1920/1080`;
-}
+import logoUnsaturated from "../Assets/LogoUnSaturated.png";
 
 const ProductCard = ({product}) => {
     return (
         <Link
-            to={`/product/662f45a2754796a0ccf03c71`}
+            to={`/product/${product._id}`}
             className="flex flex-col h-[250px] border border-[#211C6A] cursor-pointer hover:scale-[1.02] hover:shadow-sm transition-all duration-100 ease-in-out"
         >
             <img
-                className="h-[160px] w-full"
-                src={imgUrl()}
+                className="h-[160px] w-full border-2 object-cover"
+                src={product.image[0] || logoUnsaturated}
+                // src={logoUnsaturated}
                 alt="Logo Here"
                 loading="lazy"
             />

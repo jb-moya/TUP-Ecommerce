@@ -32,12 +32,12 @@ const UserReview = () => {
             <div className="">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum veniam quo officia neque, magnam deleniti repellat nam animi odio. Nam.
             </div>
-            <div className="mt-2">
-                <button className="flex items-center rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none">
+            {/* <div className="mt-2"> */}
+                {/* <button className="flex items-center rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none">
                     <AiFillLike className="mr-1" />
                     <div className="">5</div>
-                </button>
-            </div>
+                </button> */}
+            {/* </div> */}
             <hr className="w-full m-auto mt-2 rounded border-t-1 border-black border-opacity-10 mb-4"></hr>
         </div>
     );

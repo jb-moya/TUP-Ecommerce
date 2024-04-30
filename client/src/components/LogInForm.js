@@ -67,7 +67,6 @@ const LogInForm = () => {
                 // store all to redux
                 dispatch(setUser(getResponse.data));
 
-
                 setTimeout(() => {
                     navigate("/"); // GO TO HOME PAGE
                 }, 1000);
