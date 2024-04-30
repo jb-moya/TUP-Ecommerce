@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axios from "axios";
 // Logo
 
 import Logo1 from "../OrganizationAssets/logoipsum-329.svg";
@@ -15,6 +16,7 @@ import Logo7 from "../OrganizationAssets/logoipsum-325.svg";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import ProductCard from "./ProductCard";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -22,6 +24,24 @@ import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
 
 const HomeFrame = () => {
+    const [products, setProducts] = useState([]);
+
+    const fetchProducts = async () => {
+        try {
+            const { data } = await axios.get(
+                "http://localhost:5000/api/v1/products"
+            );
+            // console.log(data);
+            setProducts(data.products);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
     const navigate = useNavigate();
 
     const handleSignUpClick = () => {
@@ -40,6 +60,7 @@ const HomeFrame = () => {
 
     function imgUrl() {
         const id = rand(1, 200);
+        // console.log(id);
         return `https://picsum.photos/id/${id}/1920/1080`;
     }
 
@@ -263,29 +284,11 @@ const HomeFrame = () => {
                 <h1 className="font-bold p-4">DISCOVER YOUR PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">
-                    <Link
-                        to={`/product/662f45a2754796a0ccf03c71`}
-                        className="flex flex-col h-[250px] border border-[#211C6A] cursor-pointer"
-                    >
-                        {/* <div className="flex flex-col h-[250px] border border-[#211C6A] cursor-pointer"> */}
-                        <img
-                            className="h-[150px] w-full"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <div className="flex flex-col m-2 text-sm overflow-hidden">
-                            <p className="line-clamp-2">
-                                Something Good For you
-                            </p>
-                            <div className="flex mt-4 justify-between">
-                                <p className="text-[#7d74f2]">₱190</p>
-                                <p>1k+ Sold</p>
-                            </div>
-                        </div>
-                        {/* </div> */}
-                    </Link>
-                    <div className="flex flex-col h-[250px] border border-[#211C6A]">
+                    {products.map((product, index) => (
+                        <ProductCard key={index} product={product}/>
+                    ))}
+                    {/* <ProductCard /> */}
+                    {/* <div className="flex flex-col h-[250px] border border-[#211C6A]">
                         <img
                             className="h-[150px] w-full"
                             src={imgUrl()}
@@ -590,7 +593,7 @@ const HomeFrame = () => {
                                 <p>1k+ Sold</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="flex items-center justify-center m-4 select-none">
                     <button

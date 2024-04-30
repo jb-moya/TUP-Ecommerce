@@ -26,7 +26,7 @@ const productCategories = {
     16: "Other",
 };
 
-const example = {
+const example1 = {
     name: "Smartphone",
     featured: true,
     description: "A powerful smartphone with advanced features",
@@ -37,6 +37,9 @@ const example = {
             price: 799.99,
             stock: 10,
         },
+        {
+            // dagdag ka, maximum of 5, minimum of 1
+        }
     ],
     category: "Electronics",
 };
@@ -190,6 +193,13 @@ export const SellerSettings = () => {
 
         console.log("e.target index: ", e.target.id);
         console.log("postImage", postImage);
+        
+        // Check if files were selected
+        if (e.target.files.length === 0) {
+            console.log("No file selected");
+            return; // Exit the function early if no file was selected
+        }
+
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         console.log("base64");

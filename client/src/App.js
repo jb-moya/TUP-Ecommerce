@@ -1,8 +1,4 @@
-// import "./App.css";
 import React, { useState } from "react";
-
-// import "./customBootstrap/css/bootstrap.min.css";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUpPage.js";
 import LogIn from "./pages/LogInPage.js";
@@ -14,12 +10,23 @@ import SellerRegistration from "./pages/SellerRegistration.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
 import Organization from "./pages/OrganizationPage.js";
 import NotFound from "./pages/NotFoundPage.js";
-
-import ConfirmModel from "./components/Modal.js";
 import { UserPassword } from "./components/AccountDetails.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function App() {
+
+    // before accessing local stroage, check if the user is logged in
+
+    // local stroage are only available if there is a user logged in
+
+    // profile picture, persistent throughout the app
+    // if user is logged in, display user's profile picture
+    // upon closed, the profile picture is stored in the local storage
+    // if user logs out, the profile picture is removed from the local storage
+    // if user logs in, the profile picture is retrieved from the local storage
+    // if user is not logged in, display default profile picture
+
+
     // const [modalShow, setModalShow] = React.useState(false);
     // const [show, setShow] = useState(false);
 

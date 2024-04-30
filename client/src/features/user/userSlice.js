@@ -20,7 +20,9 @@ const userSlice = createSlice({
             state.user = null;
             toast.success("Logged out successfully");
         },
-    }
+    },
 });
 
 export default userSlice.reducer;
+
+export const { setLoading, setUser, logOut } = userSlice.actions;
