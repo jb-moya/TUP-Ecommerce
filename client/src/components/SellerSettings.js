@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import defaultProductImage from "../Assets/NoImage.png";
 import convertToBase64 from "./utils/convertToBase64";
 import axios from "axios";
-import DropDownMenu from "./utils/Dropdown";
+import { DropDownMenu_1 } from "./utils/Dropdown";
 import ImageHolder from "./utils/imageHolder";
 import { MdCancel } from "react-icons/md";
 import VariationHolder from "./AddVariation";
@@ -58,10 +58,11 @@ export const SellerSettings = () => {
     const maxImageCount = 4;
     const [postImage, setPostImage] = useState([]);
     const [variation, setVariation] = useState([]);
+    const [space, setSpace] = useState(0);
 
     const handleRemoveVariation = (index) => {
         console.log("handleRemoveVariation index: ", index);
-
+        setSpace(prevSpace => prevSpace - 120);
         setVariation((prev) => {
             const newPostImage = [...prev];
             newPostImage.splice(index, 1);
@@ -151,6 +152,7 @@ export const SellerSettings = () => {
     };
 
     const handleAddVariation = () => {
+        setSpace(prevSpace => prevSpace + 120);
         setVariation((prev) => [
             ...prev,
             {
@@ -246,139 +248,144 @@ export const SellerSettings = () => {
     };
 
     return (
+
         <div className="flex w-[1000px] mx-auto bg-white ">
-            <div className="ml-[60px] w-[200px] flex-wrap flex flex-col">
-                <div className="flex-wrap flex font-bold flex-row px-5 py-6 border-gray-300">
-                    Basic Information
+
+                <div className="ml-[60px] w-[200px] flex-wrap flex flex-col">
+                    <div className="flex-wrap flex font-bold flex-row px-5 py-6 border-gray-300">
+                        Basic Information
+                    </div>
+
+                    <div className="w-full flex justify-center ">
+                        <hr className="border-t border-gray-300 w-[200px]" />
+                    </div>
+                    <br></br>
+
+                    <ul className="flex flex-col items-end px-5">
+                        <li className="text-left mb-[66px] w-full">
+                            Product Images:
+                            <br></br>
+                            *1:1 Image
+                        </li>
+                        <li className="mb-[20px] w-full">Product Name:</li>
+                        <li className="mb-[30px] w-full">Product Category:</li>
+                        <li className="mb-[30px] w-full">Price: </li>
+                        <li style={{ marginBottom: `${space + 70}px` }} className="w-full">Variations:</li>
+                        <li className="mb-[40px] w-full text-left">
+                            Product Description:
+                        </li>
+                    </ul>
                 </div>
 
-                <div className="w-full flex justify-center ">
-                    <hr className="border-t border-gray-300 w-[200px]" />
-                </div>
-                <br></br>
+                <div className="flex flex-col w-full ">
+                    <div className="px-5 py-9"></div>
+                    <br></br>
 
-                <ul className="flex flex-col items-end px-5">
-                    <li className="text-left mb-[66px] w-full">
-                        Product Images:
-                        <br></br>
-                        *1:1 Image
-                    </li>
-                    <li className="mb-[20px] w-full">Product Name:</li>
-                    <li className="mb-[30px] w-full">Product Category:</li>
-                    <li className="mb-[30px] w-full">Price: </li>
-                    <li className="mb-[30px] w-full">Variations:</li>
-                    <li className="mb-[40px] w-full text-left">
-                        Product Description:
-                    </li>
-                </ul>
-            </div>
+                    <div className="flex">
+                        <form
+                            className="flex flex-row flex-wrap"
+                            // onSubmit={handleSubmit}
+                        >
+                            {postImage.map((item) => (
+                                <div className="relative" key={item.key}>
+                                    <ImageHolder
+                                        key={item.key}
+                                        index={item.key}
+                                        handleFileUpload={handleFileUpload}
+                                        source={item.base64}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute bottom-[80%] left-[70%]"
+                                        onClick={() => handleRemoveImage(item.key)}
+                                    >
+                                        <MdCancel
+                                            size={25}
+                                            className="text-white drop-shadow-md hover:text-red-600"
+                                        />
+                                    </button>
+                                </div>
+                            ))}
 
-            <div className="flex flex-col w-full ">
-                <div className="px-5 py-9"></div>
-                <br></br>
-
-                <div className="flex">
-                    <form
-                        className="flex flex-row flex-wrap"
-                        // onSubmit={handleSubmit}
-                    >
-                        {postImage.map((item) => (
-                            <div className="relative" key={item.key}>
-                                <ImageHolder
-                                    key={item.key}
-                                    index={item.key}
-                                    handleFileUpload={handleFileUpload}
-                                    source={item.base64}
-                                />
+                            {postImage.length < maxImageCount && (
                                 <button
                                     type="button"
-                                    className="absolute bottom-[80%] left-[70%]"
-                                    onClick={() => handleRemoveImage(item.key)}
+                                    className="border-2 w-20 h-20 mx-2 mb-[15px]"
+                                    onClick={handleAddImage}
                                 >
-                                    <MdCancel
-                                        size={25}
-                                        className="text-white drop-shadow-md hover:text-red-600"
-                                    />
+                                    Add Image
                                 </button>
-                            </div>
-                        ))}
+                            )}
+                        </form>
+                    </div>
+                    <div>
+                        <input
+                            className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5 text-sm"
+                            type="text"
+                            placeholder="Enter product name"
+                            onChange={handleChangeProductName}
+                        />
+                    </div>
 
-                        {postImage.length < maxImageCount && (
-                            <button
-                                type="button"
-                                className="border-2 w-20 h-20 mx-2 mb-[15px]"
-                                onClick={handleAddImage}
-                            >
-                                Add Image
-                            </button>
-                        )}
-                    </form>
+                    <div>
+                        <DropDownMenu_1
+                            label={selectedCategory}
+                            options={productCategories}
+                            selectedOption={selectedCategory}
+                            onSelectOption={setSelectedCategory}
+                        />
+                    </div>
+
+                    <div>
+                        <input
+                            ref={priceRef}
+                            className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                            type="text"
+                            placeholder="Enter price"
+                            // disable if one variaiton is added
+                            disabled={variation.length > 0}
+                        />
+                    </div>
+
+                    {variation.map((item) => (
+                        <VariationHolder
+                            key={item.key}
+                            index={item.key}
+                            variation={item}
+                            handleRemoveVariation={handleRemoveVariation}
+                            handleVariationNameChange={handleVariationNameChange}
+                            handleVariationPriceChange={handleVariationPriceChange}
+                            handleVariationStockChange={handleVariationStockChange}
+                        />
+                    ))}
+
+                    <button
+                        className="border-2 w-20 h-20 mx-2 mt-2 mb-[15px]"
+                        onClick={handleAddVariation}
+                    >
+                        Add Variation
+                    </button>
+
+                    <div className="pb-[20px]">
+                        <textarea
+                            className="border-2 px-3 w-11/12 text-sm py-1"
+                            rows="5"
+                            cols="80"
+                            placeholder="Enter product description"
+                            onChange={handleDescriptionChange}
+                        />
+                    </div>
+
+                    <div className="flex justify-end pr-16">
+                        <button
+                            className="mb-5 border-2 w-1/3 h-10 p-2 hover:bg-pink-600"
+                            onClick={handleSubmit}
+                        >
+                            CONFIRM ADD PRODUCT
+                        </button>
+                    </div>
+
                 </div>
-                <div>
-                    <input
-                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5"
-                        type="text"
-                        placeholder="Enter product name"
-                        onChange={handleChangeProductName}
-                    />
-                </div>
-
-                <div>
-                    <DropDownMenu
-                        label={selectedCategory}
-                        options={productCategories}
-                        selectedOption={selectedCategory}
-                        onSelectOption={setSelectedCategory}
-                    />
-                </div>
-
-                <div>
-                    <input
-                        ref={priceRef}
-                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5"
-                        type="text"
-                        // disable if one variaiton is added
-                        disabled={variation.length > 0}
-                    />
-                </div>
-
-                {variation.map((item) => (
-                    <VariationHolder
-                        key={item.key}
-                        index={item.key}
-                        variation={item}
-                        handleRemoveVariation={handleRemoveVariation}
-                        handleVariationNameChange={handleVariationNameChange}
-                        handleVariationPriceChange={handleVariationPriceChange}
-                        handleVariationStockChange={handleVariationStockChange}
-                    />
-                ))}
-
-                <button
-                    className="border-2 w-20 h-20 mx-2 mb-[15px]"
-                    onClick={handleAddVariation}
-                >
-                    Add Variation
-                </button>
-
-                <div className="pb-[20px]">
-                    <textarea
-                        className="border-2 px-3 w-11/12"
-                        rows="5"
-                        cols="80"
-                        placeholder="Enter product description"
-                        onChange={handleDescriptionChange}
-                    />
-                </div>
-
-                <button
-                    className="border-2 w-full h-10 p-2 hover:bg-pink-600"
-                    onClick={handleSubmit}
-                >
-                    {" "}
-                    CONFIRM ADD PRODUCT
-                </button>
-            </div>
         </div>
     );
 };

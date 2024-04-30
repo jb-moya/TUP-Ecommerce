@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import UserReview from "./UserReview.js";
-import DropDownMenu from "./utils/Dropdown.js";
-
+import { DropDownMenu } from "./utils/Dropdown.js";
 
 const Review = () => {
     const filterRating = {
