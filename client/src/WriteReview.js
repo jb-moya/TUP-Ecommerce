@@ -3,30 +3,61 @@ import StarRating from "./components/StarRating";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const WriteReview = () => {
+const WriteReview = ({ productID }) => {
     const [starRating, setStarRating] = useState(1);
     const ratingLabels = ["Terrible", "Bad", "Okay", "Good", "Excellent"];
     const [review, setReview] = useState("");
     const [title, setTitle] = useState("");
+    const [userID, setUserID] = useState("");
 
     useEffect(() => {
-        console.log("Star Rating: ", starRating);
+        // Retrieve user data from localStorage
+        const storedUser = localStorage.getItem("user");
+
+        if (storedUser) {
+            // Parse the JSON string back into an object
+
+            const userObject = JSON.parse(storedUser);
+            // console.log("User data found in localStorage:", userObject);
+
+            // Now you can access properties of the user object
+            // console.log("User ID:", userObject.user._id);
+            // console.log("First Name:", userObject.user.firstName);
+            // console.log("Last Name:", userObject.user.lastName);
+            // console.log("Email:", userObject.user.email);
+            // console.log("Role:", userObject.user.role);
+
+            setUserID(userObject.user._id);
+            // Access other properties as needed
+
+            // Set the user object in your component state if necessary
+            // setUser(userObject);
+        } else {
+            console.log("User data not found in localStorage.");
+        }
+    }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    useEffect(() => {
+        // console.log("Star Rating: ", starRating);
     }, [starRating]);
 
     const handleSubmitReview = () => {
-        console.log("Title: ", title);
-        console.log("Review: ", review);
-
         try {
-            axios.post("http://localhost:5000/api/reviews", {
-                title,
-                review,
+            let response = axios.post("http://localhost:5000/api/v1/reviews", {
+                product: productID,
+                title: title,
+                comment: review,
                 rating: starRating,
+                user: userID,
             });
+
+            console.log(response);
+            // refresh page
+            window.location.reload();
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     return (
         <>
@@ -55,7 +86,11 @@ const WriteReview = () => {
                     onChange={(e) => setReview(e.target.value)}
                 ></textarea>
 
-                <button className="w-full p-2 text-gray-500 hover:text-white bg-slate-100 hover:bg-[#59b5c3] rounded-sm">
+                <button
+                    type="button"
+                    className="w-full p-2 text-gray-500 hover:text-white bg-slate-100 hover:bg-[#59b5c3] rounded-sm"
+                    onClick={handleSubmitReview}
+                >
                     Submit Review
                 </button>
             </div>

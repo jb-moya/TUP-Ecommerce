@@ -5,12 +5,12 @@ import { StatusCodes } from "http-status-codes";
 
 // FOR SELLER ONLY
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
-    console.log("req.user", req.user);
+    // console.log("req.user", req.user);
 
     const productId = req.params.id; // Access the ID from req.params.id
 
-    console.log("Product ID:", productId);
-    console.log("Product params:", req.params);
+    // console.log("Product ID:", productId);
+    // console.log("Product params:", req.params);
 
     // const {
     //     user: { userId },

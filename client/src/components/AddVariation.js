@@ -8,7 +8,6 @@ const VariationHolder = ({
     handleVariationPriceChange,
     handleVariationStockChange,
 }) => {
-    console.log("VariationHolder111111", index)
 
     return (
         <div className="w-11/12 border-2 bg-slate-100 relative px-2 py-2 flex justify-between" key={index}>

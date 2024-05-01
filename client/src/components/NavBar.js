@@ -124,18 +124,10 @@ export const NavBar = ({
     const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem("isLoggedIn")
     );
-    // console.log("isLoggedIn from localStorage:", isLoggedIn);
+
     useEffect(() => {
-        // console.log("User ", localStorage.getItem("isLoggedIn"));
         setIsLoggedIn(localStorage.getItem("isLoggedIn"));
     }, []);
-
-    useEffect(() => {
-        // console.log("HANEP KA: ", isLoggedIn);
-    }, [isLoggedIn]);
-
-    console.log(isLoggedIn);
-    console.log(isLoggedIn);
 
     const navigate = useNavigate();
 

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import StarRating from "./StarRating";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const RatingAverageBar = ({ star, percentage, count }) => {
     return (
@@ -26,9 +28,56 @@ const RatingAverageBar = ({ star, percentage, count }) => {
     );
 };
 
-const RatingOverview = ({ handleWriteReview }) => {
+const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
+    const [totalReviews, setTotalReviews] = useState([]);
+    const [barWidth, setBarWidth] = useState([]);   
+    const initialBarWidth = Array.from({ length: 5 }, (_, index) => ({
+        rating: 5 - index,
+        percentage: 0,
+        count: 0,
+    }));
+
+    // console.log("productID AHH", productID);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:5000/api/v1/reviews/product/${productID}/total`
+                );
+                console.log("reviews", response);
+                console.log("rating count", response.data.ratingCounts);
+                setTotalReviews(response.data.totalReviews);
+
+                const updatedBarWidth = initialBarWidth.map((bar) => {
+                    const foundRating = response.data.ratingCounts.find(
+                        (rating) => rating.rating === bar.rating
+                    );
+                    if (foundRating) {
+                        return {
+                            ...bar,
+                            percentage:
+                                (foundRating.count /
+                                    response.data.totalReviews) *
+                                100,
+                            count: foundRating.count,
+                        };
+                    } else {
+                        return bar; // Use default count of 0 for missing ratings
+                    }
+                });
+
+                setBarWidth(updatedBarWidth);
+                // setTotalReviews(response.data.ratingCounts);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        
+        fetchReviews();
+    }, [productID]);
+    
     const [toggleWriteReview, setToggleWriteReview] = useState(false);
-    const [barWidth, setBarWidth] = useState([15, 4, 10, 30, 60]);
 
     const clickWriteReview = () => {
         setToggleWriteReview(!toggleWriteReview);
@@ -38,18 +87,29 @@ const RatingOverview = ({ handleWriteReview }) => {
     return (
         <div className="w-full flex justify-center">
             <div className="w-3/12 flex items-center justify-center">
-                <div className="text-6xl font-extrabold text-[#211c6a] pr-1">
-                    5
+                <div className="text-5xl font-extrabold text-[#211c6a] pr-1">
+                    {averageRating}
                 </div>
                 <div className="text-4xl flex flex-col">
                     <StarRating staticColor disableAction />
-                    <div className="text-base">based on 254 reviews.</div>
+                    <div className="text-base text-center">
+                        based on {totalReviews} {totalReviews >= 1 ? "review" : "reviews"}
+                    </div>
                 </div>
             </div>
 
             <div className="w-4/12">
                 <div className="after:table after:clear-both">
-                    <RatingAverageBar
+                    {barWidth.map((bar, index) => (
+                        <RatingAverageBar
+                            key={index}
+                            star={5 - index}
+                            percentage={bar.percentage}
+                            count={bar.count}
+                        />
+                    ))}
+
+                    {/* <RatingAverageBar
                         star={5}
                         percentage={barWidth[0]}
                         count={250}
@@ -73,7 +133,7 @@ const RatingOverview = ({ handleWriteReview }) => {
                         star={1}
                         percentage={barWidth[4]}
                         count={25}
-                    />
+                    /> */}
                 </div>
             </div>
 

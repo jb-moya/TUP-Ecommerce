@@ -16,82 +16,17 @@ import logoUnsaturated from "../Assets/LogoUnSaturated.png";
 import { useParams } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
-const exampleProduct = {
-    product: {
-        _id: "65ee78d04cfbe7e546c10544",
-        name: "Sneakers",
-        price: [59.99],
-        featured: false,
-        variationClass: ["Color", "Size"],
-        description: "A comfortable sneakers with advanced features",
-        variation: [
-            {
-                option: "Red, Small",
-                price: 59.99,
-                stock: 10,
-                _id: "65ee78d04cfbe7e546c10545",
-            },
-            {
-                option: "Red, Large",
-                price: 59.99,
-                stock: 5,
-                _id: "65ee78d04cfbe7e546c10546",
-            },
-            {
-                option: "Blue, Small",
-                price: 59.99,
-                stock: 10,
-                _id: "65ee78d04cfbe7e546c10547",
-            },
-        ],
-        createdAt: "2024-03-11T03:21:50.798Z",
-        category: "Shoes",
-        createdBy: "65ec48144d8f314289363eb2",
-        averageRating: 0,
-        numOfReviews: 0,
-        updatedAt: "2024-03-12T00:26:49.438Z",
-        __v: 0,
-    },
-};
 // 6630cc6217b27ddd2a9cc769
 // 662785b7c7382ba59dd04cb1 customer
 const ProductDetailPage = (props) => {
     const { id } = useParams();
 
     const [productDetails, setProductDetails] = useState({});
-    const [userID, setUserID] = useState("");
     const [productReviews, setProductReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Track loading state
 
     const [profilePicture, setProfilePicture] = useState("");
     const [userName, setUserName] = useState("");
-
-    useEffect(() => {
-        // Retrieve user data from localStorage
-        const storedUser = localStorage.getItem("user");
-
-        if (storedUser) {
-            // Parse the JSON string back into an object
-
-            const userObject = JSON.parse(storedUser);
-            // console.log("User data found in localStorage:", userObject);
-
-            // Now you can access properties of the user object
-            // console.log("User ID:", userObject.user._id);
-            // console.log("First Name:", userObject.user.firstName);
-            // console.log("Last Name:", userObject.user.lastName);
-            // console.log("Email:", userObject.user.email);
-            // console.log("Role:", userObject.user.role);
-
-            setUserID(userObject.user._id);
-            // Access other properties as needed
-
-            // Set the user object in your component state if necessary
-            // setUser(userObject);
-        } else {
-            console.log("User data not found in localStorage.");
-        }
-    }, []); // Empty dependency array ensures this effect runs only once on mount
 
     useEffect(() => {
         const fetchData = async () => {
@@ -108,51 +43,16 @@ const ProductDetailPage = (props) => {
                 setIsLoading(false);
             }
         };
-        console.log("cookie", document.cookie);
+        // console.log("cookie", document.cookie);
 
         fetchData();
     }, [id]);
-
-    const location = useLocation();
-    const currentPath = location.pathname;
 
     const [quantity, setQuantity] = useState(1);
     const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
 
     const handleQuantityChange = (newQuantity) => {
         setQuantity(newQuantity);
-    };
-
-    console.log(currentPath);
-
-    const variations = {};
-    exampleProduct.product.variation.forEach((variation) => {
-        const { option } = variation;
-        const optionKeys = Object.keys(option);
-
-        optionKeys.forEach((key) => {
-            if (variations[key]) {
-                if (!variations[key].includes(option[key])) {
-                    variations[key].push(option[key]);
-                }
-            } else {
-                variations[key] = [option[key]];
-            }
-        });
-    });
-
-    const handleSubmitReview = () => {
-        console.log("Submit review");
-        try {
-            axios.post("http://localhost:5000/api/v1/reviews", {
-                product: id,
-                title: "title",
-                comment: "review",
-                rating: 4,
-            });
-        } catch (error) {
-            console.error(error);
-        }
     };
 
     const handleWriteReview = () => {
@@ -163,12 +63,6 @@ const ProductDetailPage = (props) => {
     const handleVariationPick = (variation) => {
         console.log("Variation picked", variation);
     };
-
-    const options2 = [
-        { value: "option4", label: "Option 4" },
-        { value: "option5", label: "Option 5" },
-        { value: "option6", label: "Option 6" },
-    ];
 
     return (
         <div className="mt-32">
@@ -210,11 +104,21 @@ const ProductDetailPage = (props) => {
                             </div>
                             <div className="flex align-baseline justify-end">
                                 <div className="leading-none underline pr-1 underline-offset-4 text-[#211c6a]">
-                                    4.9
+                                    {productDetails.averageRating
+                                        ? productDetails.averageRating.toFixed(
+                                              1
+                                          )
+                                        : "..."}
                                 </div>
                                 <div className="pr-8">
                                     <StarRating
-                                        defaultRating={3}
+                                        defaultRating={
+                                            productDetails.averageRating
+                                                ? Math.round(
+                                                      productDetails.averageRating
+                                                  )
+                                                : 0
+                                        }
                                         disableAction={true}
                                     />
                                 </div>
@@ -259,12 +163,17 @@ const ProductDetailPage = (props) => {
                         </div>
                         <div className="pr-2">
                             <OrderQuantity
-                                maximum={999}
+                                maximum={productDetails.stock}
                                 quantity={quantity}
                                 onQuantityChange={handleQuantityChange}
                             />
                         </div>
-                        <div>12 stock available</div>
+                        <div>
+                            {productDetails.stock
+                                ? productDetails.stock
+                                : "..."}{" "}
+                            stock available
+                        </div>
                     </div>
                     <div className="flex px-8 py-7 justify-center items-center">
                         <button className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500">
@@ -315,16 +224,20 @@ const ProductDetailPage = (props) => {
                     <div className="font-semibold text-lg mb-4 leading-relaxed text-[#211c6a]">
                         Product Ratings
                     </div>
-                    <RatingOverview handleWriteReview={handleWriteReview} />
+                    <RatingOverview
+                        productID={id}
+                        averageRating={productDetails.averageRating ? productDetails.averageRating.toFixed() : 0}
+                        handleWriteReview={handleWriteReview}
+                    />
                 </div>
 
                 <hr className="w-full rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
 
                 <div className="flex flex-col">
-                    {isOpenWriteReview && <WriteReview />}
+                    {isOpenWriteReview && <WriteReview productID={id} />}
 
                     <div>
-                        <Review />
+                        <Review productID={id} />
                     </div>
                 </div>
             </div>
