@@ -13,9 +13,8 @@ const OrganizationPage = () => {
           {/* <ColoredNavBarUser /> */}
           <NavBar
               bgColor="bg-[#211C6A]"
+              bgColorAnnouncement="bg-[#EFEFEF]"
               textColor="text-[#EFEFEF]"
-              bgColor1="bg-[#EFEFEF]"
-              textColor1="text-[#211C6A]"
               logo={ColoredTMCLogo}
           />
           <OrganizationFrame />

@@ -54,9 +54,8 @@ const ProfileMenu = ({
 
 export const NavBar = ({
     bgColor = "bg-[#EFEFEF]",
+    bgColorAnnouncement = "bg-[#211C6A]",
     textColor = "text-[#211C6A]",
-    bgColor1 = "bg-[#211C6A]",
-    textColor1 = "text-[#EFEFEF]",
     logo = TMCLogo,
 }) => {
     const [profilePicture, setProfilePicture] = useState("");
@@ -124,18 +123,10 @@ export const NavBar = ({
     const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem("isLoggedIn")
     );
-    // console.log("isLoggedIn from localStorage:", isLoggedIn);
+
     useEffect(() => {
-        // console.log("User ", localStorage.getItem("isLoggedIn"));
         setIsLoggedIn(localStorage.getItem("isLoggedIn"));
     }, []);
-
-    useEffect(() => {
-        // console.log("HANEP KA: ", isLoggedIn);
-    }, [isLoggedIn]);
-
-    console.log(isLoggedIn);
-    console.log(isLoggedIn);
 
     const navigate = useNavigate();
 
@@ -161,8 +152,8 @@ export const NavBar = ({
         <div
             className={`${bgColor} border-b-[1px] border-b-[#211C6A] fixed top-0 left-0 w-full z-50`}
         >
-            <div className={`flex w-full h-[25px] ${bgColor1} justify-center p-1 `}>
-                <p className={`${textColor1} text-sm font-light`}>
+            <div className=" flex w-full h-[25px] bg-[#211C6A] justify-center p-1 ">
+                <p className="text-white text-sm font-light">
                     FREE SHIPPING ON YOUR FIRST PURCHASE. FEB. 25–28.
                 </p>
             </div>

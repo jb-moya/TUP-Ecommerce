@@ -18,13 +18,13 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 });
 
 const getSingleUser = asyncWrapper(async (req, res, next) => {
-    console.log("req.user", req.user);
+    // console.log("req.user", req.user);
 
     // check for role
     let user = null;
     if (req.user.role === "customer") {
-        console.log("req rolee", req.user.role);
-        console.log("req.user", req.user);
+        // console.log("req rolee", req.user.role);
+        // console.log("req.user", req.user);
         user = await Customer.findOne({ _id: req.user.userId });
     } else if (req.user.role === "organization") {
         user = await Organization.findOne({ _id: req.user.userId });

@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { createCustomError, CustomAPIError } from "../errors/index.js";
 import { checkPermissions } from "../utils/index.js";
 import asyncWrapper from "../middleware/async.js";
+import mongoose from "mongoose";
 
 const createReview = asyncWrapper(async (req, res, next) => {
     const { product: productId } = req.body;
@@ -55,7 +56,57 @@ const deleteReview = asyncWrapper(async (req, res, next) => {
 });
 
 const getAllReviews = asyncWrapper(async (req, res) => {
-    res.status(StatusCodes.OK).json({ msg: "getAllReviews works" });
+    const { id: productID } = req.params;
+
+    const reviews = await Review.find({ product: productID }).populate(
+        "user",
+        "firstName lastName image"
+    );
+
+    if (!reviews) {
+        return next(
+            createCustomError(`No reviews for product ${productID}`, 404)
+        );
+    }
+
+    // console.log("HEHE", reviews, productID);
+
+    res.status(StatusCodes.OK).json({ reviews });
+});
+
+const getReviewTotals = asyncWrapper(async (req, res) => {
+    const { id: productID } = req.params;
+
+    const totalReviews = await Review.countDocuments({ product: productID });
+
+    if (!totalReviews) {
+        return next(
+            createCustomError(`No reviews for product ${productID}`, 404)
+        );
+    }
+
+    // "6630bfc0082928e24c0451ee"
+    const ratingCounts = await Review.aggregate([
+        {
+            $match: {
+                product: mongoose.Types.ObjectId.createFromHexString(productID),
+            },
+        },
+        { $group: { _id: "$rating", count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }, // Sort by rating in ascending order
+        {
+            $addFields: {
+                rating: "$_id", // Rename _id field to _review
+                count: "$count", // Retain count field
+            },
+        },
+        { $project: { _id: 0 } }, // Exclude _id field from the output
+    ]);
+
+    console.log("Rating Counts:", ratingCounts);
+    console.log("HEHE", totalReviews, productID);
+
+    res.status(StatusCodes.OK).json({ totalReviews, ratingCounts });
 });
 
 const getSingleReview = asyncWrapper(async (req, res, next) => {
@@ -103,5 +154,6 @@ export {
     deleteReview,
     getAllReviews,
     getSingleReview,
+    getReviewTotals,
     updateReview,
 };

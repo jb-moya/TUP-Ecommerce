@@ -1,8 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserReview from "./UserReview.js";
 import { DropDownMenu } from "./utils/Dropdown.js";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 
-const Review = () => {
+const Review = ({productID}) => {
+    const [userReviews, setUserReviews] = useState([]);
+
+    // console.log("productID AHH", productID);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:5000/api/v1/reviews/product/${productID}`
+                );
+                console.log("reviews", response.data.reviews);
+                setUserReviews(response.data.reviews);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchReviews();
+    }, [productID]);
+
     const filterRating = {
         null: "All",
         1: "1 star",
@@ -37,12 +59,13 @@ const Review = () => {
                     onSelectOption={setDateFilter}
                 />
 
-                <UserReview />
-                <UserReview />
-                <UserReview />
+                {userReviews.map((review) => (
+                    <UserReview key={review._id} review={review} />
+                ))}
             </div>
         </>
     );
 };
 
 export default Review;
+
