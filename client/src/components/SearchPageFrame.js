@@ -49,10 +49,10 @@ export const SearchPageFrame = () => {
 
                 {/* Left Container */}
                 <div className='flex flex-col w-full'>
+                    <div className='flex justify-end text-[#211C6A] mb-4 mr-4 items-center justify-between'>
                     <div className='font-bold text-[30px] py-2 px-2'>
                         Search results for "Tshirt"
                     </div>
-                    <div className='flex justify-end text-[#211C6A] mb-4 mr-4'>
                         <select className='border border-[#211C6A] h-10 w-40' defaultValue='popular'>
                             <option value='popular'>Sort By Popular</option>
                             <option value='latest'>Sort By Latest</option>
