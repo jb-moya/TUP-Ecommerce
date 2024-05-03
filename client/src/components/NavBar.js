@@ -55,7 +55,9 @@ const ProfileMenu = ({
 export const NavBar = ({
     bgColor = "bg-[#EFEFEF]",
     bgColorAnnouncement = "bg-[#211C6A]",
+    ColorAnnouncementText = "text-[#EFEFEF]",
     textColor = "text-[#211C6A]",
+    border = "border-b-[#211C6A]",
     logo = TMCLogo,
 }) => {
     const [profilePicture, setProfilePicture] = useState("");
@@ -150,10 +152,10 @@ export const NavBar = ({
     return (
         // content wrapper
         <div
-            className={`${bgColor} border-b-[1px] border-b-[#211C6A] fixed top-0 left-0 w-full z-50`}
+            className={`${bgColor} border-b-[1px] ${border} fixed top-0 left-0 w-full z-50`}
         >
-            <div className=" flex w-full h-[25px] bg-[#211C6A] justify-center p-1 ">
-                <p className="text-white text-sm font-light">
+            <div className={`flex w-full h-[25px] ${bgColorAnnouncement} justify-center p-1 `}>
+                <p className={`${ColorAnnouncementText} text-sm font-light`}>
                     FREE SHIPPING ON YOUR FIRST PURCHASE. FEB. 25–28.
                 </p>
             </div>
@@ -257,7 +259,7 @@ export const NavBar = ({
                     ) : (
                         <button
                             onClick={handleClick}
-                            className={`${textColor1} ${bgColor1} hover:shadow-zinc-50 hover:shadow-sm hover:scale-[1.1] font-semibold py-2 px-5 border border-[#211C6A] text-sm transition ease-in-out duration-200`}
+                            className={`${ColorAnnouncementText} ${bgColorAnnouncement} hover:shadow-zinc-50 hover:shadow-sm hover:scale-[1.1] font-semibold py-2 px-5 border border-[#211C6A] text-sm transition ease-in-out duration-200`}
                         >
                             Login
                         </button>
