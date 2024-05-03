@@ -59,7 +59,7 @@ export const SearchPageFrame = () => {
                             {/* Add more options as needed */}
                         </select>
                     </div>
-                    <div className='grid grid-cols-3 gap-9 m-4'>
+                    <div className='grid grid-cols-3 gap-9 mx-4'>
                         <div className='flex flex-col w-[300px]'>
                             <img className="h-[300px]" src={imgUrl()} alt="Logo Here" loading="lazy" />
                             <div className='flex items-center justify-between pt-2'>
