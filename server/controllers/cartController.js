@@ -39,6 +39,13 @@ const getSingleCart = asyncWrapper(async (req, res, next) => {
     res.status(StatusCodes.OK).json({ cart });
 });
 
+const hasCart = asyncWrapper(async (req, res, next) => {
+    let cart = await Cart.findOne({ user: req.user.userId });
+
+    res.status(200).json({ hasCart: !!cart });
+});
+
+
 const getAllCarts = asyncWrapper(async (req, res, next) => {
     const carts = await Cart.find();
 
@@ -122,5 +129,6 @@ const deleteCart = asyncWrapper(async (req, res, next) => {
 export { createCart,
         getSingleCart,
         getAllCarts,
+        hasCart,
         updateCart,
         deleteCart };

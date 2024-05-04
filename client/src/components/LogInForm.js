@@ -8,7 +8,7 @@ import axios from "axios";
 import { LoginFailure } from "./AUTHENTICATION/Failure";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../features/user/userSlice";
-
+axios.defaults.withCredentials = true;
 const LogInForm = () => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
@@ -52,10 +52,7 @@ const LogInForm = () => {
                 console.log("HEHE", responseData);
 
                 return axios.get(
-                    "http://localhost:5000/api/v1/auth/getAccountDetails",
-                    {
-                        withCredentials: true,
-                    }
+                    "http://localhost:5000/api/v1/auth/getAccountDetails"
                 );
             })
             .then((getResponse) => {

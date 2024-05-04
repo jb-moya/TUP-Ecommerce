@@ -40,6 +40,10 @@ const customerSchema = mongoose.Schema ({
         required: true
     },
     
+    address: {
+        type: String,
+        default: '',
+    },
     gender: {
         type: String,
         default: '',

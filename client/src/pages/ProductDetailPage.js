@@ -24,7 +24,7 @@ const ProductDetailPage = (props) => {
     const [productDetails, setProductDetails] = useState({});
     const [productReviews, setProductReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Track loading state
-
+    const [selectedVariation, setSelectedVariation] = useState(); // Track selected variation
     const [profilePicture, setProfilePicture] = useState("");
     const [userName, setUserName] = useState("");
 
@@ -35,8 +35,16 @@ const ProductDetailPage = (props) => {
             try {
                 const response = await axios.get(root);
 
-                console.log("response", response);
                 setProductDetails(response.data.product);
+                
+                if (response.data.product.variation.length > 0) {
+                    setSelectedVariation(response.data.product.variation[0]);
+                } else {
+                    setSelectedVariation(response.data.product);
+                }
+                
+                
+                console.log("response", response);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -48,8 +56,24 @@ const ProductDetailPage = (props) => {
         fetchData();
     }, [id]);
 
+    useEffect(() => {
+        // console.log("selectedVariation", selectedVariation);
+        if (!isLoading && selectedVariation) {
+            // console.log("HAAAAAAAAAAAAAAAAA", selectedVariation.stock);
+        }
+    }, [selectedVariation, isLoading]);
+
     const [quantity, setQuantity] = useState(1);
     const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
+
+    const handleAddToCart = () => {
+        console.log("Add to cart");
+        try {
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const handleQuantityChange = (newQuantity) => {
         setQuantity(newQuantity);
@@ -145,7 +169,7 @@ const ProductDetailPage = (props) => {
                         {isLoading ? (
                             <div>loading variation...</div>
                         ) : (
-                            productDetails.variation > 0 && (
+                            productDetails.variation.length > 0 && (
                                 <ProductVariation
                                     id={"component2"}
                                     options={productDetails.variation}
@@ -153,6 +177,7 @@ const ProductDetailPage = (props) => {
                                     variationClass={
                                         productDetails.variationClass
                                     }
+                                    setSelectedVariation={setSelectedVariation}
                                 />
                             )
                         )}
@@ -162,21 +187,28 @@ const ProductDetailPage = (props) => {
                             Quantity:{" "}
                         </div>
                         <div className="pr-2">
-                            <OrderQuantity
-                                maximum={productDetails.stock}
-                                quantity={quantity}
-                                onQuantityChange={handleQuantityChange}
-                            />
+                            {isLoading ? (
+                                <div>loading...</div>
+                            ) : (
+                                <OrderQuantity
+                                    maximum={selectedVariation.stock}
+                                    quantity={quantity}
+                                    onQuantityChange={handleQuantityChange}
+                                />
+                            )}
                         </div>
                         <div>
-                            {productDetails.stock
-                                ? productDetails.stock
-                                : "..."}{" "}
-                            stock available
+                            {isLoading ? (
+                                <div>loading...</div>
+                            ) : (
+                                <div>
+                                    {selectedVariation.stock} stock available
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="flex px-8 py-7 justify-center items-center">
-                        <button className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500">
+                        <button className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500" onClick={handleAddToCart}>
                             Add to Cart
                         </button>
                         <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">
@@ -187,17 +219,11 @@ const ProductDetailPage = (props) => {
                     <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
                 </div>
 
-                {/* <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr> */}
-
                 <div className="w-full">
                     <div className="px-8 mt-4 font-semibold text-lg leading-relaxed text-[#211c6a]">
                         Product Details
                     </div>
-                    <div className="px-8">
-                        {/* <p className="text-[#211c6a]"> */}
-                        {productDetails.description}
-                        {/* </p> */}
-                    </div>
+                    <div className="px-8">{productDetails.description}</div>
                 </div>
 
                 <div className="w-full m-8 p-4 border border-black border-opacity-25 rounded shadow-md">
@@ -226,7 +252,11 @@ const ProductDetailPage = (props) => {
                     </div>
                     <RatingOverview
                         productID={id}
-                        averageRating={productDetails.averageRating ? productDetails.averageRating.toFixed() : 0}
+                        averageRating={
+                            productDetails.averageRating
+                                ? productDetails.averageRating.toFixed()
+                                : 0
+                        }
                         handleWriteReview={handleWriteReview}
                     />
                 </div>
