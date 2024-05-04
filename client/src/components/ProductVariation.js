@@ -7,12 +7,14 @@ const ToggleButtonsComponent = ({
     options,
     handleVariationPick,
     variationClass,
+    setSelectedVariation,
 }) => {
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(options[0]._id);
 
-    const handleOptionChange = (value) => {
-        setSelectedOption(value);
-        handleVariationPick(value);
+    const handleOptionChange = (option, optionID) => {
+        setSelectedOption(optionID);
+        setSelectedVariation(option);
+        handleVariationPick(optionID);
     };
 
     console.log("options", options);
@@ -21,7 +23,7 @@ const ToggleButtonsComponent = ({
     return (
         <div className="w-full flex mt-4">
             <div className="w-3/12 pl-8 pr-4 text-sm break-normal line-clamp-1 self-center font-medium text-[#211c6a]">
-                {variationClass}
+                {variationClass ? variationClass : "Variation"}
             </div>
             <form className="w-9/12 flex flex-wrap pr-8">
                 {options.map((option, idx) => (
@@ -40,7 +42,7 @@ const ToggleButtonsComponent = ({
                                 className={`hidden whitespace-nowrap`}
                                 value={option._id.toString()}
                                 checked={selectedOption === option._id}
-                                onChange={() => handleOptionChange(option._id)}
+                                onChange={() => handleOptionChange(option, option._id)}
                             />
                             {option.name}
                         </label>

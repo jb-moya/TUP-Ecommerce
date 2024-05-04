@@ -55,7 +55,7 @@ const deleteReview = asyncWrapper(async (req, res, next) => {
     });
 });
 
-const getAllReviews = asyncWrapper(async (req, res) => {
+const getAllReviews = asyncWrapper(async (req, res, next) => {
     const { id: productID } = req.params;
 
     const reviews = await Review.find({ product: productID }).populate(
@@ -74,18 +74,19 @@ const getAllReviews = asyncWrapper(async (req, res) => {
     res.status(StatusCodes.OK).json({ reviews });
 });
 
-const getReviewTotals = asyncWrapper(async (req, res) => {
+const getReviewTotals = asyncWrapper(async (req, res, next) => {
     const { id: productID } = req.params;
 
     const totalReviews = await Review.countDocuments({ product: productID });
 
-    if (!totalReviews) {
-        return next(
-            createCustomError(`No reviews for product ${productID}`, 404)
-        );
-    }
+    console.log("HEHE", totalReviews, productID);
 
-    // "6630bfc0082928e24c0451ee"
+    // if (!totalReviews) {
+    //     return next(
+    //         createCustomError(`No reviews for product ${productID}`, 404)
+    //     );
+    // }
+
     const ratingCounts = await Review.aggregate([
         {
             $match: {
@@ -103,8 +104,7 @@ const getReviewTotals = asyncWrapper(async (req, res) => {
         { $project: { _id: 0 } }, // Exclude _id field from the output
     ]);
 
-    console.log("Rating Counts:", ratingCounts);
-    console.log("HEHE", totalReviews, productID);
+    // console.log("Rating Counts:", ratingCounts);
 
     res.status(StatusCodes.OK).json({ totalReviews, ratingCounts });
 });

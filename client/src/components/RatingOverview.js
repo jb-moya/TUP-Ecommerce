@@ -29,13 +29,13 @@ const RatingAverageBar = ({ star, percentage, count }) => {
 };
 
 const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
-    const [totalReviews, setTotalReviews] = useState([]);
-    const [barWidth, setBarWidth] = useState([]);   
+    const [totalReviews, setTotalReviews] = useState(0);
     const initialBarWidth = Array.from({ length: 5 }, (_, index) => ({
         rating: 5 - index,
         percentage: 0,
         count: 0,
     }));
+    const [barWidth, setBarWidth] = useState(initialBarWidth);
 
     // console.log("productID AHH", productID);
 
@@ -45,8 +45,8 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                 const response = await axios.get(
                     `http://localhost:5000/api/v1/reviews/product/${productID}/total`
                 );
-                console.log("reviews", response);
-                console.log("rating count", response.data.ratingCounts);
+                // console.log("reviews", response);
+                // console.log("rating count", response.data.ratingCounts);
                 setTotalReviews(response.data.totalReviews);
 
                 const updatedBarWidth = initialBarWidth.map((bar) => {
@@ -66,17 +66,18 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                         return bar; // Use default count of 0 for missing ratings
                     }
                 });
-
-                setBarWidth(updatedBarWidth);
+                if (response.data.totalReviews > 0) {
+                    setBarWidth(updatedBarWidth);
+                }
                 // setTotalReviews(response.data.ratingCounts);
             } catch (error) {
                 console.error(error);
             }
         };
-        
+
         fetchReviews();
     }, [productID]);
-    
+
     const [toggleWriteReview, setToggleWriteReview] = useState(false);
 
     const clickWriteReview = () => {
@@ -93,7 +94,8 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                 <div className="text-4xl flex flex-col">
                     <StarRating staticColor disableAction />
                     <div className="text-base text-center">
-                        based on {totalReviews} {totalReviews >= 1 ? "review" : "reviews"}
+                        based on {totalReviews}{" "}
+                        {totalReviews >= 1 ? "review" : "reviews"}
                     </div>
                 </div>
             </div>
@@ -108,32 +110,6 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                             count={bar.count}
                         />
                     ))}
-
-                    {/* <RatingAverageBar
-                        star={5}
-                        percentage={barWidth[0]}
-                        count={250}
-                    />
-                    <RatingAverageBar
-                        star={4}
-                        percentage={barWidth[1]}
-                        count={150}
-                    />
-                    <RatingAverageBar
-                        star={3}
-                        percentage={barWidth[2]}
-                        count={100}
-                    />
-                    <RatingAverageBar
-                        star={2}
-                        percentage={barWidth[3]}
-                        count={50}
-                    />
-                    <RatingAverageBar
-                        star={1}
-                        percentage={barWidth[4]}
-                        count={25}
-                    /> */}
                 </div>
             </div>
 
@@ -150,5 +126,4 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
     );
 };
 
-<div>f</div>;
 export default RatingOverview;
