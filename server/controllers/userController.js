@@ -98,7 +98,6 @@ const updateUserPassword = asyncWrapper(async (req, res) => {
         await user.save();
         
         return res.status(StatusCodes.OK).json({ msg: "Password updated successfully" });
-        
     }
 });
 
