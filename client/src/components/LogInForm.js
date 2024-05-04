@@ -51,14 +51,6 @@ const LogInForm = () => {
             .then((responseData) => {
                 console.log("HEHE", responseData);
 
-                const hasCart = axios.get("http://localhost:5000/api/v1/cart/hasCart", {
-                    withCredentials: true,
-                });
-                })
-            })
-            .then((responseData) => {
-                console.log("HEHE", responseData);
-
                 return axios.get(
                     "http://localhost:5000/api/v1/auth/getAccountDetails",
                     {

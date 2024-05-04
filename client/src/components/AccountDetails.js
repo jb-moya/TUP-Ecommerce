@@ -27,9 +27,14 @@ export const UserAccountDetails = () => {
 
     const updateAccountDetails = async () => {
         try {
+            let dataToSend = newUserData;
+            if (postImage !== userData.image) {
+                // If a new image is uploaded, include it in the data to send
+                dataToSend = { ...dataToSend, image: postImage };
+            }
             const response = await axios.patch(
                 "http://localhost:5000/api/v1/user/updateUser",
-                newUserData,
+                dataToSend,
                 {
                     withCredentials: true,
                 }
@@ -121,12 +126,9 @@ export const UserAccountDetails = () => {
     };
 
     const handleFileUpload = async (e) => {
-        e.preventDefault(); // Prevent the default behavior of the click event
+        e.preventDefault();
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
-        // console.log("base64");
-        // console.log(base64);
-
         setPostImage(base64);
     };
 
@@ -295,18 +297,10 @@ export const UserAccountDetails = () => {
                         </div>
                     </div>
                     <div className="w-[270px] h-2/3 flex flex-col py-6 border-l border-gray-300 justify-center items-center">
-                        {/* <div className="w-20 h-20">
-                            <img
-                                className="w-full h-full rounded-full object-cover overflow-hidden"
-                                src={image}
-                                alt=""
-                            />
-                        </div> */}
                         <ImageHolder
                             source={ postImage }
                             handleFileUpload={handleFileUpload}
                         />
-
                         <div className="w-full flex flex-col px-7 py-6 truncate text-sm text-gray-500 justify-center items-center">
                             <p>File size: max 1 MB</p>
                             <p>File extension: .JPEG, .PNG, .JPG</p>
@@ -329,21 +323,14 @@ export const UserAccountDetails = () => {
 export const UserPassword = () => {
 
     const [userData, setUserData] = useState({});
-
-
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword1, setNewPassword1] = useState('');
     const [newPassword2, setNewPassword2] = useState('');
 
-    const handleConfirm = async () => {
-        if (newPassword1 === newPassword2 && newPassword1 !== '' && newPassword2 !== '') {
-            console.log('Passwords match!');
-            await updatePassword();
-        } else {
-            console.log('Passwords do not match!');
-            alert('Passwords do not match!');
-        }
-    };
+    const [response, setResponse] = useState('');
+
+    const [passwordError, setPasswordError] = useState('');
+    const [matchError, setMatchError] = useState('');
 
     const updatePassword = async () => {
         try {
@@ -357,17 +344,20 @@ export const UserPassword = () => {
                     withCredentials: true,
                 }
             );
-            console.log(response.status)
-            if (response.status === 200) {
-                console.log(response.data.msg);
-                alert(response.data.msg);
-            } else {
-                console.log(response.data.error);
-                alert(response.data.error);
-            }
+            setResponse(response.data);
         } catch (error) {
             console.error('Error updating password:', error);
             alert('Error updating password:', error);
+        }
+    };
+
+    const handleConfirm = async () => {
+        if (newPassword1 === newPassword2 && newPassword1 !== '' && newPassword2 !== '') {
+            await updatePassword();
+        } else if (newPassword1 === '' && newPassword2 === '') {
+            setResponse("Input fields are empty");
+        } else if (newPassword1 !== newPassword2) {
+            setResponse("Passwords do not match");
         }
     };
 
@@ -385,6 +375,43 @@ export const UserPassword = () => {
             console.log(error);
         }
     };
+
+    const handlePassword1Change = (e) => {
+        const password = e.target.value;
+        if (password.length < 6) {
+            if (password.length > 0) {
+                setPasswordError('Password must be at least 6 characters long');
+            }
+        } else {
+            setPasswordError('');
+        }
+        setNewPassword1(password);
+    };
+
+    const handlePassword2Change = (e) => {
+        const password2 = e.target.value;
+        if (password2 !== newPassword1) {
+            setMatchError('Passwords do not match');
+        } else {
+            setMatchError('');
+        }
+        setNewPassword2(password2);
+    }; 
+
+    const handleClosePrompt = () => {
+        setResponse('');
+    };
+
+    function Prompt({ message, onClose }) {
+        return (
+            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
+                <div className="bg-white p-2 rounded-lg text-center">
+                    <p className="text-base">{message}</p>
+                    <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" onClick={onClose}>Close</button>
+                </div>
+            </div>
+        );
+    }
 
     useEffect(() => {
         fetchAccountDetails();
@@ -465,18 +492,20 @@ export const UserPassword = () => {
                     </div>
                 </div>
             </div>
+        
+            {response && <Prompt message={response || response.msg || response.error} onClose={handleClosePrompt} />}
 
             <div className="w-[950px] flex-wrap flex flex-col px-10 py-6 bg-white">
                 <p className="text-xl">My Password</p>
                 <p className="text-sm">Update and set password</p>
                 <hr className="border-t border-gray-300 my-4" />
-                <div className="w-1/1 flex-wrap flex">
-                    <div className="w-1/4 flex flex-col px-5 py-6 text-sm">
+                <div className="h-[165px] flex-wrap flex mb-5">
+                    <div className="w-3/12 flex flex-col px-5 py-6 text-sm">
                         <p className="mb-6">Current Password</p>
                         <p className="mb-6">New Password</p>
                         <p>Confirm New Password</p>
                     </div>
-                    <div className="w-3/4 flex flex-wrap flex-col px-5 py-6">
+                    <div className="w-9/12 flex flex-wrap flex-col px-5 py-6">
                         <div className="flex flex-row">
                             <input
                                 className="w-1/2 mb-4 h-6 border text-sm px-1"
@@ -485,21 +514,23 @@ export const UserPassword = () => {
                                 onChange={(e) => setCurrentPassword(e.target.value)}
                             />
                         </div>
-                        <div>
+                        <div className="flex items-center mb-4">
                             <input
-                                className="w-1/2 mb-4 h-6 border text-sm px-1"
-                                type="Password"
+                                className="w-1/2 h-6 border text-sm px-1 mr-2"
+                                type="password"
                                 value={newPassword1}
-                                onChange={(e) => setNewPassword1(e.target.value)}
+                                onChange={handlePassword1Change}
                             />
+                            {passwordError && <p className="text-red-500 text-xs">{passwordError}</p>}
                         </div>
-                        <div>
-                            <input 
-                                className="w-1/2 h-6 border text-sm px-1" 
-                                type="Password" 
+                        <div className="flex items-center">
+                            <input
+                                className="w-1/2 h-6 border text-sm px-1 mr-2"
+                                type="password"
                                 value={newPassword2}
-                                onChange={(e) => setNewPassword2(e.target.value)}
+                                onChange={handlePassword2Change}
                             />
+                            {matchError && <p className="text-red-500 px-2 text-xs">{matchError}</p>}
                         </div>
                     </div>
                 </div>

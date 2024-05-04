@@ -76,12 +76,11 @@ const updateUser = asyncWrapper(async (req, res) => {
 });
 
 const updateUserPassword = asyncWrapper(async (req, res) => {
-
-    if (req.user.role == 'customer') {
+    if (req.user.role === 'customer') {
         const { currentPassword, newPassword } = req.body;
 
         if (!currentPassword || !newPassword) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Please provide current and new password" });
+            return res.json({ error: "Please provide current and new password" });
         }
         
         const user = await Customer.findOne({ _id: req.user.userId }).select(
@@ -91,14 +90,17 @@ const updateUserPassword = asyncWrapper(async (req, res) => {
         const isPasswordCorrect = await user.comparePassword(currentPassword);
         
         if (!isPasswordCorrect) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Invalid credentials" });
+            return res.json({ error: "Invalid credentials" });
         }
-        console.log("does it reach here?dasd")
+
+        if (newPassword.length < 6) {
+            return res.json({ error: `New password must be at least 6 characters long` });
+        }
+
         user.password = newPassword;
         await user.save();
         
-        return res.status(StatusCodes.OK).json({ msg: "Password updated successfully" });
-        
+        return res.json({ msg: "Password updated successfully" });
     }
 });
 
