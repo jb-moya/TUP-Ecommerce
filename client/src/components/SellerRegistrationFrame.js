@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Stepper from './Stepper';
-import StepperControl from './StepperControl';
+import Stepper from './SellerRegistrationStepper/Stepper';
+import StepperControl from './SellerRegistrationStepper/StepperControl';
 import { StepperContext } from './contexts/StepperContext';
 import { ShopInformation } from './SellerRegistrationSteps/ShopInformation';
 import { Details } from './SellerRegistrationSteps/Details';

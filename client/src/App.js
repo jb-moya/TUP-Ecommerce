@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFoundPage.js";
 import { UserPassword } from "./components/AccountDetails.js";
 import { Dashboard } from "./pages/Dashboard.js";
 import { SearchPage } from "./pages/SearchPage.js";
+import { CheckOutPage } from "./pages/CheckOutPage.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
                     <Route path="/sellercenter" element={<SellerRegistration />}/>
                     <Route path="/search" element={<SearchPage />}/>
                     <Route path="/sellerdashboard" element={<Dashboard />}/>
+                    <Route path="/checkout" element={<CheckOutPage />}/>
                     <Route path="/org" element={<Organization  />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
