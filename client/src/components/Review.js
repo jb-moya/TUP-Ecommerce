@@ -4,10 +4,9 @@ import { DropDownMenu } from "./utils/Dropdown.js";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const Review = ({productID}) => {
+const Review = ({ productID }) => {
     const [userReviews, setUserReviews] = useState([]);
-
-    // console.log("productID AHH", productID);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -15,10 +14,20 @@ const Review = ({productID}) => {
                 const response = await axios.get(
                     `http://localhost:5000/api/v1/reviews/product/${productID}`
                 );
-                console.log("reviews", response.data.reviews);
-                setUserReviews(response.data.reviews);
+                console.log("reviews puki", response.data.reviews);
+
+                // check if response is empty array
+                if (response.length === 0) {
+                    setUserReviews([]);
+                } else {
+                    setUserReviews(response.data.reviews);
+                }
             } catch (error) {
                 console.error(error);
+            } finally {
+                console.log("fiasdfally");
+                console.log("fiasdfally");
+                setIsLoading(false);
             }
         };
 
@@ -45,27 +54,35 @@ const Review = ({productID}) => {
     return (
         <>
             <div className="">
-                <DropDownMenu
-                    label={starFilter === null ? "Rating" : starFilter}
-                    options={filterRating}
-                    selectedOption={starFilter}
-                    onSelectOption={setStarFilter}
-                />
+                {userReviews.length > 0 && (
+                    <>
+                        <DropDownMenu
+                            label={starFilter === null ? "Rating" : starFilter}
+                            options={filterRating}
+                            selectedOption={starFilter}
+                            onSelectOption={setStarFilter}
+                        />
 
-                <DropDownMenu
-                    label={dateFilter}
-                    options={filterDate}
-                    selectedOption={dateFilter}
-                    onSelectOption={setDateFilter}
-                />
-
-                {userReviews.map((review) => (
-                    <UserReview key={review._id} review={review} />
-                ))}
+                        <DropDownMenu
+                            label={dateFilter}
+                            options={filterDate}
+                            selectedOption={dateFilter}
+                            onSelectOption={setDateFilter}
+                        />
+                    </>
+                )}
+                {isLoading ? (
+                    <div className="text-center">Fetching reviews</div>
+                ) : userReviews.length === 0 ? (
+                    <div className="text-center">No reviews available</div>
+                ) : (
+                    userReviews.map((review) => (
+                        <UserReview key={review._id} review={review} />
+                    ))
+                )}
             </div>
         </>
     );
 };
 
 export default Review;
-
