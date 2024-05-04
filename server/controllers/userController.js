@@ -75,34 +75,37 @@ const updateUser = asyncWrapper(async (req, res) => {
 
 });
 
-// const updateUserPassword = asyncWrapper(async (req, res) => {
-//     const { currentPassword, newPassword } = req.body;
-//     if (!currentPassword || !newPassword) {
-//         throw new BadRequestError("Please provide current and new password");
-//     }
+const updateUserPassword = asyncWrapper(async (req, res) => {
 
-//     const user = await User.findOne({ _id: req.user.userId }).select(
-//         "+password"
-//     );
+    if (req.user.role == 'customer') {
+        const { currentPassword, newPassword } = req.body;
 
-//     const isPasswordCorrect = await user.comparePassword(currentPassword);
+        if (!currentPassword || !newPassword) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Please provide current and new password" });
+        }
+        
+        const user = await Customer.findOne({ _id: req.user.userId }).select(
+            "+password"
+        );
 
-//     if (!isPasswordCorrect) {
-//         throw new UnauthenticatedError("Invalid credentials");
-//     }
-
-//     user.password = newPassword;
-//     await user.save();
-
-//     // const tokenUser = createTokenUser(user);
-//     // attachCookiesToResponse({ res, user: tokenUser });
-//     res.status(StatusCodes.OK).json({ msg: "Password updated successfully" });
-// });
+        const isPasswordCorrect = await user.comparePassword(currentPassword);
+        
+        if (!isPasswordCorrect) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Invalid credentials" });
+        }
+        console.log("does it reach here?dasd")
+        user.password = newPassword;
+        await user.save();
+        
+        return res.status(StatusCodes.OK).json({ msg: "Password updated successfully" });
+        
+    }
+});
 
 export {
     getAllUsers,
     getSingleUser,
     showCurrentUser,
     updateUser,
-    //updateUserPassword,
+    updateUserPassword,
 };

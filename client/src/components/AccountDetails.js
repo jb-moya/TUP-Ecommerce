@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import image from "../components/images/lake-louise-51543_1280.jpg";
 import { FaEdit } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa";
@@ -326,6 +327,69 @@ export const UserAccountDetails = () => {
 };
 
 export const UserPassword = () => {
+
+    const [userData, setUserData] = useState({});
+
+
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword1, setNewPassword1] = useState('');
+    const [newPassword2, setNewPassword2] = useState('');
+
+    const handleConfirm = async () => {
+        if (newPassword1 === newPassword2 && newPassword1 !== '' && newPassword2 !== '') {
+            console.log('Passwords match!');
+            await updatePassword();
+        } else {
+            console.log('Passwords do not match!');
+            alert('Passwords do not match!');
+        }
+    };
+
+    const updatePassword = async () => {
+        try {
+            const response = await axios.patch(
+                "http://localhost:5000/api/v1/user/updateUserPassword",
+                {   
+                    currentPassword: currentPassword,
+                    newPassword: newPassword1,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log(response.status)
+            if (response.status === 200) {
+                console.log(response.data.msg);
+                alert(response.data.msg);
+            } else {
+                console.log(response.data.error);
+                alert(response.data.error);
+            }
+        } catch (error) {
+            console.error('Error updating password:', error);
+            alert('Error updating password:', error);
+        }
+    };
+
+    const fetchAccountDetails = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:5000/api/v1/auth/getAccountDetails",
+                {
+                    withCredentials: true,
+                }
+            );
+            setUserData(response.data.user);
+            console.log(response.data.user);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchAccountDetails();
+    }, []);
+
     return (
         <div className="flex">
             <div className="ml-40 w-[250px] flex-wrap flex flex-col">
@@ -333,13 +397,17 @@ export const UserPassword = () => {
                     <div className="w-10 h-10">
                         <img
                             className="w-full h-full rounded-full object-cover overflow-hidden"
-                            src={image}
+                            src={
+                                userData.image
+                                    ? userData.image
+                                    : defaultProfileImage
+                            }
                             alt=""
                         />
                     </div>
                     <div className="ml-3 w-36 h-10 flex flex-col text-sm">
                         <p className="font-bold truncate">
-                            Alden Recharge Electric Boogaloo
+                            {userData.firstName} {userData.lastName}
                         </p>
                         <div className="flex flex-row text-sm">
                             <FaEdit size={18} />
@@ -409,20 +477,29 @@ export const UserPassword = () => {
                         <p>Confirm New Password</p>
                     </div>
                     <div className="w-3/4 flex flex-wrap flex-col px-5 py-6">
-                        <div>
+                        <div className="flex flex-row">
                             <input
-                                className="w-1/2 mb-4 h-6 border"
-                                type="text"
+                                className="w-1/2 mb-4 h-6 border text-sm px-1"
+                                type="Password"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
                             />
                         </div>
                         <div>
                             <input
-                                className="w-1/2 mb-4 h-6 border"
-                                type="text"
+                                className="w-1/2 mb-4 h-6 border text-sm px-1"
+                                type="Password"
+                                value={newPassword1}
+                                onChange={(e) => setNewPassword1(e.target.value)}
                             />
                         </div>
                         <div>
-                            <input className="w-1/2 h-6 border" type="text" />
+                            <input 
+                                className="w-1/2 h-6 border text-sm px-1" 
+                                type="Password" 
+                                value={newPassword2}
+                                onChange={(e) => setNewPassword2(e.target.value)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -430,6 +507,7 @@ export const UserPassword = () => {
                     <button
                         type="button"
                         className="w-[120px] rounded cursor-pointer bg-[rgba(33, 28, 106)] border hover:border-violet-500 hover:bg-[#211C6A] hover:text-white hover:font-bold focus:ring-opacity-50 text-md"
+                        onClick={handleConfirm}    
                     >
                         Save
                     </button>

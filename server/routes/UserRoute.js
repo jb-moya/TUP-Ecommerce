@@ -5,7 +5,7 @@ import {
     getAllUsers,
     showCurrentUser,
     updateUser,
-    // updateUserPassword,
+    updateUserPassword,
     getSingleUser,
 } from "../controllers/userController.js";
 
@@ -18,7 +18,7 @@ router
 router.route("/showMe").get(authenticateUser, showCurrentUser);
 router.route("/getAccountDetails").get(authenticateUser, getSingleUser);
 router.route("/updateUser").patch(authenticateUser, updateUser);
-// router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
+router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
 
 // router.route("/:id").get(authenticateUser, getSingleUser);
 
