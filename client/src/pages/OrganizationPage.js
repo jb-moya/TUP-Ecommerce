@@ -14,8 +14,9 @@ const OrganizationPage = () => {
           <NavBar
               bgColor="bg-[#211C6A]"
               bgColorAnnouncement="bg-[#EFEFEF]"
+              ColorAnnouncementText="text-[#211C6A]"
               textColor="text-[#EFEFEF]"
-              textColorAnnouncement="text-[#211C6A]"
+              border = "border-b-[#EFEFEF]"
               logo={ColoredTMCLogo}
           />
           <OrganizationFrame />

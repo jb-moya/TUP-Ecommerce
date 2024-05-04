@@ -49,31 +49,31 @@ const showCurrentUser = asyncWrapper(async (req, res) => {
     res.status(StatusCodes.OK).json({ user: req.user });
 });
 
-// const updateUser = asyncWrapper(async (req, res) => {
-//     // NOTE: SOME CREDENTIALS CANNOT BE UPDATED
+const updateUser = asyncWrapper(async (req, res) => {
 
-//     // const { email, name } = req.body;
-//     // if (!email || !name) {
-//     //     throw new BadRequestError("Please provide email and name");
-//     // }
+    if (req.user.role == 'customer') {
+        const user = await Customer.findOne({ _id: req.user.userId });
 
-//     // const user = await User.findOne({ _id: req.user.userId });
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: 'User not found' });
+        }
 
-//     const user = await User.findOneAndUpdate(
-//         { _id: req.user.userId },
-//         req.body,
-//         { new: true, runValidators: true }
-//     );
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.email = req.body.email || user.email;
+        user.contactNumber = req.body.contactNumber || user.contactNumber;
+        user.address = req.body.address || user.address;
+        user.gender = req.body.gender || user.gender;
+        user.image = req.body.image || user.image;
 
-//     // user.email = email;
-//     // user.name = name;
+        await user.save();
 
-//     await user.save();
+        const tokenUser = createTokenUser(user);
+        attachCookiesToResponse({ res, user: tokenUser });
+        res.status(StatusCodes.OK).json({ user: tokenUser });
+    }
 
-//     const tokenUser = createTokenUser(user);
-//     attachCookiesToResponse({ res, user: tokenUser });
-//     res.status(StatusCodes.OK).json({ user: tokenUser });
-// });
+});
 
 // const updateUserPassword = asyncWrapper(async (req, res) => {
 //     const { currentPassword, newPassword } = req.body;
@@ -103,6 +103,6 @@ export {
     getAllUsers,
     getSingleUser,
     showCurrentUser,
-    //updateUser,
+    updateUser,
     //updateUserPassword,
 };

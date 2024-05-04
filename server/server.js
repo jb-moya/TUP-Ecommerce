@@ -14,6 +14,7 @@ import CartRouter from "./routes/CartRoute.js";
 import OrderRouter from "./routes/OrderRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
 import AuthenticationRoute from "./routes/AuthenticationRoute.js";
+import UserRoute from "./routes/UserRoute.js";
 import ReviewRouter from "./routes/ReviewRoute.js";
 import FeedbackRouter from "./routes/FeedbackRoute.js";
 import cookieParser from "cookie-parser";
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.use("/api/v1/auth", AuthenticationRoute);
+app.use("/api/v1/user", UserRoute);
 app.use("/api/v1/products", ProductRouter);
 app.use("/api/v1/reviews", ReviewRouter);
 app.use("/api/v1/cart", CartRouter);

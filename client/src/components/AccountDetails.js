@@ -19,18 +19,22 @@ export const UserAccountDetails = () => {
         address: "",
         email: "",
         phoneNumber: "",
+        dateofBirth: "",
+        gender: "",
+        image: "",
     });
 
     const updateAccountDetails = async () => {
         try {
-            const response = await axios.put(
-                "http://localhost:5000/api/v1/auth/updateUser",
+            const response = await axios.patch(
+                "http://localhost:5000/api/v1/user/updateUser",
                 newUserData,
                 {
                     withCredentials: true,
                 }
             );
             console.log(response.data);
+            window.location.reload();
         } catch (error) {
             console.log(error);
         }
@@ -51,9 +55,69 @@ export const UserAccountDetails = () => {
         }
     };
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+    
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+    
+        const formattedDay = (day < 10) ? `0${day}` : day;
+    
+        const formattedMonth = (month < 10) ? `0${month}` : month;
+    
+        const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+    
+        return formattedDate;
+    }
+    
     useEffect(() => {
         fetchAccountDetails();
     }, []);
+
+    useEffect(() => {
+        setNewUserData({
+            ...newUserData,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            dateofBirth: userData.dateOfBirth,
+            gender: userData.gender,
+        });
+    }, [userData]);
+
+    useEffect(() => {
+        if (userData.image) {
+            setPostImage(userData.image);
+        }
+    }, [userData]);
+
+    const handleEmailChange = (e) => {
+        setNewUserData({
+            ...newUserData,
+            email: e.target.value
+        });
+    };
+
+    const handleContactNumberChange = (e) => {
+        setNewUserData({
+            ...newUserData,
+            contactNumber: e.target.value
+        });
+    };
+
+    const handleGenderChange = (e) => {
+        setNewUserData({
+            ...newUserData,
+            gender: e.target.value
+        });
+    };
+
+    const handleAddressChange = (e) => {
+        setNewUserData({
+            ...newUserData,
+            address: e.target.value
+        });
+    };
 
     const handleFileUpload = async (e) => {
         e.preventDefault(); // Prevent the default behavior of the click event
@@ -150,65 +214,82 @@ export const UserAccountDetails = () => {
                     <div className="w-[600px] flex-wrap flex">
                         <div className="w-1/4 flex flex-col px-5 py-6 text-sm justify-end">
                             <p className="mb-6">Name</p>
-                            <p className="mb-6">Address</p>
                             <p className="mb-6">Email</p>
                             <p className="mb-6">Phone Number</p>
+                            <p className="mb-6">Address</p>
                             <p className="mb-16">Gender</p>
                             <p className="mb-6">Date of Birth</p>
                             <p className="mb-3"></p>
                         </div>
                         <div className="w-3/4 flex-wrap flex flex-col px-5 py-6">
                             <div>
-                                <input
-                                    className="w-11/12 mb-5 h-6 border"
-                                    type="text"
-                                    // value={`${userData.firstName} ${userData.lastName}`}
-                                    placeholder={`${userData.firstName} ${userData.lastName}`}
-                                />
+                                <p className="w-11/12 mb-5 h-6"> {/* NAME IS IMMUTABLE */}
+                                    {userData.firstName} {userData.lastName}
+                                </p>
                             </div>
                             <div>
                                 <input
                                     className="w-11/12 mb-5 h-6 border"
                                     type="text"
-                                    placeholder={userData.address
-                                    ? userData.address
-                                    : "wala pang address sa db natin"}
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    className="w-11/12 mb-5 h-6 border"
-                                    type="text"
+                                    value={newUserData.email !== undefined ? newUserData.email : userData.email}
                                     placeholder={`${userData.email}`}
+                                    onChange={handleEmailChange}
                                 />
-                                {/* {userData.email ? userData.email : "No Email"} */}
                             </div>
                             <div>
                                 <input
                                     className="w-11/12 mb-5 h-6 border"
                                     type="text"
+                                    value={newUserData.contactNumber !== undefined ? newUserData.contactNumber : userData.contactNumber}
                                     placeholder={userData.contactNumber ? userData.contactNumber : "No Phone Number"}
+                                    onChange={handleContactNumberChange}
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    className="w-11/12 mb-5 h-6 border"
+                                    type="text"
+                                    value={newUserData.address !== undefined ? newUserData.address : userData.address}
+                                    placeholder={userData.address ? userData.address : "N/A"}
+                                    onChange={handleAddressChange}
                                 />
                             </div>
                             <div className="mb-5 text-sm">
                                 <div>
-                                    <input type="radio" value="option1" />
-                                    <label htmlFor="option1"> Male</label>
+                                    <input 
+                                        type="radio" 
+                                        name="gender" 
+                                        value="male"
+                                        checked={newUserData.gender === 'male'}
+                                        onChange={handleGenderChange}
+                                    />
+                                    <label htmlFor="male"> Male</label>
                                 </div>
                                 <div>
-                                    <input type="radio" value="option2" />
-                                    <label htmlFor="option2"> Female</label>
+                                    <input 
+                                        type="radio" 
+                                        name="gender" 
+                                        value="female"
+                                        checked={newUserData.gender === 'female'}
+                                        onChange={handleGenderChange}
+                                    />
+                                    <label htmlFor="female"> Female</label>
                                 </div>
                                 <div>
-                                    <input type="radio" value="option3" />
-                                    <label htmlFor="option3"> Others</label>
+                                    <input 
+                                        type="radio" 
+                                        name="gender" 
+                                        value="others" 
+                                        checked={newUserData.gender === 'others'}
+                                        onChange={handleGenderChange}
+                                    />
+                                    <label htmlFor="others"> Others</label>
                                 </div>
                             </div>
                             <div>
-                                <input
-                                    className="w-11/12 mb-5 h-6 border"
-                                    type="text"
-                                />
+                                <p className="w-11/12 mb-5 h-6">
+                                    {formatDate(userData.dateOfBirth)}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -221,7 +302,7 @@ export const UserAccountDetails = () => {
                             />
                         </div> */}
                         <ImageHolder
-                            source={postImage}
+                            source={ postImage }
                             handleFileUpload={handleFileUpload}
                         />
 
