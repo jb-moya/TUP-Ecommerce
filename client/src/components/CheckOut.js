@@ -5,23 +5,24 @@ import { setQuantity, calculateTotals, checkAll, removeAllItems, deselectAll } f
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
 
 const CheckOut = () => {
     const { total } = useSelector((store) => store.cart);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         // dispatch(calculateTotals());
         console.log("total", total);
     }, [total]);
 
-
-    // return (
-    //     <>
-    //         <div></div>
-    //     </>
-    // );
+    const handleGoToCheckoutPage = () => {
+        // dispatch(calculateTotals());
+        // dispatch(checkAll());
+        navigate("/checkout");
+    };
 
     return (
         <div className="bg-white flex flex-col filter shadow-down h-[200px] w-full rounded-md m-2 p-2 sticky bottom-2">
@@ -70,7 +71,11 @@ const CheckOut = () => {
                 </div>
             </div>
             <div className="p-2 self-end">
-                <button className=" w-64 m-2 bg-[#211c6a] text-white p-4 rounded-md">
+                <button
+                    type="button"
+                    className=" w-64 m-2 bg-[#211c6a] text-white p-4 rounded-md"
+                    onClick={handleGoToCheckoutPage}
+                >
                     Check Out
                 </button>
             </div>

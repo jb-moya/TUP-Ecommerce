@@ -285,7 +285,7 @@ const cartSlice = createSlice({
                 ...item,
                 checked: true,
             }));
-            toast.success(state.total);
+            // toast.success(state.total);
             state.cartItems = updatedItems;
         });
         builder.addCase(getAllItems.rejected, (state, action) => {

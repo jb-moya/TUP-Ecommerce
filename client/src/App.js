@@ -56,23 +56,6 @@ function App() {
         }
     }, [isLogged, dispatch, user]);
 
-    // before accessing local stroage, check if the user is logged in
-
-    // local stroage are only available if there is a user logged in
-
-    // profile picture, persistent throughout the app
-    // if user is logged in, display user's profile picture
-    // upon closed, the profile picture is stored in the local storage
-    // if user logs out, the profile picture is removed from the local storage
-    // if user logs in, the profile picture is retrieved from the local storage
-    // if user is not logged in, display default profile picture
-
-    // const [modalShow, setModalShow] = React.useState(false);
-    // const [show, setShow] = useState(false);
-
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
-    // 662f45a2754796a0ccf03c71
     return (
         <div className="box-border">
             <BrowserRouter>
