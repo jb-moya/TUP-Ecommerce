@@ -14,11 +14,12 @@ import axios from "axios";
 import WriteReview from "../WriteReview.js";
 import logoUnsaturated from "../Assets/LogoUnSaturated.png";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../features/cart/cartSlice.js";
 axios.defaults.withCredentials = true;
 
-// 6630cc6217b27ddd2a9cc769
-// 662785b7c7382ba59dd04cb1 customer
 const ProductDetailPage = (props) => {
+    const dispatch = useDispatch();
     const { id } = useParams();
 
     const [productDetails, setProductDetails] = useState({});
@@ -27,6 +28,8 @@ const ProductDetailPage = (props) => {
     const [selectedVariation, setSelectedVariation] = useState(); // Track selected variation
     const [profilePicture, setProfilePicture] = useState("");
     const [userName, setUserName] = useState("");
+    const [quantity, setQuantity] = useState(1);
+    const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,14 +39,13 @@ const ProductDetailPage = (props) => {
                 const response = await axios.get(root);
 
                 setProductDetails(response.data.product);
-                
+
                 if (response.data.product.variation.length > 0) {
                     setSelectedVariation(response.data.product.variation[0]);
                 } else {
-                    setSelectedVariation(response.data.product);
+                    setSelectedVariation(null);
                 }
-                
-                
+
                 console.log("response", response);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -57,22 +59,38 @@ const ProductDetailPage = (props) => {
     }, [id]);
 
     useEffect(() => {
-        // console.log("selectedVariation", selectedVariation);
-        if (!isLoading && selectedVariation) {
-            // console.log("HAAAAAAAAAAAAAAAAA", selectedVariation.stock);
-        }
-    }, [selectedVariation, isLoading]);
+        // console.log("Selected variation", selectedVariation);
 
-    const [quantity, setQuantity] = useState(1);
-    const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
+        // reset quantity to 1 if selected variation changes
+        setQuantity(1);
+    }, [selectedVariation]);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         console.log("Add to cart");
-        try {
 
+        console.log(
+            "productID", productDetails._id,
+            "quantity", quantity,
+            "variationID", selectedVariation ? selectedVariation._id : null
+        )
+
+        try {
+            await dispatch(addToCart({ productID: productDetails._id, quantity: quantity, variationID: selectedVariation ? selectedVariation._id : null}) );
         } catch (error) {
             console.error(error);
         }
+
+        // try {
+        //     const response = await axios.post(`${rootUrl}/cart/addToCart`, {
+        //         productID: productDetails._id,
+        //         quantity: quantity,
+        //         variationID: selectedVariation._id,
+        //     });
+
+        //     console.log("response", response);
+        // } catch (error) {
+        //     console.error(error);
+        // }
     };
 
     const handleQuantityChange = (newQuantity) => {
@@ -191,7 +209,11 @@ const ProductDetailPage = (props) => {
                                 <div>loading...</div>
                             ) : (
                                 <OrderQuantity
-                                    maximum={selectedVariation.stock}
+                                    maximum={
+                                        selectedVariation
+                                            ? selectedVariation.stock
+                                            : productDetails.stock
+                                    }
                                     quantity={quantity}
                                     onQuantityChange={handleQuantityChange}
                                 />
@@ -202,13 +224,19 @@ const ProductDetailPage = (props) => {
                                 <div>loading...</div>
                             ) : (
                                 <div>
-                                    {selectedVariation.stock} stock available
+                                    {selectedVariation
+                                        ? selectedVariation.stock
+                                        : productDetails.stock}{" "}
+                                    stock available
                                 </div>
                             )}
                         </div>
                     </div>
                     <div className="flex px-8 py-7 justify-center items-center">
-                        <button className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500" onClick={handleAddToCart}>
+                        <button
+                            className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500"
+                            onClick={handleAddToCart}
+                        >
                             Add to Cart
                         </button>
                         <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">

@@ -17,8 +17,8 @@ const ToggleButtonsComponent = ({
         handleVariationPick(optionID);
     };
 
-    console.log("options", options);
-    console.log("options", options[0].name);
+    // console.log("options", options);
+    // console.log("options", options[0].name);
 
     return (
         <div className="w-full flex mt-4">

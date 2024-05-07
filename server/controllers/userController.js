@@ -45,7 +45,7 @@ const getSingleUser = asyncWrapper(async (req, res, next) => {
 });
 
 const showCurrentUser = asyncWrapper(async (req, res) => {
-    console.log(" r e q . u s e r", req.user);
+    // console.log(" r e q . u s e r", req.user);
     res.status(StatusCodes.OK).json({ user: req.user });
 });
 
@@ -70,9 +70,8 @@ const updateUser = asyncWrapper(async (req, res) => {
 
         const tokenUser = createTokenUser(user);
         attachCookiesToResponse({ res, user: tokenUser });
-        res.status(StatusCodes.OK).json({ user: tokenUser });
+        res.status(StatusCodes.OK).json({ user });
     }
-
 });
 
 const updateUserPassword = asyncWrapper(async (req, res) => {

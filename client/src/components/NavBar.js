@@ -11,6 +11,9 @@ import { TbLetterX } from "react-icons/tb";
 import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 import defaultProfileImage from "../Assets/defaultPP.png";
+import { useDispatch, useSelector } from "react-redux";
+import { setLogged, logOut, isUserLogged } from "../features/user/userSlice.js";
+
 
 const ProfileMenu = ({
     image,
@@ -19,13 +22,18 @@ const ProfileMenu = ({
     logOut,
     isProfileMenuOpen,
 }) => {
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+
+    // console.log("USER", user);
+
     return (
         <div className="cursor-pointer" onClick={handleProfileMenuToggle}>
             <div className="flex flex-row">
                 <img
-                    src={image || defaultProfileImage}
+                    src={user && user.image ? user.image : defaultProfileImage}
                     alt="MY FACE"
-                    className="w-8 h-8 border-2 border-blue-900 rounded-full"
+                    className="w-8 h-8 border-2 border-blue-900 rounded-full object-cover"
                 />
                 <div className="px-1 self-center">{userName}</div>
             </div>
@@ -60,6 +68,8 @@ export const NavBar = ({
     border = "border-b-[#211C6A]",
     logo = TMCLogo,
 }) => {
+    const dispatch = useDispatch();
+    const userLogged = useSelector(isUserLogged);
     const [profilePicture, setProfilePicture] = useState("");
     const [userName, setUserName] = useState("");
 
@@ -80,8 +90,8 @@ export const NavBar = ({
             // console.log("Email:", userObject.user.email);
             // console.log("Role:", userObject.user.role);
 
-            setProfilePicture(userObject.user.image);
-            setUserName(userObject.user.firstName);
+            // setProfilePicture(userObject.user.image);
+            // setUserName(userObject.user.firstName);
             // Access other properties as needed
 
             // Set the user object in your component state if necessary
@@ -101,25 +111,36 @@ export const NavBar = ({
     const handleProfileMenuToggle = () => {
         setIsProfileMenuOpen(!isProfileMenuOpen);
     };
-    const logOut = () => {
+    const handleLogOut = async () => {
         // Log out the user
-        // console.log("Logging out...");
+
         try {
-            axios.post("http://localhost:5000/api/v1/auth/logout");
-            localStorage.setItem("isLoggedIn", "false");
-            // console.log("Logged O U T", localStorage.getItem("isLoggedIn"));
+            await dispatch(logOut());
+            navigate("/", { replace: true });
 
-            // Remove the user object from localStorage
-            localStorage.removeItem("user");
-
-            // Redirect to the login page
-
-            // Refresh the page
-            navigate("/");
-            window.location.reload();
+            console.log("isUserLogged", isUserLogged);
         } catch (error) {
-            console.log(error);
+            console.error("Logout error:", error);
         }
+
+        // console.log("Logging out...");
+        // try {
+        //     axios.post("http://localhost:5000/api/v1/auth/logout");
+        //     localStorage.setItem("isLoggedIn", "false");
+        //     // console.log("Logged O U T", localStorage.getItem("isLoggedIn"));
+
+        //     // Remove the user object from localStorage
+        //     localStorage.removeItem("user");
+
+        //     // Redirect to the login page
+
+        //     // Refresh the page
+        //     dispatch(setLogged(false));
+        //     navigate("/");
+        //     window.location.reload();
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
 
     const [isLoggedIn, setIsLoggedIn] = useState(
@@ -149,12 +170,19 @@ export const NavBar = ({
         setSearchValue("");
     };
 
+    const handleGoToCart = () => {
+        navigate("/cart");
+        window.location.reload();
+    }
+
     return (
         // content wrapper
         <div
             className={`${bgColor} border-b-[1px] ${border} fixed top-0 left-0 w-full z-50`}
         >
-            <div className={`flex w-full h-[25px] ${bgColorAnnouncement} justify-center p-1 `}>
+            <div
+                className={`flex w-full h-[25px] ${bgColorAnnouncement} justify-center p-1 `}
+            >
                 <p className={`${ColorAnnouncementText} text-sm font-light`}>
                     FREE SHIPPING ON YOUR FIRST PURCHASE. FEB. 25–28.
                 </p>
@@ -188,7 +216,10 @@ export const NavBar = ({
                 </ul>
 
                 <div className="flex p-2 items-center justify-between">
-                    <div className="pr-4 cursor-pointer">
+                    <div
+                        className="pr-4 cursor-pointer"
+                        onClick={handleGoToCart}
+                    >
                         <FaShoppingCart
                             className="hover:scale-110 transition duration-200 ease-in-out"
                             size={20}
@@ -246,14 +277,14 @@ export const NavBar = ({
                         </div>
                     </div>
 
-                    {isLoggedIn === "true" ? (
+                    {userLogged ? (
                         <ProfileMenu
                             bgColor={bgColor}
                             textColor={textColor}
                             image={profilePicture}
                             userName={userName}
                             handleProfileMenuToggle={handleProfileMenuToggle}
-                            logOut={logOut}
+                            logOut={handleLogOut}
                             isProfileMenuOpen={isProfileMenuOpen}
                         />
                     ) : (

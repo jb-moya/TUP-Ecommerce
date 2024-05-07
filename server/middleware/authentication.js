@@ -8,12 +8,11 @@ const authenticateUser = async (req, res, next) => {
     // console.log("req.cookies", req.cookies);
     // console.log("req.signedCookies", req.signedCookies);
     // console.log('req', req)
-    console.log("req", req.cookies);
     const token = req.signedCookies.token;
 
     // const token = req.headers.authorization.split(" ")[1];
 
-    console.log("token", token);
+    // console.log("T O K E N :", token);
 
     if (!token) {
         throw new UnauthenticatedError("Authentication invalid");

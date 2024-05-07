@@ -1,29 +1,20 @@
 import mongoose from "mongoose";
 
 const CartItemSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, "Name is required"],
-    },
-    sku: {
-        type: String,
-        default: '',
+    variation: {
+        type: mongoose.Schema.ObjectId,
+        ref: "ProductVariation",
+        required: false,
     },
     quantity: {
         type: Number,
         required: [true, "Quantity is required"],
-
     },
     product: {
         type: mongoose.Schema.ObjectId,
         ref: "Product",
         required: true,
     },
-    checked: {
-        type: Boolean,
-        default: false,
-    },
-    _id: false
     },
     { timestamps: true }
 )

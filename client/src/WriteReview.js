@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import StarRating from "./components/StarRating";
+
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 axios.defaults.withCredentials = true;
 
 const WriteReview = ({ productID }) => {
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
     const [starRating, setStarRating] = useState(1);
     const ratingLabels = ["Terrible", "Bad", "Okay", "Good", "Excellent"];
     const [review, setReview] = useState("");
     const [title, setTitle] = useState("");
-    const [userID, setUserID] = useState("");
 
     useEffect(() => {
         // Retrieve user data from localStorage
-        const storedUser = localStorage.getItem("user");
+        // const storedUser = localStorage.getItem("user");
 
-        if (storedUser) {
+        // if (storedUser) {
             // Parse the JSON string back into an object
 
-            const userObject = JSON.parse(storedUser);
+            // const userObject = JSON.parse(storedUser);
             // console.log("User data found in localStorage:", userObject);
 
             // Now you can access properties of the user object
@@ -27,14 +30,14 @@ const WriteReview = ({ productID }) => {
             // console.log("Email:", userObject.user.email);
             // console.log("Role:", userObject.user.role);
 
-            setUserID(userObject.user._id);
+            // setUserID(userObject.user._id);
             // Access other properties as needed
 
             // Set the user object in your component state if necessary
             // setUser(userObject);
-        } else {
-            console.log("User data not found in localStorage.");
-        }
+        // } else {
+            // console.log("User data not found in localStorage.");
+        // }
     }, []); // Empty dependency array ensures this effect runs only once on mount
 
     useEffect(() => {
@@ -48,7 +51,7 @@ const WriteReview = ({ productID }) => {
                 title: title,
                 comment: review,
                 rating: starRating,
-                user: userID,
+                user: user._id,
             });
 
             console.log(response);

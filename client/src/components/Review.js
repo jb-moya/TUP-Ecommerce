@@ -14,7 +14,7 @@ const Review = ({ productID }) => {
                 const response = await axios.get(
                     `http://localhost:5000/api/v1/reviews/product/${productID}`
                 );
-                console.log("reviews puki", response.data.reviews);
+                // console.log("reviews", response.data.reviews);
 
                 // check if response is empty array
                 if (response.length === 0) {
@@ -25,8 +25,8 @@ const Review = ({ productID }) => {
             } catch (error) {
                 console.error(error);
             } finally {
-                console.log("fiasdfally");
-                console.log("fiasdfally");
+                // console.log("fiasdfally");
+                // console.log("fiasdfally");
                 setIsLoading(false);
             }
         };

@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import connectDB from "./db/connect.js";
 
 
-import Product from "./models/Product.js";
+import { Product } from "./models/Product.js";
 import User from "./models/User.js";
 import Review from "./models/Review.js";
 

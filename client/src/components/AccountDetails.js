@@ -9,8 +9,15 @@ import ImageHolder from "./utils/imageHolder";
 import defaultProfileImage from "../Assets/defaultPP.png";
 import convertToBase64 from "./utils/convertToBase64";
 import axios from "axios";
+import { setUser } from "../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export const UserAccountDetails = () => {
+    const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
+
+    // console.log("User", user);
+
     const [postImage, setPostImage] = useState("");
     const [userData, setUserData] = useState({});
     const [newUserData, setNewUserData] = useState({
@@ -39,6 +46,10 @@ export const UserAccountDetails = () => {
                     withCredentials: true,
                 }
             );
+
+            const updatedUser = response.data.user;
+            dispatch(setUser(updatedUser));
+
             console.log(response.data);
             window.location.reload();
         } catch (error) {
@@ -63,20 +74,20 @@ export const UserAccountDetails = () => {
 
     function formatDate(dateString) {
         const date = new Date(dateString);
-    
+
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-    
-        const formattedDay = (day < 10) ? `0${day}` : day;
-    
-        const formattedMonth = (month < 10) ? `0${month}` : month;
-    
+
+        const formattedDay = day < 10 ? `0${day}` : day;
+
+        const formattedMonth = month < 10 ? `0${month}` : month;
+
         const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
-    
+
         return formattedDate;
     }
-    
+
     useEffect(() => {
         fetchAccountDetails();
     }, []);
@@ -100,28 +111,28 @@ export const UserAccountDetails = () => {
     const handleEmailChange = (e) => {
         setNewUserData({
             ...newUserData,
-            email: e.target.value
+            email: e.target.value,
         });
     };
 
     const handleContactNumberChange = (e) => {
         setNewUserData({
             ...newUserData,
-            contactNumber: e.target.value
+            contactNumber: e.target.value,
         });
     };
 
     const handleGenderChange = (e) => {
         setNewUserData({
             ...newUserData,
-            gender: e.target.value
+            gender: e.target.value,
         });
     };
 
     const handleAddressChange = (e) => {
         setNewUserData({
             ...newUserData,
-            address: e.target.value
+            address: e.target.value,
         });
     };
 
@@ -130,6 +141,14 @@ export const UserAccountDetails = () => {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setPostImage(base64);
+
+        updateLocalStorageImage();
+    };
+
+    const updateLocalStorageImage = () => {
+        user.image = postImage;
+        const userLocal = JSON.parse(localStorage.getItem("user"));
+        localStorage.setItem("user", JSON.stringify(userLocal));
     };
 
     return (
@@ -226,7 +245,9 @@ export const UserAccountDetails = () => {
                         </div>
                         <div className="w-3/4 flex-wrap flex flex-col px-5 py-6">
                             <div>
-                                <p className="w-11/12 mb-5 h-6"> {/* NAME IS IMMUTABLE */}
+                                <p className="w-11/12 mb-5 h-6">
+                                    {" "}
+                                    {/* NAME IS IMMUTABLE */}
                                     {userData.firstName} {userData.lastName}
                                 </p>
                             </div>
@@ -234,7 +255,11 @@ export const UserAccountDetails = () => {
                                 <input
                                     className="w-11/12 mb-5 h-6 border"
                                     type="text"
-                                    value={newUserData.email !== undefined ? newUserData.email : userData.email}
+                                    value={
+                                        newUserData.email !== undefined
+                                            ? newUserData.email
+                                            : userData.email
+                                    }
                                     placeholder={`${userData.email}`}
                                     onChange={handleEmailChange}
                                 />
@@ -243,8 +268,16 @@ export const UserAccountDetails = () => {
                                 <input
                                     className="w-11/12 mb-5 h-6 border"
                                     type="text"
-                                    value={newUserData.contactNumber !== undefined ? newUserData.contactNumber : userData.contactNumber}
-                                    placeholder={userData.contactNumber ? userData.contactNumber : "No Phone Number"}
+                                    value={
+                                        newUserData.contactNumber !== undefined
+                                            ? newUserData.contactNumber
+                                            : userData.contactNumber
+                                    }
+                                    placeholder={
+                                        userData.contactNumber
+                                            ? userData.contactNumber
+                                            : "No Phone Number"
+                                    }
                                     onChange={handleContactNumberChange}
                                 />
                             </div>
@@ -252,38 +285,50 @@ export const UserAccountDetails = () => {
                                 <input
                                     className="w-11/12 mb-5 h-6 border"
                                     type="text"
-                                    value={newUserData.address !== undefined ? newUserData.address : userData.address}
-                                    placeholder={userData.address ? userData.address : "N/A"}
+                                    value={
+                                        newUserData.address !== undefined
+                                            ? newUserData.address
+                                            : userData.address
+                                    }
+                                    placeholder={
+                                        userData.address
+                                            ? userData.address
+                                            : "N/A"
+                                    }
                                     onChange={handleAddressChange}
                                 />
                             </div>
                             <div className="mb-5 text-sm">
                                 <div>
-                                    <input 
-                                        type="radio" 
-                                        name="gender" 
+                                    <input
+                                        type="radio"
+                                        name="gender"
                                         value="male"
-                                        checked={newUserData.gender === 'male'}
+                                        checked={newUserData.gender === "male"}
                                         onChange={handleGenderChange}
                                     />
                                     <label htmlFor="male"> Male</label>
                                 </div>
                                 <div>
-                                    <input 
-                                        type="radio" 
-                                        name="gender" 
+                                    <input
+                                        type="radio"
+                                        name="gender"
                                         value="female"
-                                        checked={newUserData.gender === 'female'}
+                                        checked={
+                                            newUserData.gender === "female"
+                                        }
                                         onChange={handleGenderChange}
                                     />
                                     <label htmlFor="female"> Female</label>
                                 </div>
                                 <div>
-                                    <input 
-                                        type="radio" 
-                                        name="gender" 
-                                        value="others" 
-                                        checked={newUserData.gender === 'others'}
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="others"
+                                        checked={
+                                            newUserData.gender === "others"
+                                        }
                                         onChange={handleGenderChange}
                                     />
                                     <label htmlFor="others"> Others</label>
@@ -298,7 +343,7 @@ export const UserAccountDetails = () => {
                     </div>
                     <div className="w-[270px] h-2/3 flex flex-col py-6 border-l border-gray-300 justify-center items-center">
                         <ImageHolder
-                            source={ postImage }
+                            source={postImage}
                             handleFileUpload={handleFileUpload}
                         />
                         <div className="w-full flex flex-col px-7 py-6 truncate text-sm text-gray-500 justify-center items-center">
@@ -321,22 +366,21 @@ export const UserAccountDetails = () => {
 };
 
 export const UserPassword = () => {
-
     const [userData, setUserData] = useState({});
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword1, setNewPassword1] = useState('');
-    const [newPassword2, setNewPassword2] = useState('');
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword1, setNewPassword1] = useState("");
+    const [newPassword2, setNewPassword2] = useState("");
 
-    const [response, setResponse] = useState('');
+    const [response, setResponse] = useState("");
 
-    const [passwordError, setPasswordError] = useState('');
-    const [matchError, setMatchError] = useState('');
+    const [passwordError, setPasswordError] = useState("");
+    const [matchError, setMatchError] = useState("");
 
     const updatePassword = async () => {
         try {
             const response = await axios.patch(
                 "http://localhost:5000/api/v1/user/updateUserPassword",
-                {   
+                {
                     currentPassword: currentPassword,
                     newPassword: newPassword1,
                 },
@@ -346,15 +390,19 @@ export const UserPassword = () => {
             );
             setResponse(response.data);
         } catch (error) {
-            console.error('Error updating password:', error);
-            alert('Error updating password:', error);
+            console.error("Error updating password:", error);
+            alert("Error updating password:", error);
         }
     };
 
     const handleConfirm = async () => {
-        if (newPassword1 === newPassword2 && newPassword1 !== '' && newPassword2 !== '') {
+        if (
+            newPassword1 === newPassword2 &&
+            newPassword1 !== "" &&
+            newPassword2 !== ""
+        ) {
             await updatePassword();
-        } else if (newPassword1 === '' && newPassword2 === '') {
+        } else if (newPassword1 === "" && newPassword2 === "") {
             setResponse("Input fields are empty");
         } else if (newPassword1 !== newPassword2) {
             setResponse("Passwords do not match");
@@ -380,10 +428,10 @@ export const UserPassword = () => {
         const password = e.target.value;
         if (password.length < 6) {
             if (password.length > 0) {
-                setPasswordError('Password must be at least 6 characters long');
+                setPasswordError("Password must be at least 6 characters long");
             }
         } else {
-            setPasswordError('');
+            setPasswordError("");
         }
         setNewPassword1(password);
     };
@@ -391,15 +439,15 @@ export const UserPassword = () => {
     const handlePassword2Change = (e) => {
         const password2 = e.target.value;
         if (password2 !== newPassword1) {
-            setMatchError('Passwords do not match');
+            setMatchError("Passwords do not match");
         } else {
-            setMatchError('');
+            setMatchError("");
         }
         setNewPassword2(password2);
-    }; 
+    };
 
     const handleClosePrompt = () => {
-        setResponse('');
+        setResponse("");
     };
 
     function Prompt({ message, onClose }) {
@@ -407,7 +455,12 @@ export const UserPassword = () => {
             <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-50">
                 <div className="bg-white p-2 rounded-lg text-center">
                     <p className="text-base">{message}</p>
-                    <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" onClick={onClose}>Close</button>
+                    <button
+                        className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                        onClick={onClose}
+                    >
+                        Close
+                    </button>
                 </div>
             </div>
         );
@@ -492,8 +545,13 @@ export const UserPassword = () => {
                     </div>
                 </div>
             </div>
-        
-            {response && <Prompt message={response || response.msg || response.error} onClose={handleClosePrompt} />}
+
+            {response && (
+                <Prompt
+                    message={response || response.msg || response.error}
+                    onClose={handleClosePrompt}
+                />
+            )}
 
             <div className="w-[950px] flex-wrap flex flex-col px-10 py-6 bg-white">
                 <p className="text-xl">My Password</p>
@@ -511,7 +569,9 @@ export const UserPassword = () => {
                                 className="w-1/2 mb-4 h-6 border text-sm px-1"
                                 type="Password"
                                 value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                onChange={(e) =>
+                                    setCurrentPassword(e.target.value)
+                                }
                             />
                         </div>
                         <div className="flex items-center mb-4">
@@ -521,7 +581,11 @@ export const UserPassword = () => {
                                 value={newPassword1}
                                 onChange={handlePassword1Change}
                             />
-                            {passwordError && <p className="text-red-500 text-xs">{passwordError}</p>}
+                            {passwordError && (
+                                <p className="text-red-500 text-xs">
+                                    {passwordError}
+                                </p>
+                            )}
                         </div>
                         <div className="flex items-center">
                             <input
@@ -530,7 +594,11 @@ export const UserPassword = () => {
                                 value={newPassword2}
                                 onChange={handlePassword2Change}
                             />
-                            {matchError && <p className="text-red-500 px-2 text-xs">{matchError}</p>}
+                            {matchError && (
+                                <p className="text-red-500 px-2 text-xs">
+                                    {matchError}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -538,7 +606,7 @@ export const UserPassword = () => {
                     <button
                         type="button"
                         className="w-[120px] rounded cursor-pointer bg-[rgba(33, 28, 106)] border hover:border-violet-500 hover:bg-[#211C6A] hover:text-white hover:font-bold focus:ring-opacity-50 text-md"
-                        onClick={handleConfirm}    
+                        onClick={handleConfirm}
                     >
                         Save
                     </button>

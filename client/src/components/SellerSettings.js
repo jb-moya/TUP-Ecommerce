@@ -53,6 +53,7 @@ export const SellerSettings = () => {
         price: -1,
         featured: false,
         image: [],
+        stock: 0,
         variationClass: "",
         description: "",
         variation: [],
@@ -146,6 +147,10 @@ export const SellerSettings = () => {
             priceRef.current.value = `${minPrice} - ${maxPrice}`;
             stockRef.current.value = totalStock;
         }
+
+        // console.log("variation: ", variation);
+        console.log("priceRef: ", priceRef.current.value);
+        console.log("stockRef: ", stockRef.current.value);
 
         // update FormData
         setFormData((prev) => ({
@@ -275,6 +280,20 @@ export const SellerSettings = () => {
         });
     };
 
+    const handlePriceChange = (e) => {
+        setFormData({
+            ...formData,
+            price: e.target.value,
+        });
+    }
+
+    const handleStockChange = (e) => {
+        setFormData({
+            ...formData,
+            stock: e.target.value,
+        });
+    }
+
     return (
         <div className="flex w-[1000px] mx-auto bg-white ">
             <div className="ml-[60px] w-[200px] flex-wrap flex flex-col">
@@ -376,6 +395,7 @@ export const SellerSettings = () => {
                         type="text"
                         placeholder="Enter price"
                         disabled={variation.length > 0}
+                        onChange={handlePriceChange}
                     />
                 </div>
 
@@ -386,6 +406,7 @@ export const SellerSettings = () => {
                         type="text"
                         placeholder="Enter stock"
                         disabled={variation.length > 0}
+                        onChange={handleStockChange}
                     />
                 </div>
 

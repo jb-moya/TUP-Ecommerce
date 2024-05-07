@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setQuantity, calculateTotals, checkAll, removeAllItems } from "../features/cart/cartSlice";
+import { setQuantity, calculateTotals, checkAll, removeAllItems, deselectAll } from "../features/cart/cartSlice";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,14 +10,27 @@ const CheckOut = () => {
     const { total } = useSelector((store) => store.cart);
     const dispatch = useDispatch();
 
+
+    useEffect(() => {
+        // dispatch(calculateTotals());
+        console.log("total", total);
+    }, [total]);
+
+
+    // return (
+    //     <>
+    //         <div></div>
+    //     </>
+    // );
+
     return (
         <div className="bg-white flex flex-col filter shadow-down h-[200px] w-full rounded-md m-2 p-2 sticky bottom-2">
             <div className="flex justify-between p-4">
                 <div className="flex-1 flex items-center">
-                    <div className="border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
+                    <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
                         <button
                             onClick={() => {
-                                dispatch(setQuantity(1));
+                                // dispatch(setQuantity(1));
                                 dispatch(calculateTotals());
                                 dispatch(checkAll());
                             }}
@@ -28,12 +41,23 @@ const CheckOut = () => {
                     <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
                         <button
                             onClick={() => {
+                                // dispatch(setQuantity(1));
+                                dispatch(calculateTotals());
+                                dispatch(deselectAll());
+                            }}
+                        >
+                            Deselect All
+                        </button>
+                    </div>
+                    {/* <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
+                        <button
+                            onClick={() => {
                                 dispatch(removeAllItems());
                             }}
                         >
                             Clear Cart
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex items-center">
@@ -41,7 +65,7 @@ const CheckOut = () => {
                         Total:
                     </div>
                     <div className="text-[#211c6a] text-xl font-semibold">
-                        ${total.toFixed(2)}
+                        {/* ${total.toFixed(2)} */}${total}
                     </div>
                 </div>
             </div>

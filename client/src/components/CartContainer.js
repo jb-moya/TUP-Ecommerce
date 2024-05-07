@@ -7,28 +7,40 @@ import {
     clearCart,
     calculateTotals,
     getAllItems,
+    getStateCart,
 } from "../features/cart/cartSlice.js";
 import ConfirmModel from "./Modal.js";
 const CartContainer = () => {
     const dispatch = useDispatch();
-
     const { cartItems, total, amount } = useSelector((store) => store.cart);
     const [modalShow, setModalShow] = React.useState(false);
-
-    useEffect(() => {
-        // dispatch(getAllItems());
-    }, []);
     
-
-    // JOBSTER IS THE ANSWERRRRRRRRRRRRRRRRRRRRR
-    // JOBSTER IS THE ANSWERRRRRRRRRRRRRRRRRRRRR
-
+    // console.log("CartItems          ddddddddddd", cartItems);
+    
     useEffect(() => {
-        // dispatch(getAllItems());
-        dispatch(calculateTotals());
-    }, [cartItems]);
+        if (cartItems) {
+            dispatch(calculateTotals());
+        }
+    }, [dispatch, cartItems]);
 
-    if (amount < 1) {
+    if (cartItems === undefined) {
+        return (
+            <div>
+                Loading CART WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
+                PO WAIT LANG PO...
+            </div>
+        );
+    }
+
+    if (cartItems.length < 1) {
         return (
             <div className="flex items-center justify-center h-[600px]">
                 <div className="">Your cart is empty</div>
@@ -55,21 +67,10 @@ const CartContainer = () => {
             <hr className="col-span-full my-2"></hr>
 
             <div className="min-h-[650px]">
-                {cartItems.map((item) => {
-                    return <CartItem key={item.id} {...item} />;
-                })}
+                {cartItems.map((item) => (
+                    <CartItem key={item._id} cartItem={item} />
+                ))}
             </div>
-
-            {/* <h2>Total: {total}</h2>
-                <h3>Amount: {amount}</h3> */}
-
-            {/* <button onClick={() => setModalShow(true)}>Clear Cart</button> */}
-
-            {/* <ConfirmModel
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                    onConfirm={() => dispatch(clearCart())}
-                /> */}
         </>
     );
 };

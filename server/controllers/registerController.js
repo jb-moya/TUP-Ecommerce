@@ -8,57 +8,78 @@ import { attachCookiesToResponse, createTokenUser } from "../utils/index.js";
 const { Customer, Organization, Admin } = User;
 
 const register = asyncWrapper(async (req, res) => {
-
     const { role } = req.body;
 
-    if (role == 'admin') {
-
+    if (role == "admin") {
         const { email, password } = req.body;
 
         const emailAlreadyExists = await Admin.findOne({
-            email
+            email,
         });
-    
+
         if (emailAlreadyExists) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Email already exists" });
+            return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json({ error: "Email already exists" });
         }
-    
+
         const admin = await Admin.create({ email, password, role });
         const tokenUser = createTokenUser(admin);
         attachCookiesToResponse({ res, user: tokenUser });
-    
+
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
-
-    } else if ( role == 'customer') {
-
-        const { firstName, lastName, email, password, dateOfBirth, contactNumber } = req.body;
+    } else if (role == "customer") {
+        const {
+            firstName,
+            lastName,
+            email,
+            password,
+            dateOfBirth,
+            contactNumber,
+        } = req.body;
 
         const emailAlreadyExists = await Customer.findOne({
-            email
+            email,
         });
 
         if (emailAlreadyExists) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Email already exists" });
+            return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json({ error: "Email already exists" });
         }
 
-        const customer = await Customer.create({ firstName, lastName, email, password, dateOfBirth, contactNumber, role });
+        const customer = await Customer.create({
+            firstName,
+            lastName,
+            email,
+            password,
+            dateOfBirth,
+            contactNumber,
+            role,
+        });
         const tokenUser = createTokenUser(customer);
         attachCookiesToResponse({ res, user: tokenUser });
 
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
-    } else if ( role == 'seller') {
-
+    } else if (role == "seller") {
         const { orgName, email, password } = req.body;
 
         const emailAlreadyExists = await Organization.findOne({
-            email
+            email,
         });
 
         if (emailAlreadyExists) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "Email already exists" });
+            return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json({ error: "Email already exists" });
         }
 
-        const org = await Organization.create({ orgName, email, password, role });
+        const org = await Organization.create({
+            orgName,
+            email,
+            password,
+            role,
+        });
         const tokenUser = createTokenUser(org);
         attachCookiesToResponse({ res, user: tokenUser });
 
@@ -66,34 +87,42 @@ const register = asyncWrapper(async (req, res) => {
     } else {
         throw new BadRequestError("Invalid role");
     }
-
 });
 
 const login = asyncWrapper(async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
-        return res.status(StatusCodes.BAD_REQUEST).json({ error: "Please provide email and password" });
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ error: "Please provide email and password" });
     }
     // const user = await User.findOne({ email }).select("+password");
-    const user = await Admin.findOne({ email }) || await Customer.findOne({ email }) || await Organization.findOne({ email });
+    const user =
+        (await Admin.findOne({ email })) ||
+        (await Customer.findOne({ email })) ||
+        (await Organization.findOne({ email }));
 
     if (!user) {
-        return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Invalid email" });
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ error: "Invalid email" });
     }
 
     const isPasswordCorrect = await user.comparePassword(password);
 
     if (!isPasswordCorrect) {
-        return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Invalid password" });
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ error: "Invalid password" });
     }
 
     const tokenUser = createTokenUser(user);
     attachCookiesToResponse({ res, user: tokenUser });
-    
-    console.log("tokenUser: ", tokenUser);
-    const token = user.createJWT({payload: tokenUser});
 
-    res.status(StatusCodes.OK).json({ user: tokenUser, token });
+    console.log("tokenUser hehee: ", tokenUser);
+    const token = user.createJWT({ payload: tokenUser });
+
+    res.status(StatusCodes.OK).json({ user });
 });
 
 const logout = asyncWrapper(async (req, res) => {
@@ -102,9 +131,7 @@ const logout = asyncWrapper(async (req, res) => {
         expires: new Date(Date.now() + 1000),
     });
 
-    res.status(StatusCodes.OK).json({
-        message: "User logged out successfully",
-    });
+    res.status(StatusCodes.OK).json({});
 });
 
 export { register, login, logout };

@@ -1,5 +1,5 @@
 import Review from "../models/Review.js";
-import Product from "../models/Product.js";
+import { Product } from "../models/Product.js";
 import { StatusCodes } from "http-status-codes";
 import { createCustomError, CustomAPIError } from "../errors/index.js";
 import { checkPermissions } from "../utils/index.js";
@@ -22,9 +22,9 @@ const createReview = asyncWrapper(async (req, res, next) => {
         user: req.user.userId,
     });
 
-    console.log("user", req.user.userId);
+    // console.log("user", req.user.userId);
 
-    console.log("alreadySubmitted", alreadySubmitted);
+    // console.log("alreadySubmitted", alreadySubmitted);
 
     if (alreadySubmitted) {
         return next(
@@ -78,15 +78,6 @@ const getReviewTotals = asyncWrapper(async (req, res, next) => {
     const { id: productID } = req.params;
 
     const totalReviews = await Review.countDocuments({ product: productID });
-
-    console.log("HEHE", totalReviews, productID);
-
-    // if (!totalReviews) {
-    //     return next(
-    //         createCustomError(`No reviews for product ${productID}`, 404)
-    //     );
-    // }
-
     const ratingCounts = await Review.aggregate([
         {
             $match: {
