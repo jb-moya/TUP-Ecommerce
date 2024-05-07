@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFoundPage.js";
 import { UserPassword } from "./components/AccountDetails.js";
 import { Dashboard } from "./pages/Dashboard.js";
 import { SearchPage } from "./pages/SearchPage.js";
+import { CheckOutPage } from "./pages/CheckOutPage.js";
 import { fetchUser } from "./features/user/userSlice.js";
 import {
     clearCart,
@@ -81,25 +82,14 @@ function App() {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/product" element={<ProductDetail />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route
-                        path="/customeraccount"
-                        element={<CustomerAccountSettings />}
-                    />
-                    <Route
-                        path="/customeraccount=password"
-                        element={<CustomerPasswordSettings />}
-                    />
-                    <Route
-                        path="/selleraccount"
-                        element={<SellerAccountSettings />}
-                    />
-                    <Route
-                        path="/sellercenter"
-                        element={<SellerRegistration />}
-                    />
-                    <Route path="/search" element={<SearchPage />} />
-                    <Route path="/sellerdashboard" element={<Dashboard />} />
-                    <Route path="/org" element={<Organization />} />
+                    <Route path="/customeraccount" element={<CustomerAccountSettings/>}/>
+                    <Route path="/customeraccount=password" element={<CustomerPasswordSettings/>}/>
+                    <Route path="/selleraccount" element={<SellerAccountSettings/>}/>
+                    <Route path="/sellercenter" element={<SellerRegistration />}/>
+                    <Route path="/search" element={<SearchPage />}/>
+                    <Route path="/sellerdashboard" element={<Dashboard />}/>
+                    <Route path="/checkout" element={<CheckOutPage />}/>
+                    <Route path="/org" element={<Organization  />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFound />} />
