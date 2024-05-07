@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import PaginationButtons from "./PaginationButtons";
 // Logo
 
 import Logo1 from "../OrganizationAssets/logoipsum-329.svg";
@@ -280,7 +281,7 @@ const HomeFrame = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col bg-white h-[950px] max-w-[1240px] w-full">
+            <div className="flex flex-col bg-white max-w-[1240px] w-full">
                 <h1 className="font-bold p-4">DISCOVER YOUR PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">
@@ -292,14 +293,9 @@ const HomeFrame = () => {
                         <div>...Loading Products...</div>
                     )}
                 </div>
-                <div className="flex items-center justify-center m-4 select-none">
-                    <button
-                        onClick={handleSeeMore}
-                        className="border border-[#211C6A] text-[#211C6A] hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
-                    >
-                        See More
-                    </button>
-                </div>
+                
+                <PaginationButtons />
+                
             </div>
         </div>
     );

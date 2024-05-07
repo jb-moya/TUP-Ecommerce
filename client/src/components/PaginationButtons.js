@@ -48,7 +48,7 @@ const PaginationButtons = () => {
       renderOnZeroPageCount={null}
       containerClassName='flex items-center justify-center mt-8 mb-4'
       pageClassName='block border- border-solid border-gray-300 hover:bg-gray-300 w-10 h-10 flex items-center justify-center rounded-md mr-4'
-      activeClassName='bg-[#211C6A] text-white'
+      activeClassName='bg-[#211C6A] text-white hover:text-[#211C6A]'
       />
     </motion.div>
   )

@@ -7,7 +7,7 @@ import axios from "axios";
 import Footer from "../components/Footer.js";
 import { ProgressBar, Container, Row, Col } from "react-bootstrap";
 import HomeFrame from "../components/HomeFrame.js";
-import PaginationButtons from "../components/PaginationButtons.js";
+
 
 
 
