@@ -60,6 +60,8 @@ const tempProductRoute = async (req, res) => {
 const getAllProducts = asyncWrapper(async (req, res, next) => {
     let products;
 
+    console.log("req.query", req.query);
+
     const { featured, name, sort, fields, numericFilters } = req.query;
     const queryObject = {};
 
@@ -90,20 +92,55 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
             (match) => `-${operatorMap[match]}-`
         );
 
-        const options = ["price", "stock"];
+        const options = ["price", "averageRating"];
         filters = filters.split(",").forEach((item) => {
+            console.log("item", item);
             const [field, operator, value] = item.split("-");
             if (options.includes(field)) {
-                queryObject[field] = { [operator]: Number(value) };
+                if (field === "price") {
+                    if (!queryObject.$or) {
+                        queryObject.$or = [];
+                    }
+                    
+                    let priceCondition;
+                    let variationPriceCondition;
+
+                    for (const condition of queryObject.$or) {
+                        if (condition.price) {
+                            priceCondition = condition;
+                        }
+                        if (condition['variation.price']) {
+                            variationPriceCondition = condition;
+                        }
+                    }
+
+                    if (priceCondition) {
+                        priceCondition.price[operator] = Number(value);
+                    }
+                    if (variationPriceCondition) {
+                        variationPriceCondition['variation.price'][operator] = Number(value);
+                    }
+                    if (!priceCondition) {
+                        queryObject.$or.push({
+                            price: { [operator]: Number(value) },
+                        });
+                    }
+                    if (!variationPriceCondition) {
+                        queryObject.$or.push({
+                            'variation.price': { [operator]: Number(value) },
+                        });
+                    }
+                } else {
+                    queryObject[field] = { [operator]: Number(value) };
+                }
             }
         });
     }
-
+    
+    console.log("sort", sort);
     let result = Product.find(queryObject);
-
     if (sort) {
-        const sortList = sort.split(",").join(" ");
-        result = result.sort(sortList);
+        result = result.sort(sort);
     } else {
         result = result.sort("createdAt");
     }
@@ -118,6 +155,8 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     const skip = (page - 1) * limit;
 
     result = result.skip(skip).limit(limit);
+
+    console.log("Query Object:", JSON.stringify(queryObject, null, 2));
 
     products = await result;
 
