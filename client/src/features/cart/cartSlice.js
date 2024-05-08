@@ -157,8 +157,6 @@ export const addToCart = createAsyncThunk(
         try {
             const cart = await getCart(null, thunkAPI);
 
-            // console.log("cart____IDDDDD", cart);
-
             if (!cart) {
                 return rejectWithValue("no cart or it's length is 0");
             }

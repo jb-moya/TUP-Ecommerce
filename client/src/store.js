@@ -4,6 +4,7 @@ import {
 } from "@reduxjs/toolkit";
 import userReducer from "./features/user/userSlice";
 import cartReducer from "./features/cart/cartSlice";
+import searchReducer from "./features/searchSlice";
 import {
     persistStore,
     persistReducer,
@@ -24,6 +25,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user: userReducer,
     cart: cartReducer,
+    search: searchReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
