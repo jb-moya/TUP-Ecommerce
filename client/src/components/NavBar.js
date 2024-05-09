@@ -17,6 +17,7 @@ import axios from "axios";
 import defaultProfileImage from "../Assets/defaultPP.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogged, logOut, isUserLogged } from "../features/user/userSlice.js";
+
 import { setSearchClicked } from "../features/searchSlice.js";
 import { toast } from "react-toastify";
 
@@ -71,16 +72,22 @@ export const NavBar = ({
 }) => {
     const dispatch = useDispatch();
     const userLogged = useSelector(isUserLogged);
+    const { productCount } = useSelector((store) => store.cart);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    let [searchParams, setSearchParams] = useSearchParams();
+
     const handleNav = () => {
         if (isProfileMenuOpen) {
             setIsProfileMenuOpen(false);
         }
         setNav(!nav);
     };
+
     const handleProfileMenuToggle = () => {
         setIsProfileMenuOpen(!isProfileMenuOpen);
     };
+
     const handleLogOut = async () => {
         try {
             await dispatch(logOut());
@@ -92,11 +99,7 @@ export const NavBar = ({
         }
     };
 
-    const navigate = useNavigate();
-    let [searchParams, setSearchParams] = useSearchParams();
-
     const handleClick = () => {
-        // Navigate to the desired route
         navigate("/login");
     };
 
@@ -174,12 +177,12 @@ export const NavBar = ({
                         onClick={handleGoToCart}
                     >
                         <div className="flex relative hover:scale-110 transition duration-200 ease-in-out">
-                            <FaShoppingCart
-                                size={20}
-                            />
-                            <div className="bg-red-500 absolute -right-2 -top-1 text-[10px] w-[15px] h-[12px] text-white rounded-full flex justify-center items-center">
-                                2
-                            </div>
+                            <FaShoppingCart size={20} />
+                            {productCount > 0 && (
+                                <div className="bg-red-500 absolute -right-2 -top-2 text-[12px] w-[18px] h-[15px] text-white rounded-full flex justify-center items-center">
+                                    {productCount}
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="pr-6 cursor-pointer" onClick={handleNav}>

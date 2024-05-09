@@ -6,6 +6,24 @@ import { toast } from "react-toastify";
 import PaginationButtons from "./PaginationButtons";
 // Logo
 
+// import all category images
+import accessories from "../Assets/categories/accessories.jpg";
+import beauty from "../Assets/categories/beauty.jpg";
+import books from "../Assets/categories/books.jpg";
+import clothing from "../Assets/categories/clothing.jpg";
+import electronics from "../Assets/categories/electronics.jpg";
+import gaming from "../Assets/categories/gaming.jpg";
+import garden from "../Assets/categories/garden.jpg";
+import groceries from "../Assets/categories/groceries.jpg";
+import handmade from "../Assets/categories/handmade.jpg";
+import health from "../Assets/categories/health.jpg";
+import home from "../Assets/categories/home.jpg";
+import other from "../Assets/categories/other.jpg";
+import outdoors from "../Assets/categories/outdoors.jpg";
+import shoes from "../Assets/categories/shoes.jpg";
+import sports from "../Assets/categories/sports.jpg";
+import toys from "../Assets/categories/toys.jpg";
+
 import Logo1 from "../OrganizationAssets/logoipsum-329.svg";
 import Logo2 from "../OrganizationAssets/logoipsum-330.svg";
 import Logo3 from "../OrganizationAssets/logoipsum-331.svg";
@@ -25,11 +43,48 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
 
+
+const productCategories = [
+    "Electronics",
+    "Clothing",
+    "Shoes",
+    "Books",
+    "Beauty",
+    "Health",
+    "Home",
+    "Garden",
+    "Toys",
+    "Sports",
+    "Outdoors",
+    "Groceries",
+    "Accessories",
+    "Gaming",
+    "Handmade",
+    "Other",
+];
+
 const HomeFrame = () => {
     const [products, setProducts] = useState([]);
+    const [popularProducts, setPopularProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [productCount, setProductCount] = useState(0);
     const [maxPageCount, setMaxPageCount] = useState(0);
+
+    const fetchPopularProducts = async () => {
+        try {
+            const { data } = await axios.get(
+                "http://localhost:5000/api/v1/products",
+                {
+                    params: {
+                        sort: [["soldCount", "ascending"]],
+                        limit: 6,
+                    },
+                }
+            );
+            setPopularProducts(data.products);
+        } catch (error) {
+        }
+    };
 
     const fetchProducts = async () => {
         try {
@@ -41,29 +96,30 @@ const HomeFrame = () => {
                     },
                 }
             );
-            // console.log("Products", data);
             setProducts(data.products);
             setProductCount(data.productTotalCount);
             setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
-            // console.log(error);
+        } finally {
+            toast.success("Products loaded successfully");
         }
     };
 
     useEffect(() => {
-        // toast.success(`Yoasdfsdfsdfsaf ${currentPage}`);
-        fetchProducts();
+        // fetchPopularProducts();
+    }, []);
+
+    useEffect(() => {
+        // fetchProducts();
     }, [currentPage]);
 
     const navigate = useNavigate();
 
     const handleSignUpClick = () => {
-        // Navigate to the desired route
         navigate("/signup");
     };
 
     const handleSeeMore = () => {
-        // Navigate to the desired route
         navigate("/");
     };
 
@@ -193,185 +249,140 @@ const HomeFrame = () => {
 
             <div className="max-w-[1240px] w-full mb-4 bg-white">
                 <div className="max-w-[1240px] w-full ">
-                    <div className="font-bold h-[50px] p-4">
-                        CATEGORIES
-                    </div>
+                    <div className="font-bold h-[50px] p-4">CATEGORIES</div>
                     <hr className="border-[#211C6A]"></hr>
                     <div className="grid grid-cols-8 gap-2 p-4 border ">
-                        
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
+                        {productCategories.map((category, index) => (
+                            <Link
+                                key={index}
+                                to={`/search?categories=${category}`}
+                                className="flex flex-col items-center hover:scale-[1.05] transition ease-in-out duration-200"
+                            >
+                                <img
+                                    className="h-[150px] w-[150px] bg-contain rounded"
+                                    // src={category.toLowerCase()}
+                                    src={require(`../Assets/categories/${category.toLowerCase()}.jpg`)}
+                                    alt="Logo Here"
+                                    loading="lazy"
+                                />
+                                <p className="text-sm">{category}</p>
+                            </Link>
+                        ))}
 
-                    <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
-                     <img
-                        className="h-[150px] w-[150px] bg-cover "
-                        src={imgUrl()}
-                        alt="Logo Here"
-                        loading="lazy"
-                    />
+                        {/* <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={accessories}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={beauty}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={books}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={clothing}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={electronics}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={gaming}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={garden}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={groceries}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
 
-
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={handmade}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={health}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={home}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={other}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={outdoors}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={shoes}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={sports}
+                            alt="Logo Here"
+                            loading="lazy"
+                        />
+                        <img
+                            className="h-[150px] w-[150px] bg-cover "
+                            src={toys}
+                            alt="Logo Here"
+                            loading="lazy"
+                        /> */}
                     </div>
-
-
-                   
                 </div>
             </div>
 
-            <div className="flex flex-col bg-white h-[280px] max-w-[1240px] w-full mb-4 mt-4">
+            <div className="flex flex-col bg-white h-[340px] max-w-[1240px] w-full mb-4 mt-4">
                 <h1 className="font-bold p-4">TOP PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
-                <div className="flex justify-between items-center m-4 font-semibold">
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
-                    <div className="flex flex-col">
-                        <img
-                            className="w-[150px] h-[150px]"
-                            src={imgUrl()}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <h2 className="mt-2 mb-2 mr-2">Lorem Ipsum</h2>
-                    </div>
+                <div className="grid grid-cols-6 gap-4 m-4">
+                    {popularProducts.length !== 0 ? (
+                        popularProducts.map((product, index) => (
+                            <ProductCard key={index} product={product} />
+                        ))
+                    ) : (
+                        <div className="flex justify-center align-middle">
+                            ...Loading Popular Products...
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -379,7 +390,7 @@ const HomeFrame = () => {
                 <h1 className="font-bold p-4">DISCOVER YOUR PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">
-                    {products ? (
+                    {products.length !== 0 ? (
                         products.map((product, index) => (
                             <ProductCard key={index} product={product} />
                         ))

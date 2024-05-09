@@ -69,6 +69,7 @@ const initialState = {
     cartItems: [],
     amount: 4,
     total: 0,
+    productCount: 0,
     isLoading: true,
 };
 
@@ -137,7 +138,7 @@ export const getAllItems = createAsyncThunk(
         try {
             const cart = await getCart(null, thunkAPI);
 
-            // // console.log("cart hehe", cart);
+            // console.log("cart hehe", cart);
 
             if (cart.length === 0) {
                 return [];
@@ -201,6 +202,7 @@ const cartSlice = createSlice({
         removeItem: (state, action) => {
             const { id } = action.payload;
             state.cartItems = state.cartItems.filter((item) => item._id !== id);
+            state.productCount = state.cartItems.length;
             toast.success("Item removed from cart");
         },
         removeAllItems: (state) => {
@@ -283,7 +285,7 @@ const cartSlice = createSlice({
                 ...item,
                 checked: true,
             }));
-            // toast.success(state.total);
+            state.productCount = updatedItems.length;
             state.cartItems = updatedItems;
         });
         builder.addCase(getAllItems.rejected, (state, action) => {
@@ -292,6 +294,7 @@ const cartSlice = createSlice({
         builder.addCase(addToCart.fulfilled, (state, action) => {
             // toast("Item added to cart");
             state.cartItems = action.payload;
+            state.productCount = action.payload.length;
             toast.success("Item added to cart");
         });
         builder.addCase(addToCart.rejected, (state, action) => {

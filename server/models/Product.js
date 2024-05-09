@@ -12,9 +12,9 @@ const productCategories = [
     "Toys",
     "Sports",
     "Outdoors",
-    "Automotive",
+    "Groceries",
     "Accessories",
-    "Industrial",
+    "Gaming",
     "Handmade",
     "Other",
 ];
