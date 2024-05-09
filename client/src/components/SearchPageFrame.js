@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -71,11 +71,12 @@ export const SearchPageFrame = () => {
     const [togglePriceSort, setTogglePriceSort] = useState(1);
     const [sortCategories, setSortCategories] = useState([]);
     const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
+    const [isCurrentlyFetching, setIsCurrentlyFetching] = useState(false);
     const [minRating, setMinRating] = useState(0);
     const [searchName, setSearchName] = useState("");
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("keyword")) {
@@ -163,8 +164,10 @@ export const SearchPageFrame = () => {
         handleMinMaxPrice(e);
     }, 1000);
 
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
+            setIsCurrentlyFetching(true);
+            console.log("Fetching Products");
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
                 {
@@ -202,31 +205,27 @@ export const SearchPageFrame = () => {
                 }
             );
             console.log("Products", data);
+            toast.success(`Products fetched successfully ${data.count}`);
             setProducts(data.products);
             setProductCount(data.count);
 
-            // toast.success(`Products fetched successfully ${data.count}`);
             setMaxPageCount(Math.ceil(data.count / 10));
-
-            navigate(
-                `/search?${searchName ? `keyword=${searchName}` : ""}${
-                    minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
-                }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
-                    minRating > 0 ? `&minRating=${minRating}` : ""
-                }${
-                    sortCategories.length > 0
-                        ? `&categories=${sortCategories.join(",")}`
-                        : ""
-                }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
-                    toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
-                }`
-            );
 
             // toast.success(`url: /search?${urlParams.toString()}`);
         } catch (error) {
             // console.log(error);
+        } finally {
+            setIsCurrentlyFetching(false);
         }
-    };
+    }, [
+        currentPage,
+        minMaxPrice,
+        minRating,
+        searchName,
+        sortCategories,
+        toggleDateSort,
+        toggleNameSort,
+    ]);
 
     const handleToggleCategory = (e) => {
         const { value } = e.currentTarget;
@@ -254,11 +253,53 @@ export const SearchPageFrame = () => {
 
             return () => clearTimeout(timer);
         }
-    }, [searchClicked, dispatch]);
+    }, [fetchProducts, searchClicked, dispatch]);
 
     useEffect(() => {
+        console.log("Effect triggered by dependencies:", {
+            fetchProducts,
+            searchName,
+            minMaxPrice,
+            toggleDateSort,
+            toggleNameSort,
+            togglePriceSort,
+            minRating,
+            sortCategories,
+            currentPage,
+            // navigate,
+        });
+        toast.info(
+            `Effect triggered by dependencies:, ${{
+                fetchProducts,
+                // navigate,
+                searchName,
+                minMaxPrice,
+                toggleDateSort,
+                toggleNameSort,
+                togglePriceSort,
+                minRating,
+                sortCategories,
+                currentPage,
+            }}`
+        );
+
+        navigate(
+            `/search?${searchName ? `keyword=${searchName}` : ""}${
+                minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
+            }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
+                minRating > 0 ? `&minRating=${minRating}` : ""
+            }${
+                sortCategories.length > 0
+                    ? `&categories=${sortCategories.join(",")}`
+                    : ""
+            }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
+                toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
+            }`
+        );
+
         fetchProducts();
     }, [
+        fetchProducts,
         searchName,
         minMaxPrice,
         toggleDateSort,
@@ -320,6 +361,9 @@ export const SearchPageFrame = () => {
                                         name={productCategories[key]}
                                         value={productCategories[key]}
                                         onChange={handleToggleCategory}
+                                        checked={sortCategories.includes(
+                                            productCategories[key]
+                                        )}
                                     />
                                     <label
                                         className="pl-2"
@@ -378,12 +422,22 @@ export const SearchPageFrame = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-9 mx-4">
-                        {products.length !== 0 ? (
-                            products.map((product, index) => (
-                                <ProductCard key={index} product={product} />
-                            ))
+                        {!isCurrentlyFetching ? (
+                            productCount !== 0 ? (
+                                products.map((product, index) => (
+                                    <ProductCard
+                                        key={index}
+                                        product={product}
+                                    />
+                                ))
+                            ) : (
+                                <div>
+                                    ...No Products found. Try changing your
+                                    filters...
+                                </div>
+                            )
                         ) : (
-                            <div>...Loading Products...</div>
+                            <div>...Fetching Products...</div>
                         )}
                     </div>
                     <PaginationButtons

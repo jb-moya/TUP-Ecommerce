@@ -56,8 +56,8 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     }
 
     if (categories) {
-        console.log("categories1", categories);
-        console.log("categories4242", categories.split(","));
+        // console.log("categories1", categories);
+        // console.log("categories4242", categories.split(","));
         queryObject.category = { $in: categories.split(",") };
     }
 

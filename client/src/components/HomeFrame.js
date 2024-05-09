@@ -36,13 +36,14 @@ import Logo7 from "../OrganizationAssets/logoipsum-325.svg";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { isUserLogged } from "../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
-
 
 const productCategories = [
     "Electronics",
@@ -64,6 +65,8 @@ const productCategories = [
 ];
 
 const HomeFrame = () => {
+    const dispatch = useDispatch();
+    const isLogged = useSelector(isUserLogged);
     const [products, setProducts] = useState([]);
     const [popularProducts, setPopularProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -82,8 +85,7 @@ const HomeFrame = () => {
                 }
             );
             setPopularProducts(data.products);
-        } catch (error) {
-        }
+        } catch (error) {}
     };
 
     const fetchProducts = async () => {
@@ -156,12 +158,14 @@ const HomeFrame = () => {
                         purchase. <br />
                         Let's elevate our campus experience together!
                     </p>
-                    <button
-                        onClick={handleSignUpClick}
-                        className="border border-[#211C6A] text-[#211C6A] mt-5 hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
-                    >
-                        Sign Up
-                    </button>
+                    {!isLogged && (
+                        <button
+                            onClick={handleSignUpClick}
+                            className="border border-[#211C6A] text-[#211C6A] mt-5 hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
+                        >
+                            Sign Up
+                        </button>
+                    )}
                 </div>
             </div>
 
