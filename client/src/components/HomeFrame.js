@@ -191,35 +191,117 @@ const HomeFrame = () => {
                 />
             </div>
 
-            <div className="h-[350px] max-w-[1240px] w-full mb-4">
-                <div className="grid grid-cols-2  max-w-[1240px] w-full gap-4">
-                    <div className="text-xl font-semibold col-span-2 h-[50px] p-4 ">
+            <div className="max-w-[1240px] w-full mb-4 bg-white">
+                <div className="max-w-[1240px] w-full ">
+                    <div className="font-bold h-[50px] p-4">
                         CATEGORIES
                     </div>
+                    <hr className="border-[#211C6A]"></hr>
+                    <div className="grid grid-cols-8 gap-2 p-4 border ">
+                        
                     <img
-                        className="h-[140px] w-full bg-cover "
+                        className="h-[150px] w-[150px] bg-cover "
                         src={imgUrl()}
                         alt="Logo Here"
                         loading="lazy"
                     />
                     <img
-                        className="h-[140px] w-full bg-cover "
+                        className="h-[150px] w-[150px] bg-cover "
                         src={imgUrl()}
                         alt="Logo Here"
                         loading="lazy"
                     />
                     <img
-                        className="h-[140px] w-full bg-cover "
+                        className="h-[150px] w-[150px] bg-cover "
                         src={imgUrl()}
                         alt="Logo Here"
                         loading="lazy"
                     />
                     <img
-                        className="h-[140px] w-full bg-cover "
+                        className="h-[150px] w-[150px] bg-cover "
                         src={imgUrl()}
                         alt="Logo Here"
                         loading="lazy"
                     />
+                    <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                    <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                    <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                    <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+
+                    <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+                     <img
+                        className="h-[150px] w-[150px] bg-cover "
+                        src={imgUrl()}
+                        alt="Logo Here"
+                        loading="lazy"
+                    />
+
+
+                    </div>
+
+
+                   
                 </div>
             </div>
 

@@ -173,10 +173,14 @@ export const NavBar = ({
                         className="pr-4 cursor-pointer"
                         onClick={handleGoToCart}
                     >
-                        <FaShoppingCart
-                            className="hover:scale-110 transition duration-200 ease-in-out"
-                            size={20}
-                        />
+                        <div className="flex relative hover:scale-110 transition duration-200 ease-in-out">
+                            <FaShoppingCart
+                                size={20}
+                            />
+                            <div className="bg-red-500 absolute -right-2 -top-1 text-[10px] w-[15px] h-[12px] text-white rounded-full flex justify-center items-center">
+                                2
+                            </div>
+                        </div>
                     </div>
                     <div className="pr-6 cursor-pointer" onClick={handleNav}>
                         <FaSearch
