@@ -8,9 +8,62 @@ import { setSearchClicked } from "../features/searchSlice.js";
 import { FaCaretDown } from "react-icons/fa6";
 import { FaCaretUp } from "react-icons/fa6";
 import StarRating from "./StarRating.js";
+import PaginationButtons from "./PaginationButtons";
+import { DropDownMenu } from "./utils/Dropdown";
+import { m } from "framer-motion";
 axios.defaults.withCredentials = true;
 
+const productCategories = {
+    1: "Electronics",
+    2: "Clothing",
+    3: "Shoes",
+    4: "Books",
+    5: "Beauty",
+    6: "Health",
+    7: "Home",
+    8: "Garden",
+    9: "Toys",
+    10: "Sports",
+    11: "Outdoors",
+    12: "Automotive",
+    13: "Accessories",
+    14: "Industrial",
+    15: "Handmade",
+    16: "Other",
+};
+
+const minRatingComp = (currentMinRating, handleMinRating) => {
+    const selectedStyle =
+        "flex px-3 py-2 items-center w-full border-2 bg-[#BCBAD2] border-opacity-8 hover:border-[#211C6A] hover:border-opacity-1 transition ease-in-out delay-50 rounded-3xl";
+
+    const unselectedStyle =
+        "flex px-3 py-1 items-center w-full rounded hover:bg-gray-200 transition ease-in-out delay-50 hover:scale-[1.05] rounded-3xl";
+
+    return (
+        <>
+            {[5, 4, 3, 2, 1, 0].map((rate, index) => (
+                <button
+                    key={index}
+                    className={
+                        currentMinRating === parseInt(rate, 10)
+                            ? selectedStyle
+                            : unselectedStyle
+                    }
+                    value={rate}
+                    onClick={handleMinRating}
+                >
+                    <StarRating defaultRating={rate} disableAction={true} />
+                    <div className="text-sm text-gray-800">({rate})</div>
+                </button>
+            ))}
+        </>
+    );
+};
+
 export const SearchPageFrame = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productCount, setProductCount] = useState(0);
+    const [maxPageCount, setMaxPageCount] = useState(0);
     const searchClicked = useSelector((state) => state.search.searchClicked);
     const dispatch = useDispatch();
     const [selectedOption, setSelectedOption] = useState({
@@ -20,8 +73,9 @@ export const SearchPageFrame = () => {
     const [toggleDateSort, setToggleDateSort] = useState(1);
     const [toggleNameSort, setToggleNameSort] = useState(1);
     const [togglePriceSort, setTogglePriceSort] = useState(1);
+    const [sortCategories, setSortCategories] = useState([]);
     const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
-    const [minRating, setMinRating] = useState(5);
+    const [minRating, setMinRating] = useState(0);
     const [searchName, setSearchName] = useState("");
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
@@ -79,16 +133,6 @@ export const SearchPageFrame = () => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    function imgUrl() {
-        const id = rand(1, 200);
-        return `https://picsum.photos/id/${id}/1920/1080`;
-    }
-
-    const handleSeeMore = () => {
-        // Navigate to the desired route
-        // navigate('/');
-    };
-
     const fetchProducts = async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const keyword = urlParams.get("keyword");
@@ -113,7 +157,7 @@ export const SearchPageFrame = () => {
                         }${
                             minRating > 0 ? `,averageRating>=${minRating}` : ""
                         }`,
-                        // limit,
+                        categories: sortCategories.length > 0 ? sortCategories.join(",") : "",
                         sort: [
                             [
                                 "createdAt",
@@ -128,21 +172,40 @@ export const SearchPageFrame = () => {
                                     : "descending",
                             ],
                         ],
+                        page: currentPage,
                     },
                 }
             );
             console.log("Products", data);
-            toast.success("Products fetched successfully");
             setProducts(data.products);
+            setProductCount(data.count);
+
+            toast.success(`Products fetched successfully ${data.count}`);
+            setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
-    const handleMinRating = (e) => {
-        toast.success(`Min Rating: ${e.currentTarget.value}`);
+    useEffect(() => {
+        toast.success(`categories: ${sortCategories}`);
+    }, [sortCategories]);
+
+    const handleToggleCategory = (e) => {
         const { value } = e.currentTarget;
-        setMinRating(value);
+
+        setSortCategories((prevState) => {
+            if (prevState.includes(value)) {
+                return prevState.filter((category) => category !== value);
+            } else {
+                return [...prevState, value];
+            }
+        });
+    };
+
+    const handleMinRating = (e) => {
+        const { value } = e.currentTarget;
+        setMinRating(parseInt(value, 10));
     };
 
     useEffect(() => {
@@ -168,6 +231,7 @@ export const SearchPageFrame = () => {
         toggleNameSort,
         togglePriceSort,
         minRating,
+        sortCategories,
     ]);
 
     return (
@@ -177,7 +241,7 @@ export const SearchPageFrame = () => {
                     <div className="font-bold text-3xl ">Filters</div>
                     <hr className="border-t border-gray-300" />
                     <div className="flex flex-col">
-                        <div className="py-4 px-2 font-semibold text-lg">
+                        <div className="py-2 px-2 font-semibold text-lg bg-gray-100">
                             Price Range
                         </div>
                         <div className="flex flex-row items-center">
@@ -206,76 +270,31 @@ export const SearchPageFrame = () => {
                                 />
                             </div>
                         </div>
-                        <div className="py-2 px-2 font-semibold text-lg">
+                        <div className="py-2 px-2 font-semibold text-lg bg-gray-100">
                             Minimum Rating
                         </div>
                         <div className="">
-                            <button
-                                className="flex p-1 items-center w-full border border-opacity-0 hover:border-[#211C6A] hover:border-opacity-1 hover:scale-[1.05] transition ease-in-out delay-50 rounded"
-                                value={5}
-                                onClick={handleMinRating}
-                            >
-                                <StarRating
-                                    defaultRating={5}
-                                    disableAction={true}
-                                />
-                                <div className="text-sm text-gray-800">(5)</div>
-                            </button>
-                            <button
-                                className="flex p-1 items-center w-full border border-opacity-0 hover:border-[#211C6A] hover:border-opacity-1 hover:scale-[1.05] transition ease-in-out delay-50 rounded"
-                                value={4}
-                                onClick={handleMinRating}
-                            >
-                                <StarRating
-                                    defaultRating={4}
-                                    disableAction={true}
-                                />
-                                <div className="text-sm text-gray-800">(4)</div>
-                            </button>
-                            <button
-                                className="flex p-1 items-center w-full border border-opacity-0 hover:border-[#211C6A] hover:border-opacity-1 hover:scale-[1.05] transition ease-in-out delay-50 rounded"
-                                value={3}
-                                onClick={handleMinRating}
-                            >
-                                <StarRating
-                                    defaultRating={3}
-                                    disableAction={true}
-                                />
-                                <div className="text-sm text-gray-800">(3)</div>
-                            </button>
-                            <button
-                                className="flex p-1 items-center w-full border border-opacity-0 hover:border-[#211C6A] hover:border-opacity-1 hover:scale-[1.05] transition ease-in-out delay-50 rounded"
-                                value={2}
-                                onClick={handleMinRating}
-                            >
-                                <StarRating
-                                    defaultRating={2}
-                                    disableAction={true}
-                                />
-                                <div className="text-sm text-gray-800">(2)</div>
-                            </button>
-                            <button
-                                className="flex p-1 items-center w-full border border-opacity-0 hover:border-[#211C6A] hover:border-opacity-1 hover:scale-[1.05] transition ease-in-out delay-50 rounded"
-                                value={1}
-                                onClick={handleMinRating}
-                            >
-                                <StarRating
-                                    defaultRating={1}
-                                    disableAction={true}
-                                />
-                                <div className="text-sm text-gray-800">(1)</div>
-                            </button>
-                            <button
-                                className="flex p-1 items-center w-full border border-opacity-0 hover:border-[#211C6A] hover:border-opacity-1 hover:scale-[1.05] transition ease-in-out delay-50 rounded"
-                                value={0}
-                                onClick={handleMinRating}
-                            >
-                                <StarRating
-                                    defaultRating={0}
-                                    disableAction={true}
-                                />
-                                <div className="text-sm text-gray-800">(0)</div>
-                            </button>
+                            {minRatingComp(minRating, handleMinRating)}
+                        </div>
+                        <div className="py-2 px-2 font-semibold text-lg bg-gray-100">
+                            Categories
+                        </div>
+                        <div className="pl-4 pt-1">
+                            {/* checkbox for all 16 categories */}
+                            {Object.keys(productCategories).map((key) => (
+                                <div key={key}>
+                                    <input
+                                        type="checkbox"
+                                        id={key}
+                                        name={productCategories[key]}
+                                        value={productCategories[key]}
+                                        onChange={handleToggleCategory}
+                                    />
+                                    <label className="pl-2" htmlFor={productCategories[key]}>
+                                        {productCategories[key]}
+                                    </label>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -333,14 +352,10 @@ export const SearchPageFrame = () => {
                             <div>...Loading Products...</div>
                         )}
                     </div>
-                    <div className="flex items-center justify-center m-4 select-none">
-                        <button
-                            onClick={handleSeeMore}
-                            className="border border-[#211C6A] text-[#211C6A] hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
-                        >
-                            See More
-                        </button>
-                    </div>
+                    <PaginationButtons
+                        pageCount={maxPageCount > 0 ? maxPageCount : 1}
+                        setCurrentPage={setCurrentPage}
+                    />
                 </div>
             </div>
         </div>

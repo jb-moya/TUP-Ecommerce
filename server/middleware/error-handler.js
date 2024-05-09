@@ -8,12 +8,12 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
     };
 
     if (err instanceof CustomAPIError) {
-        console.log("Custom Error");
+        // console.log("Custom Error");
         return res.status(err.statusCode).json({ msg: err.message });
     }
 
     if (err.code && err.code === 11000) {
-        console.log("Duplicate field error");
+        // console.log("Duplicate field error");
         customError.statusCode = StatusCodes.BAD_REQUEST;
         customError.message = `Duplicate value entered for ${Object.keys(
             err.keyValue
@@ -21,7 +21,7 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
     }
     // https://youtu.be/qwfE7fSVaZM?t=32785
     if (err.name === "ValidationError") {
-        console.log("Validation Error");
+        // console.log("Validation Error");
         customError.statusCode = StatusCodes.BAD_REQUEST;
         customError.message = Object.values(err.errors)
             .map((item) => item.message)
@@ -29,12 +29,12 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
     }
 
     if (err.name === "CastError") {
-        console.log("Cast Error");
+        // console.log("Cast Error");
         customError.statusCode = StatusCodes.NOT_FOUND;
         customError.message = `Resource not found. Invalid: ${err.value}`;
     }
 
-    // console.log("Error");
+    // // console.log("Error");
     return (
         res
             .status(customError.statusCode)

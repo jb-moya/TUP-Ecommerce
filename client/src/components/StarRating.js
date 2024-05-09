@@ -10,7 +10,7 @@ const StarRating = ({
     const [rating, setRating] = useState(defaultRating);
     const [hover, setHover] = useState(null);
 
-    // console.log("rating paa", rating);
+    // // console.log("rating paa", rating);
 
     const handleStarClick = (ratingValue) => {
         if (!disableAction) {
@@ -53,7 +53,10 @@ const StarRating = ({
                             color={
                                 staticColor
                                     ? "#ffc107"
-                                    : ratingValue <= (disableAction ? defaultRating : hover || rating)
+                                    : ratingValue <=
+                                      (disableAction
+                                          ? defaultRating
+                                          : hover || rating)
                                     ? "#ffc107"
                                     : "#211c6a"
                             }

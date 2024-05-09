@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 import PaginationButtons from "./PaginationButtons";
 // Logo
 
@@ -26,22 +27,33 @@ import "swiper/css/autoplay";
 
 const HomeFrame = () => {
     const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productCount, setProductCount] = useState(0);
+    const [maxPageCount, setMaxPageCount] = useState(0);
 
     const fetchProducts = async () => {
         try {
             const { data } = await axios.get(
-                "http://localhost:5000/api/v1/products"
+                "http://localhost:5000/api/v1/products",
+                {
+                    params: {
+                        page: currentPage,
+                    },
+                }
             );
-            console.log("Products", data);
+            // console.log("Products", data);
             setProducts(data.products);
+            setProductCount(data.productTotalCount);
+            setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
     useEffect(() => {
+        // toast.success(`Yoasdfsdfsdfsaf ${currentPage}`);
         fetchProducts();
-    }, []);
+    }, [currentPage]);
 
     const navigate = useNavigate();
 
@@ -61,7 +73,7 @@ const HomeFrame = () => {
 
     function imgUrl() {
         const id = rand(1, 200);
-        // console.log(id);
+        // // console.log(id);
         return `https://picsum.photos/id/${id}/1920/1080`;
     }
 
@@ -293,9 +305,11 @@ const HomeFrame = () => {
                         <div>...Loading Products...</div>
                     )}
                 </div>
-                
-                <PaginationButtons />
-                
+
+                <PaginationButtons
+                    pageCount={maxPageCount > 0 ? maxPageCount : 1}
+                    setCurrentPage={setCurrentPage}
+                />
             </div>
         </div>
     );

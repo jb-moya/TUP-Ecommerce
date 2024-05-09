@@ -90,7 +90,7 @@ export const CheckOutFrame = () => {
 
     function imgUrl() {
         const id = rand(1, 200);
-        // console.log(id);
+        // // console.log(id);
         return `https://picsum.photos/id/${id}/1920/1080`;
     }
 
@@ -172,8 +172,11 @@ export const CheckOutFrame = () => {
                         <hr className="border-[#211C6A] my-4"></hr>
                         <div className="flex w-full justify-between">
                             <p>Total:</p>
-                            <p>₱ 
-                                {valueShipping !== 0 ? total + valueShipping : total}
+                            <p>
+                                ₱
+                                {valueShipping !== 0
+                                    ? total + valueShipping
+                                    : total}
                             </p>
                         </div>
                     </div>

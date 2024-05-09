@@ -49,7 +49,7 @@ const DropDownMenu_1 = ({ label, options, selectedOption, onSelectOption }) => {
                     type="text"
                     value={options[selectedOption] || label}
                     readOnly
-                    className="w-[140px] px-3 py-1 h-6 rounded text-base text-sm cursor-pointer text-black border-2 rounded-md hover:border-violet-500 focus:ring-opacity-50"
+                    className="w-[140px] px-3 py-1 h-6 text-sm cursor-pointer text-black border-2 rounded-md hover:border-violet-500 focus:ring-opacity-50"
                     onClick={() => setIsOpen(!isOpen)}
                 />
                 <svg

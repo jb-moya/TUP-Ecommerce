@@ -1,12 +1,17 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setQuantity, calculateTotals, checkAll, removeAllItems, deselectAll } from "../features/cart/cartSlice";
+import {
+    setQuantity,
+    calculateTotals,
+    checkAll,
+    removeAllItems,
+    deselectAll,
+} from "../features/cart/cartSlice";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
 
 const CheckOut = () => {
     const { total } = useSelector((store) => store.cart);
@@ -15,7 +20,7 @@ const CheckOut = () => {
 
     useEffect(() => {
         // dispatch(calculateTotals());
-        console.log("total", total);
+        // console.log("total", total);
     }, [total]);
 
     const handleGoToCheckoutPage = () => {

@@ -56,12 +56,13 @@ ReviewSchema.statics.calculateAverageRating = async function (productId) {
         await this.model("Product").findOneAndUpdate(
             { _id: productId },
             {
-                averageRating: parseFloat(result[0]?.averageRating.toFixed(1)) || 0,
+                averageRating:
+                    parseFloat(result[0]?.averageRating.toFixed(1)) || 0,
                 numOfReviews: result[0]?.numOfReviews || 0,
             }
         );
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 };
 
@@ -69,7 +70,7 @@ ReviewSchema.post("save", async function () {
     await this.constructor.calculateAverageRating(this.product);
 });
 
-ReviewSchema.post("deleteOne", { document : true}, async function () {
+ReviewSchema.post("deleteOne", { document: true }, async function () {
     // IT"S NOT A FUNCTION NYENYENYENYENYUEEEEE
 
     await this.constructor.calculateAverageRating(this.product);

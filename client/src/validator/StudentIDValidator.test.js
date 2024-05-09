@@ -14,8 +14,10 @@ describe("StudentIDValidator", () => {
             ];
 
             for (const studentID of invalidStudentID) {
-				expect(() => StudentIDValidator.validateUniqueCredentials(studentID)).toThrow("Invalid student ID");
-				console.log("studentID: ", studentID);
+                expect(() =>
+                    StudentIDValidator.validateUniqueCredentials(studentID)
+                ).toThrow("Invalid student ID");
+                // console.log("studentID: ", studentID);
             }
         });
 
@@ -30,10 +32,12 @@ describe("StudentIDValidator", () => {
                 "TUPM-00-9999",
             ];
 
-			for (const studentID of validStudentID) {
-				expect(() => StudentIDValidator.validateUniqueCredentials(studentID)).not.toThrow();
-				console.log("studentID: ", studentID);
-			}
+            for (const studentID of validStudentID) {
+                expect(() =>
+                    StudentIDValidator.validateUniqueCredentials(studentID)
+                ).not.toThrow();
+                // console.log("studentID: ", studentID);
+            }
         });
     });
 });

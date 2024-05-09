@@ -14,9 +14,9 @@ const CartContainer = () => {
     const dispatch = useDispatch();
     const { cartItems, total, amount } = useSelector((store) => store.cart);
     const [modalShow, setModalShow] = React.useState(false);
-    
-    // console.log("CartItems          ddddddddddd", cartItems);
-    
+
+    // // console.log("CartItems          ddddddddddd", cartItems);
+
     useEffect(() => {
         if (cartItems) {
             dispatch(calculateTotals());
@@ -26,16 +26,16 @@ const CartContainer = () => {
     if (cartItems === undefined) {
         return (
             <div>
-                Loading CART WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG
-                PO WAIT LANG PO...
+                Loading CART WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO WAIT LANG PO
+                WAIT LANG PO...
             </div>
         );
     }

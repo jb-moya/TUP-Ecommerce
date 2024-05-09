@@ -119,7 +119,7 @@ const login = asyncWrapper(async (req, res) => {
     const tokenUser = createTokenUser(user);
     attachCookiesToResponse({ res, user: tokenUser });
 
-    console.log("tokenUser hehee: ", tokenUser);
+    // console.log("tokenUser hehee: ", tokenUser);
     const token = user.createJWT({ payload: tokenUser });
 
     res.status(StatusCodes.OK).json({ user });

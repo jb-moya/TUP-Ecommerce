@@ -5,9 +5,9 @@ const checkPermissions = (
     resourceUserId,
     enforceAdminAccess = true
 ) => {
-    // console.log(requestUser);
-    // console.log(resourceUserId);
-    // console.log(typeof resourceUserId);
+    // // console.log(requestUser);
+    // // console.log(resourceUserId);
+    // // console.log(typeof resourceUserId);
     if (enforceAdminAccess && requestUser.role === "admin") return;
     if (requestUser.userId === resourceUserId.toString()) return;
 

@@ -46,33 +46,33 @@ const ProductDetailPage = (props) => {
                     setSelectedVariation(null);
                 }
 
-                console.log("response", response);
+                // console.log("response", response);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
                 setIsLoading(false);
             }
         };
-        // console.log("cookie", document.cookie);
+        // // console.log("cookie", document.cookie);
 
         fetchData();
     }, [id]);
 
     useEffect(() => {
-        // console.log("Selected variation", selectedVariation);
+        // // console.log("Selected variation", selectedVariation);
 
         // reset quantity to 1 if selected variation changes
         setQuantity(1);
     }, [selectedVariation]);
 
     const handleAddToCart = async () => {
-        console.log("Add to cart");
+        // console.log("Add to cart");
 
-        console.log(
-            "productID", productDetails._id,
-            "quantity", quantity,
-            "variationID", selectedVariation ? selectedVariation._id : null
-        )
+        // console.log(
+        //     "productID", productDetails._id,
+        //     "quantity", quantity,
+        //     "variationID", selectedVariation ? selectedVariation._id : null
+        // )
 
         try {
             await dispatch(addToCart({ productID: productDetails._id, quantity: quantity, variationID: selectedVariation ? selectedVariation._id : null}) );
@@ -87,7 +87,7 @@ const ProductDetailPage = (props) => {
         //         variationID: selectedVariation._id,
         //     });
 
-        //     console.log("response", response);
+        //     // console.log("response", response);
         // } catch (error) {
         //     console.error(error);
         // }
@@ -98,12 +98,12 @@ const ProductDetailPage = (props) => {
     };
 
     const handleWriteReview = () => {
-        console.log("Write a review");
+        // console.log("Write a review");
         setIsOpenWriteReview(!isOpenWriteReview);
     };
 
     const handleVariationPick = (variation) => {
-        console.log("Variation picked", variation);
+        // console.log("Variation picked", variation);
     };
 
     return (

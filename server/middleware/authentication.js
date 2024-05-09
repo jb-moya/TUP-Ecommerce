@@ -4,15 +4,15 @@ import { UnauthenticatedError } from "../errors/unauthenticated.js";
 
 const authenticateUser = async (req, res, next) => {
     // token
-    // console.log("res", res);
-    // console.log("req.cookies", req.cookies);
-    // console.log("req.signedCookies", req.signedCookies);
-    // console.log('req', req)
+    // // console.log("res", res);
+    // // console.log("req.cookies", req.cookies);
+    // // console.log("req.signedCookies", req.signedCookies);
+    // // console.log('req', req)
     const token = req.signedCookies.token;
 
     // const token = req.headers.authorization.split(" ")[1];
 
-    // console.log("T O K E N :", token);
+    // // console.log("T O K E N :", token);
 
     if (!token) {
         throw new UnauthenticatedError("Authentication invalid");

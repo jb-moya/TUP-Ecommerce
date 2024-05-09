@@ -77,7 +77,7 @@ const getCart = async (_, thunkAPI) => {
     try {
         const cartExists = await axios.get(`http://localhost:5000/api/v1/cart`);
 
-        console.log("get Cart", cartExists);
+        // console.log("get Cart", cartExists);
 
         if (cartExists.data.cart) {
             return cartExists.data.cart;
@@ -115,8 +115,8 @@ export const deleteCart = createAsyncThunk(
 export const deleteItemFromDB = createAsyncThunk(
     "cart/deleteItemFromDB",
     async (itemId, thunkAPI) => {
-        // console.log("itemId HOUY", itemId);
-        // console.log("itemId HOUY f", itemId.itemId);
+        // // console.log("itemId HOUY", itemId);
+        // // console.log("itemId HOUY f", itemId.itemId);
 
         const cart = await getCart(null, thunkAPI);
         try {
@@ -137,7 +137,7 @@ export const getAllItems = createAsyncThunk(
         try {
             const cart = await getCart(null, thunkAPI);
 
-            // console.log("cart hehe", cart);
+            // // console.log("cart hehe", cart);
 
             if (cart.length === 0) {
                 return [];
@@ -166,7 +166,7 @@ export const addToCart = createAsyncThunk(
                 { ...item, cartID: cart.length !== 0 ? cart[0]._id : null }
             );
 
-            // console.log("add to cart response", response);
+            // // console.log("add to cart response", response);
             const updatedCart = await getCart(null, thunkAPI);
 
             if (updatedCart) {
@@ -273,7 +273,7 @@ const cartSlice = createSlice({
 
             total = parseFloat(total.toFixed(2));
 
-            state.total = total;            
+            state.total = total;
             state.amount = amount;
         },
     },
@@ -300,7 +300,7 @@ const cartSlice = createSlice({
     },
 });
 
-// console.log(cartSlice);
+// // console.log(cartSlice);
 export default cartSlice.reducer;
 
 export const {

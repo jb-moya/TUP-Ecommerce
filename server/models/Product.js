@@ -99,16 +99,16 @@ const productSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
-        // Question:
-        // What is the way of access of Seller (organization) in this ecommerce.
-        // Can they be able to have multiple accounts, with each account having different roles?
-        // How can we implement this?
-
-        // Or each organization can only have one account, and that account can have multiple roles?
     },
     { timestamps: true }
 );
 
+// Question:
+// What is the way of access of Seller (organization) in this ecommerce.
+// Can they be able to have multiple accounts, with each account having different roles?
+// How can we implement this?
+
+// Or each organization can only have one account, and that account can have multiple roles?
 export const Product = mongoose.model("Product", productSchema);
 export const ProductVariation = mongoose.model(
     "ProductVariation",

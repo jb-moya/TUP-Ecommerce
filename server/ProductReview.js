@@ -28,7 +28,7 @@ export default class ProductReview {
 
             return result;
         } catch (error) {
-            console.log("error: ", error);
+            // console.log("error: ", error);
             throw new Error(`Error creating comment: ${error.message}`);
         }
     }
@@ -64,7 +64,7 @@ export default class ProductReview {
                         [studentId, ratingCommentId],
                         (err, results) => {
                             if (err) throw err;
-                            console.log("Review unliked successfully");
+                            // console.log("Review unliked successfully");
                         }
                     );
                 } else {
@@ -74,7 +74,7 @@ export default class ProductReview {
                         [studentId, ratingCommentId],
                         (err, results) => {
                             if (err) throw err;
-                            console.log("Review liked successfully");
+                            // console.log("Review liked successfully");
                         }
                     );
                 }

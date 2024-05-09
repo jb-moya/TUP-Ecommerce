@@ -16,7 +16,7 @@ export const UserAccountDetails = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
 
-    // console.log("User", user);
+    // // console.log("User", user);
 
     const [postImage, setPostImage] = useState("");
     const [userData, setUserData] = useState({});
@@ -50,10 +50,10 @@ export const UserAccountDetails = () => {
             const updatedUser = response.data.user;
             dispatch(setUser(updatedUser));
 
-            console.log(response.data);
+            // console.log(response.data);
             window.location.reload();
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -66,9 +66,9 @@ export const UserAccountDetails = () => {
                 }
             );
             setUserData(response.data.user);
-            console.log(response.data.user);
+            // console.log(response.data.user);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
@@ -418,9 +418,9 @@ export const UserPassword = () => {
                 }
             );
             setUserData(response.data.user);
-            console.log(response.data.user);
+            // console.log(response.data.user);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 

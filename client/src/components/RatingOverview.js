@@ -37,7 +37,7 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
     }));
     const [barWidth, setBarWidth] = useState(initialBarWidth);
 
-    // console.log("productID AHH", productID);
+    // // console.log("productID AHH", productID);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -45,8 +45,8 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                 const response = await axios.get(
                     `http://localhost:5000/api/v1/reviews/product/${productID}/total`
                 );
-                // console.log("reviews", response);
-                // console.log("rating count", response.data.ratingCounts);
+                // // console.log("reviews", response);
+                // // console.log("rating count", response.data.ratingCounts);
                 setTotalReviews(response.data.totalReviews);
 
                 const updatedBarWidth = initialBarWidth.map((bar) => {

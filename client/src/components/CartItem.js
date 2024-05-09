@@ -33,7 +33,7 @@ const ItemStock = ({ stock }) => {
 const CartItem = ({ cartItem }) => {
     const dispatch = useDispatch();
 
-    // console.log("cartItem pak", cartItem, cartItem._id);
+    // // console.log("cartItem pak", cartItem, cartItem._id);
 
     const handleQuantityChange = (newQuantity) => {
         dispatch(setQuantity({ id: cartItem._id, quantity: newQuantity }));

@@ -19,10 +19,12 @@ import { Dashboard } from "./pages/Dashboard.js";
 import { SearchPage } from "./pages/SearchPage.js";
 import { CheckOutPage } from "./pages/CheckOutPage.js";
 import { fetchUser } from "./features/user/userSlice.js";
+import { clearCart } from "./features/cart/cartSlice.js";
 import {
-    clearCart,
+    getAllItems,
+    deleteItemFromDB,
+    deleteCart,
 } from "./features/cart/cartSlice.js";
-import { getAllItems, deleteItemFromDB, deleteCart } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const rootUrl = "http://localhost:5000/api/v1";
@@ -30,7 +32,7 @@ function App() {
     const dispatch = useDispatch();
     const { isLogged, user } = useSelector((state) => state.user);
 
-    console.log("ISLOGGED", isLogged);
+    // console.log("ISLOGGED", isLogged);
 
     // var _lsTotal = 0,
     //     _xLen,
@@ -38,11 +40,11 @@ function App() {
     // for (_x in localStorage) {
     //     _xLen = ((localStorage[_x].length || 0) + (_x.length || 0)) * 2;
     //     _lsTotal += _xLen;
-    //     console.log(
+    //     // console.log(
     //         _x.substr(0, 50) + " = " + (_xLen / 1024).toFixed(2) + " KB"
     //     );
     // }
-    // console.log("Total = " + (_lsTotal / 1024).toFixed(2) + " KB");
+    // // console.log("Total = " + (_lsTotal / 1024).toFixed(2) + " KB");
 
     useEffect(() => {
         if (isLogged) {
@@ -65,14 +67,26 @@ function App() {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/product" element={<ProductDetail />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/customeraccount" element={<CustomerAccountSettings/>}/>
-                    <Route path="/customeraccount=password" element={<CustomerPasswordSettings/>}/>
-                    <Route path="/selleraccount" element={<SellerAccountSettings/>}/>
-                    <Route path="/sellercenter" element={<SellerRegistration />}/>
-                    <Route path="/search" element={<SearchPage />}/>
-                    <Route path="/sellerdashboard" element={<Dashboard />}/>
-                    <Route path="/checkout" element={<CheckOutPage />}/>
-                    <Route path="/org" element={<Organization  />} />
+                    <Route
+                        path="/customeraccount"
+                        element={<CustomerAccountSettings />}
+                    />
+                    <Route
+                        path="/customeraccount=password"
+                        element={<CustomerPasswordSettings />}
+                    />
+                    <Route
+                        path="/selleraccount"
+                        element={<SellerAccountSettings />}
+                    />
+                    <Route
+                        path="/sellercenter"
+                        element={<SellerRegistration />}
+                    />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/sellerdashboard" element={<Dashboard />} />
+                    <Route path="/checkout" element={<CheckOutPage />} />
+                    <Route path="/org" element={<Organization />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFound />} />

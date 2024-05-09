@@ -17,8 +17,8 @@ const ToggleButtonsComponent = ({
         handleVariationPick(optionID);
     };
 
-    // console.log("options", options);
-    // console.log("options", options[0].name);
+    // // console.log("options", options);
+    // // console.log("options", options[0].name);
 
     return (
         <div className="w-full flex mt-4">
@@ -42,7 +42,9 @@ const ToggleButtonsComponent = ({
                                 className={`hidden whitespace-nowrap`}
                                 value={option._id.toString()}
                                 checked={selectedOption === option._id}
-                                onChange={() => handleOptionChange(option, option._id)}
+                                onChange={() =>
+                                    handleOptionChange(option, option._id)
+                                }
                             />
                             {option.name}
                         </label>

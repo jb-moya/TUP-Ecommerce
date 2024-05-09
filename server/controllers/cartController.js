@@ -94,7 +94,7 @@ const getUserCart = asyncWrapper(async (req, res, next) => {
     const cart = await Cart.aggregate(pipeline);
 
     // if (cart.length === 1) {
-    console.log("extractedCart", cart)
+    // console.log("extractedCart", cart)
 
     res.status(200).json({ cart });
     // } else {
@@ -108,7 +108,7 @@ const getUserCart = asyncWrapper(async (req, res, next) => {
 
 const hasCart = asyncWrapper(async (req, res) => {
     let cart = await Cart.findOne({ user: req.user.userId });
-    // console.log("cart", cart);
+    // // console.log("cart", cart);
     res.status(200).json({ cart });
     // res.status(200).json({ hasCart: true });
 });
@@ -140,9 +140,7 @@ const deleteCartItem = asyncWrapper(async (req, res, next) => {
         return next(createCustomError(`No cart with id : ${cartId}`, 404));
     }
 
-    const item = cart.orderItems.find(
-        (item) => item._id.toString() === itemId
-    );
+    const item = cart.orderItems.find((item) => item._id.toString() === itemId);
 
     if (!item) {
         return next(createCustomError(`No item with id : ${itemId}`, 404));
@@ -159,7 +157,7 @@ const deleteCartItem = asyncWrapper(async (req, res, next) => {
 const addToCart = asyncWrapper(async (req, res, next) => {
     const { productID, quantity, variationID, cartID } = req.body;
 
-    console.log("body", req.body);
+    // console.log("body", req.body);
 
     if (cartID) {
         const cart = await Cart.findById(cartID);
@@ -188,7 +186,7 @@ const addToCart = asyncWrapper(async (req, res, next) => {
                     item.variation.toString() === variationID
             );
             if (existingItem) {
-                console.log("existingItem:", existingItem);
+                // console.log("existingItem:", existingItem);
                 existingItem.quantity += quantity;
             } else {
                 cart.orderItems.push({
@@ -222,7 +220,7 @@ const addToCart = asyncWrapper(async (req, res, next) => {
         }
     } else {
         // create a new cart
-        console.log("HANEP HANEP HANEPHANEP");
+        // console.log("HANEP HANEP HANEPHANEP");
         const cart = new Cart({
             user: req.user.userId,
             orderItems: [

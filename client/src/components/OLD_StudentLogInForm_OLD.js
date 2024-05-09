@@ -34,8 +34,8 @@ const LogInForm = () => {
                 },
             });
 
-            console.log("email11: ", email);
-            console.log("email111: ", email);
+            // console.log("email11: ", email);
+            // console.log("email111: ", email);
 
             setError(null);
             setSuccess(true);
@@ -80,7 +80,6 @@ const LogInForm = () => {
     };
 
     return (
-        
         <div>
             <h1>Log-In</h1>
             <InputField

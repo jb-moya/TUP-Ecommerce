@@ -16,32 +16,27 @@ const WriteReview = ({ productID }) => {
     useEffect(() => {
         // Retrieve user data from localStorage
         // const storedUser = localStorage.getItem("user");
-
         // if (storedUser) {
-            // Parse the JSON string back into an object
-
-            // const userObject = JSON.parse(storedUser);
-            // console.log("User data found in localStorage:", userObject);
-
-            // Now you can access properties of the user object
-            // console.log("User ID:", userObject.user._id);
-            // console.log("First Name:", userObject.user.firstName);
-            // console.log("Last Name:", userObject.user.lastName);
-            // console.log("Email:", userObject.user.email);
-            // console.log("Role:", userObject.user.role);
-
-            // setUserID(userObject.user._id);
-            // Access other properties as needed
-
-            // Set the user object in your component state if necessary
-            // setUser(userObject);
+        // Parse the JSON string back into an object
+        // const userObject = JSON.parse(storedUser);
+        // // console.log("User data found in localStorage:", userObject);
+        // Now you can access properties of the user object
+        // // console.log("User ID:", userObject.user._id);
+        // // console.log("First Name:", userObject.user.firstName);
+        // // console.log("Last Name:", userObject.user.lastName);
+        // // console.log("Email:", userObject.user.email);
+        // // console.log("Role:", userObject.user.role);
+        // setUserID(userObject.user._id);
+        // Access other properties as needed
+        // Set the user object in your component state if necessary
+        // setUser(userObject);
         // } else {
-            // console.log("User data not found in localStorage.");
+        // // console.log("User data not found in localStorage.");
         // }
     }, []); // Empty dependency array ensures this effect runs only once on mount
 
     useEffect(() => {
-        // console.log("Star Rating: ", starRating);
+        // // console.log("Star Rating: ", starRating);
     }, [starRating]);
 
     const handleSubmitReview = () => {
@@ -54,7 +49,7 @@ const WriteReview = ({ productID }) => {
                 user: user._id,
             });
 
-            console.log(response);
+            // console.log(response);
             // refresh page
             window.location.reload();
         } catch (error) {

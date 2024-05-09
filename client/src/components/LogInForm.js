@@ -50,7 +50,7 @@ const LogInForm = () => {
         //     .post("http://localhost:5000/api/v1/auth/login", formData)
         //     .then((response) => {
         //         localStorage.setItem("isLoggedIn", "true");
-        //         console.log(
+        //         // console.log(
         //             "Logged in successfullyyy",
         //             localStorage.getItem("isLoggedIn")
         //         );
@@ -58,7 +58,7 @@ const LogInForm = () => {
         //         return response.data;
         //     })
         //     .then((responseData) => {
-        //         console.log("HEHE", responseData);
+        //         // console.log("HEHE", responseData);
 
         //         return axios.get(
         //             "http://localhost:5000/api/v1/auth/getAccountDetails"

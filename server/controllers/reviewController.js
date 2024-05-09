@@ -22,9 +22,9 @@ const createReview = asyncWrapper(async (req, res, next) => {
         user: req.user.userId,
     });
 
-    // console.log("user", req.user.userId);
+    // // console.log("user", req.user.userId);
 
-    // console.log("alreadySubmitted", alreadySubmitted);
+    // // console.log("alreadySubmitted", alreadySubmitted);
 
     if (alreadySubmitted) {
         return next(
@@ -69,7 +69,7 @@ const getAllReviews = asyncWrapper(async (req, res, next) => {
         );
     }
 
-    // console.log("HEHE", reviews, productID);
+    // // console.log("HEHE", reviews, productID);
 
     res.status(StatusCodes.OK).json({ reviews });
 });
@@ -95,7 +95,7 @@ const getReviewTotals = asyncWrapper(async (req, res, next) => {
         { $project: { _id: 0 } }, // Exclude _id field from the output
     ]);
 
-    // console.log("Rating Counts:", ratingCounts);
+    // // console.log("Rating Counts:", ratingCounts);
 
     res.status(StatusCodes.OK).json({ totalReviews, ratingCounts });
 });

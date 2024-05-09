@@ -100,7 +100,7 @@ export const SellerSettings = () => {
     }, [postImage]);
 
     useEffect(() => {
-        console.log("formData: ", formData);
+        // console.log("formData: ", formData);
     }, [formData]);
 
     useEffect(() => {
@@ -148,9 +148,9 @@ export const SellerSettings = () => {
             stockRef.current.value = totalStock;
         }
 
-        // console.log("variation: ", variation);
-        console.log("priceRef: ", priceRef.current.value);
-        console.log("stockRef: ", stockRef.current.value);
+        // // console.log("variation: ", variation);
+        // console.log("priceRef: ", priceRef.current.value);
+        // console.log("stockRef: ", stockRef.current.value);
 
         // update FormData
         setFormData((prev) => ({
@@ -192,34 +192,34 @@ export const SellerSettings = () => {
                 formData
             );
 
-            console.log(response);
+            // console.log(response);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         createPost();
-        // console.log(postImage);
+        // // console.log(postImage);
     };
 
     const handleFileUpload = async (e) => {
         e.preventDefault(); // Prevent the default behavior of the click event
 
-        // console.log("e.target index: ", e.target.id);
-        // console.log("postImage", postImage);
+        // // console.log("e.target index: ", e.target.id);
+        // // console.log("postImage", postImage);
 
         // Check if files were selected
         if (e.target.files.length === 0) {
-            console.log("No file selected");
+            // console.log("No file selected");
             return; // Exit the function early if no file was selected
         }
 
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
-        // console.log("base64");
-        // console.log(base64);
+        // // console.log("base64");
+        // // console.log(base64);
 
         setPostImage((prev) => {
             const newPostImage = [...prev];
@@ -285,14 +285,14 @@ export const SellerSettings = () => {
             ...formData,
             price: e.target.value,
         });
-    }
+    };
 
     const handleStockChange = (e) => {
         setFormData({
             ...formData,
             stock: e.target.value,
         });
-    }
+    };
 
     return (
         <div className="flex w-[1000px] mx-auto bg-white ">

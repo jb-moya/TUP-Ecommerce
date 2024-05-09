@@ -3,16 +3,13 @@ import { ContactValidator } from "./ContactValidator.js";
 describe("ContactValidator", () => {
     describe("validateUniqueCredentials", () => {
         it("should throw an error if contact is invalid", () => {
-            const invalidContact = [
-                "0912345678",
-                "1111111111",
-            ];
+            const invalidContact = ["0912345678", "1111111111"];
 
             for (const contact of invalidContact) {
                 expect(() =>
                     ContactValidator.validateUniqueCredentials(contact)
                 ).toThrow("Invalid student ID");
-                console.log("contact: ", contact);
+                // console.log("contact: ", contact);
             }
         });
 
@@ -34,7 +31,7 @@ describe("ContactValidator", () => {
                 expect(() =>
                     ContactValidator.validateUniqueCredentials(contact)
                 ).not.toThrow();
-                console.log("contact: ", contact);
+                // console.log("contact: ", contact);
             }
         });
     });

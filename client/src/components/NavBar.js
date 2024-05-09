@@ -21,16 +21,12 @@ import { setSearchClicked } from "../features/searchSlice.js";
 import { toast } from "react-toastify";
 
 const ProfileMenu = ({
-    image,
-    userName,
     handleProfileMenuToggle,
     logOut,
     isProfileMenuOpen,
 }) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
-
-    // console.log("USER", user);
 
     return (
         <div className="cursor-pointer" onClick={handleProfileMenuToggle}>
@@ -40,7 +36,7 @@ const ProfileMenu = ({
                     alt="MY FACE"
                     className="w-8 h-8 border-2 border-blue-900 rounded-full object-cover"
                 />
-                <div className="px-1 self-center">{userName}</div>
+                <div className="px-1 self-center">{user.firstName}</div>
             </div>
             {isProfileMenuOpen && (
                 <div className="absolute transition duration-200 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded shadow-lg">
@@ -75,19 +71,6 @@ export const NavBar = ({
 }) => {
     const dispatch = useDispatch();
     const userLogged = useSelector(isUserLogged);
-    const [profilePicture, setProfilePicture] = useState("");
-    const [userName, setUserName] = useState("");
-
-    useEffect(() => {
-        const storedUser = localStorage.getItem("user");
-
-        if (storedUser) {
-            const userObject = JSON.parse(storedUser);
-        } else {
-            // console.log("User data not found in localStorage.");
-        }
-    }, []);
-
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const handleNav = () => {
         if (isProfileMenuOpen) {
@@ -103,19 +86,11 @@ export const NavBar = ({
             await dispatch(logOut());
             navigate("/", { replace: true });
 
-            console.log("isUserLogged", isUserLogged);
+            // console.log("isUserLogged", isUserLogged);
         } catch (error) {
             console.error("Logout error:", error);
         }
     };
-
-    const [isLoggedIn, setIsLoggedIn] = useState(
-        localStorage.getItem("isLoggedIn")
-    );
-
-    useEffect(() => {
-        setIsLoggedIn(localStorage.getItem("isLoggedIn"));
-    }, []);
 
     const navigate = useNavigate();
     let [searchParams, setSearchParams] = useSearchParams();
@@ -260,8 +235,6 @@ export const NavBar = ({
                         <ProfileMenu
                             bgColor={bgColor}
                             textColor={textColor}
-                            image={profilePicture}
-                            userName={userName}
                             handleProfileMenuToggle={handleProfileMenuToggle}
                             logOut={handleLogOut}
                             isProfileMenuOpen={isProfileMenuOpen}
@@ -416,12 +389,12 @@ export const NavBar = ({
 
 //     const logOut = () => {
 //         // Log out the user
-//         console.log("Logging out...");
+//         // console.log("Logging out...");
 //         try {
 //             axios.post("http://localhost:5000/api/v1/auth/logout");
 //             localStorage.setItem("isLoggedIn", false);
 //         } catch (error) {
-//             console.log(error);
+//             // console.log(error);
 //         }
 //     };
 

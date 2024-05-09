@@ -18,13 +18,13 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 });
 
 const getSingleUser = asyncWrapper(async (req, res, next) => {
-    // console.log("req.user", req.user);
+    // // console.log("req.user", req.user);
 
     // check for role
     let user = null;
     if (req.user.role === "customer") {
-        // console.log("req rolee", req.user.role);
-        // console.log("req.user", req.user);
+        // // console.log("req rolee", req.user.role);
+        // // console.log("req.user", req.user);
         user = await Customer.findOne({ _id: req.user.userId });
     } else if (req.user.role === "organization") {
         user = await Organization.findOne({ _id: req.user.userId });
@@ -45,17 +45,18 @@ const getSingleUser = asyncWrapper(async (req, res, next) => {
 });
 
 const showCurrentUser = asyncWrapper(async (req, res) => {
-    // console.log(" r e q . u s e r", req.user);
+    // // console.log(" r e q . u s e r", req.user);
     res.status(StatusCodes.OK).json({ user: req.user });
 });
 
 const updateUser = asyncWrapper(async (req, res) => {
-
-    if (req.user.role == 'customer') {
+    if (req.user.role == "customer") {
         const user = await Customer.findOne({ _id: req.user.userId });
 
         if (!user) {
-            return res.status(StatusCodes.NOT_FOUND).json({ error: 'User not found' });
+            return res
+                .status(StatusCodes.NOT_FOUND)
+                .json({ error: "User not found" });
         }
 
         user.firstName = req.body.firstName || user.firstName;
@@ -75,30 +76,34 @@ const updateUser = asyncWrapper(async (req, res) => {
 });
 
 const updateUserPassword = asyncWrapper(async (req, res) => {
-    if (req.user.role === 'customer') {
+    if (req.user.role === "customer") {
         const { currentPassword, newPassword } = req.body;
 
         if (!currentPassword || !newPassword) {
-            return res.json({ error: "Please provide current and new password" });
+            return res.json({
+                error: "Please provide current and new password",
+            });
         }
-        
+
         const user = await Customer.findOne({ _id: req.user.userId }).select(
             "+password"
         );
 
         const isPasswordCorrect = await user.comparePassword(currentPassword);
-        
+
         if (!isPasswordCorrect) {
             return res.json({ error: "Invalid credentials" });
         }
 
         if (newPassword.length < 6) {
-            return res.json({ error: `New password must be at least 6 characters long` });
+            return res.json({
+                error: `New password must be at least 6 characters long`,
+            });
         }
 
         user.password = newPassword;
         await user.save();
-        
+
         return res.json({ msg: "Password updated successfully" });
     }
 });
