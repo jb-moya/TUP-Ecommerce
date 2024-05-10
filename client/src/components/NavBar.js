@@ -17,7 +17,7 @@ import axios from "axios";
 import defaultProfileImage from "../Assets/defaultPP.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogged, logOut, isUserLogged } from "../features/user/userSlice.js";
-
+import { Link } from "react-router-dom";
 import { setSearchClicked } from "../features/searchSlice.js";
 import { toast } from "react-toastify";
 
@@ -43,11 +43,12 @@ const ProfileMenu = ({
                 <div className="absolute transition duration-200 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded shadow-lg">
                     <ul>
                         <li className="py-2 px-4 hover:bg-gray-300">
-                            {" "}
-                            <a href="/customeraccount">My Account</a>
+                            <Link to="/customeraccount">My Account</Link>
                         </li>
                         <li className="py-2 px-4 hover:bg-gray-300">
-                            My Purchase
+                            <Link to="/customeraccount/purchaseHistory">
+                                My Purchase
+                            </Link>
                         </li>
                         <li
                             className="py-2 px-4 hover:bg-gray-300"

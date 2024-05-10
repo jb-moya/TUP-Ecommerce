@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import ProductCard from "./ProductCard.js";
@@ -60,8 +60,11 @@ const minRatingComp = (currentMinRating, handleMinRating) => {
     );
 };
 
+const DEBOUNCE_DELAY = 1000;
+
 export const SearchPageFrame = () => {
     const dispatch = useDispatch();
+    let location = useLocation();
     const [currentPage, setCurrentPage] = useState(1);
     const [productCount, setProductCount] = useState(0);
     const [maxPageCount, setMaxPageCount] = useState(0);
@@ -75,45 +78,58 @@ export const SearchPageFrame = () => {
     const [minRating, setMinRating] = useState(0);
     const [searchName, setSearchName] = useState("");
     const [products, setProducts] = useState([]);
-    const navigate = useNavigate();
-
+    console.log("Location", location);
+    // const navigate = useNavigate();
+    
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has("keyword")) {
-            setSearchName(urlParams.get("keyword"));
+        const searchParams = new URLSearchParams(location.search);
+        if (searchParams.has("keyword")) {
+            toast.info(`getting ${searchParams.get("keyword")}`);
+            setSearchName(searchParams.get("keyword"));
         }
 
-        if (urlParams.has("minPrice") && urlParams.has("maxPrice")) {
+        if (searchParams.has("minPrice") && searchParams.has("maxPrice")) {
+            toast.info(`getting ${searchParams.get("minPrice")}`);
             setMinMaxPrice([
-                parseInt(urlParams.get("minPrice"), 10),
-                parseInt(urlParams.get("maxPrice"), 10),
+                parseInt(searchParams.get("minPrice"), 10),
+                parseInt(searchParams.get("maxPrice"), 10),
             ]);
         }
 
-        if (urlParams.has("minPrice") && !urlParams.has("maxPrice")) {
-            setMinMaxPrice([parseInt(urlParams.get("minPrice"), 10), 0]);
+        if (searchParams.has("minPrice") && !searchParams.has("maxPrice")) {
+            toast.info(
+                `getting ${searchParams.get("minPrice")} and ${searchParams.get(
+                    "maxPrice"
+                )}`
+            );
+            setMinMaxPrice([parseInt(searchParams.get("minPrice"), 10), 0]);
         }
 
-        if (urlParams.has("maxPrice") && !urlParams.has("minPrice")) {
-            setMinMaxPrice([0, parseInt(urlParams.get("maxPrice"), 10)]);
+        if (searchParams.has("maxPrice") && !searchParams.has("minPrice")) {
+            toast.info(`getting ${searchParams.get("maxPrice")}`);
+            setMinMaxPrice([0, parseInt(searchParams.get("maxPrice"), 10)]);
         }
 
-        if (urlParams.has("minRating")) {
-            setMinRating(parseInt(urlParams.get("minRating"), 10));
+        if (searchParams.has("minRating")) {
+            toast.info(`getting ${searchParams.get("minRating")}`);
+            setMinRating(parseInt(searchParams.get("minRating"), 10));
         }
 
-        if (urlParams.has("categories")) {
-            setSortCategories(urlParams.get("categories").split(","));
+        if (searchParams.has("categories")) {
+            toast.info(`getting HAHA ${searchParams.get("categories")}`);
+            setSortCategories(searchParams.get("categories").split(","));
         }
 
-        if (urlParams.has("dateSort")) {
-            setToggleDateSort(parseInt(urlParams.get("dateSort"), 10));
+        if (searchParams.has("dateSort")) {
+            toast.info(`getting ${searchParams.get("dateSort")}`);
+            setToggleDateSort(parseInt(searchParams.get("dateSort"), 10));
         }
 
-        if (urlParams.has("nameSort")) {
-            setToggleNameSort(parseInt(urlParams.get("nameSort"), 10));
+        if (searchParams.has("nameSort")) {
+            toast.info(`getting ${searchParams.get("nameSort")}`);
+            setToggleNameSort(parseInt(searchParams.get("nameSort"), 10));
         }
-    }, []);
+    }, [location.search]);
 
     const handleMinMaxPrice = (e) => {
         e.preventDefault();
@@ -164,6 +180,10 @@ export const SearchPageFrame = () => {
         handleMinMaxPrice(e);
     }, 1000);
 
+    const delayedFetchProducts = debounce(() => {
+        fetchProducts();
+    }, DEBOUNCE_DELAY);
+
     const fetchProducts = useCallback(async () => {
         try {
             setIsCurrentlyFetching(true);
@@ -211,9 +231,7 @@ export const SearchPageFrame = () => {
 
             setMaxPageCount(Math.ceil(data.count / 10));
 
-            // toast.success(`url: /search?${urlParams.toString()}`);
         } catch (error) {
-            // console.log(error);
         } finally {
             setIsCurrentlyFetching(false);
         }
@@ -256,49 +274,26 @@ export const SearchPageFrame = () => {
     }, [fetchProducts, searchClicked, dispatch]);
 
     useEffect(() => {
-        console.log("Effect triggered by dependencies:", {
-            fetchProducts,
-            searchName,
-            minMaxPrice,
-            toggleDateSort,
-            toggleNameSort,
-            togglePriceSort,
-            minRating,
-            sortCategories,
-            currentPage,
-            // navigate,
-        });
-        toast.info(
-            `Effect triggered by dependencies:, ${{
-                fetchProducts,
-                // navigate,
-                searchName,
-                minMaxPrice,
-                toggleDateSort,
-                toggleNameSort,
-                togglePriceSort,
-                minRating,
-                sortCategories,
-                currentPage,
-            }}`
-        );
-
-        navigate(
-            `/search?${searchName ? `keyword=${searchName}` : ""}${
-                minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
-            }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
-                minRating > 0 ? `&minRating=${minRating}` : ""
-            }${
-                sortCategories.length > 0
-                    ? `&categories=${sortCategories.join(",")}`
-                    : ""
-            }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
-                toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
-            }`
-        );
+        console.log("Effect triggered by dependencies:");
 
         fetchProducts();
+        // delayedFetchProducts();
+        const newUrl = `/search?${searchName ? `keyword=${searchName}` : ""}${
+            minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
+        }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
+            minRating > 0 ? `&minRating=${minRating}` : ""
+        }${
+            sortCategories.length > 0
+                ? `&categories=${sortCategories.join(",")}`
+                : ""
+        }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
+            toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
+        }${currentPage !== 1 ? `&page=${currentPage}` : ""}`;
+
+        window.history.replaceState({ path: newUrl }, "", newUrl);
+
     }, [
+        // delayedFetchProducts,
         fetchProducts,
         searchName,
         minMaxPrice,
@@ -308,8 +303,12 @@ export const SearchPageFrame = () => {
         minRating,
         sortCategories,
         currentPage,
-        navigate,
     ]);
+
+    useEffect(() => {
+        toast.success(`getting num 2 :D: ${sortCategories.join(",")}`);
+        console.log("Cateaaagories", sortCategories);
+    }, [sortCategories]);
 
     return (
         <div>

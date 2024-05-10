@@ -143,7 +143,7 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     result = result.skip(skip).limit(limit);
 
     products = await result;
-    console.log("categories 22", queryObject.categories);
+    console.log("queryOBject : : ", queryObject);
 
     res.status(StatusCodes.OK).json({
         products,

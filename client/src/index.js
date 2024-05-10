@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <App tab="home" />
@@ -32,7 +32,7 @@ root.render(
                 <ToastContainer />
             </PersistGate>
         </Provider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

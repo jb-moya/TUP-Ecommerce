@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUpPage.js";
 import LogIn from "./pages/LogInPage.js";
@@ -10,21 +10,17 @@ import {
     CustomerPasswordSettings,
     SellerAccountSettings,
 } from "./pages/AccountSettings.js";
+import { NavBar } from "./components/NavBar.js";
+import Footer from "./components/Footer.js";
 import SellerRegistration from "./pages/SellerRegistration.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
 import Organization from "./pages/OrganizationPage.js";
 import NotFound from "./pages/NotFoundPage.js";
-import { UserPassword } from "./components/AccountDetails.js";
 import { Dashboard } from "./pages/Dashboard.js";
 import { SearchPage } from "./pages/SearchPage.js";
 import { CheckOutPage } from "./pages/CheckOutPage.js";
-import { fetchUser } from "./features/user/userSlice.js";
-import { clearCart } from "./features/cart/cartSlice.js";
-import {
-    getAllItems,
-    deleteItemFromDB,
-    deleteCart,
-} from "./features/cart/cartSlice.js";
+import PurchaseHistory from "./components/PurchaseHistory.js";
+import { getAllItems } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const rootUrl = "http://localhost:5000/api/v1";
@@ -52,8 +48,6 @@ function App() {
             // dispatch(clearCart());
             // dispatch(deleteCart());
             dispatch(getAllItems());
-            // dispatch(deleteItemFromDB('6639c10f2e4fe96acf68e2b0'));
-            // dispatch(fetchUser());
         } else {
         }
     }, [isLogged, dispatch, user]);
@@ -69,12 +63,36 @@ function App() {
                     <Route path="/product/:id" element={<ProductDetail />} />
                     <Route
                         path="/customeraccount"
-                        element={<CustomerAccountSettings />}
+                        element={
+                            <CustomerAccountSettings
+                                section={"profileSettings"}
+                            />
+                        }
                     />
-                    <Route
+                    {/* <Route
                         path="/customeraccount=password"
                         element={<CustomerPasswordSettings />}
+                    /> */}
+                    <Route
+                        path="/customeraccount/password"
+                        element={
+                            <CustomerAccountSettings
+                                section={"passwordSettings"}
+                            />
+                        }
                     />
+                    <Route
+                        path="/customeraccount/purchasehistory"
+                        element={
+                            <CustomerAccountSettings
+                                section={"purchaseHistory"}
+                            />
+                        }
+                    />
+                    {/* <Route
+                        path="/purchaseHistory"
+                        element={<PurchaseHistory />}
+                    /> */}
                     <Route
                         path="/selleraccount"
                         element={<SellerAccountSettings />}

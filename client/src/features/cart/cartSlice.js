@@ -6,65 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-const cartItems = [
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 1,
-        price: 599.99,
-        quantity: 1,
-        checked: true,
-    },
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 2,
-        price: 299.99,
-        quantity: 3,
-        checked: true,
-    },
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 3,
-        price: 399.99,
-        quantity: 2,
-        checked: true,
-    },
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 4,
-        price: 499.99,
-        quantity: 1,
-        checked: false,
-    },
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 5,
-        price: 499.99,
-        quantity: 1,
-        checked: false,
-    },
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 6,
-        price: 499.99,
-        quantity: 1,
-        checked: false,
-    },
-    {
-        name: "laptop",
-        sub_name: "adjbul babi",
-        id: 7,
-        price: 499.99,
-        quantity: 1,
-        checked: true,
-    },
-];
-
 const initialState = {
     cartItems: [],
     amount: 4,
