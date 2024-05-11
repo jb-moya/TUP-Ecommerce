@@ -99,7 +99,7 @@ const PasswordSetting = () => {
                 />
             )}
 
-            <div className="w-[950px] flex-wrap flex flex-col px-10 py-6 bg-white">
+            <div className="w-[850px] flex-wrap flex flex-col px-10 py-6 bg-white">
                 <p className="text-xl">My Password</p>
                 <p className="text-sm">Update and set password</p>
                 <hr className="border-t border-gray-300 my-4" />

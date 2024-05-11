@@ -19,7 +19,7 @@ export const UserAccountDetails = ({ section }) => {
     console.log("user", user);
 
     return (
-        <div className="flex w=full mx-auto">
+        <div className="flex w-full mx-auto">
             <div className="ml-40 w-[250px] flex-wrap flex flex-col">
                 <div className="flex-wrap flex flex-row px-5 py-6 border-gray-300">
                     <div className="w-10 h-10">
