@@ -22,7 +22,7 @@ import { authenticateUser } from "../middleware/authentication.js";
 router
     .route("/")
     // .get([authenticateUser], getAllProducts)
-    .get(authenticateUser, getAllProducts)
+    .get(getAllProducts)
     .post([authenticateUser, authorizePermissions("seller")], createProduct);
 router
     .route("/:id")

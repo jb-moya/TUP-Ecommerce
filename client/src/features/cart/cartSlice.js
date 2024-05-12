@@ -18,9 +18,6 @@ const getCart = async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
         const cartExists = await axios.get(`http://localhost:5000/api/v1/cart`);
-
-        // console.log("get Cart", cartExists);
-
         if (cartExists.data.cart) {
             return cartExists.data.cart;
         }
@@ -28,7 +25,7 @@ const getCart = async (_, thunkAPI) => {
         return null;
     } catch (error) {
         console.error(error);
-        return rejectWithValue("Error fetching cart"); // Consider returning a more generic error message
+        return rejectWithValue("Error fetching cart");
     }
 };
 
@@ -57,9 +54,6 @@ export const deleteCart = createAsyncThunk(
 export const deleteItemFromDB = createAsyncThunk(
     "cart/deleteItemFromDB",
     async (itemId, thunkAPI) => {
-        // // console.log("itemId HOUY", itemId);
-        // // console.log("itemId HOUY f", itemId.itemId);
-
         const cart = await getCart(null, thunkAPI);
         try {
             const response = await axios.delete(
@@ -78,9 +72,6 @@ export const getAllItems = createAsyncThunk(
         const { getState } = thunkAPI;
         try {
             const cart = await getCart(null, thunkAPI);
-
-            // console.log("cart hehe", cart);
-
             if (cart.length === 0) {
                 return [];
             } else {
@@ -108,7 +99,6 @@ export const addToCart = createAsyncThunk(
                 { ...item, cartID: cart.length !== 0 ? cart[0]._id : null }
             );
 
-            // // console.log("add to cart response", response);
             const updatedCart = await getCart(null, thunkAPI);
 
             if (updatedCart) {
@@ -131,6 +121,10 @@ const cartSlice = createSlice({
         clearCart: (state) => {
             state = initialState;
             toast.success("Cart cleared");
+        },
+        clearCheckedItems: (state) => {
+            state.cartItems = state.cartItems.filter((item) => !item.checked);
+            state.productCount = state.cartItems.length;
         },
         toggleCheck: (state, action) => {
             const { id } = action.payload;
@@ -233,7 +227,6 @@ const cartSlice = createSlice({
             toast.error("Error fetching cart items");
         });
         builder.addCase(addToCart.fulfilled, (state, action) => {
-            // toast("Item added to cart");
             state.cartItems = action.payload;
             state.productCount = action.payload.length;
             toast.success("Item added to cart");
@@ -244,7 +237,6 @@ const cartSlice = createSlice({
     },
 });
 
-// // console.log(cartSlice);
 export default cartSlice.reducer;
 
 export const {
@@ -252,6 +244,7 @@ export const {
     toggleCheck,
     checkAll,
     removeItem,
+    clearCheckedItems,
     setQuantity,
     deselectAll,
     removeAllItems,

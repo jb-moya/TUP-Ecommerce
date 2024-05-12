@@ -1,28 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import PaginationButtons from "./PaginationButtons";
-// Logo
-
-// import all category images
-import accessories from "../Assets/categories/accessories.jpg";
-import beauty from "../Assets/categories/beauty.jpg";
-import books from "../Assets/categories/books.jpg";
-import clothing from "../Assets/categories/clothing.jpg";
-import electronics from "../Assets/categories/electronics.jpg";
-import gaming from "../Assets/categories/gaming.jpg";
-import garden from "../Assets/categories/garden.jpg";
-import groceries from "../Assets/categories/groceries.jpg";
-import handmade from "../Assets/categories/handmade.jpg";
-import health from "../Assets/categories/health.jpg";
-import home from "../Assets/categories/home.jpg";
-import other from "../Assets/categories/other.jpg";
-import outdoors from "../Assets/categories/outdoors.jpg";
-import shoes from "../Assets/categories/shoes.jpg";
-import sports from "../Assets/categories/sports.jpg";
-import toys from "../Assets/categories/toys.jpg";
 
 import Logo1 from "../OrganizationAssets/logoipsum-329.svg";
 import Logo2 from "../OrganizationAssets/logoipsum-330.svg";
@@ -73,7 +54,7 @@ const HomeFrame = () => {
     const [productCount, setProductCount] = useState(0);
     const [maxPageCount, setMaxPageCount] = useState(0);
 
-    const fetchPopularProducts = async () => {
+    const fetchPopularProducts = useCallback(async () => {
         try {
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
@@ -86,9 +67,9 @@ const HomeFrame = () => {
             );
             setPopularProducts(data.products);
         } catch (error) {}
-    };
+    }, []);
 
-    const fetchProducts = async () => {
+    const fetchProducts = useCallback(async () => {
         try {
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
@@ -105,15 +86,15 @@ const HomeFrame = () => {
         } finally {
             toast.success("Products loaded successfully");
         }
-    };
-
-    useEffect(() => {
-        // fetchPopularProducts();
-    }, []);
-
-    useEffect(() => {
-        // fetchProducts();
     }, [currentPage]);
+
+    useEffect(() => {
+        fetchPopularProducts();
+    }, [fetchPopularProducts]);
+
+    useEffect(() => {
+        fetchProducts();
+    }, [fetchProducts, currentPage]);
 
     const navigate = useNavigate();
 
@@ -272,104 +253,6 @@ const HomeFrame = () => {
                                 <p className="text-sm">{category}</p>
                             </Link>
                         ))}
-
-                        {/* <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={accessories}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={beauty}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={books}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={clothing}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={electronics}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={gaming}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={garden}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={groceries}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={handmade}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={health}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={home}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={other}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={outdoors}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={shoes}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={sports}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
-                        <img
-                            className="h-[150px] w-[150px] bg-cover "
-                            src={toys}
-                            alt="Logo Here"
-                            loading="lazy"
-                        /> */}
                     </div>
                 </div>
             </div>

@@ -71,8 +71,6 @@ ReviewSchema.post("save", async function () {
 });
 
 ReviewSchema.post("deleteOne", { document: true }, async function () {
-    // IT"S NOT A FUNCTION NYENYENYENYENYUEEEEE
-
     await this.constructor.calculateAverageRating(this.product);
 });
 

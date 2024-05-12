@@ -7,13 +7,18 @@ import Shipping from "./CheckOutSteps/Shipping";
 import Final from "./CheckOutSteps/Final";
 import { CheckOutStepperContext } from "./contexts/CheckOutStepperContext";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import {
     clearCart,
     calculateTotals,
     getAllItems,
     getStateCart,
+    deleteItemFromDB,
+    clearCheckedItems,
 } from "../features/cart/cartSlice.js";
 import logoUnsaturated from "../Assets/LogoUnSaturated.png";
+import { toast } from "react-toastify";
+axios.defaults.withCredentials = true;
 
 const cartItemComponent = ({ cartItem }) => {
     return (
@@ -65,6 +70,7 @@ export const CheckOutFrame = () => {
     const { cartItems, total, amount } = useSelector((store) => store.cart);
     const [userData, setUserData] = useState("");
     const [finalData, setFinalData] = useState([]);
+    const [valueShipping, setValueShipping] = useState(0);
     const steps = ["Address", "Shipping", "Payment", "Complete"];
 
     const displaySteps = (step) => {
@@ -98,7 +104,39 @@ export const CheckOutFrame = () => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    const [valueShipping, setValueShipping] = useState(0);
+    const makeTransaction = async () => {
+        try {
+            const record = cartItems
+                .filter((item) => item.checked)
+                .map((item) => {
+                    console.log("ITEMF", item);
+                    return {
+                        product: item.product,
+                        variation:
+                            item.productDetails.variation.length !== 0
+                                ? item.productDetails.variation[0]._id
+                                : null,
+                        // shippingMethod: userData.shippingMethod,
+                        quantity: item.quantity,
+                        totalAmount:
+                            item.productDetails.price !== -1
+                                ? item.productDetails.price * item.quantity
+                                : item.productDetails.variation[0].price *
+                                  item.quantity,
+                    };
+                });
+
+            const response = await axios.post(
+                `http://localhost:5000/api/v1/transactions`,
+                {
+                    cartItems: record,
+                }
+            );
+            console.log("HAHA", response);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         if (currentStep === 3) {
@@ -106,22 +144,34 @@ export const CheckOutFrame = () => {
         } else {
             setValueShipping(0);
         }
+
+        if (currentStep === 4) {
+            toast.success("Transaction Successful");
+            console.log("cartItems cartItems", cartItems);
+            
+            cartItems.forEach((item) => {
+                if (item.checked) {
+                    dispatch(deleteItemFromDB(item._id));
+                }
+            });
+
+            dispatch(clearCheckedItems());
+            dispatch(calculateTotals());
+            makeTransaction();
+        }
     }, [currentStep]);
 
     return (
         <div className="flex flex-col text-[#211C6A] items-center justify-center pt-[96px]">
             <div className="flex w-full justify-between p-4 max-w-[1240px] mx-auto select-none z-1 mt-10">
-                {/* Left Side */}
                 <div className="flex flex-col w-[500px]">
                     <h1 className="text-3xl font-bold ">Check Out</h1>
                     <div className="container horizontal mt-5">
-                        {/* Stepper */}
                         <CheckOutStepper
                             steps={steps}
                             currentStep={currentStep}
                         />
 
-                        {/* Display Components */}
                         <div className="my-8">
                             <CheckOutStepperContext.Provider
                                 value={{
@@ -150,11 +200,13 @@ export const CheckOutFrame = () => {
                 <div className="flex flex-col mt-4 w-[500px] p-4">
                     <div className="text-lg mb-4">Your Cart</div>
                     <div>
-                        {cartItems.map((item) => (
-                            <div key={item._id}>
-                                {cartItemComponent({ cartItem: item })}
-                            </div>
-                        ))}
+                        {cartItems
+                            .filter((item) => item.checked)
+                            .map((item) => (
+                                <div key={item._id}>
+                                    {cartItemComponent({ cartItem: item })}
+                                </div>
+                            ))}
                     </div>
                     <div className="flex flex-col">
                         <div className="flex w-full justify-between">

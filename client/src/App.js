@@ -7,11 +7,8 @@ import About from "./pages/AboutPage.js";
 import Cart from "./pages/CartPage.js";
 import {
     CustomerAccountSettings,
-    CustomerPasswordSettings,
     SellerAccountSettings,
 } from "./pages/AccountSettings.js";
-import { NavBar } from "./components/NavBar.js";
-import Footer from "./components/Footer.js";
 import SellerRegistration from "./pages/SellerRegistration.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
 import Organization from "./pages/OrganizationPage.js";
@@ -19,7 +16,6 @@ import NotFound from "./pages/NotFoundPage.js";
 import { Dashboard } from "./pages/Dashboard.js";
 import { SearchPage } from "./pages/SearchPage.js";
 import { CheckOutPage } from "./pages/CheckOutPage.js";
-import PurchaseHistory from "./components/PurchaseHistory.js";
 import { getAllItems } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -43,10 +39,7 @@ function App() {
     // // console.log("Total = " + (_lsTotal / 1024).toFixed(2) + " KB");
 
     useEffect(() => {
-        if (isLogged) {
-            //  importatn
-            // dispatch(clearCart());
-            // dispatch(deleteCart());
+        if (isLogged && user.role === "customer") {
             dispatch(getAllItems());
         } else {
         }
@@ -69,10 +62,6 @@ function App() {
                             />
                         }
                     />
-                    {/* <Route
-                        path="/customeraccount=password"
-                        element={<CustomerPasswordSettings />}
-                    /> */}
                     <Route
                         path="/customeraccount/password"
                         element={
@@ -89,10 +78,6 @@ function App() {
                             />
                         }
                     />
-                    {/* <Route
-                        path="/purchaseHistory"
-                        element={<PurchaseHistory />}
-                    /> */}
                     <Route
                         path="/selleraccount"
                         element={<SellerAccountSettings />}
@@ -104,7 +89,7 @@ function App() {
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/sellerdashboard" element={<Dashboard />} />
                     <Route path="/checkout" element={<CheckOutPage />} />
-                    <Route path="/org" element={<Organization />} />
+                    <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFound />} />

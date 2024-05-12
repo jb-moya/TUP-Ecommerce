@@ -69,10 +69,10 @@ const productSchema = new mongoose.Schema(
         category: {
             type: String,
             required: [true, "Please select a category"],
-            // enum: {
-            //     values: productCategories,
-            //     message: "{VALUE} is not valid category",
-            // },
+            enum: {
+                values: productCategories,
+                message: "{VALUE} is not valid category",
+            },
         },
         soldCount: {
             type: Number,
@@ -96,7 +96,7 @@ const productSchema = new mongoose.Schema(
         },
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: "Organization",
             required: true,
         },
     },

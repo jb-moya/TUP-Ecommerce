@@ -19,6 +19,7 @@ import ReviewRouter from "./routes/ReviewRoute.js";
 import FeedbackRouter from "./routes/FeedbackRoute.js";
 import cookieParser from "cookie-parser";
 import TempRoute from "./routes/TempRoute.js";
+import TransactionRouter from "./routes/TransactionRoute.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -48,6 +49,7 @@ app.use("/api/v1/products", ProductRouter);
 app.use("/api/v1/reviews", ReviewRouter);
 app.use("/api/v1/cart", CartRouter);
 app.use("/api/v1/feedback", FeedbackRouter);
+app.use("/api/v1/transactions", TransactionRouter);
 app.use("/api/v1/temp", TempRoute);
 app.use("/api/v1/order", OrderRouter);
 

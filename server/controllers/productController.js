@@ -6,9 +6,18 @@ import { StatusCodes } from "http-status-codes";
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
     const productId = req.params.id;
 
+    // const product = await Product.findOne({
+    //     _id: productId,
+    // });
+
     const product = await Product.findOne({
         _id: productId,
+    }).populate({
+        path: "createdBy",
+        select: "-password", // Exclude the 'password' field
     });
+
+    // console.log("hehe", hehe);
 
     if (!product) {
         return next(
@@ -40,12 +49,20 @@ const tempProductRoute = async (req, res) => {
 const getAllProducts = asyncWrapper(async (req, res, next) => {
     let products;
 
-    const { featured, name, sort, fields, numericFilters, categories } = req.query;
+    const {
+        featured,
+        name,
+        sort,
+        fields,
+        numericFilters,
+        categories,
+        createdBy,
+    } = req.query;
     const queryObject = {};
 
-    if (req.user && req.user.role === "seller") {
-        queryObject.createdBy = req.user.userId;
-    }
+    // if (req.user && req.user.role === "seller") {
+    //     queryObject.createdBy = req.user.userId;
+    // }
 
     if (featured) {
         queryObject.featured = featured === "true" ? true : false;
@@ -56,9 +73,11 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     }
 
     if (categories) {
-        // console.log("categories1", categories);
-        // console.log("categories4242", categories.split(","));
         queryObject.category = { $in: categories.split(",") };
+    }
+
+    if (createdBy) {
+        queryObject.createdBy = { $in: createdBy.split(",") };
     }
 
     if (numericFilters) {

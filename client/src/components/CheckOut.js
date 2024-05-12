@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
-    setQuantity,
     calculateTotals,
     checkAll,
-    removeAllItems,
     deselectAll,
 } from "../features/cart/cartSlice";
 
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +32,6 @@ const CheckOut = () => {
                     <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
                         <button
                             onClick={() => {
-                                // dispatch(setQuantity(1));
                                 dispatch(calculateTotals());
                                 dispatch(checkAll());
                             }}
@@ -47,7 +42,6 @@ const CheckOut = () => {
                     <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
                         <button
                             onClick={() => {
-                                // dispatch(setQuantity(1));
                                 dispatch(calculateTotals());
                                 dispatch(deselectAll());
                             }}
@@ -71,7 +65,7 @@ const CheckOut = () => {
                         Total:
                     </div>
                     <div className="text-[#211c6a] text-xl font-semibold">
-                        {/* ${total.toFixed(2)} */}${total}
+                        ${total}
                     </div>
                 </div>
             </div>

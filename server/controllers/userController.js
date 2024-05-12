@@ -17,6 +17,18 @@ const getAllUsers = asyncWrapper(async (req, res) => {
     res.status(StatusCodes.OK).json({ users });
 });
 
+const getAllOrganization = asyncWrapper(async (req, res) => {
+    const sellers = await Organization.find({}, "-password");
+    res.status(StatusCodes.OK).json({ sellers });
+});
+
+const getSingleOrganization = asyncWrapper(async (req, res) => {
+    const { id } = req.query;
+    console.log("id", id);
+    const seller = await Organization.findById(id);
+    res.status(StatusCodes.OK).json({ seller });
+});
+
 const getSingleUser = asyncWrapper(async (req, res, next) => {
     // // console.log("req.user", req.user);
 
@@ -113,5 +125,7 @@ export {
     getSingleUser,
     showCurrentUser,
     updateUser,
+    getSingleOrganization,
+    getAllOrganization,
     updateUserPassword,
 };

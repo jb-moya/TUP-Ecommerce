@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import {
+    useNavigate,
+    useSearchParams,
+    useLocation,
+    useParams,
+} from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import ProductCard from "./ProductCard.js";
@@ -63,6 +68,7 @@ const minRatingComp = (currentMinRating, handleMinRating) => {
 const DEBOUNCE_DELAY = 1000;
 
 export const SearchPageFrame = () => {
+    const { id: organizationIDinURL } = useParams();
     const dispatch = useDispatch();
     let location = useLocation();
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,16 +77,15 @@ export const SearchPageFrame = () => {
     const searchClicked = useSelector((state) => state.search.searchClicked);
     const [toggleDateSort, setToggleDateSort] = useState(1);
     const [toggleNameSort, setToggleNameSort] = useState(1);
-    const [togglePriceSort, setTogglePriceSort] = useState(1);
     const [sortCategories, setSortCategories] = useState([]);
+    const [sortOrganizations, setSortOrganizations] = useState([]);
     const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
     const [isCurrentlyFetching, setIsCurrentlyFetching] = useState(false);
     const [minRating, setMinRating] = useState(0);
     const [searchName, setSearchName] = useState("");
     const [products, setProducts] = useState([]);
-    console.log("Location", location);
-    // const navigate = useNavigate();
-    
+    const [organizations, setOrganizations] = useState([]);
+
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         if (searchParams.has("keyword")) {
@@ -128,6 +133,11 @@ export const SearchPageFrame = () => {
         if (searchParams.has("nameSort")) {
             toast.info(`getting ${searchParams.get("nameSort")}`);
             setToggleNameSort(parseInt(searchParams.get("nameSort"), 10));
+        }
+
+        if (searchParams.has("organization")) {
+            toast.info(`getting ${searchParams.get("organization")}`);
+            setSortOrganizations(searchParams.get("organization").split(","));
         }
     }, [location.search]);
 
@@ -184,6 +194,16 @@ export const SearchPageFrame = () => {
         fetchProducts();
     }, DEBOUNCE_DELAY);
 
+    const fetchAllOrganization = async () => {
+        setIsCurrentlyFetching(true);
+        console.log("Fetching All Organizations");
+        const { data } = await axios.get(
+            "http://localhost:5000/api/v1/user/organizations"
+        );
+        console.log("org", data);
+        setOrganizations(data.sellers);
+    };
+
     const fetchProducts = useCallback(async () => {
         try {
             setIsCurrentlyFetching(true);
@@ -220,6 +240,11 @@ export const SearchPageFrame = () => {
                                     : "descending",
                             ],
                         ],
+                        createdBy: organizationIDinURL
+                            ? organizationIDinURL
+                            : sortOrganizations.length > 0
+                            ? sortOrganizations.join(",")
+                            : "",
                         page: currentPage,
                     },
                 }
@@ -230,7 +255,6 @@ export const SearchPageFrame = () => {
             setProductCount(data.count);
 
             setMaxPageCount(Math.ceil(data.count / 10));
-
         } catch (error) {
         } finally {
             setIsCurrentlyFetching(false);
@@ -257,6 +281,20 @@ export const SearchPageFrame = () => {
         });
     };
 
+    const handleToggleOrganization = (e) => {
+        const { value } = e.currentTarget;
+
+        setSortOrganizations((prevState) => {
+            if (prevState.includes(value)) {
+                return prevState.filter(
+                    (organization) => organization !== value
+                );
+            } else {
+                return [...prevState, value];
+            }
+        });
+    };
+
     const handleMinRating = (e) => {
         const { value } = e.currentTarget;
         setMinRating(parseInt(value, 10));
@@ -277,7 +315,6 @@ export const SearchPageFrame = () => {
         console.log("Effect triggered by dependencies:");
 
         fetchProducts();
-        // delayedFetchProducts();
         const newUrl = `/search?${searchName ? `keyword=${searchName}` : ""}${
             minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
         }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
@@ -288,30 +325,51 @@ export const SearchPageFrame = () => {
                 : ""
         }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
             toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
-        }${currentPage !== 1 ? `&page=${currentPage}` : ""}`;
+        }${currentPage !== 1 ? `&page=${currentPage}` : ""}${
+            sortOrganizations.length > 0
+                ? `&organizations=${sortOrganizations.join(",")}`
+                : ""
+        }`;
 
         window.history.replaceState({ path: newUrl }, "", newUrl);
-
     }, [
-        // delayedFetchProducts,
         fetchProducts,
         searchName,
         minMaxPrice,
         toggleDateSort,
         toggleNameSort,
-        togglePriceSort,
         minRating,
         sortCategories,
+        sortOrganizations,
         currentPage,
     ]);
 
     useEffect(() => {
-        toast.success(`getting num 2 :D: ${sortCategories.join(",")}`);
-        console.log("Cateaaagories", sortCategories);
-    }, [sortCategories]);
+        fetchAllOrganization();
+    }, []);
+
+    useEffect(() => {
+        toast.info(`org ${sortOrganizations}`);
+    }, [sortOrganizations]);
+
+    const handleSearchNameChange = (e) => {
+        setSearchName(e.target.value);
+    };
+
+    const delayedHandleSearchNameChange = debounce((e) => {
+        handleSearchNameChange(e);
+    }, 1000);
 
     return (
         <div>
+            <div className="w-[60%] mx-auto h-10 mt-32">
+                <input
+                    className="h-12 w-full text-black border border-[#211C6A]"
+                    type="text"
+                    placeholder="Search"
+                    onChange={delayedHandleSearchNameChange}
+                />
+            </div>
             <div className="flex max-w-[1240px] pt-[90px] mx-auto select-none p-4 mt-4 text-[#211C6A] ">
                 <div className="flex flex-col h-full w-[250px] p-2">
                     <div className="font-bold text-3xl ">Filters</div>
@@ -348,6 +406,45 @@ export const SearchPageFrame = () => {
                         <div className="">
                             {minRatingComp(minRating, handleMinRating)}
                         </div>
+                        {!organizationIDinURL && (
+                            <>
+                                <div className="py-2 px-2 font-semibold text-lg bg-gray-100">
+                                    Organization
+                                </div>
+                                <div className="pl-4 pt-1">
+                                    {organizations &&
+                                    organizations.length > 0 ? (
+                                        organizations.map((org) => (
+                                            <div
+                                                key={org._id}
+                                                className="flex items-center"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    className="mr-2"
+                                                    name={org._id}
+                                                    value={org._id}
+                                                    onChange={
+                                                        handleToggleOrganization
+                                                    }
+                                                    checked={sortOrganizations.includes(
+                                                        org._id
+                                                    )}
+                                                />
+                                                <span className="text-sm">
+                                                    {org.orgName}
+                                                </span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="text-sm">
+                                            Loading...
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
+
                         <div className="py-2 px-2 font-semibold text-lg bg-gray-100">
                             Categories
                         </div>

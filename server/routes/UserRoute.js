@@ -7,6 +7,8 @@ import {
     updateUser,
     updateUserPassword,
     getSingleUser,
+    getAllOrganization,
+    getSingleOrganization,
 } from "../controllers/userController.js";
 
 import { authenticateUser } from "../middleware/authentication.js";
@@ -15,6 +17,8 @@ import { authorizePermissions } from "../middleware/authorization.js";
 router
     .route("/")
     .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
+router.route("/organizations").get(getAllOrganization);
+router.route("/singleOrganization").get(getSingleOrganization);
 router.route("/showMe").get(authenticateUser, showCurrentUser);
 router.route("/getAccountDetails").get(authenticateUser, getSingleUser);
 router.route("/updateUser").patch(authenticateUser, updateUser);

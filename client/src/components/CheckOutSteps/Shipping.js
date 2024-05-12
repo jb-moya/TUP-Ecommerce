@@ -18,8 +18,8 @@ const Shipping = () => {
               className='p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-transparent '
             >
               <option value="">Shipping Method</option>
-              <option value="USA">Door-to-Door Delivery</option>
-              <option value="UK">Self-Pickup</option>
+              <option value="Door-to-Door Delivery">Door-to-Door Delivery</option>
+              <option value="Self-PickUp">Self-Pickup</option>
               {/* Add more options as needed */}
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
@@ -27,12 +27,7 @@ const Shipping = () => {
                 <path d="M10 12l-4-4h8l-4 4z" />
               </svg>
             </div>
-          </div>
-
-
-
-
-      
+          </div>      
     </div>
   )
 }

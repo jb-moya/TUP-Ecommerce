@@ -45,54 +45,6 @@ const LogInForm = () => {
         } catch (error) {
             console.error("Login error:", error);
         }
-
-        // axios
-        //     .post("http://localhost:5000/api/v1/auth/login", formData)
-        //     .then((response) => {
-        //         localStorage.setItem("isLoggedIn", "true");
-        //         // console.log(
-        //             "Logged in successfullyyy",
-        //             localStorage.getItem("isLoggedIn")
-        //         );
-
-        //         return response.data;
-        //     })
-        //     .then((responseData) => {
-        //         // console.log("HEHE", responseData);
-
-        //         return axios.get(
-        //             "http://localhost:5000/api/v1/auth/getAccountDetails"
-        //         );
-        //     })
-        //     .then((getResponse) => {
-        //         const userDataWithoutPassword = { ...getResponse.data };
-        //         delete userDataWithoutPassword.user.password;
-        //         // store all to local storage
-        //         localStorage.setItem(
-        //             "user",
-        //             JSON.stringify(userDataWithoutPassword)
-        //         );
-
-        //         // store all to redux
-        //         dispatch(setUser(userDataWithoutPassword.user));
-
-        //         setTimeout(() => {
-        //             navigate("/"); // GO TO HOME PAGE
-        //         }, 1000);
-        //     })
-        //     .catch((err) => {
-        //         if (
-        //             err.response &&
-        //             err.response.data &&
-        //             err.response.data.error
-        //         ) {
-        //             setLoginErrorMessage(err.response.data.error);
-        //         } else {
-        //             setLoginErrorMessage(
-        //                 "An error occurred. Please try again."
-        //             );
-        //         }
-        //     });
     };
 
     const handleClick = () => {

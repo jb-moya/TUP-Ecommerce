@@ -90,6 +90,12 @@ const organizationSchema = mongoose.Schema ({
         required: [true, "Password is required"],
         minlength: [6, "Password cannot be less than 6 characters"],
     },
+    description: {
+        type: String,
+        required: [true, "Description is required"],
+        maxlength: [1000, "Description cannot be more than 1000 characters"],
+        minlength: [1, "Description cannot be less than 10 characters"],
+    },
     sellerRoles: [{
         username: {
             type: String,
@@ -104,7 +110,6 @@ const organizationSchema = mongoose.Schema ({
         type: String,
         required: true
     },
-
     contactNumbers: [{
         type: String,
         required: false,
@@ -182,10 +187,6 @@ customerSchema.methods.getLastName = function () {
 
 customerSchema.methods.getPassword = function () {
     return this.password;
-};
-
-customerSchema.methods.tite = function () {
-    return "tite";
 };
 
 customerSchema.methods.comparePassword = async function (candidatePassword) {

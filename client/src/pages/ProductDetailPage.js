@@ -15,6 +15,8 @@ import WriteReview from "../WriteReview.js";
 import logoUnsaturated from "../Assets/LogoUnSaturated.png";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import defaultProfileImage from "../Assets/defaultPP.png";
+import { Link } from "react-router-dom";
 import { addToCart } from "../features/cart/cartSlice.js";
 axios.defaults.withCredentials = true;
 
@@ -23,6 +25,7 @@ const ProductDetailPage = (props) => {
     const { id } = useParams();
 
     const [productDetails, setProductDetails] = useState({});
+    const [productSeller, setProductSeller] = useState({});
     const [productReviews, setProductReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Track loading state
     const [selectedVariation, setSelectedVariation] = useState(); // Track selected variation
@@ -37,16 +40,16 @@ const ProductDetailPage = (props) => {
 
             try {
                 const response = await axios.get(root);
+                console.log("response", response);
 
                 setProductDetails(response.data.product);
+                setProductSeller(response.data.product.createdBy);
 
                 if (response.data.product.variation.length > 0) {
                     setSelectedVariation(response.data.product.variation[0]);
                 } else {
                     setSelectedVariation(null);
                 }
-
-                // console.log("response", response);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -59,38 +62,23 @@ const ProductDetailPage = (props) => {
     }, [id]);
 
     useEffect(() => {
-        // // console.log("Selected variation", selectedVariation);
-
-        // reset quantity to 1 if selected variation changes
         setQuantity(1);
     }, [selectedVariation]);
 
     const handleAddToCart = async () => {
-        // console.log("Add to cart");
-
-        // console.log(
-        //     "productID", productDetails._id,
-        //     "quantity", quantity,
-        //     "variationID", selectedVariation ? selectedVariation._id : null
-        // )
-
         try {
-            await dispatch(addToCart({ productID: productDetails._id, quantity: quantity, variationID: selectedVariation ? selectedVariation._id : null}) );
+            await dispatch(
+                addToCart({
+                    productID: productDetails._id,
+                    quantity: quantity,
+                    variationID: selectedVariation
+                        ? selectedVariation._id
+                        : null,
+                })
+            );
         } catch (error) {
             console.error(error);
         }
-
-        // try {
-        //     const response = await axios.post(`${rootUrl}/cart/addToCart`, {
-        //         productID: productDetails._id,
-        //         quantity: quantity,
-        //         variationID: selectedVariation._id,
-        //     });
-
-        //     // console.log("response", response);
-        // } catch (error) {
-        //     console.error(error);
-        // }
     };
 
     const handleQuantityChange = (newQuantity) => {
@@ -259,15 +247,26 @@ const ProductDetailPage = (props) => {
                         <div className="w-20 h-20">
                             <img
                                 className="w-full h-full rounded-full object-cover overflow-hidden"
-                                src={image}
+                                src={
+                                    productSeller.image
+                                        ? productSeller.image
+                                        : defaultProfileImage
+                                }
                                 alt=""
                             />
                         </div>
                         <div className="p-4 ">
-                            <div>Shop ni Aleng Mare</div>
-                            <button className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none">
+                            <div>
+                                {productSeller.orgName
+                                    ? productSeller.orgName
+                                    : "..."}
+                            </div>
+                            <Link
+                                to={`/org/${productSeller._id}`}
+                                className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none"
+                            >
                                 View Seller
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
