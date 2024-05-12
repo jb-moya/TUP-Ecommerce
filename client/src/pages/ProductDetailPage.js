@@ -5,7 +5,7 @@ import StarRating from "../components/StarRating.js";
 import image from "../components/images/lake-louise-51543_1280.jpg";
 import RatingOverview from "../components/RatingOverview.js";
 import ProductVariation from "../components/ProductVariation.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Review from "../components/Review.js";
 import OrderQuantity from "../components/OrderQuantity.js";
 import { rootUrl } from "../App.js";
@@ -22,6 +22,7 @@ axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const [productDetails, setProductDetails] = useState({});
@@ -227,7 +228,12 @@ const ProductDetailPage = (props) => {
                         >
                             Add to Cart
                         </button>
-                        <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">
+                        <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
+                            onClick={() => {
+                                handleAddToCart();
+                                navigate("/cart");
+                            }}
+                        >
                             Buy Now
                         </button>
                     </div>

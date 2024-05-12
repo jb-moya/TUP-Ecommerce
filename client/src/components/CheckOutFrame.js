@@ -13,11 +13,13 @@ import {
     calculateTotals,
     getAllItems,
     getStateCart,
+    deleteCart,
     deleteItemFromDB,
     clearCheckedItems,
 } from "../features/cart/cartSlice.js";
 import logoUnsaturated from "../Assets/LogoUnSaturated.png";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 const cartItemComponent = ({ cartItem }) => {
@@ -66,6 +68,7 @@ const cartItemComponent = ({ cartItem }) => {
 
 export const CheckOutFrame = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const { cartItems, total, amount } = useSelector((store) => store.cart);
     const [userData, setUserData] = useState("");
@@ -155,9 +158,18 @@ export const CheckOutFrame = () => {
                 }
             });
 
+            // check if all cartItems has been checked
+            if (cartItems.every((item) => item.checked)) {
+                dispatch(clearCart());
+                dispatch(deleteCart());
+            }
+
+            // update product details in the database. Soon....
+
             dispatch(clearCheckedItems());
             dispatch(calculateTotals());
             makeTransaction();
+            navigate("/");
         }
     }, [currentStep]);
 
