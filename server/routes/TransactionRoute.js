@@ -12,7 +12,7 @@ router
     .route("/")
     .get(
         authenticateUser,
-        authorizePermissions("admin", "seller"),
+        authorizePermissions("customer", "seller"),
         getAllTransactions
     )
     .post(

@@ -7,7 +7,7 @@ import About from "./pages/AboutPage.js";
 import Cart from "./pages/CartPage.js";
 import {
     CustomerAccountSettings,
-    SellerAccountSettings,
+    AddProjectPage,
 } from "./pages/AccountSettings.js";
 import SellerRegistration from "./pages/SellerRegistration.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
@@ -52,40 +52,47 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
-                    <Route path="/product" element={<ProductDetail />} />
-                    <Route path="/product/:id" element={<ProductDetail />} />
+                    {/* <Route path="/product" element={<ProductDetail />} /> */}
+                    <Route path="product">
+                        <Route path=":id" element={<ProductDetail />} />
+                    </Route>
+
+                    <Route path="customeraccount">
+                        <Route
+                            path=""
+                            element={
+                                <CustomerAccountSettings
+                                    section={"profileSettings"}
+                                />
+                            }
+                        />
+                        <Route
+                            path="password"
+                            element={
+                                <CustomerAccountSettings
+                                    section={"passwordSettings"}
+                                />
+                            }
+                        />
+                        <Route
+                            path="purchasehistory"
+                            element={
+                                <CustomerAccountSettings
+                                    section={"purchaseHistory"}
+                                />
+                            }
+                        />
+                    </Route>
+
                     <Route
-                        path="/customeraccount"
-                        element={
-                            <CustomerAccountSettings
-                                section={"profileSettings"}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/customeraccount/password"
-                        element={
-                            <CustomerAccountSettings
-                                section={"passwordSettings"}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/customeraccount/purchasehistory"
-                        element={
-                            <CustomerAccountSettings
-                                section={"purchaseHistory"}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/selleraccount"
-                        element={<SellerAccountSettings />}
+                        path="/sellerDashboard/addProduct"
+                        element={<AddProjectPage />}
                     />
                     <Route
                         path="/sellercenter"
                         element={<SellerRegistration />}
                     />
+
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/sellerdashboard" element={<Dashboard />} />
                     <Route path="/checkout" element={<CheckOutPage />} />

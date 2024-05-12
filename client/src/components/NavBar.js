@@ -23,12 +23,12 @@ const ProfileMenu = ({
 
     const sellerMenus = [
         <Link to="/sellerDashboard">Dashboard</Link>,
-        <Link to="/customeraccount">Add Product</Link>,
+        <Link to="/sellerDashboard">Add Product</Link>,
     ];
 
     const customerMenus = [
         <Link to="/customeraccount">Account Settings</Link>,
-        <Link to="/sellerDashboard/purchaseHistory">My History</Link>,
+        <Link to="/customeraccount/purchasehistory">My History</Link>,
     ];
 
     const handleLogOut = async () => {

@@ -2,7 +2,7 @@ import { NavBar, NavbarUser } from "../components/NavBar.js";
 import Footer from "../components/Footer";
 import { UserAccountDetails } from "../components/AccountDetails";
 // import { UserAccountDetails, UserPassword } from "../components/AccountDetails";
-import { SellerSettings } from "../components/SellerSettings";
+import { AddProductFrame } from "../components/SellerSettings";
 
 export const CustomerAccountSettings = ({ section }) => {
     return (
@@ -25,11 +25,11 @@ export const CustomerPasswordSettings = () => {
     );
 };
 
-export const SellerAccountSettings = () => {
+export const AddProjectPage = () => {
     return (
         <div className="mt-28">
             <NavBar />
-            <SellerSettings />
+            <AddProductFrame />
             <Footer />
         </div>
     );

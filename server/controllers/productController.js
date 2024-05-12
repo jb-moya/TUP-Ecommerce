@@ -162,7 +162,7 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     result = result.skip(skip).limit(limit);
 
     products = await result;
-    console.log("queryOBject : : ", queryObject);
+    // console.log("queryOBject : : ", queryObject);
 
     res.status(StatusCodes.OK).json({
         products,

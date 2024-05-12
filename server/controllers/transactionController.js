@@ -1,4 +1,5 @@
 import { Transaction } from "../models/Transaction.js";
+import { Product } from "../models/Product.js";
 import asyncWrapper from "../middleware/async.js";
 import { createCustomError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
@@ -7,13 +8,38 @@ import mongoose from "mongoose";
 const getAllTransactions = asyncWrapper(async (req, res) => {
     const queryObject = {};
 
-    let transactions = Transaction.find(queryObject);
+    const { sort, productName } = req.query;
+
+    if (productName) {
+        queryObject["product"] = {
+            $in: await Product.find({ name: productName }).select("_id"),
+        };
+    }
+
+    let transactions;
     if (req.user && req.user.role === "seller") {
         // queryObject["product.createdBy"] = req.user.userId;
         transactions = Transaction.find(queryObject).populate({
             path: "product",
             match: { createdBy: req.user.userId },
         });
+    }
+
+    if (req.user && req.user.role === "customer") {
+        queryObject.user = mongoose.Types.ObjectId.createFromHexString(
+            req.user.userId
+        );
+        // queryObject.user = req.user.userId;
+        transactions = Transaction.find(queryObject)
+            .populate({
+                path: "product",
+            });
+    }
+
+    if (sort) {
+        transactions = transactions.sort(sort);
+    } else {
+        transactions = transactions.sort("createdAt");
     }
 
     let countTotal = await Transaction.countDocuments({}); // !! ilter to only seller
@@ -24,7 +50,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     transactions = transactions.skip(skip).limit(limit);
 
-    // console.log("transactions", transactions);
+    console.log("transactions", transactions);
     transactions = await transactions;
     res.status(StatusCodes.OK).json({
         transactions,

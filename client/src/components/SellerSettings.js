@@ -44,7 +44,7 @@ const example1 = {
     category: "Electronics",
 };
 
-export const SellerSettings = () => {
+export const AddProductFrame = () => {
     const priceRef = useRef(null);
     const stockRef = useRef(null);
     const [selectedCategory, setSelectedCategory] = useState(16);

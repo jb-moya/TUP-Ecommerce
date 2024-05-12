@@ -245,7 +245,6 @@ const HomeFrame = () => {
                             >
                                 <img
                                     className="h-[150px] w-[150px] bg-contain rounded"
-                                    // src={category.toLowerCase()}
                                     src={require(`../Assets/categories/${category.toLowerCase()}.jpg`)}
                                     alt="Logo Here"
                                     loading="lazy"

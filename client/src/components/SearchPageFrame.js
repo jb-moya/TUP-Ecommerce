@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
-    useNavigate,
-    useSearchParams,
     useLocation,
     useParams,
 } from "react-router-dom";
@@ -71,6 +69,7 @@ export const SearchPageFrame = () => {
     const { id: organizationIDinURL } = useParams();
     const dispatch = useDispatch();
     let location = useLocation();
+    console.log("location   vffff ", location.pathname)
     const [currentPage, setCurrentPage] = useState(1);
     const [productCount, setProductCount] = useState(0);
     const [maxPageCount, setMaxPageCount] = useState(0);
@@ -88,13 +87,18 @@ export const SearchPageFrame = () => {
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
+
+        console.log("local search", location.search);
+        console.log("searchParams", searchParams);
+
+
         if (searchParams.has("keyword")) {
-            toast.info(`getting ${searchParams.get("keyword")}`);
+            // toast.info(`getting ${searchParams.get("keyword")}`);
             setSearchName(searchParams.get("keyword"));
         }
 
         if (searchParams.has("minPrice") && searchParams.has("maxPrice")) {
-            toast.info(`getting ${searchParams.get("minPrice")}`);
+            // toast.info(`getting ${searchParams.get("minPrice")}`);
             setMinMaxPrice([
                 parseInt(searchParams.get("minPrice"), 10),
                 parseInt(searchParams.get("maxPrice"), 10),
@@ -102,43 +106,49 @@ export const SearchPageFrame = () => {
         }
 
         if (searchParams.has("minPrice") && !searchParams.has("maxPrice")) {
-            toast.info(
-                `getting ${searchParams.get("minPrice")} and ${searchParams.get(
-                    "maxPrice"
-                )}`
-            );
+            // toast.info(
+                // `getting ${searchParams.get("minPrice")} and ${searchParams.get(
+                //     "maxPrice"
+                // )}`
+            // );
             setMinMaxPrice([parseInt(searchParams.get("minPrice"), 10), 0]);
         }
 
         if (searchParams.has("maxPrice") && !searchParams.has("minPrice")) {
-            toast.info(`getting ${searchParams.get("maxPrice")}`);
+            // toast.info(`getting ${searchParams.get("maxPrice")}`);
             setMinMaxPrice([0, parseInt(searchParams.get("maxPrice"), 10)]);
         }
 
         if (searchParams.has("minRating")) {
-            toast.info(`getting ${searchParams.get("minRating")}`);
+            // toast.info(`getting ${searchParams.get("minRating")}`);
             setMinRating(parseInt(searchParams.get("minRating"), 10));
         }
 
         if (searchParams.has("categories")) {
-            toast.info(`getting HAHA ${searchParams.get("categories")}`);
+            // toast.info(`getting HAHA ${searchParams.get("categories")}`);
             setSortCategories(searchParams.get("categories").split(","));
         }
 
         if (searchParams.has("dateSort")) {
-            toast.info(`getting ${searchParams.get("dateSort")}`);
+            // toast.info(`getting ${searchParams.get("dateSort")}`);
             setToggleDateSort(parseInt(searchParams.get("dateSort"), 10));
         }
 
         if (searchParams.has("nameSort")) {
-            toast.info(`getting ${searchParams.get("nameSort")}`);
+            // toast.info(`getting ${searchParams.get("nameSort")}`);
             setToggleNameSort(parseInt(searchParams.get("nameSort"), 10));
         }
 
         if (searchParams.has("organization")) {
-            toast.info(`getting ${searchParams.get("organization")}`);
+            // toast.info(`getting ${searchParams.get("organization")}`);
             setSortOrganizations(searchParams.get("organization").split(","));
         }
+
+        if (searchParams.has("page")) {
+            // toast.info(`getting ${searchParams.get("page")}`);
+            setCurrentPage(parseInt(searchParams.get("page"), 10));
+        }
+
     }, [location.search]);
 
     const handleMinMaxPrice = (e) => {
@@ -315,7 +325,8 @@ export const SearchPageFrame = () => {
         console.log("Effect triggered by dependencies:");
 
         fetchProducts();
-        const newUrl = `/search?${searchName ? `keyword=${searchName}` : ""}${
+
+        const newUrl = `${location.pathname}?${searchName ? `keyword=${searchName}` : ""}${
             minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
         }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
             minRating > 0 ? `&minRating=${minRating}` : ""
@@ -342,6 +353,7 @@ export const SearchPageFrame = () => {
         sortCategories,
         sortOrganizations,
         currentPage,
+        location.pathname,
     ]);
 
     useEffect(() => {
