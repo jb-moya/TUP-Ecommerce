@@ -362,15 +362,15 @@ export const SearchPageFrame = () => {
 
     return (
         <div>
-            <div className="w-[60%] mx-auto h-10 mt-32">
+             <div className="max-w-[1220px] mx-auto h-10 mt-24 p-4">
                 <input
-                    className="h-12 w-full text-black border border-[#211C6A]"
+                    className="h-12 w-full text-black border border-[#211C6A] px-4"
                     type="text"
                     placeholder="Search"
                     onChange={delayedHandleSearchNameChange}
                 />
             </div>
-            <div className="flex max-w-[1240px] pt-[90px] mx-auto select-none p-4 mt-4 text-[#211C6A] ">
+            <div className="flex max-w-[1240px] mx-auto select-none p-4 mt-4 text-[#211C6A] ">
                 <div className="flex flex-col h-full w-[250px] p-2">
                     <div className="font-bold text-3xl ">Filters</div>
                     <hr className="border-t border-gray-300" />
