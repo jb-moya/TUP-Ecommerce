@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import defaultProfileImage from "../Assets/defaultPP.png";
 import { Link } from "react-router-dom";
 import { addToCart } from "../features/cart/cartSlice.js";
+import { IoCart } from "react-icons/io5";
+
 axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
@@ -99,7 +101,7 @@ const ProductDetailPage = (props) => {
         <div className="mt-32">
             <NavBar />
 
-            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-md shadow-md">
+            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-2xl shadow-md">
                 <div className="w-5/12 pl-8">
                     {isLoading ? (
                         <div className="w-full h-full flex items-center justify-center">
@@ -157,7 +159,7 @@ const ProductDetailPage = (props) => {
                         </div>
                     </div>
 
-                    <div className="w-full flex mt-2">
+                    <div className="w-full flex">
                         <div className="pl-8 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
                             <span className="text-lg leading-none font-light pr-1">
                                 {productDetails.numOfReviews}
@@ -171,8 +173,9 @@ const ProductDetailPage = (props) => {
                             <span className="font-extralight">Sold</span>
                         </div>
                     </div>
+                    <hr className="border-r-[1px] mt-2 mx-4 border-[#000000] border-opacity-20"></hr>
 
-                    <div className="w-full mt-10">
+                    <div className="w-full mt-6">
                         {isLoading ? (
                             <div>loading variation...</div>
                         ) : (
@@ -189,7 +192,7 @@ const ProductDetailPage = (props) => {
                             )
                         )}
                     </div>
-                    <div className="mt-8 flex items-center">
+                    <div className="mt-4 flex items-center">
                         <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
                             Quantity:{" "}
                         </div>
@@ -221,14 +224,21 @@ const ProductDetailPage = (props) => {
                             )}
                         </div>
                     </div>
-                    <div className="flex px-8 py-7 justify-center items-center">
+                    <div className="mt-4 flex items-center">
+                        <div className="w-3/12"></div>
                         <button
                             className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500"
                             onClick={handleAddToCart}
                         >
-                            Add to Cart
+                            <div className="flex">
+                                <IoCart size={28} />{" "}
+                                <div className="self-center pl-2">
+                                    Add to Cart
+                                </div>
+                            </div>
                         </button>
-                        <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
+                        <button
+                            className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
                             onClick={() => {
                                 handleAddToCart();
                                 navigate("/cart");
@@ -238,7 +248,36 @@ const ProductDetailPage = (props) => {
                         </button>
                     </div>
 
-                    <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
+                    {/* <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr> */}
+
+                    <div className="w-full mx-8 mt-4 p-4 border bg-[#ffffff] border-black border-opacity-25 rounded-2xl shadow-xl relative">
+                        <div className="flex items-center">
+                            <div className="w-20 h-20">
+                                <img
+                                    className="w-full h-full rounded-full object-cover overflow-hidden"
+                                    src={
+                                        productSeller.image
+                                            ? productSeller.image
+                                            : defaultProfileImage
+                                    }
+                                    alt=""
+                                />
+                            </div>
+                            <div className="p-4 flex">
+                                <div className="pr-4">
+                                    {productSeller.orgName
+                                        ? productSeller.orgName
+                                        : "..."}
+                                </div>
+                                <Link
+                                    to={`/org/${productSeller._id}`}
+                                    className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none"
+                                >
+                                    View Seller
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="w-full">
@@ -246,35 +285,6 @@ const ProductDetailPage = (props) => {
                         Product Details
                     </div>
                     <div className="px-8">{productDetails.description}</div>
-                </div>
-
-                <div className="w-full m-8 p-4 border border-black border-opacity-25 rounded shadow-md">
-                    <div className="flex items-center">
-                        <div className="w-20 h-20">
-                            <img
-                                className="w-full h-full rounded-full object-cover overflow-hidden"
-                                src={
-                                    productSeller.image
-                                        ? productSeller.image
-                                        : defaultProfileImage
-                                }
-                                alt=""
-                            />
-                        </div>
-                        <div className="p-4 ">
-                            <div>
-                                {productSeller.orgName
-                                    ? productSeller.orgName
-                                    : "..."}
-                            </div>
-                            <Link
-                                to={`/org/${productSeller._id}`}
-                                className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none"
-                            >
-                                View Seller
-                            </Link>
-                        </div>
-                    </div>
                 </div>
 
                 <hr className="w-full rounded border-t-1 border-black border-opacity-25 mt-4"></hr>

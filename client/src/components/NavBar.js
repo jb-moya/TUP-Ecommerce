@@ -121,7 +121,6 @@ export const NavBar = ({
             return;
         }
 
-        // toast.success("Searching for " + searchValue);
         setSearchParams({ keyword: searchValue });
         navigate(`/search?keyword=${encodeURIComponent(searchValue)}`);
 
@@ -157,11 +156,11 @@ export const NavBar = ({
                 </p>
             </div>
             <div
-                className={`${textColor} flex overflow-hidden max-w-[1240px] px-4 h-16 justify-between items-center mx-auto text-nowrap`}
+                className={`${textColor} flex overflow-hidden max-w-[1240px] h-16 justify-between items-center mx-auto text-nowrap`}
             >
                 <div className="flex items-center select-none font-bold">
                     <img
-                        className="w-20 h-20"
+                        className="w-20 h-20 drop-shadow-2xl"
                         src={logo}
                         alt="Logo Here"
                         loading="lazy"
