@@ -121,6 +121,7 @@ const cartSlice = createSlice({
     reducers: {
         clearCart: (state) => {
             state.cartItems = [];
+            state.productCount = 0;
             toast.success("Cart cleared");
         },
         clearCheckedItems: (state) => {

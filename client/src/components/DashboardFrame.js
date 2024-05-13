@@ -1,22 +1,93 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoMdCash } from "react-icons/io";
 import { TbBasketCancel } from "react-icons/tb";
 import PaginationButtons from "./PaginationButtons";
+import { FaCaretDown } from "react-icons/fa6";
+import { FaCaretUp } from "react-icons/fa6";
 import axios from "axios";
+import formatData from "./utils/formatData";
+import { useLocation } from "react-router-dom";
 axios.defaults.withCredentials = true;
+
+const SortButton = ({ fieldName, toggle, setterToggle }) => {
+    return (
+        <>
+            <button
+                className={
+                    toggle === 1
+                        ? "py-1 px-2 mr-2 rounded-md bg-[#211C6A] text-white border border-[#211C6A]"
+                        : "py-1 px-2 mr-2 rounded-md bg-white text-[#211C6A] border border-black border-opacity-30"
+                }
+                onClick={() => setterToggle(toggle * -1)}
+            >
+                {toggle === 1 ? (
+                    <div className="flex">
+                        <div className="pr-1">{fieldName} </div> <FaCaretUp />
+                    </div>
+                ) : (
+                    <div className="flex">
+                        <div className="pr-1">{fieldName} </div> <FaCaretDown />
+                    </div>
+                )}
+            </button>
+        </>
+    );
+};
+
 export const DashboardFrame = () => {
     const [transactions, setTransactions] = useState([]);
+    let location = useLocation();
     const [transactionTotalCount, setTransactionTotalCount] = useState(0);
     const [count, setCount] = useState(0);
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [totalItemsOrdered, setTotalItemsOrdered] = useState(0);
+    const [toggleTotalAmountSort, setToggleTotalAmountSort] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [toggleDateSort, setToggleDateSort] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(0);
 
-    const fetchAllTransactions = async () => {
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+
+        if (searchParams.has("page")) {
+            setCurrentPage(parseInt(searchParams.get("page"), 10));
+        }
+
+        if (searchParams.has("dateSort")) {
+            setToggleDateSort(parseInt(searchParams.get("dateSort"), 10));
+        }
+
+        if (searchParams.has("priceSort")) {
+            setToggleTotalAmountSort(
+                parseInt(searchParams.get("priceSort"), 10)
+            );
+        }
+    }, [location.search]);
+
+    const fetchAllTransactions = useCallback(async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/api/v1/transactions`
+                `http://localhost:5000/api/v1/transactions`,
+                {
+                    params: {
+                        sort: [
+                            [
+                                "totalAmount",
+                                toggleTotalAmountSort === 1
+                                    ? "ascending"
+                                    : "descending",
+                            ],
+                            [
+                                "createdAt",
+                                toggleDateSort === 1
+                                    ? "ascending"
+                                    : "descending",
+                            ],
+                        ],
+                        page: currentPage,
+                    },
+                }
             );
             const data = await response.data;
             console.log(response);
@@ -27,7 +98,7 @@ export const DashboardFrame = () => {
         } catch (error) {
             console.error(error);
         }
-    };
+    }, [currentPage, toggleTotalAmountSort, toggleDateSort]);
 
     const fetchTotalRevenue = async () => {
         try {
@@ -45,6 +116,24 @@ export const DashboardFrame = () => {
 
     useEffect(() => {
         fetchAllTransactions();
+        const newUrl = `${location.pathname}?${
+            toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""
+        }${
+            toggleTotalAmountSort !== 1
+                ? `&totalAmountSort=${toggleTotalAmountSort}`
+                : ""
+        }${currentPage !== 1 ? `&page=${currentPage}` : ""}`;
+
+        window.history.pushState({}, "", newUrl);
+    }, [
+        fetchAllTransactions,
+        location.pathname,
+        currentPage,
+        toggleTotalAmountSort,
+        toggleDateSort,
+    ]);
+
+    useEffect(() => {
         fetchTotalRevenue();
     }, []);
 
@@ -61,11 +150,9 @@ export const DashboardFrame = () => {
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
-                                        {totalItemsOrdered ? (
-                                            totalItemsOrdered
-                                        ) : (
-                                            "loading"
-                                        )}
+                                        {totalItemsOrdered
+                                            ? totalItemsOrdered
+                                            : "loading"}
                                     </h2>
                                     <p className="text-sm">Items Ordered</p>
                                 </div>
@@ -79,10 +166,10 @@ export const DashboardFrame = () => {
                                     <h2 className="text-3xl mb-2">
                                         {totalRevenue ? (
                                             <div className="flex flex-row justify-center align-middle text-center">
-                                                <div className="pr-2">
-                                                    ₱
+                                                <div className="pr-2">₱</div>
+                                                <div className="self-center">
+                                                    {totalRevenue}
                                                 </div>
-                                                <div className="self-center">{totalRevenue}</div>
                                             </div>
                                         ) : (
                                             "loading"
@@ -105,22 +192,24 @@ export const DashboardFrame = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white w-full shadow-md p-6">
+                    <div className="bg-white w-full shadow-lg p-6 rounded-2xl">
                         <div className="text-lg font-bold text-[#211C6A] w-full px-2">
                             Sales
                         </div>
                         <hr className="border-[#211C6A] "></hr>
 
-                        <select
-                            className="pl-4 pr-24 h-12 w-full text-[#211C6A] border border-[#211C6A] appearance-none outline-none my-4"
-                            defaultValue=""
-                        >
-                            <option value="" disabled hidden>
-                                Filters
-                            </option>
-                            <option value="popular">Sort By Increasing</option>
-                            <option value="latest">Sort By Decreasing</option>
-                        </select>
+                        <div className="my-2">
+                            <SortButton
+                                fieldName="Total Amount"
+                                toggle={toggleTotalAmountSort}
+                                setterToggle={setToggleTotalAmountSort}
+                            />
+                            <SortButton
+                                fieldName="Date"
+                                toggle={toggleDateSort}
+                                setterToggle={setToggleDateSort}
+                            />
+                        </div>
 
                         <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full">
                             <thead>
@@ -128,15 +217,22 @@ export const DashboardFrame = () => {
                                     <th className="p-2">Product ID</th>
                                     <th className="p-2">Product Name</th>
                                     <th className="p-2">Quantity</th>
+                                    <th className="p-2">Variant</th>
                                     <th className="p-2">Price</th>
                                     <th className="p-2">Total Amount</th>
+                                    <th className="p-2">Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {transactions.map((transaction) => (
+                                {transactions.map((transaction, index) => (
                                     <tr
                                         key={transaction._id}
-                                        className="border-t"
+                                        // className="border-t text-sm"
+                                        className={`border-t text-sm ${
+                                            index % 2 === 0
+                                                ? "bg-gray-100"
+                                                : "bg-gray-200"
+                                        }`}
                                     >
                                         <td className="p-2">
                                             {transaction._id}
@@ -148,6 +244,15 @@ export const DashboardFrame = () => {
                                             {transaction.quantity}
                                         </td>
                                         <td className="p-2">
+                                            {transaction.variation
+                                                ? transaction.product.variation.filter(
+                                                      (variation) =>
+                                                          variation._id ===
+                                                          transaction.variation
+                                                  )[0].name
+                                                : "-"}
+                                        </td>
+                                        <td className="p-2">
                                             {transaction.product.price !== -1
                                                 ? transaction.product.price
                                                 : transaction.product
@@ -155,6 +260,9 @@ export const DashboardFrame = () => {
                                         </td>
                                         <td className="p-2">
                                             {transaction.totalAmount}
+                                        </td>
+                                        <td className="p-2">
+                                            {formatData(transaction.createdAt)}
                                         </td>
                                     </tr>
                                 ))}

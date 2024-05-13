@@ -5,13 +5,10 @@ import StarRating from "./StarRating.js";
 import image from "../components/images/lake-louise-51543_1280.jpg";
 import { AiFillLike } from "react-icons/ai";
 import defaultProfileImage from "../Assets/defaultPP.png";
+import formatData from "./utils/formatData.js";
 
 const UserReview = ({ review }) => {
-    const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    const createdAt = formatData(review.createdAt);
 
     return (
         <div className="w-[700px] mb-2">

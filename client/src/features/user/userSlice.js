@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { clearCart } from "../cart/cartSlice";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 const rootURL = "http://localhost:5000/api/v1";
@@ -32,6 +33,9 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
         
         if (response.status === 200) {
             localStorage.removeItem("isLoggedIn");
+
+            thunkAPI.dispatch(clearCart());
+
             return { user: null };
         }
 

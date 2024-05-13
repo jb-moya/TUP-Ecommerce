@@ -6,14 +6,11 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import formatData from "./utils/formatData";
 axios.defaults.withCredentials = true;
 
 const HistoryItem = (transaction) => {
-    const createdAt = new Date(transaction.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    const createdAt = formatData(transaction.createdAt);
 
     return (
         <>

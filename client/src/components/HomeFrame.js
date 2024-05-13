@@ -46,7 +46,6 @@ const productCategories = [
 ];
 
 const HomeFrame = () => {
-
     const isLogged = useSelector(isUserLogged);
     const [products, setProducts] = useState([]);
     const [popularProducts, setPopularProducts] = useState([]);
@@ -124,22 +123,28 @@ const HomeFrame = () => {
 
     return (
         <div className="flex flex-col text-[#211C6A] items-center justify-center pt-[108px]">
-            <div className="flex w-full h-[180px] max-w-[1240px] mx-auto select-none justify-center z-1">
-                <div className="hidden md:flex flex-col items-center mt-4">
+            <div
+                className={
+                    isLogged
+                        ? `flex w-full h-[180px] max-w-[1240px] mx-auto select-none justify-center z-1`
+                        : `flex w-full h-[220px] max-w-[1240px] mx-auto select-none justify-center z-1`
+                }
+            >
+                <div className="md:flex flex-col items-center my-4">
                     <h1 className="font-bold text-5xl">
                         Elevate Your University Experience
                     </h1>
-                    <p className="max-w-[640px] mt-2 text-center">
+                    <div className="max-w-[640px] mt-2 text-center">
                         Gear up, students! Shop our exclusive university
                         organization merch now. <br />
                         Show your school pride and support your peers with every
                         purchase. <br />
                         Let's elevate our campus experience together!
-                    </p>
+                    </div>
                     {!isLogged && (
                         <button
                             onClick={handleSignUpClick}
-                            className="border border-[#211C6A] text-[#211C6A] mt-5 hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
+                            className="border border-[#211C6A] mt-4 text-[#211C6A] hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
                         >
                             Sign Up
                         </button>
