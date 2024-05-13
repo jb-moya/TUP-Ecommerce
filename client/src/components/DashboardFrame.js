@@ -50,14 +50,14 @@ export const DashboardFrame = () => {
 
     return (
         <div>
-            <div className="flex max-w-[1240px] pt-[90px] mx-auto select-none items-center p-4">
-                <div className="flex flex-col m-4 w-full">
-                    <div className="text-3xl font-bold text-[#211C6A] w-full mb-4">
+            <div className="flex mx-auto select-none items-center ">
+                <div className="flex flex-col w-full">
+                    <div className="text-3xl pl-4 font-bold text-[#211C6A] w-full mb-4">
                         Dashboard
                     </div>
 
-                    <div className="flex flex-row w-full justify-between mb-4 px-2">
-                        <div className="w-[380px] h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
+                    <div className="flex flex-row w-full justify-between mb-4">
+                        <div className="w-[280px] h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
@@ -73,7 +73,7 @@ export const DashboardFrame = () => {
                             </div>
                         </div>
 
-                        <div className="w-[380px] h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
+                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
@@ -94,7 +94,7 @@ export const DashboardFrame = () => {
                             </div>
                         </div>
 
-                        <div className="w-[380px] h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
+                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">203</h2>
@@ -145,7 +145,7 @@ export const DashboardFrame = () => {
                                             {transaction.product.name}
                                         </td>
                                         <td className="p-2">
-                                            {transaction.quantity}
+                                        {transaction.quantity}
                                         </td>
                                         <td className="p-2">
                                             {transaction.product.price !== -1

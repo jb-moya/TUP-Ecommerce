@@ -18,6 +18,8 @@ import { SearchPage } from "./pages/SearchPage.js";
 import { CheckOutPage } from "./pages/CheckOutPage.js";
 import { getAllItems } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import SellerSettingsNew from "./components/SellerSettingsNew.js";
+import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 
 const rootUrl = "http://localhost:5000/api/v1";
 function App() {
@@ -95,6 +97,7 @@ function App() {
 
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/sellerdashboard" element={<Dashboard />} />
+                    <Route path="/sellersettings" element={<SellerSettingsPage />} />
                     <Route path="/checkout" element={<CheckOutPage />} />
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
