@@ -9,7 +9,7 @@ const ProductCard = ({product}) => {
             className="flex flex-col h-[250px] rounded-xl border border-[#211C6A] border-opacity-20 cursor-pointer hover:scale-[1.04] hover:shadow-md transition-all duration-100 ease-in-out"
         >
             <img
-                className="h-[160px] w-full border object-cover rounded-t-xl"
+                className="h-[160px] max-h-[150px] w-full border object-cover rounded-t-xl"
                 src={product.image[0] || logoUnsaturated}
                 // src={logoUnsaturated}
                 alt="Logo Here"
