@@ -19,13 +19,13 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
     const { user } = useSelector((state) => state.user);
 
     const sellerMenus = [
-        <Link to="/sellerDashboard">Dashboard</Link>,
-        <Link to="/sellerDashboard/addProduct">Add Product</Link>,
+        <Link to="/seller/dashboard">Dashboard</Link>,
+        <Link to="/seller/addeditProduct">Add Product</Link>,
     ];
 
     const customerMenus = [
-        <Link to="/customeraccount">Account Settings</Link>,
-        <Link to="/customeraccount/purchasehistory">My History</Link>,
+        <Link to="/customer">Account Settings</Link>,
+        <Link to="/customer/purchasehistory">My History</Link>,
     ];
 
     const handleLogOut = async () => {

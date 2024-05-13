@@ -58,11 +58,8 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
         categories,
         createdBy,
     } = req.query;
+    
     const queryObject = {};
-
-    // if (req.user && req.user.role === "seller") {
-    //     queryObject.createdBy = req.user.userId;
-    // }
 
     if (featured) {
         queryObject.featured = featured === "true" ? true : false;

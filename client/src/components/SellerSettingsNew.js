@@ -1,104 +1,134 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { MdDashboard } from "react-icons/md";
 import { BiPurchaseTag } from "react-icons/bi";
 import { IoBag } from "react-icons/io5";
 import { RiAdvertisementFill } from "react-icons/ri";
-import {DashboardFrame} from "./DashboardFrame.js"
-import { Orders } from './Orders.js';
-import Products from './Products.js';
+import { DashboardFrame } from "./DashboardFrame.js";
+import { Orders } from "./Orders.js";
+import Products from "./Products.js";
+import { useSelector } from "react-redux";
+import defaultProfileImage from "../Assets/defaultPP.png";
+import { IoSettingsOutline } from "react-icons/io5";
+import SellerAccountSettings from "./SellerAccountSettings.js";
+import { RiAddLargeFill } from "react-icons/ri";
+import { AddProductFrame } from "./AddProductFrame.js";
+import { useNavigate } from "react-router-dom";
+import { NavBar } from "./NavBar.js";
+import Footer from "./Footer.js";
 
-const SellerSettingsNew = () => {
+const SellerMenuButton = ({ icon, text, selected, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 transition ease-in-out duration-200 hover:text-white mt-4 ${
+            selected ? "bg-[#211C6A] text-white" : ""
+        }`}
+    >
+        <div className="flex items-center mx-8">
+            {icon}
+            <p className="p-4 font-medium text-sm">{text}</p>
+        </div>
+    </button>
+);
+
+const iconSize = 20;
+const menuItems = [
+    {
+        icon: <MdDashboard size={iconSize} />,
+        text: "Dashboard",
+        path: "dashboard",
+    },
+    {
+        icon: <IoSettingsOutline size={iconSize} />,
+        text: "Account Settings",
+        path: "accountsettings",
+    },
+    {
+        icon: <BiPurchaseTag size={iconSize} />,
+        text: "Orders",
+        path: "orders",
+    },
+    {
+        icon: <IoBag size={iconSize} />,
+        text: "Products Overview",
+        path: "productsOverview",
+    },
+    {
+        icon: <RiAddLargeFill size={iconSize} />,
+        text: "Add/Edit Product",
+        path: "addeditProduct",
+    },
+    {
+        icon: <RiAdvertisementFill size={iconSize} />,
+        text: "Advertisement",
+        path: "Advertisement",
+    },
+];
+
+const SellerSettings = ({ settingsMenu = 0 }) => {
+    const navigate = useNavigate();
+    const { user } = useSelector((state) => state.user);
+
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    function imgUrl() {
-        const id = rand(1, 200);
-        return `https://picsum.photos/id/${id}/1920/1080`;
-    }
-
-    const [selectedButton, setSelectedButton] = useState(1); // Changed initial value to 1 for Dashboard
+    const [selectedButton, setSelectedButton] = useState(settingsMenu);
 
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
+
+        navigate(`/seller/${menuItems[buttonNumber].path}`);
     };
 
     return (
-        <div className='flex text-[#211C6A] pt-[96px]'>
-            <div className='flex w-full max-w-[1240px] h-full mx-auto p-4 '>
-                <div className='w-[300px] flex flex-col m-4 bg-white shadow-md'>
-                    <div className='flex justify-center items-center my-4 p-2'>
-                        <img
-                            className='rounded-full h-[60px] w-[60px]'
-                            src={imgUrl()}
-                            alt="Logo Here"
-                        />
+        <>
+            <NavBar />
+            <div className="flex text-[#211C6A] pt-[96px]">
+                <div className="flex w-full max-w-[1240px] h-full mx-auto p-4">
+                    <div className="w-[300px] flex flex-col m-4 bg-white shadow-md rounded-xl">
+                        <div className="flex justify-center items-center my-4 p-2">
+                            <img
+                                className="rounded-full h-[60px] w-[60px]"
+                                src={
+                                    user && user.image
+                                        ? user.image.url
+                                        : defaultProfileImage
+                                }
+                                alt="Logo Here"
+                            />
 
-                        <div className='flex justify-center items-center text-sm font-semibold py-2 px-4'>
-                            Organization Name
+                            <div className="flex justify-center items-center text-sm font-semibold py-2 px-4">
+                                {user && user.orgName}
+                            </div>
                         </div>
+
+                        <div className="w-full flex justify-center">
+                            <hr className="border-t border-gray-300 w-5/6" />
+                        </div>
+
+                        {menuItems.map((item, index) => (
+                            <SellerMenuButton
+                                key={index}
+                                icon={item.icon}
+                                text={item.text}
+                                selected={selectedButton === index}
+                                onClick={() => handleButtonClick(index)}
+                            />
+                        ))}
                     </div>
 
-                    <div className="w-full flex justify-center">
-                        <hr className="border-t border-gray-300 w-5/6" />
+                    <div className="font-semibold p-4 max-w-[900px] w-full">
+                        {selectedButton === 0 && <DashboardFrame />}
+                        {selectedButton === 1 && <SellerAccountSettings />}
+                        {selectedButton === 2 && <Orders />}
+                        {selectedButton === 3 && <Products />}
+                        {selectedButton === 4 && <AddProductFrame />}
                     </div>
-
-                    {/*Dashboard*/}
-                    <button onClick={() => handleButtonClick(1)} className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 transition ease-in-out duration-200 hover:text-white mt-4 ${selectedButton === 1 ? 'bg-[#211C6A] text-white' : ''}`}>
-                        <div className='flex items-center mx-8 '>
-                            <MdDashboard
-                                size={20} />
-                            <p className=' p-4 font-medium text-sm'>Dashboard</p>
-                        </div>
-                    </button>
-
-                    {/* Orders */}
-                    <button onClick={() => handleButtonClick(2)} className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 transition ease-in-out duration-200 hover:text-white ${selectedButton === 2 ? 'bg-[#211C6A] text-white' : ''}`}>
-                        <div className='flex items-center mx-8 '>
-                            <BiPurchaseTag
-                                size={20} />
-                            <p className=' p-4 font-medium text-sm'>Orders</p>
-                        </div>
-                    </button>
-
-                    {/* Product */}
-                    <button onClick={() => handleButtonClick(3)} className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 transition ease-in-out duration-200 hover:text-white ${selectedButton === 3 ? 'bg-[#211C6A] text-white' : ''}`}>
-                        <div className='flex items-center mx-8 '>
-                            <IoBag
-                                size={20} />
-                            <p className=' p-4 font-medium text-sm'>Product</p>
-                        </div>
-                    </button>
-
-                    {/* Advertisement */}
-                    <button onClick={() => handleButtonClick(4)} className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 transition ease-in-out duration-200 hover:text-white ${selectedButton === 4 ? 'bg-[#211C6A] text-white' : ''}`}>
-                        <div className='flex items-center mx-8 '>
-                            <RiAdvertisementFill
-                                size={20} />
-                            <p className=' p-4 font-medium text-sm'>Advertisement</p>
-                        </div>
-                    </button>
-                </div>
-
-                {/* Render content based on selectedButton */}
-                <div className='font-semibold p-4 max-w-[900px] w-full'>
-                    {selectedButton === 1 && (
-                        <DashboardFrame />
-
-                    )}
-                    {selectedButton === 2 && (
-                        <Orders />
-                    )}
-                    {selectedButton === 3 && (
-                        <Products />
-                    )}
-                    {selectedButton === 4 && (
-                        <div>Content for Advertisement</div>
-                    )}
                 </div>
             </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 
-export default SellerSettingsNew;
+export default SellerSettings;

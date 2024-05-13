@@ -14,14 +14,8 @@ import { authorizePermissions } from "../middleware/authorization.js";
 import { authenticateUser } from "../middleware/authentication.js";
 
 
-// Example Express.js route handlers
-
-// might move the authorizeSeller middleware to the productController.js file
-
-// might combine the authorizeSeller and authenticateUser middleware into one middleware
 router
     .route("/")
-    // .get([authenticateUser], getAllProducts)
     .get(getAllProducts)
     .post([authenticateUser, authorizePermissions("seller")], createProduct);
 router

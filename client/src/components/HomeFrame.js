@@ -99,17 +99,12 @@ const HomeFrame = () => {
         navigate("/signup");
     };
 
-    const handleSeeMore = () => {
-        navigate("/");
-    };
-
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     function imgUrl() {
         const id = rand(1, 200);
-        // // console.log(id);
         return `https://picsum.photos/id/${id}/1920/1080`;
     }
 

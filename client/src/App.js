@@ -18,7 +18,7 @@ import { SearchPage } from "./pages/SearchPage.js";
 import { CheckOutPage } from "./pages/CheckOutPage.js";
 import { getAllItems } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import SellerSettingsNew from "./components/SellerSettingsNew.js";
+import SellerSettings from "./components/SellerSettingsNew.js";
 import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 
 const rootUrl = "http://localhost:5000/api/v1";
@@ -59,7 +59,7 @@ function App() {
                         <Route path=":id" element={<ProductDetail />} />
                     </Route>
 
-                    <Route path="customeraccount">
+                    <Route path="customer">
                         <Route
                             path=""
                             element={
@@ -86,18 +86,38 @@ function App() {
                         />
                     </Route>
 
-                    <Route
-                        path="/sellerDashboard/addProduct"
-                        element={<AddProjectPage />}
-                    />
-                    <Route
-                        path="/sellercenter"
-                        element={<SellerRegistration />}
-                    />
+                    <Route path="seller">
+                        <Route
+                            path="dashboard"
+                            element={<SellerSettings settingsMenu={0} />}
+                        />
+                        <Route
+                            path="accountsettings"
+                            element={<SellerSettings settingsMenu={1} />}
+                        />
+                        <Route
+                            path="orders"
+                            element={<SellerSettings settingsMenu={2} />}
+                        />
+                        <Route
+                            path="productsOverview"
+                            element={<SellerSettings settingsMenu={3} />}
+                        />
+                        <Route
+                            path="addeditProduct"
+                            element={<SellerSettings settingsMenu={4} />}
+                        />
+                        <Route
+                            path="advertisement"
+                            element={<SellerSettings settingsMenu={5} />}
+                        />
+                        <Route
+                            path="sellercenter"
+                            element={<SellerRegistration />}
+                        />
+                    </Route>
 
                     <Route path="/search" element={<SearchPage />} />
-                    <Route path="/sellerdashboard" element={<Dashboard />} />
-                    <Route path="/sellersettings" element={<SellerSettingsPage />} />
                     <Route path="/checkout" element={<CheckOutPage />} />
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />

@@ -279,7 +279,7 @@ export const AddProductFrame = () => {
     };
 
     return (
-        <div className="flex w-[1000px] mx-auto bg-white ">
+        <div className="flex w-full mx-auto bg-white rounded-xl shadow-lg">
             <div className="ml-[60px] w-[200px] flex-wrap flex flex-col">
                 <div className="flex-wrap flex font-bold flex-row px-5 py-6 border-gray-300">
                     Basic Information
@@ -433,9 +433,9 @@ export const AddProductFrame = () => {
                     />
                 </div>
 
-                <div className="flex justify-end pr-16">
+                <div className="flex justify-center">
                     <button
-                        className="mb-5 border-2 w-1/3 h-10 p-2 hover:bg-pink-600"
+                        className="border-2 w-2/3 h-10 self-end m-5 p-2 hover:bg-pink-600"
                         onClick={handleSubmit}
                     >
                         CONFIRM ADD PRODUCT
