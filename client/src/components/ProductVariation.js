@@ -17,15 +17,16 @@ const ToggleButtonsComponent = ({
         handleVariationPick(optionID);
     };
 
-    // // console.log("options", options);
-    // // console.log("options", options[0].name);
-
     return (
-        <div className="w-full flex mt-4">
-            <div className="w-3/12 pl-8 pr-4 text-sm break-normal line-clamp-1 self-center font-medium text-[#211c6a]">
+        <div className="w-full flex">
+            <div className="w-3/12 pl-2 text-sm break-normal font-medium text-[#211c6a]">
+                {/* Quantity:{" "} */}
                 {variationClass ? variationClass : "Variation"}
             </div>
-            <form className="w-9/12 flex flex-wrap pr-8">
+            {/* <div className="w-3/12 pl-8 pr-4 text-sm break-normal line-clamp-1 self-center font-medium text-[#211c6a]">
+                {variationClass ? variationClass : "Variation"}
+            </div> */}
+            <form className="w-9/12 flex flex-wrap items-center">
                 {options.map((option, idx) => (
                     <div
                         key={idx}
@@ -35,7 +36,7 @@ const ToggleButtonsComponent = ({
                                 : "text-gray-600"
                         } mb-2 rounded mr-2 h-min py-1 border-[#59b4c3]  border-2 hover:border-violet-500  hover:text-violet-500`}
                     >
-                        <label key={idx} className="p-3 w-14 cursor-pointer">
+                        <label key={idx} className="p-1 w-14 cursor-pointer">
                             <input
                                 type="radio"
                                 name="option"

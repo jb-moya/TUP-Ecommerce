@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logoUnsaturated from "../Assets/LogoUnSaturated.png";
+import formatPrice from "./utils/formatPrice";
 
 const ProductCard = ({product}) => {
     return (
@@ -19,14 +20,14 @@ const ProductCard = ({product}) => {
                 <div className="flex justify-between">
                     <p className="text-[#7d74f2]">
                         {product.price !== -1
-                            ? "₱ " + product.price
+                            ? "₱ " + formatPrice(product.price)
                             : product.variation.length !== 0
-                            ? "₱ " + product.variation[0].price
+                            ? "₱ " + formatPrice(product.variation[0].price)
                             : "Unavailable"}
                     </p>
-                    <p>
-                        {product.soldCount ? product.soldCount + " Sold" : ""}
-                    </p>
+                    <div className="font-light text-xs self-center">
+                        {product.soldCount ? product.soldCount + " sold" : ""}
+                    </div>
                 </div>
             </div>
         </Link>
