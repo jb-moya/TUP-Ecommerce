@@ -102,7 +102,7 @@ const ProductDetailPage = (props) => {
             <NavBar />
 
             <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-2xl shadow-md">
-                <div className="w-5/12 pl-8">
+                <div className="w-5/12 px-2">
                     {isLoading ? (
                         <div className="w-full h-full flex items-center justify-center">
                             Loading Images...
@@ -250,7 +250,7 @@ const ProductDetailPage = (props) => {
 
                     {/* <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr> */}
 
-                    <div className="w-full mx-8 mt-4 p-4 border bg-[#ffffff] border-black border-opacity-25 rounded-2xl shadow-xl relative">
+                    <div className="w-full mt-4 p-4 border bg-[#ffffff] border-black border-opacity-25 rounded-2xl shadow-xl relative">
                         <div className="flex items-center">
                             <div className="w-20 h-20">
                                 <img

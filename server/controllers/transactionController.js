@@ -10,11 +10,17 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     const { sort, productName } = req.query;
 
+    console.log("productName", productName)
+
     if (productName) {
         queryObject["product"] = {
-            $in: await Product.find({ name: productName }).select("_id"),
+            $in: await Product.find({
+                name: { $regex: productName, $options: "i" },
+            }).select("_id"),
         };
     }
+
+    console.log("queryObject", queryObject.product)
 
     let transactions;
     if (req.user && req.user.role === "seller") {
@@ -29,7 +35,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
         queryObject.user = mongoose.Types.ObjectId.createFromHexString(
             req.user.userId
         );
-        // queryObject.user = req.user.userId;
+
         transactions = Transaction.find(queryObject)
             .populate({
                 path: "product",
@@ -50,8 +56,9 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     transactions = transactions.skip(skip).limit(limit);
 
-    console.log("transactions", transactions);
     transactions = await transactions;
+    // console.log("transactions eeee", transactions);
+    // console.log("queryobject", queryObject);
     res.status(StatusCodes.OK).json({
         transactions,
         transactionTotalCount: countTotal,
