@@ -28,11 +28,12 @@ const ProductDetailPage = (props) => {
     const navigate = useNavigate();
     const { id } = useParams();
 
+    const [puffAnimationPrice, setPuffAnimationPrice] = useState(false);
     const [productDetails, setProductDetails] = useState({});
     const [productSeller, setProductSeller] = useState({});
     const [productReviews, setProductReviews] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); // Track loading state
-    const [selectedVariation, setSelectedVariation] = useState(); // Track selected variation
+    const [isLoading, setIsLoading] = useState(true);
+    const [selectedVariation, setSelectedVariation] = useState();
     const [profilePicture, setProfilePicture] = useState("");
     const [userName, setUserName] = useState("");
     const [quantity, setQuantity] = useState(1);
@@ -60,7 +61,6 @@ const ProductDetailPage = (props) => {
                 setIsLoading(false);
             }
         };
-        // // console.log("cookie", document.cookie);
 
         fetchData();
     }, [id]);
@@ -90,13 +90,20 @@ const ProductDetailPage = (props) => {
     };
 
     const handleWriteReview = () => {
-        // console.log("Write a review");
         setIsOpenWriteReview(!isOpenWriteReview);
     };
 
     const handleVariationPick = (variation) => {
-        // console.log("Variation picked", variation);
     };
+
+    const handleSelectedVariationChange = (variation) => {
+        setSelectedVariation(variation);
+
+        setPuffAnimationPrice(true);
+        setTimeout(() => {
+            setPuffAnimationPrice(false);
+        }, 200); // 200 milliseconds, same duration as the CSS transition
+    }
 
     return (
         <div className="mt-32">
@@ -147,16 +154,20 @@ const ProductDetailPage = (props) => {
                             </div>
                         </div>
                         <div className="w-5/12 text-right">
-                            <div className="text-2xl px-8 font-semibold text-red-700">
+                            <div
+                                className={
+                                    puffAnimationPrice
+                                        ? `text-2xl px-8 font-semibold scale-110 transition-all duration-100 ease-out text-red-700`
+                                        : `text-2xl px-8 font-semibold text-red-700`
+                                }
+                            >
                                 {productDetails.price &&
                                 productDetails.price !== -1
                                     ? "₱ " + formatPrice(productDetails.price)
                                     : productDetails.variation &&
                                       productDetails.variation.length !== 0
                                     ? "₱ " +
-                                      formatPrice(
-                                          productDetails.variation[0].price
-                                      )
+                                      formatPrice(selectedVariation.price)
                                     : "Unavailable"}
                             </div>
                             <div className="flex align-baseline justify-end">
@@ -198,7 +209,7 @@ const ProductDetailPage = (props) => {
                                     variationClass={
                                         productDetails.variationClass
                                     }
-                                    setSelectedVariation={setSelectedVariation}
+                                    setSelectedVariation={handleSelectedVariationChange}
                                 />
                             )
                         )}
@@ -291,7 +302,9 @@ const ProductDetailPage = (props) => {
                         <div className="px-8 mt-2 font-semibold text-lg leading-relaxed text-[#211c6a]">
                             Product Details
                         </div>
-                        <div className="px-8 font-light">{productDetails.description}</div>
+                        <div className="px-8 font-light">
+                            {productDetails.description}
+                        </div>
                     </div>
                 </div>
 

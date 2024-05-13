@@ -3,6 +3,6 @@ const formatPrice = (number) => {
 }
 
 const formattedNumber = formatPrice(30000);
-console.log("formatted price", formattedNumber); // Output: "30,000"
+console.log("formatted price", formattedNumber);
 
 export default formatPrice;
