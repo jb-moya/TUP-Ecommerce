@@ -5,14 +5,12 @@ import PaginationButtons from "./PaginationButtons";
 import { useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import formatData from "./utils/formatData";
 axios.defaults.withCredentials = true;
 
 const HistoryItem = (transaction) => {
-    const createdAt = new Date(transaction.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    const createdAt = formatData(transaction.createdAt);
 
     return (
         <>
@@ -65,13 +63,6 @@ const HistoryItem = (transaction) => {
                             >
                                 <CiShop size={25} className="mr-2" /> View Shop
                             </Link>
-
-                            {/* <Link
-                                to={`/org/${productSeller._id}`}
-                                className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none"
-                            >
-                                View Seller
-                            </Link> */}
                         </button>
                         <button className="flex bg-[#211C6A] hover:bg-opacity-70   text-white items-center justify-center h-10 text-sm p-4 rounded-md">
                             Buy Again
@@ -142,11 +133,12 @@ const PurchaseHistory = () => {
 
     const fetchTransactionHistory = useCallback(async () => {
         try {
+            toast.success(`searchName: ${searchName}`);
             const response = await axios.get(
                 `http://localhost:5000/api/v1/transactions`,
                 {
                     params: {
-                        name: `${searchName ? searchName : ""}`,
+                        productName: `${searchName ? searchName : ""}`,
                         sort: [
                             [
                                 "totalAmount",
@@ -155,7 +147,7 @@ const PurchaseHistory = () => {
                                     : "descending",
                             ],
                             [
-                                "createdBy",
+                                "createdAt",
                                 toggleDateSort === 1
                                     ? "ascending"
                                     : "descending",
@@ -212,6 +204,9 @@ const PurchaseHistory = () => {
             setToggleTotalAmountSort(toggleTotalAmountSort * -1);
         } else if (e.target.value === "Date") {
             setToggleDateSort(toggleDateSort * -1);
+        } else if (e.target.value === "Default") {
+            setToggleDateSort(1);
+            setToggleTotalAmountSort(1);
         }
     };
 
@@ -228,7 +223,7 @@ const PurchaseHistory = () => {
                             defaultValue="Filter By"
                             onChange={handleSortChange}
                         >
-                            <option value="popular">Filter by</option>
+                            <option value="Default">Filter by</option>
                             <option value="Price">Price</option>
                             <option value="Date">Date</option>
                         </select>
@@ -237,6 +232,7 @@ const PurchaseHistory = () => {
                         <input
                             className="mx-4 bg-white border border-[#211C6A] rounded-md py-2 px-4 pl-10 text-sm appearance-none outline-none "
                             placeholder="Search"
+                            onChange={delayedHandleSearchNameChange}
                         />
                         <FaSearch className="absolute top-[10px] left-8 text-[#211C6A]" />
                     </div>

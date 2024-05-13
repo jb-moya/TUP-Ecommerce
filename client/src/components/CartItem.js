@@ -1,9 +1,6 @@
 import React from "react";
 import OrderQuantity from "./OrderQuantity";
-import { Stack, Button } from "react-bootstrap";
 import {
-    decreaseQuantity,
-    increaseQuantity,
     removeItem,
     setQuantity,
     toggleCheck,
@@ -33,8 +30,6 @@ const ItemStock = ({ stock }) => {
 const CartItem = ({ cartItem }) => {
     const dispatch = useDispatch();
 
-    // // console.log("cartItem pak", cartItem, cartItem._id);
-
     const handleQuantityChange = (newQuantity) => {
         dispatch(setQuantity({ id: cartItem._id, quantity: newQuantity }));
     };
@@ -54,7 +49,7 @@ const CartItem = ({ cartItem }) => {
                     checked={cartItem.checked}
                 />
                 <div className="w-32 h-32 mr-4 rounded">
-                    {cartItem.productDetails.image.length !== 0 ? (
+                    {cartItem.productDetails.image && cartItem.productDetails.image.length !== 0 ? (
                         <img
                             className="w-full h-full object-cover rounded"
                             src={cartItem.productDetails.image[0]}

@@ -72,6 +72,7 @@ export const getAllItems = createAsyncThunk(
         const { getState } = thunkAPI;
         try {
             const cart = await getCart(null, thunkAPI);
+            console.log("cart gotten", cart);
             if (cart.length === 0) {
                 return [];
             } else {
@@ -119,7 +120,8 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         clearCart: (state) => {
-            state = initialState;
+            state.cartItems = [];
+            state.productCount = 0;
             toast.success("Cart cleared");
         },
         clearCheckedItems: (state) => {
@@ -233,6 +235,22 @@ const cartSlice = createSlice({
         });
         builder.addCase(addToCart.rejected, (state, action) => {
             toast.error("Error adding item to cart");
+        });
+        builder.addCase(deleteItemFromDB.fulfilled, (state, action) => {
+            state.cartItems = action.payload;
+            state.productCount = action.payload.length;
+            toast.success("Item removed from cart");
+        });
+        builder.addCase(deleteItemFromDB.rejected, (state, action) => {
+            toast.error("Error removing item from cart");
+        });
+        builder.addCase(deleteCart.fulfilled, (state) => {
+            state.cartItems = [];
+            state.productCount = 0;
+            toast.success("Cart deleted");
+        });
+        builder.addCase(deleteCart.rejected, (state) => {
+            toast.error("Error deleting cart");
         });
     },
 });

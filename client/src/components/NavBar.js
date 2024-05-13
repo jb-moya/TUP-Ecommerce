@@ -13,17 +13,14 @@ import { Link } from "react-router-dom";
 import { setSearchClicked } from "../features/searchSlice.js";
 import { toast } from "react-toastify";
 
-const ProfileMenu = ({
-    handleProfileMenuToggle,
-    isProfileMenuOpen,
-}) => {
+const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.user);
 
     const sellerMenus = [
         <Link to="/sellerDashboard">Dashboard</Link>,
-        <Link to="/sellerDashboard">Add Product</Link>,
+        <Link to="/sellerDashboard/addProduct">Add Product</Link>,
     ];
 
     const customerMenus = [
@@ -57,28 +54,33 @@ const ProfileMenu = ({
                 <div className="absolute transition duration-200 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded shadow-lg">
                     <ul>
                         {user.role === "seller"
-                            ? sellerMenus.map((link) => {
+                            ? sellerMenus.map((link, index) => {
                                   return (
                                       <li
                                           className="py-2 px-4 hover:bg-gray-300"
-                                          key={link}
+                                          key={`${link}-${index}`}
                                       >
                                           {link}
                                       </li>
                                   );
                               })
-                            : customerMenus.map((link) => {
+                            : customerMenus.map((link, index) => {
                                   return (
                                       <li
                                           className="py-2 px-4 hover:bg-gray-300"
-                                          key={link}
+                                          key={`${link}-${index}`}
                                       >
                                           {link}
                                       </li>
                                   );
                               })}
 
-                        <li className="py-2 px-4 hover:bg-gray-300" onClick={handleLogOut}>Logout</li>
+                        <li
+                            className="py-2 px-4 hover:bg-gray-300"
+                            onClick={handleLogOut}
+                        >
+                            Logout
+                        </li>
                     </ul>
                 </div>
             )}
@@ -97,6 +99,7 @@ export const NavBar = ({
     const dispatch = useDispatch();
     const userLogged = useSelector(isUserLogged);
     const { productCount } = useSelector((store) => store.cart);
+    const { user } = useSelector((state) => state.user);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const navigate = useNavigate();
     let [searchParams, setSearchParams] = useSearchParams();
@@ -121,7 +124,6 @@ export const NavBar = ({
             return;
         }
 
-        // toast.success("Searching for " + searchValue);
         setSearchParams({ keyword: searchValue });
         navigate(`/search?keyword=${encodeURIComponent(searchValue)}`);
 
@@ -157,11 +159,11 @@ export const NavBar = ({
                 </p>
             </div>
             <div
-                className={`${textColor} flex overflow-hidden max-w-[1240px] px-4 h-16 justify-between items-center mx-auto text-nowrap`}
+                className={`${textColor} flex overflow-hidden max-w-[1240px] h-16 justify-between items-center mx-auto text-nowrap`}
             >
                 <div className="flex items-center select-none font-bold">
                     <img
-                        className="w-20 h-20"
+                        className="w-20 h-20 drop-shadow-2xl"
                         src={logo}
                         alt="Logo Here"
                         loading="lazy"
@@ -185,7 +187,7 @@ export const NavBar = ({
                 </ul>
 
                 <div className="flex p-2 items-center justify-between">
-                    <div
+                    {(user && user.role === "customer") && <div
                         className="pr-4 cursor-pointer"
                         onClick={handleGoToCart}
                     >
@@ -197,7 +199,7 @@ export const NavBar = ({
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </div>}
                     <div className="pr-6 cursor-pointer" onClick={handleNav}>
                         <FaSearch
                             className="hover:scale-110 transition duration-200 ease-in-out"

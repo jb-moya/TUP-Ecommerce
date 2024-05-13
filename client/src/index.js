@@ -12,26 +12,26 @@ import { ToastContainer } from "react-toastify";
 const root = createRoot(document.getElementById("root"));
 root.render(
     // <React.StrictMode>
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <App tab="home" />
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                    transition="bounce"
-                />
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <App tab="home" />
+            <ToastContainer
+                position="top-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition="Slide"
+            />
 
-                <ToastContainer />
-            </PersistGate>
-        </Provider>
+            <ToastContainer />
+        </PersistGate>
+    </Provider>
     // </React.StrictMode>
 );
 

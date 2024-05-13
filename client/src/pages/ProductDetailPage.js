@@ -5,7 +5,7 @@ import StarRating from "../components/StarRating.js";
 import image from "../components/images/lake-louise-51543_1280.jpg";
 import RatingOverview from "../components/RatingOverview.js";
 import ProductVariation from "../components/ProductVariation.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Review from "../components/Review.js";
 import OrderQuantity from "../components/OrderQuantity.js";
 import { rootUrl } from "../App.js";
@@ -18,10 +18,14 @@ import { useDispatch, useSelector } from "react-redux";
 import defaultProfileImage from "../Assets/defaultPP.png";
 import { Link } from "react-router-dom";
 import { addToCart } from "../features/cart/cartSlice.js";
+import { IoCart } from "react-icons/io5";
+import formatPrice from "../components/utils/formatPrice.js";
+
 axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const [productDetails, setProductDetails] = useState({});
@@ -98,8 +102,8 @@ const ProductDetailPage = (props) => {
         <div className="mt-32">
             <NavBar />
 
-            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-md shadow-md">
-                <div className="w-5/12 pl-8">
+            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-2xl shadow-md">
+                <div className="w-5/12 px-2">
                     {isLoading ? (
                         <div className="w-full h-full flex items-center justify-center">
                             Loading Images...
@@ -123,13 +127,36 @@ const ProductDetailPage = (props) => {
                             <div className="text-2xl px-8 font-bold text-[#211c6a]">
                                 {productDetails.name}
                             </div>
+                            <div className="flex align-baseline">
+                                <div className="pl-8 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
+                                    <span className="text-lg leading-none font-light pr-1">
+                                        {productDetails.numOfReviews}
+                                    </span>{" "}
+                                    <span className="font-extralight">
+                                        Rating
+                                    </span>
+                                </div>
+                                <div className="pl-2 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
+                                    <span className="text-lg leading-none font-light pr-1">
+                                        {productDetails.soldCount}
+                                    </span>{" "}
+                                    <span className="font-extralight">
+                                        Sold
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div className="w-5/12 text-right">
                             <div className="text-2xl px-8 font-semibold text-red-700">
-                                {productDetails.price !== -1
-                                    ? "₱ " + productDetails.price
-                                    : productDetails.variation.length !== 0
-                                    ? "₱ " + productDetails.variation[0].price
+                                {productDetails.price &&
+                                productDetails.price !== -1
+                                    ? "₱ " + formatPrice(productDetails.price)
+                                    : productDetails.variation &&
+                                      productDetails.variation.length !== 0
+                                    ? "₱ " +
+                                      formatPrice(
+                                          productDetails.variation[0].price
+                                      )
                                     : "Unavailable"}
                             </div>
                             <div className="flex align-baseline justify-end">
@@ -156,22 +183,10 @@ const ProductDetailPage = (props) => {
                         </div>
                     </div>
 
-                    <div className="w-full flex mt-2">
-                        <div className="pl-8 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
-                            <span className="text-lg leading-none font-light pr-1">
-                                {productDetails.numOfReviews}
-                            </span>{" "}
-                            <span className="font-extralight">Rating</span>
-                        </div>
-                        <div className="pl-2 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
-                            <span className="text-lg leading-none font-light pr-1">
-                                {productDetails.soldCount}
-                            </span>{" "}
-                            <span className="font-extralight">Sold</span>
-                        </div>
-                    </div>
+                    <div className="w-full flex"></div>
+                    <hr className="border-r-[1px] mt-2 mx-4 border-[#000000] border-opacity-20"></hr>
 
-                    <div className="w-full mt-10">
+                    <div className="mt-4 mx-6 border">
                         {isLoading ? (
                             <div>loading variation...</div>
                         ) : (
@@ -188,8 +203,9 @@ const ProductDetailPage = (props) => {
                             )
                         )}
                     </div>
-                    <div className="mt-8 flex items-center">
-                        <div className="w-3/12 pl-8 text-sm break-normal font-medium text-[#211c6a]">
+
+                    <div className="mt-1 flex items-center border mx-6">
+                        <div className="w-3/12 pl-2 text-sm break-normal font-medium text-[#211c6a]">
                             Quantity:{" "}
                         </div>
                         <div className="pr-2">
@@ -220,54 +236,62 @@ const ProductDetailPage = (props) => {
                             )}
                         </div>
                     </div>
-                    <div className="flex px-8 py-7 justify-center items-center">
-                        <button
-                            className="p-2 border rounded mr-4 bg-[#a6bec2] text-white hover:border-violet-500"
-                            onClick={handleAddToCart}
-                        >
-                            Add to Cart
-                        </button>
-                        <button className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500">
-                            Buy Now
-                        </button>
-                    </div>
-
-                    <hr className="w-1/2 m-auto rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
-                </div>
-
-                <div className="w-full">
-                    <div className="px-8 mt-4 font-semibold text-lg leading-relaxed text-[#211c6a]">
-                        Product Details
-                    </div>
-                    <div className="px-8">{productDetails.description}</div>
-                </div>
-
-                <div className="w-full m-8 p-4 border border-black border-opacity-25 rounded shadow-md">
-                    <div className="flex items-center">
-                        <div className="w-20 h-20">
-                            <img
-                                className="w-full h-full rounded-full object-cover overflow-hidden"
-                                src={
-                                    productSeller.image
-                                        ? productSeller.image
-                                        : defaultProfileImage
-                                }
-                                alt=""
-                            />
-                        </div>
-                        <div className="p-4 ">
-                            <div>
-                                {productSeller.orgName
-                                    ? productSeller.orgName
-                                    : "..."}
-                            </div>
-                            <Link
-                                to={`/org/${productSeller._id}`}
-                                className="rounded px-[4px] py-[2px] border text-[#59b4c3] border-[#59b4c3] leading-none"
+                    <div className="w-full mt-4 flex items-center">
+                        <div className="w-4/12 flex flex-col align-middle items-center">
+                            <button
+                                className="w-9/12 p-2 border rounded bg-[#a6bec2] text-white hover:border-violet-500"
+                                onClick={handleAddToCart}
                             >
-                                View Seller
-                            </Link>
+                                <div className="flex items-center">
+                                    <IoCart size={28} />{" "}
+                                    <div className="pl-2">Add to Cart</div>
+                                </div>
+                            </button>
+                            <button
+                                className="mt-2 w-9/12 p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
+                                onClick={() => {
+                                    handleAddToCart();
+                                    navigate("/cart");
+                                }}
+                            >
+                                Buy Now
+                            </button>
                         </div>
+                        <div className="w-8/12 ml-2 mr-6 p-2 border bg-[#ffffff] border-black border-opacity-25 rounded-2xl shadow-md relative">
+                            <div className="flex items-center justify-center">
+                                <div className="w-20 h-20">
+                                    <img
+                                        className="w-full h-full rounded-full object-cover overflow-hidden drop-shadow-md"
+                                        src={
+                                            productSeller.image
+                                                ? productSeller.image
+                                                : defaultProfileImage
+                                        }
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="p-4 flex">
+                                    <div className="pr-4 font-medium text-lg text-[#211c6a]">
+                                        {productSeller.orgName
+                                            ? productSeller.orgName
+                                            : "..."}
+                                    </div>
+                                    <Link
+                                        to={`/org/${productSeller._id}`}
+                                        className="rounded px-[4px] py-[4px] border text-[#59b4c3] border-[#59b4c3] leading-none self-center"
+                                    >
+                                        View Seller
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr className="border-r-[1px] mt-4 mx-4 border-[#000000] border-opacity-20"></hr>
+                    <div className="w-full">
+                        <div className="px-8 mt-2 font-semibold text-lg leading-relaxed text-[#211c6a]">
+                            Product Details
+                        </div>
+                        <div className="px-8 font-light">{productDetails.description}</div>
                     </div>
                 </div>
 
