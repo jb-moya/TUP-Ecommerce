@@ -182,7 +182,7 @@ export const NavBar = ({
                         <LinkRoute to="/" text="Contact" />
                     </li>
                     <li className="p-4">
-                        <LinkRoute to="/sellercenter" text="Seller Centre" />
+                        <LinkRoute to="/seller/sellercenter" text="Seller Centre" />
                     </li>
                 </ul>
 

@@ -39,7 +39,7 @@ const ProductCard = ({ product }) => {
             </div>
             <div className="">
                 {product.createdBy.orgName && (
-                    <div className="line-clamp-1 absolute text-[#211C6A] left-[1px] shadow text-[9px] px-2 text-xs top-[138px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
+                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[9px] px-2 text-xs top-[138px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
                         <img
                             src={product.createdBy.image || logoUnsaturated}
                             alt="Logo Here"
@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
                         {product.createdBy.orgName}
                     </div>
                 )}
-                <div className="absolute text-[11px] top-[132px] left-[164px] w-fit rounded-tl-md pl-[4px] bg-white">
+                <div className="absolute text-[11px] top-[132px] right-0 w-fit rounded-tl-md pl-[4px] bg-white">
                     {product.averageRating > 0 && (
                         <div className="flex text-center justify-center align-middle items-center">
                             {product.averageRating} <FaStar color="#FFC107" />

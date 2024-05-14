@@ -1,10 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import PaginationButtons from "./PaginationButtons.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import defaultProfileImage from "../Assets/defaultPP.png";
+import handleMinMaxInput from "./utils/handleMinMaxInput.js";
+import debounce from "./utils/debounce.js";
+import {
+    buildQueryParam,
+    buildQueryArrayParam,
+} from "./utils/buildQueryParams.js";
+import { useLocation } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 
@@ -47,6 +54,25 @@ const ProductRow = ({ product, index }) => {
             );
         }
         return <NoImage />;
+    };
+
+    const renderPrice = () => {
+        if (product.price !== -1) {
+            return product.stock;
+        }
+
+        if (product.variation.length > 0) {
+            return (
+                <>
+                    {product.variation.map((v, index) => (
+                        <div
+                            key={`${v.name}${index}`}
+                        >{`${v.name} (${v.price})`}</div>
+                    ))}
+                </>
+            );
+        }
+        return product.price;
     };
 
     const renderStock = () => {
@@ -93,6 +119,10 @@ const ProductRow = ({ product, index }) => {
             <td>
                 <div className="px-1">{product.name}</div>
             </td>
+            <td className={product.price === -1 ? "p-1 flex-col" : "p-1"}>
+                {renderPrice()}
+            </td>
+            <td className="p-1">{product.soldCount}</td>
             <td
                 className={
                     product.variation.length > 0 ? "p-1 flex-col" : "p-1"
@@ -119,32 +149,97 @@ const ProductRow = ({ product, index }) => {
     );
 };
 
-const RangeInput = ({ label }) => (
-    <div className="text-sm flex items-center mt-4 ml-6">
+const RangeInput = ({ label, min = 0, handleOnChange }) => (
+    <div className="text-sm flex items-center mt-4">
         <div>{label}</div>
         <input
             className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
             placeholder="Input"
+            type="number"
+            min={min}
+            name="min"
+            onChange={handleOnChange}
         />
         ~
         <input
-            className="rounded-md border border-[#211C6A] px-2 py-1 w-16 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
+            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
             placeholder="Input"
+            type="number"
+            name="max"
+            onChange={handleOnChange}
         />
     </div>
 );
 
-export default function Products() {
+const Products = () => {
+    let location = useLocation();
     const { user } = useSelector((state) => state.user);
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(1);
-    const [selectCategory, setselectCategory] = useState([]);
+    const [selectCategory, setselectCategory] = useState("");
     const [searchName, setSearchName] = useState("");
     const [productCount, setProductCount] = useState(0);
     const [minMaxStock, setMinMaxStock] = useState([0, 0]);
     const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
     const [minMaxSales, setMinMaxSales] = useState([0, 0]);
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+
+        if (searchParams.has("keyword")) {
+            setSearchName(searchParams.get("keyword"));
+        }
+
+        if (searchParams.has("minPrice") && searchParams.has("maxPrice")) {
+            setMinMaxPrice([
+                parseInt(searchParams.get("minPrice"), 10),
+                parseInt(searchParams.get("maxPrice"), 10),
+            ]);
+        }
+
+        if (searchParams.has("minPrice") && !searchParams.has("maxPrice")) {
+            setMinMaxPrice([parseInt(searchParams.get("minPrice"), 10), 0]);
+        }
+
+        if (searchParams.has("maxPrice") && !searchParams.has("minPrice")) {
+            // toast.info(`getting ${searchParams.get("maxPrice")}`);
+            setMinMaxPrice([0, parseInt(searchParams.get("maxPrice"), 10)]);
+        }
+        if (searchParams.has("minStock") && !searchParams.has("maxStock")) {
+            setMinMaxStock([parseInt(searchParams.get("minStock"), 10), 0]);
+        }
+        if (searchParams.has("maxStock") && !searchParams.has("minStock")) {
+            setMinMaxStock([0, parseInt(searchParams.get("maxStock"), 10)]);
+        }
+        if (searchParams.has("minStock") && searchParams.has("maxStock")) {
+            setMinMaxStock([
+                parseInt(searchParams.get("minStock"), 10),
+                parseInt(searchParams.get("maxStock"), 10),
+            ]);
+        }
+        if (searchParams.has("minSales") && !searchParams.has("maxSales")) {
+            setMinMaxSales([parseInt(searchParams.get("minSales"), 10), 0]);
+        }
+        if (searchParams.has("maxSales") && !searchParams.has("minSales")) {
+            setMinMaxSales([0, parseInt(searchParams.get("maxSales"), 10)]);
+        }
+        if (searchParams.has("minSales") && searchParams.has("maxSales")) {
+            setMinMaxSales([
+                parseInt(searchParams.get("minSales"), 10),
+                parseInt(searchParams.get("maxSales"), 10),
+            ]);
+        }
+        if (searchParams.has("categories")) {
+            // toast.info(`getting HAHA ${searchParams.get("categories")}`);
+            setselectCategory(searchParams.get("categories"));
+        }
+
+        if (searchParams.has("page")) {
+            // toast.info(`getting ${searchParams.get("page")}`);
+            setCurrentPage(parseInt(searchParams.get("page"), 10));
+        }
+    }, [location.search]);
 
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
@@ -154,6 +249,55 @@ export default function Products() {
         const id = rand(1, 200);
         return `https://picsum.photos/id/${id}/1920/1080`;
     }
+
+    const delayedHandleSearchName = debounce((e) => {
+        setSearchName(e.target.value);
+    }, 1000);
+
+    const delayedHandleMinMaxPrice = debounce((e) => {
+        // handleMinMaxPrice(e);
+        handleMinMaxInput(e, setMinMaxPrice);
+    }, 1000);
+
+    const delayedHandleMinMaxStock = debounce((e) => {
+        // handleMinMaxStock(e);
+        handleMinMaxInput(e, setMinMaxStock);
+    }, 1000);
+
+    const delayedHandleMinMaxSales = debounce((e) => {
+        // handleMinMaxSales(e);
+        handleMinMaxInput(e, setMinMaxSales);
+    }, 1000);
+
+    const numericFilters = useMemo(() => {
+        const numericFiltersArray = [];
+
+        console.log("minMaxSales :--", minMaxSales);
+
+        if (minMaxPrice[0] > 0) {
+            numericFiltersArray.push(`price>=${minMaxPrice[0]}`);
+        }
+        if (minMaxPrice[1] > 0) {
+            numericFiltersArray.push(`price<=${minMaxPrice[1]}`);
+        }
+        // if (minRating > 0) {
+        //     numericFiltersArray.push(`averageRating>=${minRating}`);
+        // }
+        if (minMaxStock[0] > 0) {
+            numericFiltersArray.push(`stock>=${minMaxStock[0]}`);
+        }
+        if (minMaxStock[1] > 0) {
+            numericFiltersArray.push(`stock<=${minMaxStock[1]}`);
+        }
+        if (minMaxSales[0] > 0) {
+            numericFiltersArray.push(`soldCount>=${minMaxSales[0]}`);
+        }
+        if (minMaxSales[1] > 0) {
+            numericFiltersArray.push(`soldCount<=${minMaxSales[1]}`);
+        }
+
+        return numericFiltersArray.join(",");
+    }, [minMaxPrice, minMaxStock, minMaxSales]);
 
     const fetchProducts = useCallback(async () => {
         try {
@@ -165,34 +309,75 @@ export default function Products() {
                     params: {
                         page: currentPage,
                         createdBy: user._id,
+                        numericFilters: numericFilters,
+                        categories: selectCategory ? selectCategory : "",
+                        name: `${searchName ? searchName : ""}`,
                     },
                 }
             );
-            setProducts(data.products);
             console.log("HAHAf", data.products);
-            setProductCount(data.productTotalCount);
-            setMaxPageCount(Math.ceil(data.productTotalCount / 10));
+            setProducts(data.products);
+            setProductCount(data.count);
+            setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
         } finally {
             toast.success("Products loaded successfully");
         }
-    }, [currentPage, user, user._id]);
-
-    const debounce = (func, delay) => {
-        let timeoutId;
-
-        return (...args) => {
-            clearTimeout(timeoutId);
-
-            timeoutId = setTimeout(() => {
-                func(...args);
-            }, delay);
-        };
-    };
+    }, [currentPage, user, selectCategory, numericFilters, searchName]);
 
     useEffect(() => {
         fetchProducts();
-    }, [fetchProducts, currentPage]);
+
+        const params = [
+            buildQueryParam("page", currentPage),
+            buildQueryParam("keyword", searchName),
+            buildQueryParam(
+                "minPrice",
+                minMaxPrice[0] > 0 ? minMaxPrice[0] : ""
+            ),
+            buildQueryParam(
+                "maxPrice",
+                minMaxPrice[1] > 0 ? minMaxPrice[1] : ""
+            ),
+            buildQueryParam(
+                "minStock",
+                minMaxStock[0] > 0 ? minMaxStock[0] : ""
+            ),
+            buildQueryParam(
+                "maxStock",
+                minMaxStock[1] > 0 ? minMaxStock[1] : ""
+            ),
+            buildQueryParam(
+                "minSales",
+                minMaxSales[0] > 0 ? minMaxSales[0] : ""
+            ),
+            buildQueryParam(
+                "maxSales",
+                minMaxSales[1] > 0 ? minMaxSales[1] : ""
+            ),
+            buildQueryParam("categories", selectCategory),
+        ].filter(Boolean);
+
+        console.log("params", params);
+
+        const newUrl = `${location.pathname}?${params.join("&")}`;
+
+        window.history.replaceState({ path: newUrl }, "", newUrl);
+    }, [
+        fetchProducts,
+        currentPage,
+        searchName,
+        minMaxPrice,
+        selectCategory,
+        minMaxStock,
+        minMaxSales,
+        location.pathname,
+    ]);
+
+    useEffect(() => {
+        toast.info(`minMaxPrice changed ${minMaxPrice}`);
+        console.log("minMaxPrice DITO", minMaxPrice);
+    }, [minMaxPrice]);
 
     const [selectedButton, setSelectedButton] = useState(1); // Changed initial value to 1 for Dashboard
 
@@ -206,19 +391,16 @@ export default function Products() {
     };
 
     useEffect(() => {
-        random(1, 200);
-        random2(1, 200);
-    }, []);
-    
-    // what 
+        console.log("sales", minMaxSales);
+    }, [minMaxSales]);
 
     function random(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
-    
+
     const random2 = (min, max) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
-    }
+    };
 
     return (
         <div className="flex mx-auto select-none items-center ">
@@ -283,6 +465,7 @@ export default function Products() {
                     <input
                         className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-1 rounded-md w-[250px] mt-4 text-sm ml-6"
                         placeholder="Input Product Name"
+                        onChange={delayedHandleSearchName}
                     />
 
                     <div className="text-sm flex items-center mt-4 ml-6">
@@ -294,7 +477,10 @@ export default function Products() {
                             >
                                 <option value="">All</option>
                                 {Object.keys(productCategories).map((key) => (
-                                    <option key={key} value={productCategories[key]}>
+                                    <option
+                                        key={key}
+                                        value={productCategories[key]}
+                                    >
                                         {productCategories[key]}
                                     </option>
                                 ))}
@@ -303,10 +489,19 @@ export default function Products() {
                     </div>
                 </div>
 
-                <div className="flex flex-row w-full items-center justify-between">
-                    <RangeInput label="Stock" />
-                    <RangeInput label="Price" />
-                    <RangeInput label="Sales" />
+                <div className="flex flex-row w-full items-center justify-between pl-6">
+                    {/* <RangeInput
+                        label="Stock"
+                        handleOnChange={delayedHandleMinMaxStock}
+                    /> */}
+                    <RangeInput
+                        label="Price"
+                        handleOnChange={delayedHandleMinMaxPrice}
+                    />
+                    <RangeInput
+                        label="Sales"
+                        handleOnChange={delayedHandleMinMaxSales}
+                    />
                 </div>
 
                 <div className="mt-6 ml-6 text-sm">
@@ -342,9 +537,10 @@ export default function Products() {
                                 <th className="p-2">
                                     <input type="checkbox" />
                                 </th>
-                                {/* Moved the Select header here */}
                                 <th className="p-2">img</th>
                                 <th className="p-2">Product Name</th>
+                                <th className="p-2">Price</th>
+                                <th className="p-2">Sold Count</th>
                                 <th className="p-2">
                                     Stocks / variants' stock
                                 </th>
@@ -375,4 +571,6 @@ export default function Products() {
             </div>
         </div>
     );
-}
+};
+
+export default Products;
