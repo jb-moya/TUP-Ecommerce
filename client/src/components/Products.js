@@ -8,6 +8,25 @@ import defaultProfileImage from "../Assets/defaultPP.png";
 
 axios.defaults.withCredentials = true;
 
+const productCategories = {
+    1: "Electronics",
+    2: "Clothing",
+    3: "Shoes",
+    4: "Books",
+    5: "Beauty",
+    6: "Health",
+    7: "Home",
+    8: "Garden",
+    9: "Toys",
+    10: "Sports",
+    11: "Outdoors",
+    12: "Automotive",
+    13: "Accessories",
+    14: "Industrial",
+    15: "Handmade",
+    16: "Other",
+};
+
 const NoImage = () => {
     return (
         <div className="w-full h-full text-xs bg-slate-200 flex text-[#abb7c5] justify-center items-center rounded">
@@ -16,7 +35,7 @@ const NoImage = () => {
     );
 };
 
-const ProductRow = ({ product }) => {
+const ProductRow = ({ product, index }) => {
     const renderImage = () => {
         if (product.image.length) {
             return (
@@ -60,7 +79,13 @@ const ProductRow = ({ product }) => {
     };
 
     return (
-        <tr className="border-t text-xs">
+        <tr
+            className={
+                index % 2 === 0
+                    ? "border-t text-xs"
+                    : "border-t text-xs bg-slate-200"
+            }
+        >
             <td className="p-2">
                 <input type="checkbox" />
             </td>
@@ -94,12 +119,27 @@ const ProductRow = ({ product }) => {
     );
 };
 
+const RangeInput = ({ label }) => (
+    <div className="text-sm flex items-center mt-4 ml-6">
+        <div>{label}</div>
+        <input
+            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+            placeholder="Input"
+        />
+        ~
+        <input
+            className="rounded-md border border-[#211C6A] px-2 py-1 w-16 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
+            placeholder="Input"
+        />
+    </div>
+);
+
 export default function Products() {
     const { user } = useSelector((state) => state.user);
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(1);
-    const [sortCategories, setSortCategories] = useState([]);
+    const [selectCategory, setselectCategory] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [productCount, setProductCount] = useState(0);
     const [minMaxStock, setMinMaxStock] = useState([0, 0]);
@@ -138,6 +178,18 @@ export default function Products() {
         }
     }, [currentPage, user, user._id]);
 
+    const debounce = (func, delay) => {
+        let timeoutId;
+
+        return (...args) => {
+            clearTimeout(timeoutId);
+
+            timeoutId = setTimeout(() => {
+                func(...args);
+            }, delay);
+        };
+    };
+
     useEffect(() => {
         fetchProducts();
     }, [fetchProducts, currentPage]);
@@ -147,6 +199,26 @@ export default function Products() {
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
     };
+
+    const handleCategoryChange = (e) => {
+        console.log(e.target.value);
+        setselectCategory(e.target.value);
+    };
+
+    useEffect(() => {
+        random(1, 200);
+        random2(1, 200);
+    }, []);
+    
+    // what 
+
+    function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    
+    const random2 = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
 
     return (
         <div className="flex mx-auto select-none items-center ">
@@ -209,61 +281,32 @@ export default function Products() {
 
                 <div className="flex flex-row w-full items-center justify-between">
                     <input
-                        className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-2 rounded-md w-[250px] mt-4 text-sm ml-6"
+                        className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-1 rounded-md w-[250px] mt-4 text-sm ml-6"
                         placeholder="Input Product Name"
                     />
 
                     <div className="text-sm flex items-center mt-4 ml-6">
                         <div className="flex items-center text-sm">
                             Category
-                            <select className="ml-4 border border-[#211C6A] w-[400px] rounded-md p-2 bg-transparent outline-none">
-                                <option value="option1">Category 1</option>
-                                <option value="option2">Category 2</option>
-                                <option value="option3">Category 3</option>
+                            <select
+                                className="ml-4 border border-[#211C6A] w-[200px] rounded-md p-1 bg-transparent outline-none"
+                                onChange={handleCategoryChange}
+                            >
+                                <option value="">All</option>
+                                {Object.keys(productCategories).map((key) => (
+                                    <option key={key} value={productCategories[key]}>
+                                        {productCategories[key]}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex flex-row w-full items-center justify-between">
-                    <div className="text-sm flex items-center mt-4 ml-6 ">
-                        <div>Stock</div>
-                        <input
-                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
-                            placeholder="Input"
-                        />
-                        ~
-                        <input
-                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
-                            placeholder="Input"
-                        />
-                    </div>
-
-                    <div className="text-sm flex items-center mt-4 ml-6">
-                        <div>Price</div>
-                        <input
-                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
-                            placeholder="Input"
-                        />
-                        ~
-                        <input
-                            className="rounded-md border border-[#211C6A] px-2 py-1 w-16 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
-                            placeholder="Input"
-                        />
-                    </div>
-
-                    <div className="text-sm flex items-center mt-4 ml-6">
-                        <div>Sales</div>
-                        <input
-                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
-                            placeholder="Input"
-                        />
-                        ~
-                        <input
-                            className="rounded-md border border-[#211C6A] px-2 py-1 w-16 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
-                            placeholder="Input"
-                        />
-                    </div>
+                    <RangeInput label="Stock" />
+                    <RangeInput label="Price" />
+                    <RangeInput label="Sales" />
                 </div>
 
                 <div className="mt-6 ml-6 text-sm">
@@ -314,9 +357,10 @@ export default function Products() {
                             </tr>
                         </thead>
                         <tbody className="">
-                            {products.map((product) => (
+                            {products.map((product, index) => (
                                 <ProductRow
                                     key={product._id}
+                                    index={index}
                                     product={product}
                                 />
                             ))}

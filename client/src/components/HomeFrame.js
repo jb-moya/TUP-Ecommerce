@@ -60,6 +60,7 @@ const HomeFrame = () => {
                     params: {
                         sort: [["soldCount", "ascending"]],
                         limit: 6,
+                        populatedFields: "createdBy",
                     },
                 }
             );
@@ -74,10 +75,12 @@ const HomeFrame = () => {
                 {
                     params: {
                         page: currentPage,
+                        populatedFields: "createdBy",
                     },
                 }
             );
             setProducts(data.products);
+            console.log("data.products", data.products)
             setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
         } finally {

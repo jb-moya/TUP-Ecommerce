@@ -57,8 +57,9 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
         numericFilters,
         categories,
         createdBy,
+        populatedFields,
     } = req.query;
-    
+
     const queryObject = {};
 
     if (featured) {
@@ -139,7 +140,13 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     }
 
     // console.log("sort", sort);
-    let result = Product.find(queryObject);
+    let result;
+    if (populatedFields) {
+        result = Product.find(queryObject).populate(populatedFields.split(","));
+    } else {
+        result = Product.find(queryObject);
+    }
+
     let countTotal = await Product.countDocuments({});
     if (sort) {
         result = result.sort(sort);
