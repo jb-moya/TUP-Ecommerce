@@ -4,13 +4,107 @@ import PaginationButtons from "./PaginationButtons.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import defaultProfileImage from "../Assets/defaultPP.png";
+
 axios.defaults.withCredentials = true;
+
+const NoImage = () => {
+    return (
+        <div className="w-full h-full text-xs bg-slate-200 flex text-[#abb7c5] justify-center items-center rounded">
+            n/a
+        </div>
+    );
+};
+
+const ProductRow = ({ product }) => {
+    const renderImage = () => {
+        if (product.image.length) {
+            return (
+                <img
+                    src={product.image[0] || defaultProfileImage}
+                    className="w-12 h-12 rounded"
+                    alt=""
+                />
+            );
+        }
+        return <NoImage />;
+    };
+
+    const renderStock = () => {
+        if (product.stock) {
+            return product.stock;
+        }
+        if (product.variation.length > 0) {
+            const totalStock = product.variation.reduce(
+                (total, v) => total + v.stock,
+                0
+            );
+
+            return (
+                <>
+                    {product.variation.map((v) => (
+                        <div key={v.name}>{`${v.name} (${v.stock})`}</div>
+                    ))}
+                    <div className="font-light">total: {totalStock}</div>
+                </>
+            );
+        }
+        return "error";
+    };
+
+    const renderVariationNames = () => {
+        if (product.variation.length > 0) {
+            return product.variation.map((v) => v.name).join(", ");
+        }
+        return "n/a";
+    };
+
+    return (
+        <tr className="border-t text-xs">
+            <td className="p-2">
+                <input type="checkbox" />
+            </td>
+            <td className="w-12 h-12 flex items-center">{renderImage()}</td>
+            <td>
+                <div className="px-1">{product.name}</div>
+            </td>
+            <td
+                className={
+                    product.variation.length > 0 ? "p-1 flex-col" : "p-1"
+                }
+            >
+                {renderStock()}
+            </td>
+            <td className="p-1">{product.variationClass || "n/a"}</td>
+            <td
+                className={`p-1 text-left ${
+                    product.variation.length === 0
+                        ? "text-gray-400 font-light"
+                        : ""
+                }`}
+            >
+                {renderVariationNames()}
+            </td>
+            <td className="p-1">{product.category}</td>
+            <td className="p-1 text-center">
+                <div>Edit</div>
+                <div className="text-red-300">Delete</div>
+            </td>
+        </tr>
+    );
+};
 
 export default function Products() {
     const { user } = useSelector((state) => state.user);
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(1);
+    const [sortCategories, setSortCategories] = useState([]);
+    const [searchName, setSearchName] = useState("");
+    const [productCount, setProductCount] = useState(0);
+    const [minMaxStock, setMinMaxStock] = useState([0, 0]);
+    const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
+    const [minMaxSales, setMinMaxSales] = useState([0, 0]);
 
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
@@ -36,6 +130,7 @@ export default function Products() {
             );
             setProducts(data.products);
             console.log("HAHAf", data.products);
+            setProductCount(data.productTotalCount);
             setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
         } finally {
@@ -134,12 +229,25 @@ export default function Products() {
                     <div className="text-sm flex items-center mt-4 ml-6 ">
                         <div>Stock</div>
                         <input
-                            className="rounded-md border border-[#211C6A] px-4 py-2 mx-4 w-24 text-gray-500 appearance-none outline-none bg-transparent"
+                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
                             placeholder="Input"
                         />
                         ~
                         <input
-                            className="rounded-md border border-[#211C6A] px-4 py-2 mx-4 w-24 text-gray-500 appearance-none outline-none bg-transparent"
+                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+                            placeholder="Input"
+                        />
+                    </div>
+
+                    <div className="text-sm flex items-center mt-4 ml-6">
+                        <div>Price</div>
+                        <input
+                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+                            placeholder="Input"
+                        />
+                        ~
+                        <input
+                            className="rounded-md border border-[#211C6A] px-2 py-1 w-16 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
                             placeholder="Input"
                         />
                     </div>
@@ -147,12 +255,12 @@ export default function Products() {
                     <div className="text-sm flex items-center mt-4 ml-6">
                         <div>Sales</div>
                         <input
-                            className="rounded-md border border-[#211C6A] px-4 py-2 mx-4 w-24 text-gray-500 appearance-none outline-none bg-transparent"
+                            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
                             placeholder="Input"
                         />
                         ~
                         <input
-                            className="rounded-md border border-[#211C6A] px-4 py-2 w-24 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
+                            className="rounded-md border border-[#211C6A] px-2 py-1 w-16 ml-4 text-gray-500 appearance-none outline-none bg-transparent"
                             placeholder="Input"
                         />
                     </div>
@@ -169,7 +277,9 @@ export default function Products() {
 
                 <div className="flex flex-col mt-10 ml-6">
                     <div className="flex  justify-between items-center">
-                        <div className="text-xl font-semibold">5 Products</div>
+                        <div className="text-xl font-semibold">
+                            {productCount ? productCount : "..."} Products
+                        </div>
 
                         <div className="flex justify-between items-center">
                             <div className="flex items-center justify-center bg-[#211C6A] text-white rounded-md mr-4 px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
@@ -183,68 +293,39 @@ export default function Products() {
                         </div>
                     </div>
 
-                    <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-sm">
+                    <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
                         <thead>
                             <tr className="text-left bg-gray-300">
                                 <th className="p-2">
                                     <input type="checkbox" />
                                 </th>
                                 {/* Moved the Select header here */}
+                                <th className="p-2">img</th>
                                 <th className="p-2">Product Name</th>
-                                <th className="p-2">Stocks</th>
+                                <th className="p-2">
+                                    Stocks / variants' stock
+                                </th>
                                 <th className="p-2 text-center">
                                     Variation Class
                                 </th>
-                                <th className="p-2">Description</th>
+                                <th className="p-2">Variation</th>
                                 <th className="p-2">Category</th>
                                 <th className="p-2">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="text-center">
-                            <tr className="border-t text-xs">
-                                <td className="p-2">
-                                    <input type="checkbox" />
-                                </td>
-                                {/* Moved the checkbox column here */}
-                                <td className="p-2 flex items-center">
-                                    <img src={imgUrl()} className="w-12 h-12" />
-                                    <div className="ml-4">TShirt ni Gaspar</div>
-                                </td>
-                                <td className="p-2">10</td>
-                                <td className="p-2">Variation 1</td>
-                                <td className="p-2 text-left">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit.
-                                </td>
-                                <td className="p-2">Clothing</td>
-                                <td className="p-2">Edit | Delete</td>
-                            </tr>
-                            <tr className="border-t text-xs">
-                                <td className="p-2">
-                                    <input type="checkbox" />
-                                </td>
-                                {/* Moved the checkbox column here */}
-                                <td className="p-2 flex items-center">
-                                    <img src={imgUrl()} className="w-12 h-12" />
-                                    <div className="text-xs ml-4">
-                                        TShirt ni Gaspar
-                                    </div>
-                                </td>
-                                <td className="p-2">5</td>
-                                <td className="p-2">Variation 2</td>
-                                <td className="p-2 text-left">
-                                    Sed do eiusmod tempor incididunt ut labore
-                                    et dolore magna aliqua.
-                                </td>
-                                <td className="p-2">Clothing</td>
-                                <td className="p-2">Edit | Delete</td>
-                            </tr>
+                        <tbody className="">
+                            {products.map((product) => (
+                                <ProductRow
+                                    key={product._id}
+                                    product={product}
+                                />
+                            ))}
                         </tbody>
                     </table>
 
                     <PaginationButtons
-                        pageCount={10}
-                        setCurrentPage={() => {}}
+                        pageCount={maxPageCount > 0 ? maxPageCount : 1}
+                        setCurrentPage={setCurrentPage}
                     />
                 </div>
             </div>
