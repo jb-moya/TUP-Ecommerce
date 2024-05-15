@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "./pages/SignUpPage.js";
 import LogIn from "./pages/LogInPage.js";
 import Home from "./pages/HomePage.js";
@@ -13,6 +13,7 @@ import SellerRegistration from "./pages/SellerRegistration.js";
 import ProductDetail from "./pages/ProductDetailPage.js";
 import Organization from "./pages/OrganizationPage.js";
 import NotFound from "./pages/NotFoundPage.js";
+import NotAllowed from "./pages/NotAllowed.js";
 import { Dashboard } from "./pages/Dashboard.js";
 import { SearchPage } from "./pages/SearchPage.js";
 import { CheckOutPage } from "./pages/CheckOutPage.js";
@@ -21,8 +22,20 @@ import { useDispatch, useSelector } from "react-redux";
 import SellerSettings from "./components/SellerSettingsNew.js";
 import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 import Playground from "./pages/Playground.js";
-
+import RouteGuard from "./pages/RouteGuard.js";
+import RoleGuard from "./pages/RouteGuard.js";
 const rootUrl = "http://localhost:5000/api/v1";
+
+function RestrictedRoute({ allowedRoles, allowGuest, children }) {
+    const user = useSelector((state) => state.user);
+
+    if (allowedRoles.includes(user.role) || allowGuest) {
+        return <>{children}</>;
+    } else {
+        return <NotAllowed />;
+    }
+}
+
 function App() {
     const dispatch = useDispatch();
     const { isLogged, user } = useSelector((state) => state.user);
@@ -52,43 +65,85 @@ function App() {
         <div className="box-border">
             <BrowserRouter>
                 <Routes>
+                    <Route path="/not-allowed" element={<NotAllowed />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
-                    {/* <Route path="/product" element={<ProductDetail />} /> */}
-                    <Route path="product">
-                        <Route path=":id" element={<ProductDetail />} />
-                    </Route>
-
-                    <Route path="customer">
-                        <Route
-                            path=""
-                            element={
-                                <CustomerAccountSettings
-                                    section={"profileSettings"}
-                                />
-                            }
-                        />
-                        <Route
-                            path="password"
-                            element={
-                                <CustomerAccountSettings
-                                    section={"passwordSettings"}
-                                />
-                            }
-                        />
-                        <Route
-                            path="purchasehistory"
-                            element={
-                                <CustomerAccountSettings
-                                    section={"purchaseHistory"}
-                                />
-                            }
-                        />
-                    </Route>
-
+                    <Route path="/product" element={<ProductDetail />} />
                     <Route path="seller">
                         <Route
+                            path="dashboard"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={0} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="accountsettings"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={1} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="orders"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={2} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="productsOverview"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={3} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="addeditProduct"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={4} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="addeditProduct/:id"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={4} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="advertisement"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={5} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="sellercenter"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerRegistration />
+                                </RestrictedRoute>
+                            }
+                        />
+                    </Route>
+                </Routes>
+                {/* <Routes> */}
+                {/* <RouteGuard
+                        allowedRoles={["seller"]}
+                        userRole={user ? user.role : "guest"}
+                    > */}
+                {/* <Route path="seller"> */}
+                {/* <Route
                             path="dashboard"
                             element={<SellerSettings settingsMenu={0} />}
                         />
@@ -119,17 +174,54 @@ function App() {
                         <Route
                             path="sellercenter"
                             element={<SellerRegistration />}
-                        />
-                    </Route>
+                        /> */}
+                {/* </Route> */}
+                {/* </RouteGuard> */}
 
-                    <Route path="playground" element={<Playground />} />
+                {/* <Route path="/" element={<Home />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/login" element={<LogIn />} /> */}
+                {/* <Route path="/product" element={<ProductDetail />} /> */}
+                {/* <Route path="product">
+                        <Route path=":id" element={<ProductDetail />} />
+                    </Route> */}
+
+                {/* <Route path="customer">
+                        <Route
+                            path=""
+                            element={
+                                <CustomerAccountSettings
+                                    section={"profileSettings"}
+                                />
+                            }
+                        />
+                        <Route
+                            path="password"
+                            element={
+                                <CustomerAccountSettings
+                                    section={"passwordSettings"}
+                                />
+                            }
+                        />
+                        <Route
+                            path="purchasehistory"
+                            element={
+                                <CustomerAccountSettings
+                                    section={"purchaseHistory"}
+                                />
+                            }
+                        />
+                    </Route> */}
+
+                {/* <Route path="playground" element={<Playground />} />
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/checkout" element={<CheckOutPage />} />
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
+                    <Route path="/cart" element={<Cart />} /> */}
+                {/* <Route path="/not-allowed" element={<NotAllowed />} /> */}
+                {/* <Route path="*" element={<NotFound />} /> */}
+                {/* </Routes> */}
             </BrowserRouter>
         </div>
     );
