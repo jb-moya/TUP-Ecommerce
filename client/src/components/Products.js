@@ -12,6 +12,7 @@ import {
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import ConfirmationModal from "./Confirmation.js";
 
 axios.defaults.withCredentials = true;
 
@@ -111,6 +112,22 @@ const ProductRow = ({ product, index, deleteProduct }) => {
         return "n/a";
     };
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleConfirmDelete = () => {
+        console.log("Product Deleted")
+        setIsModalOpen(false);
+    };
+
+
     return (
         <tr
             className={
@@ -147,11 +164,10 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                 {product.variationClass || "n/a"}
             </td>
             <td
-                className={`p-1 text-left ${
-                    product.variation.length === 0
-                        ? "text-gray-400 font-light"
-                        : ""
-                }`}
+                className={`p-1 text-left ${product.variation.length === 0
+                    ? "text-gray-400 font-light"
+                    : ""
+                    }`}
             >
                 {renderVariationNames()}
             </td>
@@ -170,13 +186,25 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                         Edit
                     </Link>
                 </button>
-                <button
-                    type="button"
-                    className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] hover:text-red-500 text-red-300 cursor-pointer w-full"
-                    onClick={deleteProduct}
-                >
-                    Delete
-                </button>
+                <>
+                    <button
+                        type="button"
+                        className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] hover:text-red-500 text-red-300 cursor-pointer w-full"
+                        onClick={handleOpenModal}
+                    >
+                        Delete
+                    </button>
+                    {isModalOpen && (
+                        <ConfirmationModal
+                            className="transition-none ease-out duration-300"
+                            isOpen={isModalOpen}
+                            onClose={handleCloseModal}
+                            onConfirm={handleConfirmDelete}
+                        />
+                    )}
+                </>
+
+
             </td>
         </tr>
     );
@@ -186,7 +214,7 @@ const RangeInput = ({ label, min = 0, handleOnChange }) => (
     <div className="text-sm flex items-center mt-4">
         <div>{label}</div>
         <input
-            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+            className="rounded-md border text-xs border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
             placeholder="Input"
             type="number"
             min={min}
@@ -195,7 +223,7 @@ const RangeInput = ({ label, min = 0, handleOnChange }) => (
         />
         ~
         <input
-            className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+            className="rounded-md border text-xs border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
             placeholder="Input"
             type="number"
             name="max"
@@ -425,7 +453,7 @@ const Products = () => {
         console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 
-    const handleButtonClick = (buttonNumber) => {};
+    const handleButtonClick = (buttonNumber) => { };
 
     const handleSoldOut = (buttonNumber) => {
         console.log(buttonNumber);
@@ -464,11 +492,10 @@ const Products = () => {
                 <ul className="flex border-b-2 border-gray-200 w-full px-4 text-gray-500">
                     <li
                         onClick={() => handleDefault(1)}
-                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 1
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
+                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${selectedButton === 1
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                            }`}
                     >
                         All
                     </li>
@@ -484,11 +511,10 @@ const Products = () => {
                     </li> */}
                     <li
                         onClick={() => handleSoldOut(2)}
-                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 2
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
+                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${selectedButton === 2
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                            }`}
                     >
                         Sold Out
                     </li>
