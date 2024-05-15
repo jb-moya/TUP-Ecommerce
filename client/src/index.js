@@ -17,19 +17,16 @@ root.render(
             <App tab="home" />
             <ToastContainer
                 position="top-left"
-                autoClose={5000}
+                autoClose={1000}
                 hideProgressBar={false}
-                newestOnTop
+                newestOnTop={true}
                 closeOnClick
                 rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
+                // pauseOnFocusLoss
+                // draggable
+                // pauseOnHover
                 theme="light"
-                transition="Slide"
             />
-
-            <ToastContainer />
         </PersistGate>
     </Provider>
     // </React.StrictMode>

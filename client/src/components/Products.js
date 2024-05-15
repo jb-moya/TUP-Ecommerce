@@ -11,7 +11,7 @@ import {
     buildQueryParam,
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 
@@ -42,7 +42,7 @@ const NoImage = () => {
     );
 };
 
-const ProductRow = ({ product, index }) => {
+const ProductRow = ({ product, index, deleteProduct }) => {
     const renderImage = () => {
         if (product.image.length) {
             return (
@@ -58,7 +58,7 @@ const ProductRow = ({ product, index }) => {
 
     const renderPrice = () => {
         if (product.price !== -1) {
-            return product.stock;
+            return product.price;
         }
 
         if (product.variation.length > 0) {
@@ -76,9 +76,11 @@ const ProductRow = ({ product, index }) => {
     };
 
     const renderStock = () => {
-        if (product.stock) {
-            return product.stock;
-        }
+        console.log(
+            "product HANEP NA YAN stockkkk",
+            product.name,
+            product.stock
+        );
         if (product.variation.length > 0) {
             const totalStock = product.variation.reduce(
                 (total, v) => total + v.stock,
@@ -93,8 +95,13 @@ const ProductRow = ({ product, index }) => {
                     <div className="font-light">total: {totalStock}</div>
                 </>
             );
+        } else if (product.stock && product.stock !== -1) {
+            return product.stock;
+        } else if (product.stock === 0) {
+            return <div className="text-red-400">SOLD OUT</div>;
+        } else {
+            return "error";
         }
-        return "error";
     };
 
     const renderVariationNames = () => {
@@ -130,7 +137,15 @@ const ProductRow = ({ product, index }) => {
             >
                 {renderStock()}
             </td>
-            <td className="p-1">{product.variationClass || "n/a"}</td>
+            <td
+                className={
+                    product.variationClass
+                        ? "p-1"
+                        : "p-1 font-light text-gray-400"
+                }
+            >
+                {product.variationClass || "n/a"}
+            </td>
             <td
                 className={`p-1 text-left ${
                     product.variation.length === 0
@@ -141,9 +156,27 @@ const ProductRow = ({ product, index }) => {
                 {renderVariationNames()}
             </td>
             <td className="p-1">{product.category}</td>
-            <td className="p-1 text-center">
-                <div>Edit</div>
-                <div className="text-red-300">Delete</div>
+
+            <td className="">
+                {/* <td className="text-center"> */}
+                <button
+                    type="button"
+                    className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] w-full cursor-pointer"
+                >
+                    <Link
+                        to={`/seller/addeditProduct/${product._id}`}
+                        className="button-link"
+                    >
+                        Edit
+                    </Link>
+                </button>
+                <button
+                    type="button"
+                    className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] hover:text-red-500 text-red-300 cursor-pointer w-full"
+                    onClick={deleteProduct}
+                >
+                    Delete
+                </button>
             </td>
         </tr>
     );
@@ -173,6 +206,7 @@ const RangeInput = ({ label, min = 0, handleOnChange }) => (
 
 const Products = () => {
     let location = useLocation();
+    const navigate = useNavigate();
     const { user } = useSelector((state) => state.user);
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -181,8 +215,11 @@ const Products = () => {
     const [searchName, setSearchName] = useState("");
     const [productCount, setProductCount] = useState(0);
     const [minMaxStock, setMinMaxStock] = useState([0, 0]);
+    const [outOfStock, setOutOfStock] = useState(false);
     const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
     const [minMaxSales, setMinMaxSales] = useState([0, 0]);
+    const [triggerConfirmModal, setTriggerConfirmModal] = useState(false);
+    const [selectedButton, setSelectedButton] = useState(1); // Changed initial value to 1 for Dashboard
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -205,6 +242,9 @@ const Products = () => {
         if (searchParams.has("maxPrice") && !searchParams.has("minPrice")) {
             // toast.info(`getting ${searchParams.get("maxPrice")}`);
             setMinMaxPrice([0, parseInt(searchParams.get("maxPrice"), 10)]);
+        }
+        if (searchParams.has("outOfStock")) {
+            setOutOfStock(true);
         }
         if (searchParams.has("minStock") && !searchParams.has("maxStock")) {
             setMinMaxStock([parseInt(searchParams.get("minStock"), 10), 0]);
@@ -280,9 +320,9 @@ const Products = () => {
         if (minMaxPrice[1] > 0) {
             numericFiltersArray.push(`price<=${minMaxPrice[1]}`);
         }
-        // if (minRating > 0) {
-        //     numericFiltersArray.push(`averageRating>=${minRating}`);
-        // }
+        if (outOfStock) {
+            numericFiltersArray.push(`stock=0`);
+        }
         if (minMaxStock[0] > 0) {
             numericFiltersArray.push(`stock>=${minMaxStock[0]}`);
         }
@@ -297,7 +337,7 @@ const Products = () => {
         }
 
         return numericFiltersArray.join(",");
-    }, [minMaxPrice, minMaxStock, minMaxSales]);
+    }, [minMaxPrice, minMaxStock, minMaxSales, outOfStock]);
 
     const fetchProducts = useCallback(async () => {
         try {
@@ -326,8 +366,12 @@ const Products = () => {
     }, [currentPage, user, selectCategory, numericFilters, searchName]);
 
     useEffect(() => {
-        fetchProducts();
+        // ensure that this only triggers when the location pathname only has /seller, nothing else
+        if (location.pathname !== "/seller/productsOverview") {
+            return;
+        }
 
+        fetchProducts();
         const params = [
             buildQueryParam("page", currentPage),
             buildQueryParam("keyword", searchName),
@@ -339,6 +383,7 @@ const Products = () => {
                 "maxPrice",
                 minMaxPrice[1] > 0 ? minMaxPrice[1] : ""
             ),
+            buildQueryParam("outOfStock", outOfStock ? "true" : ""),
             buildQueryParam(
                 "minStock",
                 minMaxStock[0] > 0 ? minMaxStock[0] : ""
@@ -368,6 +413,7 @@ const Products = () => {
         currentPage,
         searchName,
         minMaxPrice,
+        outOfStock,
         selectCategory,
         minMaxStock,
         minMaxSales,
@@ -379,10 +425,18 @@ const Products = () => {
         console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 
-    const [selectedButton, setSelectedButton] = useState(1); // Changed initial value to 1 for Dashboard
+    const handleButtonClick = (buttonNumber) => {};
 
-    const handleButtonClick = (buttonNumber) => {
+    const handleSoldOut = (buttonNumber) => {
+        console.log(buttonNumber);
         setSelectedButton(buttonNumber);
+        setOutOfStock(true);
+    };
+
+    const handleDefault = (buttonNumber) => {
+        console.log(buttonNumber);
+        setSelectedButton(buttonNumber);
+        setOutOfStock(false);
     };
 
     const handleCategoryChange = (e) => {
@@ -390,16 +444,15 @@ const Products = () => {
         setselectCategory(e.target.value);
     };
 
-    useEffect(() => {
-        console.log("sales", minMaxSales);
-    }, [minMaxSales]);
+    // const handleEditProduct = (productID) => {
+    //     console.log("edit", productID);
+    //     navigate(`/seller/addeditProduct/${productID}`, { replace: true });
+    //     // navigate(`/`);
+    // };
 
-    function random(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
-    const random2 = (min, max) => {
-        return Math.floor(Math.random() * (max - min + 1) + min);
+    const handleDeleteProduct = (productID) => {
+        console.log("delete", productID);
+        setTriggerConfirmModal(true);
     };
 
     return (
@@ -410,7 +463,7 @@ const Products = () => {
                 </div>
                 <ul className="flex border-b-2 border-gray-200 w-full px-4 text-gray-500">
                     <li
-                        onClick={() => handleButtonClick(1)}
+                        onClick={() => handleDefault(1)}
                         className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
                             selectedButton === 1
                                 ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
@@ -419,7 +472,7 @@ const Products = () => {
                     >
                         All
                     </li>
-                    <li
+                    {/* <li
                         onClick={() => handleButtonClick(2)}
                         className={`p-4  mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
                             selectedButton === 2
@@ -428,18 +481,18 @@ const Products = () => {
                         }`}
                     >
                         Live
-                    </li>
+                    </li> */}
                     <li
-                        onClick={() => handleButtonClick(3)}
+                        onClick={() => handleSoldOut(2)}
                         className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 3
+                            selectedButton === 2
                                 ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
                                 : ""
                         }`}
                     >
                         Sold Out
                     </li>
-                    <li
+                    {/* <li
                         onClick={() => handleButtonClick(4)}
                         className={`p-4 mr-4  cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
                             selectedButton === 4
@@ -448,8 +501,8 @@ const Products = () => {
                         }`}
                     >
                         Suspended 1
-                    </li>
-                    <li
+                    </li> */}
+                    {/* <li
                         onClick={() => handleButtonClick(5)}
                         className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
                             selectedButton === 5
@@ -458,7 +511,7 @@ const Products = () => {
                         }`}
                     >
                         Unlisted
-                    </li>
+                    </li> */}
                 </ul>
 
                 <div className="flex flex-row w-full items-center justify-between">
@@ -504,14 +557,14 @@ const Products = () => {
                     />
                 </div>
 
-                <div className="mt-6 ml-6 text-sm">
+                {/* <div className="mt-6 ml-6 text-sm">
                     <button className="p-2 bg-[#211C6A] text-white rounded-md hover:bg-opacity-50 w-24 transition ease-in-out duration-300">
                         Search
                     </button>
                     <button className="p-2 bg-transparent text-[#211C6A] hover:bg-gray-300 border w-24  border-[#211C6A] rounded-md ml-4">
                         Reset
                     </button>
-                </div>
+                </div> */}
 
                 <div className="flex flex-col mt-10 ml-6">
                     <div className="flex  justify-between items-center">
@@ -520,10 +573,13 @@ const Products = () => {
                         </div>
 
                         <div className="flex justify-between items-center">
-                            <div className="flex items-center justify-center bg-[#211C6A] text-white rounded-md mr-4 px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
+                            <Link
+                                to="/seller/addeditProduct"
+                                className="flex  items-center justify-center bg-[#211C6A] text-white rounded-md mr-4 px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300"
+                            >
                                 <FaPlus className="mr-2" />
                                 Add a New Product
-                            </div>
+                            </Link>
                             <div className="flex items-center justify-center bg-red-600 text-white rounded-md px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
                                 <FaTrash className="mr-2" />
                                 Delete Product
@@ -558,6 +614,9 @@ const Products = () => {
                                     key={product._id}
                                     index={index}
                                     product={product}
+                                    deleteProduct={() =>
+                                        handleDeleteProduct(product._id)
+                                    }
                                 />
                             ))}
                         </tbody>

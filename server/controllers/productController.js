@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
     const productId = req.params.id;
-
+    console.log("productId", productId);
     // const product = await Product.findOne({
     //     _id: productId,
     // });
@@ -95,45 +95,45 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
                 (match) => `-${operatorMap[match]}-`
             );
 
-            const options = ["price", "averageRating", "soldCount"];
+            const options = ["price", "averageRating", "soldCount", "stock"];
             filters = filters.split(",").forEach((item) => {
                 const [field, operator, value] = item.split("-");
                 if (options.includes(field)) {
-                    if (field === "price") {
+                    if (field === "price" || field === "stock") {
                         if (!queryObject.$or) {
                             queryObject.$or = [];
                         }
 
-                        let priceCondition;
-                        let variationPriceCondition;
+                        let primaryCondition;
+                        let variationCondition;
+                        const primaryField = field;
+                        const variationField = `variation.${field}`;
 
                         for (const condition of queryObject.$or) {
-                            if (condition.price) {
-                                priceCondition = condition;
+                            if (condition[primaryField]) {
+                                primaryCondition = condition;
                             }
-                            if (condition["variation.price"]) {
-                                variationPriceCondition = condition;
+                            if (condition[variationField]) {
+                                variationCondition = condition;
                             }
                         }
 
-                        if (priceCondition) {
-                            priceCondition.price[operator] = Number(value);
+                        if (primaryCondition) {
+                            primaryCondition[primaryField][operator] =
+                                Number(value);
                         }
-                        if (variationPriceCondition) {
-                            variationPriceCondition["variation.price"][
-                                operator
-                            ] = Number(value);
+                        if (variationCondition) {
+                            variationCondition[variationField][operator] =
+                                Number(value);
                         }
-                        if (!priceCondition) {
+                        if (!primaryCondition) {
                             queryObject.$or.push({
-                                price: { [operator]: Number(value) },
+                                [primaryField]: { [operator]: Number(value) },
                             });
                         }
-                        if (!variationPriceCondition) {
+                        if (!variationCondition) {
                             queryObject.$or.push({
-                                "variation.price": {
-                                    [operator]: Number(value),
-                                },
+                                [variationField]: { [operator]: Number(value) },
                             });
                         }
                     } else {

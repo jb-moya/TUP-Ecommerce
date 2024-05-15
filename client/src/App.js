@@ -109,6 +109,10 @@ function App() {
                             element={<SellerSettings settingsMenu={4} />}
                         />
                         <Route
+                            path="addeditProduct/:id"
+                            element={<SellerSettings settingsMenu={4} />}
+                        />
+                        <Route
                             path="advertisement"
                             element={<SellerSettings settingsMenu={5} />}
                         />
