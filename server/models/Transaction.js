@@ -23,18 +23,22 @@ const transactionSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Total amount is required"],
     },
+    shippingMethod: {
+        type: String,
+        required: [true, "Payment method is required"],
+    },
     paymentMethod: {
         type: String,
         required: [true, "Payment method is required"],
     },
-    orderStatus: {
-        type: String,
-        enum: ["To Pay", "To Ship", "To Recieve", "Completed", "Cancelled"],
-        default: "Processing",
-    },
     shippingAddress: {
         type: String,
         required: [true, "Shipping address is required"],
+    },
+    orderStatus: {
+        type: String,
+        enum: ["To Pay", "To Ship", "To Recieve", "Completed", "Cancelled"],
+        default: "To Pay",
     },
     createdAt: {
         type: Date,

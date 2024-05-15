@@ -80,7 +80,7 @@ export const updatePassword = createAsyncThunk("user/updatePassword", async (dat
 });
 
 export const selectUserID = (state) => state.user.user._id;
-
+export const getUserRole = (state) => state.user.user.role || "guest";
 export const isUserLogged = (state) => state.user.isLogged;
 
 export const fetchUser = () => async (dispatch) => {
@@ -120,7 +120,7 @@ const userSlice = createSlice({
         builder.addCase(logIn.fulfilled, (state, action) => {
             state.isLogged = true;
             state.user = action.payload.user;
-            toast.success("Logged in successfully");
+            toast.success(`Logged in successfully ${state.user.role}`);
         });
         builder.addCase(logIn.rejected, (state, action) => {
             toast.error(action.payload);
