@@ -142,7 +142,6 @@ const organizationSchema = mongoose.Schema ({
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 "Please provide a valid email",
             ],
-            unique: true,
             trim: true,
             lowercase: true,
         }
@@ -158,6 +157,11 @@ const organizationSchema = mongoose.Schema ({
     accreditationDoc: {
         type: String,
         required: true,
+    },
+    status: {
+        type: String,
+        enum: ['enabled', 'disabled', 'pending'],
+        default: 'pending',
     },
 });
 

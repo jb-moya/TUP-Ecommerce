@@ -62,20 +62,9 @@ const register = asyncWrapper(async (req, res) => {
 
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
     } else if (role == "seller") {
-        // const { orgName, email, phoneNum, password, repName, repPos, repEmail, description, orgImage, accreditationDoc } = req.body;
         const { orgName, email, phoneNum, password, repName, repPos, repEmail, description, accreditationDoc } = req.body;
     
         const emailAlreadyExists = await Organization.findOne({ email });
-    
-        // console.log('Organization Name:', orgName);
-        // console.log('Email:', email);
-        // console.log('Phone Number:', phoneNum);
-        // console.log('Password:', password);
-        // console.log('Representative Name:', repName);
-        // console.log('Representative Position:', repPos);
-        // console.log('Representative Email:', repEmail);
-        // console.log('Organization Image:', orgImage);
-        console.log('Accreditation Document:', accreditationDoc);
 
         if (emailAlreadyExists) {
             return res
@@ -94,9 +83,7 @@ const register = asyncWrapper(async (req, res) => {
             },
             password,
             description,
-            // affiliatedAccounts: [],
             role,
-           //orgImage,
             accreditationDoc,
         });
         console.log('x2');
