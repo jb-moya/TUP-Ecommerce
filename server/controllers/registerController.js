@@ -63,7 +63,7 @@ const register = asyncWrapper(async (req, res) => {
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
     } else if (role == "seller") {
         const { orgName, email, phoneNum, password, repName, repPos, repEmail, description, accreditationDoc } = req.body;
-    
+
         const emailAlreadyExists = await Organization.findOne({ email });
 
         if (emailAlreadyExists) {
@@ -71,7 +71,7 @@ const register = asyncWrapper(async (req, res) => {
                 .status(StatusCodes.BAD_REQUEST)
                 .json({ error: "Email already exists" });
         }
-        console.log('x1');
+        
         const org = await Organization.create({
             orgName,
             email,
@@ -86,11 +86,11 @@ const register = asyncWrapper(async (req, res) => {
             role,
             accreditationDoc,
         });
-        console.log('x2');
+
         const tokenUser = createTokenUser(org);
         attachCookiesToResponse({ res, user: tokenUser });
-    
-        res.status(StatusCodes.CREATED).json({ user: tokenUser });
+
+        return res.status(StatusCodes.CREATED).json({ user: tokenUser });
     } else {
         throw new BadRequestError("Invalid role");
     }

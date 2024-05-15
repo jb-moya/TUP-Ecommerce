@@ -51,21 +51,26 @@ export const SellerRegistrationFrame = () => {
 export const SellerRegistrationFrame1 = () => {
     const [currentStep, setCurrentStep] = useState(1);
 
-    const [userData, setUserData] = useState('');
+    const [userData, setUserData] = useState({
+        role: 'seller',
+    });
     const [finalData, setFinalData] = useState([]);
+
+    const [showModal, setShowModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const steps = [
         "Shop Information",
         "Business Information",
         "Complete"
     ]
 
-    useEffect(() => {
-        // Update the userData state to set the role to 'seller' when the component mounts
-        setUserData((prevUserData) => ({
-            ...prevUserData,
-            role: 'seller',
-        }));
-    }, []);
+    // useEffect(() => {
+    //     setUserData((prevUserData) => ({
+    //         ...prevUserData,
+    //         role: 'seller',
+    //     }));
+    // }, []);
 
     const displaySteps = (step) => {
         switch(step){
@@ -82,29 +87,66 @@ export const SellerRegistrationFrame1 = () => {
     
     const handleClick = (direction) => {
         let newStep = currentStep;
+
+        if (direction === 'next') {
+            // Check if any required field is empty
+            if ( !userData.orgName || !userData.email || !userData.phoneNum || !userData.password || !userData.confirmPassword ) {
+                setErrorMessage('Please fill out all required fields.');
+                setShowModal(true);
+                return;
+            } else if (userData.password !== userData.confirmPassword) {
+                setErrorMessage('Passwords do not match.');
+                setShowModal(true);
+                return;
+            }
+        }
     
         direction === 'next' ? (newStep += 1) : (newStep -= 1);
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     
         if (newStep === steps.length && direction === 'next') {
-          axios.post('http://localhost:5000/api/v1/auth/register', userData)
-            .then((response) => {
-              console.log('Registration submitted successfully:', response.data);
-              window.alert('Registration submitted successfully!');
-            })
-            .catch((error) => {
-              // Handle error, e.g., show error message to the user
-              console.error('Error submitting registration:', error);
-              window.alert('Error submitting registration. Please try again later.');
-            });
+            
+            if ( !userData.repName || !userData.repPos || !userData.repEmail || userData.description || !userData.accreditationDoc ) {
+                newStep -= 1;
+                setCurrentStep(newStep);
+                setErrorMessage('Please fill out all required fields.');
+                setShowModal(true);
+                return
+            } else {
+                axios.post('http://localhost:5000/api/v1/auth/register', userData)
+                    .then((response) => {
+                        console.log('Registration submitted successfully:', response.data);
+                        window.alert('Registration submitted successfully!');
+                    })
+                    .catch((error) => {
+                        // Handle error, e.g., show error message to the user
+                        console.error('Error submitting registration:', error);
+                        window.alert('Error submitting registration. Please try again later.');
+                    });
+            }
         }
-    
-        console.log('Current Step:', newStep);
-        console.log('User Data:', userData);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
     };
 
     return (
         <div className='flex flex-col text-[#211C6A] items-center justify-center pt-[96px]'>
+
+            {/* Modal for displaying error message */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center">
+                    {/* <div className="fixed inset-0 bg-gray-500 opacity-75"></div> */}
+                    <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-300">
+                        <h2 className="text-xl font-bold mb-4">Error</h2>
+                        <p className="text-red-500 mb-4">{errorMessage}</p>
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={closeModal}>Close</button>
+                    </div>
+                    
+                </div>
+            )}
+
             <div className='bg-white rounded-md shadow-md w-full px-10 max-w-[1000px] mx-auto select-none z-1'>
                 <div className='container horizontal mt-5'>
                 {/* Stepper */}

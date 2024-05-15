@@ -86,10 +86,10 @@ const organizationSchema = mongoose.Schema ({
     },
     contactNumbers: [{
         type: String,
-        required: false,
+        default: '',
         match: [
-            /^[0-9]{10}$/,
-            "Please provide a valid 10-digit contact number",
+            /^(\+63|0)[0-9]{10}$/,
+            "Please provide a valid Philippine contact number starting with +63 or 0 and followed by 10 digits",
         ],
     }],
     representative: {
