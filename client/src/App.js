@@ -21,15 +21,15 @@ import { getAllItems } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import SellerSettings from "./components/SellerSettingsNew.js";
 import SellerSettingsPage from "./pages/SellerSettingsPage.js";
+import { getUserRole } from "./features/user/userSlice.js";
 import Playground from "./pages/Playground.js";
-import RouteGuard from "./pages/RouteGuard.js";
-import RoleGuard from "./pages/RouteGuard.js";
+import { toast } from "react-toastify";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
-    const user = useSelector((state) => state.user);
+    const userRole = useSelector(getUserRole)
 
-    if (allowedRoles.includes(user.role) || allowGuest) {
+    if (allowedRoles.includes(userRole) || allowGuest) {
         return <>{children}</>;
     } else {
         return <NotAllowed />;
@@ -69,22 +69,17 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
-                    <Route path="product">
-                        <Route path=":id" element={<ProductDetail />} />
-                    </Route>
-
+                    <Route path="product/:id" element={<ProductDetail />} />
                     <Route path="playground" element={<Playground />} />
                     <Route path="/search" element={<SearchPage />} />
-                    <Route
-                        path="/checkout"
-                        element={
-                            <RestrictedRoute allowedRoles={["customer"]}>
-                                <CheckOutPage />
-                            </RestrictedRoute>
-                        }
-                    />
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
+                    <Route path="/not-allowed" element={<NotAllowed />} />
+                    <Route path="*" element={<NotFound />} />
+                    <Route
+                        path="sellercenter"
+                        element={<SellerRegistration />}
+                    />
                     <Route
                         path="/cart"
                         element={
@@ -93,8 +88,14 @@ function App() {
                             </RestrictedRoute>
                         }
                     />
-                    <Route path="/not-allowed" element={<NotAllowed />} />
-                    <Route path="*" element={<NotFound />} />
+                    <Route
+                        path="/checkout"
+                        element={
+                            <RestrictedRoute allowedRoles={["customer"]}>
+                                <CheckOutPage />
+                            </RestrictedRoute>
+                        }
+                    />
                     <Route path="customer">
                         <Route
                             path=""
@@ -185,17 +186,8 @@ function App() {
                                 </RestrictedRoute>
                             }
                         />
-                        <Route
-                            path="sellercenter"
-                            element={
-                                <RestrictedRoute allowedRoles={["seller"]}>
-                                    <SellerRegistration />
-                                </RestrictedRoute>
-                            }
-                        />
                     </Route>
                 </Routes>
-                {/* </Routes> */}
             </BrowserRouter>
         </div>
     );

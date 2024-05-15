@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 const getAllTransactions = asyncWrapper(async (req, res) => {
     const queryObject = {};
 
-    const { sort, productName } = req.query;
+    const { sort, productName, orderStatus } = req.query;
 
     console.log("productName", productName)
 
@@ -18,6 +18,10 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
                 name: { $regex: productName, $options: "i" },
             }).select("_id"),
         };
+    }
+
+    if (orderStatus) {
+        queryObject.orderStatus = orderStatus;
     }
 
     console.log("queryObject", queryObject.product)
@@ -30,7 +34,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
             match: { createdBy: req.user.userId },
         });
     }
-
+    
     if (req.user && req.user.role === "customer") {
         queryObject.user = mongoose.Types.ObjectId.createFromHexString(
             req.user.userId
@@ -48,7 +52,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
         transactions = transactions.sort("createdAt");
     }
 
-    let countTotal = await Transaction.countDocuments({}); // !! ilter to only seller
+    let countTotal = await Transaction.countDocuments(queryObject); // !! ilter to only seller
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -61,8 +65,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
     // console.log("queryobject", queryObject);
     res.status(StatusCodes.OK).json({
         transactions,
-        transactionTotalCount: countTotal,
-        count: transactions.length,
+        count: countTotal,
     });
 });
 

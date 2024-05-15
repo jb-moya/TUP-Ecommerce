@@ -93,8 +93,8 @@ export const DashboardFrame = () => {
             console.log(response);
 
             setTransactions(data.transactions);
-            setTransactionTotalCount(data.transactionTotalCount);
-            setMaxPageCount(Math.ceil(data.transactionTotalCount / 10));
+            setTransactionTotalCount(data.count);
+            setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
             console.error(error);
         }

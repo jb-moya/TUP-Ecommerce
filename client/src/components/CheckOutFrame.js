@@ -97,6 +97,25 @@ export const CheckOutFrame = () => {
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
 
+    //      fName: 'a', lName: 'b', address: 'c', city: 'd', country: 'USA', …}
+    //      address :  "c"
+    //      city :  "d"
+    //      country :  "USA"
+    //      zipcode :  "11"
+    //      eWalletName :  "11"
+    //      eWalletNumber :  "11"
+    //      fName :  "a"
+    //      lName :  "b"
+    //      shippingMethod :  "Door-to-Door Delivery"
+ 
+    //      address: "1";
+    //      city: "1";
+    //      country: "USA";
+    //      zipcode: "1";
+    //      fName: "1";
+    //      lName: "1";
+    //      shippingMethod: "Self-PickUp";
+
     function imgUrl() {
         const id = rand(1, 200);
         // // console.log(id);
@@ -126,6 +145,9 @@ export const CheckOutFrame = () => {
                                 ? item.productDetails.price * item.quantity
                                 : item.productDetails.variation[0].price *
                                   item.quantity,
+                        shippingAddress: `${userData.address}, ${userData.city}, ${userData.country}, ${userData.zipcode}`,
+                        shippingMethod: userData.shippingMethod,
+                        paymentMethod: userData.paymentMethod,
                     };
                 });
 
@@ -151,24 +173,24 @@ export const CheckOutFrame = () => {
         if (currentStep === 4) {
             toast.success("Transaction Successful");
             console.log("cartItems cartItems", cartItems);
-            
-            cartItems.forEach((item) => {
-                if (item.checked) {
-                    dispatch(deleteItemFromDB(item._id));
-                }
-            });
 
-            // check if all cartItems has been checked
+            makeTransaction();
+
             if (cartItems.every((item) => item.checked)) {
                 dispatch(clearCart());
                 dispatch(deleteCart());
+            } else {
+                cartItems.forEach((item) => {
+                    if (item.checked) {
+                        dispatch(deleteItemFromDB(item._id));
+                    }
+                });
             }
 
             // update product details in the database. Soon....
 
             dispatch(clearCheckedItems());
             dispatch(calculateTotals());
-            makeTransaction();
             navigate("/");
         }
     }, [currentStep]);
