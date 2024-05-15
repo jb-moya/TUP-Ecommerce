@@ -69,7 +69,65 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<LogIn />} />
-                    <Route path="/product" element={<ProductDetail />} />
+                    <Route path="product">
+                        <Route path=":id" element={<ProductDetail />} />
+                    </Route>
+
+                    <Route path="playground" element={<Playground />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route
+                        path="/checkout"
+                        element={
+                            <RestrictedRoute allowedRoles={["customer"]}>
+                                <CheckOutPage />
+                            </RestrictedRoute>
+                        }
+                    />
+                    <Route path="/org/:id" element={<Organization />} />
+                    <Route path="/about" element={<About />} />
+                    <Route
+                        path="/cart"
+                        element={
+                            <RestrictedRoute allowedRoles={["customer"]}>
+                                <Cart />
+                            </RestrictedRoute>
+                        }
+                    />
+                    <Route path="/not-allowed" element={<NotAllowed />} />
+                    <Route path="*" element={<NotFound />} />
+                    <Route path="customer">
+                        <Route
+                            path=""
+                            element={
+                                <RestrictedRoute allowedRoles={["customer"]}>
+                                    <CustomerAccountSettings
+                                        section={"profileSettings"}
+                                    />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="password"
+                            element={
+                                <RestrictedRoute allowedRoles={["customer"]}>
+                                    <CustomerAccountSettings
+                                        section={"passwordSettings"}
+                                    />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="purchasehistory"
+                            element={
+                                <RestrictedRoute allowedRoles={["customer"]}>
+                                    <CustomerAccountSettings
+                                        section={"purchaseHistory"}
+                                    />
+                                </RestrictedRoute>
+                            }
+                        />
+                    </Route>
+
                     <Route path="seller">
                         <Route
                             path="dashboard"
@@ -137,90 +195,6 @@ function App() {
                         />
                     </Route>
                 </Routes>
-                {/* <Routes> */}
-                {/* <RouteGuard
-                        allowedRoles={["seller"]}
-                        userRole={user ? user.role : "guest"}
-                    > */}
-                {/* <Route path="seller"> */}
-                {/* <Route
-                            path="dashboard"
-                            element={<SellerSettings settingsMenu={0} />}
-                        />
-                        <Route
-                            path="accountsettings"
-                            element={<SellerSettings settingsMenu={1} />}
-                        />
-                        <Route
-                            path="orders"
-                            element={<SellerSettings settingsMenu={2} />}
-                        />
-                        <Route
-                            path="productsOverview"
-                            element={<SellerSettings settingsMenu={3} />}
-                        />
-                        <Route
-                            path="addeditProduct"
-                            element={<SellerSettings settingsMenu={4} />}
-                        />
-                        <Route
-                            path="addeditProduct/:id"
-                            element={<SellerSettings settingsMenu={4} />}
-                        />
-                        <Route
-                            path="advertisement"
-                            element={<SellerSettings settingsMenu={5} />}
-                        />
-                        <Route
-                            path="sellercenter"
-                            element={<SellerRegistration />}
-                        /> */}
-                {/* </Route> */}
-                {/* </RouteGuard> */}
-
-                {/* <Route path="/" element={<Home />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/login" element={<LogIn />} /> */}
-                {/* <Route path="/product" element={<ProductDetail />} /> */}
-                {/* <Route path="product">
-                        <Route path=":id" element={<ProductDetail />} />
-                    </Route> */}
-
-                {/* <Route path="customer">
-                        <Route
-                            path=""
-                            element={
-                                <CustomerAccountSettings
-                                    section={"profileSettings"}
-                                />
-                            }
-                        />
-                        <Route
-                            path="password"
-                            element={
-                                <CustomerAccountSettings
-                                    section={"passwordSettings"}
-                                />
-                            }
-                        />
-                        <Route
-                            path="purchasehistory"
-                            element={
-                                <CustomerAccountSettings
-                                    section={"purchaseHistory"}
-                                />
-                            }
-                        />
-                    </Route> */}
-
-                {/* <Route path="playground" element={<Playground />} />
-                    <Route path="/search" element={<SearchPage />} />
-                    <Route path="/checkout" element={<CheckOutPage />} />
-                    <Route path="/org/:id" element={<Organization />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/cart" element={<Cart />} /> */}
-                {/* <Route path="/not-allowed" element={<NotAllowed />} /> */}
-                {/* <Route path="*" element={<NotFound />} /> */}
                 {/* </Routes> */}
             </BrowserRouter>
         </div>
