@@ -124,43 +124,6 @@ const CartItem = ({ cartItem }) => {
             </div>
 
             <hr className="col-span-full my-2"></hr>
-
-            {/* <div>Price: ${price}</div> */}
-            {/* <div>sub_name: {sub_name}</div> */}
-            {/* <div>quantity: {quantity}</div> */}
-            {/* <button
-                className="border border-red-500 p-1"
-                onClick={() => {
-                    dispatch(removeItem({ id }));
-                }}
-            >
-                remove
-            </button>
-            <button
-                className="border border-red-500 p-1"
-                onClick={() => {
-                    dispatch(increaseQuantity({ id }));
-                }}
-            >
-                increase
-            </button>
-
-            <button
-                className="border border-red-500 p-1"
-                onClick={() => {
-                    if (quantity === 1) {
-                        dispatch(removeItem({ id }));
-                        return;
-                    }
-
-                    dispatch(decreaseQuantity({ id }));
-                }}
-            >
-                decrease
-            </button> */}
-
-            {/* <OrderQuantity id={id} maximum={quantity} /> */}
-            {/* <button className="border border-red-500 p-1"></button> */}
         </div>
     );
 };

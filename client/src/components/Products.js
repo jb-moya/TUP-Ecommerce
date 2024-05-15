@@ -68,6 +68,7 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                     {product.variation.map((v, index) => (
                         <div
                             key={`${v.name}${index}`}
+                            className="border border-1 border-gray-300 rounded-md p-[2px] font-light m-[1px]"
                         >{`${v.name} (${v.price})`}</div>
                     ))}
                 </>
@@ -91,7 +92,10 @@ const ProductRow = ({ product, index, deleteProduct }) => {
             return (
                 <>
                     {product.variation.map((v) => (
-                        <div key={v.name}>{`${v.name} (${v.stock})`}</div>
+                        <div
+                            className="border border-1 border-gray-300 rounded-md p-[2px] font-light m-[1px]"
+                            key={v.name}
+                        >{`${v.name} (${v.stock})`}</div>
                     ))}
                     <div className="font-light">total: {totalStock}</div>
                 </>
@@ -107,7 +111,18 @@ const ProductRow = ({ product, index, deleteProduct }) => {
 
     const renderVariationNames = () => {
         if (product.variation.length > 0) {
-            return product.variation.map((v) => v.name).join(", ");
+            return (
+                <>
+                    {product.variation.map((v) => (
+                        <div
+                            key={v.name}
+                            className="border border-1 border-gray-300 rounded-md p-[2px] font-light m-[1px]"
+                        >
+                            {v.name}
+                        </div>
+                    ))}
+                </>
+            );
         }
         return "n/a";
     };
@@ -123,10 +138,10 @@ const ProductRow = ({ product, index, deleteProduct }) => {
     };
 
     const handleConfirmDelete = () => {
-        console.log("Product Deleted")
+        console.log("Product Deleted");
+        deleteProduct();
         setIsModalOpen(false);
     };
-
 
     return (
         <tr
@@ -136,9 +151,9 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                     : "border-t text-xs bg-slate-200"
             }
         >
-            <td className="p-2">
+            {/* <td className="p-2">
                 <input type="checkbox" />
-            </td>
+            </td> */}
             <td className="w-12 h-12 flex items-center">{renderImage()}</td>
             <td>
                 <div className="px-1">{product.name}</div>
@@ -164,10 +179,11 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                 {product.variationClass || "n/a"}
             </td>
             <td
-                className={`p-1 text-left ${product.variation.length === 0
-                    ? "text-gray-400 font-light"
-                    : ""
-                    }`}
+                className={`p-1 text-left ${
+                    product.variation.length === 0
+                        ? "text-gray-400 font-light"
+                        : ""
+                }`}
             >
                 {renderVariationNames()}
             </td>
@@ -203,8 +219,6 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                         />
                     )}
                 </>
-
-
             </td>
         </tr>
     );
@@ -246,7 +260,6 @@ const Products = () => {
     const [outOfStock, setOutOfStock] = useState(false);
     const [minMaxPrice, setMinMaxPrice] = useState([0, 0]);
     const [minMaxSales, setMinMaxSales] = useState([0, 0]);
-    const [triggerConfirmModal, setTriggerConfirmModal] = useState(false);
     const [selectedButton, setSelectedButton] = useState(1); // Changed initial value to 1 for Dashboard
 
     useEffect(() => {
@@ -453,7 +466,7 @@ const Products = () => {
         console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 
-    const handleButtonClick = (buttonNumber) => { };
+    const handleButtonClick = (buttonNumber) => {};
 
     const handleSoldOut = (buttonNumber) => {
         console.log(buttonNumber);
@@ -472,15 +485,16 @@ const Products = () => {
         setselectCategory(e.target.value);
     };
 
-    // const handleEditProduct = (productID) => {
-    //     console.log("edit", productID);
-    //     navigate(`/seller/addeditProduct/${productID}`, { replace: true });
-    //     // navigate(`/`);
-    // };
-
     const handleDeleteProduct = (productID) => {
-        console.log("delete", productID);
-        setTriggerConfirmModal(true);
+        try {
+            axios.delete(`http://localhost:5000/api/v1/products/${productID}`);
+            setProducts(
+                products.filter((product) => product._id !== productID)
+            );
+            toast.success("Product deleted successfully");
+        } catch (error) {
+            toast.error("Error deleting product");
+        }
     };
 
     return (
@@ -492,10 +506,11 @@ const Products = () => {
                 <ul className="flex border-b-2 border-gray-200 w-full px-4 text-gray-500">
                     <li
                         onClick={() => handleDefault(1)}
-                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${selectedButton === 1
-                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                            : ""
-                            }`}
+                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 1
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
                     >
                         All
                     </li>
@@ -511,10 +526,11 @@ const Products = () => {
                     </li> */}
                     <li
                         onClick={() => handleSoldOut(2)}
-                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${selectedButton === 2
-                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                            : ""
-                            }`}
+                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 2
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
                     >
                         Sold Out
                     </li>
@@ -616,9 +632,9 @@ const Products = () => {
                     <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
                         <thead>
                             <tr className="text-left bg-gray-300">
-                                <th className="p-2">
+                                {/* <th className="p-2">
                                     <input type="checkbox" />
-                                </th>
+                                </th> */}
                                 <th className="p-2">img</th>
                                 <th className="p-2">Product Name</th>
                                 <th className="p-2">Price</th>

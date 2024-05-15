@@ -38,6 +38,8 @@ export const AddProductFrame = () => {
     const [postImage, setPostImage] = useState([]);
     const [variation, setVariation] = useState([]);
     const [space, setSpace] = useState(0);
+    const [descriptionCharCount, setDescriptionCharCount] = useState(0);
+    const maxDescriptionCharCount = 10000;
     const [formData, setFormData] = useState({
         name: "",
         price: -1,
@@ -98,7 +100,7 @@ export const AddProductFrame = () => {
                 name: name,
                 featured: false,
                 variationClass: variationClass || "",
-                description: description,
+                description: description.replace(/<br>/g, "\n"),
                 category: category,
             });
         } catch (error) {
@@ -249,6 +251,10 @@ export const AddProductFrame = () => {
 
     const handleEditProduct = (e) => {
         e.preventDefault();
+
+        // edit formData description to replace \n with <br>
+        formData.description = formData.description.replace(/\n/g, "<br>");
+
         updateProduct();
     };
 
@@ -269,9 +275,7 @@ export const AddProductFrame = () => {
                 progress: undefined,
                 theme: "light",
             });
-
-        } catch (error) {
-        }
+        } catch (error) {}
     };
 
     const handleFileUpload = async (e) => {
@@ -327,6 +331,7 @@ export const AddProductFrame = () => {
     };
 
     const handleDescriptionChange = (e) => {
+        setDescriptionCharCount(e.target.value.length);
         setFormData({
             ...formData,
             description: e.target.value,
@@ -501,7 +506,7 @@ export const AddProductFrame = () => {
                     Add Variation
                 </button>
 
-                <div className="pb-[20px]">
+                <div className="relative pb-[20px]">
                     <textarea
                         className="border-2 px-3 w-11/12 text-sm py-1"
                         rows="5"
@@ -510,6 +515,9 @@ export const AddProductFrame = () => {
                         value={formData.description}
                         onChange={handleDescriptionChange}
                     />
+                    <div className="text-right text-xs absolute left-0">
+                        {descriptionCharCount}/{maxDescriptionCharCount}
+                    </div>
                 </div>
 
                 <div className="flex justify-center">

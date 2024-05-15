@@ -7,20 +7,24 @@ const ProductCard = ({ product }) => {
     return (
         <Link
             to={`/product/${product._id}`}
-            className="relative flex flex-col h-[250px] rounded-xl border border-[#211C6A] border-opacity-20 cursor-pointer hover:scale-[1.04] hover:shadow-md transition-all duration-100 ease-in-out"
+            className="group relative flex flex-col h-[250px] rounded-xl border border-[#211C6A] border-opacity-20 cursor-pointer hover:scale-[1.04] hover:shadow-md transition-all duration-100 ease-in-out"
         >
-            <img
-                className="h-[160px] max-h-[150px] w-full border object-cover rounded-t-xl"
-                src={product.image[0] || logoUnsaturated}
-                // src={logoUnsaturated}
-                alt="Logo Here"
-                loading="lazy"
-            />
+            <div className="overflow-hidden rounded-t-xl">
+                <img
+                    className="h-[150px] max-h-[160px] w-full border object-cover group-hover:scale-[1.10] rounded-t-xl transition-transform duration-[600ms] cubic-bezier(0.000, 0.990, 0.000, 1.005)"
+                    src={product.image[0] || logoUnsaturated}
+                    // src={logoUnsaturated}
+                    alt="Logo Here"
+                    loading="lazy"
+                />
+            </div>
             <div className="flex flex-col h-[90px] m-2 text-sm overflow-hidden">
-                <p className="line-clamp-2 leading-[17px]">{product.name || "No Name"}</p>
+                <p className="line-clamp-2 leading-[17px]">
+                    {product.name || "No Name"}
+                </p>
                 <div className="mt-auto">
                     <div className="flex justify-between">
-                        <p className="text-[#7d74f2] pl-[2px]">
+                        <p className="text-[#7d74f2] pl-[2px] group-hover:text-red-500 transition-all duration-500 ease-in-out">
                             {product.price !== -1
                                 ? "₱ " + formatPrice(product.price)
                                 : product.variation.length !== 0
@@ -39,7 +43,7 @@ const ProductCard = ({ product }) => {
             </div>
             <div className="">
                 {product.createdBy.orgName && (
-                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[9px] px-2 text-xs top-[138px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
+                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[8px] transition-all duration-500 ease-in-out group-hover:text-[10px] px-2 text-xs top-[138px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
                         <img
                             src={product.createdBy.image || logoUnsaturated}
                             alt="Logo Here"

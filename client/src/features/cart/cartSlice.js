@@ -59,7 +59,9 @@ export const deleteItemFromDB = createAsyncThunk(
             const response = await axios.delete(
                 `http://localhost:5000/api/v1/cart/deleteItem/${cart[0]._id}/${itemId}`
             );
-            return response.data;
+
+            console.log("response >:(", response.data);
+            return response.data.cart.orderItems;
         } catch (error) {
             console.error(error);
         }
