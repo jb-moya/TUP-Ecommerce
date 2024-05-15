@@ -6,6 +6,54 @@ import { checkPermissions } from "../utils/index.js";
 import asyncWrapper from "../middleware/async.js";
 import mongoose from "mongoose";
 
+const getCartPipeline = (userId) => [
+    {
+        $match: {
+            user: mongoose.Types.ObjectId.createFromHexString(userId),
+        },
+    },
+    { $unwind: "$orderItems" },
+
+    {
+        $lookup: {
+            from: "products",
+            localField: "orderItems.product",
+            foreignField: "_id",
+            as: "orderItems.productDetails",
+        },
+    },
+
+    {
+        $set: {
+            "orderItems.productDetails": {
+                $arrayElemAt: ["$orderItems.productDetails", 0],
+            },
+        },
+    },
+
+    // get only the variation in orderItems.variationDetails.variation array that matches the orderItems.variation
+    {
+        $set: {
+            "orderItems.productDetails.variation": {
+                $filter: {
+                    input: "$orderItems.productDetails.variation",
+                    as: "varDetail",
+                    cond: {
+                        $eq: ["$$varDetail._id", "$orderItems.variation"],
+                    },
+                },
+            },
+        },
+    },
+    {
+        $group: {
+            _id: "$_id",
+            user: { $first: "$user" },
+            orderItems: { $push: "$orderItems" },
+        },
+    },
+];
+
 const createCart = asyncWrapper(async (req, res, next) => {
     let cart = await Cart.findOne({ user: req.user.userId });
 
@@ -41,69 +89,12 @@ const getSingleCart = asyncWrapper(async (req, res, next) => {
 });
 
 const getUserCart = asyncWrapper(async (req, res, next) => {
-    const pipeline = [
-        {
-            $match: {
-                user: mongoose.Types.ObjectId.createFromHexString(
-                    req.user.userId
-                ),
-            },
-        },
-        { $unwind: "$orderItems" },
+    const cart = await Cart.aggregate(getCartPipeline(req.user.userId));
 
-        {
-            $lookup: {
-                from: "products",
-                localField: "orderItems.product",
-                foreignField: "_id",
-                as: "orderItems.productDetails",
-            },
-        },
-
-        {
-            $set: {
-                "orderItems.productDetails": {
-                    $arrayElemAt: ["$orderItems.productDetails", 0],
-                },
-            },
-        },
-
-        // get only the variation in orderItems.variationDetails.variation array that matches the orderItems.variation
-        {
-            $set: {
-                "orderItems.productDetails.variation": {
-                    $filter: {
-                        input: "$orderItems.productDetails.variation",
-                        as: "varDetail",
-                        cond: {
-                            $eq: ["$$varDetail._id", "$orderItems.variation"],
-                        },
-                    },
-                },
-            },
-        },
-        {
-            $group: {
-                _id: "$_id",
-                user: { $first: "$user" },
-                orderItems: { $push: "$orderItems" },
-            },
-        },
-    ];
-
-    const cart = await Cart.aggregate(pipeline);
-
-    // if (cart.length === 1) {
-    // console.log("extractedCart", cart)
+    console.log("cart NG HANEP", cart);
+    console.dir(cart[0], { depth: null }); // Use console.dir for better object visualization
 
     res.status(200).json({ cart });
-    // } else {
-    //     // Handle the case where the cart array is empty or has multiple elements
-    //     res.status(404).json({
-    //         error: "either the cart is empty or has multiple elements",
-    //     });
-    // }
-    // res.status(200).json({ cart });
 });
 
 const hasCart = asyncWrapper(async (req, res) => {
@@ -135,6 +126,7 @@ const deleteCartItem = asyncWrapper(async (req, res, next) => {
     const itemId = req.params.itemId;
 
     const cart = await Cart.findById(cartId);
+    // const cart = await Cart.aggregate(getCartPipeline(req.user.userId));
 
     if (!cart) {
         return next(createCustomError(`No cart with id : ${cartId}`, 404));
@@ -151,7 +143,10 @@ const deleteCartItem = asyncWrapper(async (req, res, next) => {
     );
 
     await cart.save();
-    res.status(200).json({ cart });
+
+    const newCart = await Cart.aggregate(getCartPipeline(req.user.userId));
+
+    res.status(200).json({ cart: newCart[0] });
 });
 
 const addToCart = asyncWrapper(async (req, res, next) => {

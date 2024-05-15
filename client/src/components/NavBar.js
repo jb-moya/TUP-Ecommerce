@@ -19,13 +19,35 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
     const { user } = useSelector((state) => state.user);
 
     const sellerMenus = [
-        <Link to="/seller/dashboard">Dashboard</Link>,
-        <Link to="/seller/addeditProduct">Add Product</Link>,
+        {
+            to: "/seller/dashboard",
+            menu: "Dashboard",
+        },
+        {
+            to: "/seller/accountsettings",
+            menu: "Account Settings",
+        },
+        {
+            to: "/seller/productsOverview",
+            menu: "Product Overview",
+        },
+        {
+            to: "/seller/orders",
+            menu: "My Orders",
+        },
+        {
+            to: "/seller/addeditProduct",
+            menu: "Add Product",
+        },
+        {
+            to: "/seller/advertisement",
+            menu: "My Advertisement",
+        },
     ];
 
     const customerMenus = [
-        <Link to="/customer">Account Settings</Link>,
-        <Link to="/customer/purchasehistory">My History</Link>,
+        { to: "/customer", menu: "Account Settings" },
+        { to: "/customer/purchasehistory", menu: "My History" },
     ];
 
     const handleLogOut = async () => {
@@ -51,37 +73,38 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
                 </div>
             </div>
             {isProfileMenuOpen && (
-                <div className="absolute transition duration-200 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded shadow-lg">
-                    <ul>
+                <div className="absolute transition duration-200 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded-lg shadow-lg">
+                    <div className="flex flex-col text-center">
                         {user.role === "seller"
                             ? sellerMenus.map((link, index) => {
                                   return (
-                                      <li
-                                          className="py-2 px-4 hover:bg-gray-300"
+                                      <Link
+                                          to={link.to}
+                                          className="py-2 px-4 hover:bg-gray-300 text-center w-full"
                                           key={`${link}-${index}`}
                                       >
-                                          {link}
-                                      </li>
+                                          {link.menu}
+                                      </Link>
                                   );
                               })
                             : customerMenus.map((link, index) => {
                                   return (
-                                      <li
-                                          className="py-2 px-4 hover:bg-gray-300"
+                                      <Link
+                                          to={link.to}
+                                          className="py-2 px-4 hover:bg-gray-300 text-center w-full"
                                           key={`${link}-${index}`}
                                       >
-                                          {link}
-                                      </li>
+                                          {link.menu}
+                                      </Link>
                                   );
                               })}
-
-                        <li
+                        <div
                             className="py-2 px-4 hover:bg-gray-300"
                             onClick={handleLogOut}
                         >
                             Logout
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
@@ -182,24 +205,29 @@ export const NavBar = ({
                         <LinkRoute to="/" text="Contact" />
                     </li>
                     <li className="p-4">
-                        <LinkRoute to="/sellercenter" text="Seller Centre" />
+                        <LinkRoute
+                            to="/seller/sellercenter"
+                            text="Seller Centre"
+                        />
                     </li>
                 </ul>
 
                 <div className="flex p-2 items-center justify-between">
-                    {(user && user.role === "customer") && <div
-                        className="pr-4 cursor-pointer"
-                        onClick={handleGoToCart}
-                    >
-                        <div className="flex relative hover:scale-110 transition duration-200 ease-in-out">
-                            <FaShoppingCart size={20} />
-                            {productCount > 0 && (
-                                <div className="bg-red-500 absolute -right-2 -top-2 text-[12px] w-[18px] h-[15px] text-white rounded-full flex justify-center items-center">
-                                    {productCount}
-                                </div>
-                            )}
+                    {user && user.role === "customer" && (
+                        <div
+                            className="pr-4 cursor-pointer"
+                            onClick={handleGoToCart}
+                        >
+                            <div className="flex relative hover:scale-110 transition duration-200 ease-in-out">
+                                <FaShoppingCart size={20} />
+                                {productCount > 0 && (
+                                    <div className="bg-red-500 absolute -right-2 -top-2 text-[12px] w-[18px] h-[15px] text-white rounded-full flex justify-center items-center">
+                                        {productCount}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>}
+                    )}
                     <div className="pr-6 cursor-pointer" onClick={handleNav}>
                         <FaSearch
                             className="hover:scale-110 transition duration-200 ease-in-out"

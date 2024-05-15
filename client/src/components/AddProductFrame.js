@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import defaultProductImage from "../Assets/NoImage.png";
 import convertToBase64 from "./utils/convertToBase64";
 import axios from "axios";
@@ -6,6 +6,8 @@ import { DropDownMenu_1 } from "./utils/Dropdown";
 import ImageHolder from "./utils/imageHolder";
 import { MdCancel } from "react-icons/md";
 import VariationHolder from "./AddVariation";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const productCategories = {
     1: "Electronics",
@@ -26,28 +28,18 @@ const productCategories = {
     16: "Other",
 };
 
-const example1 = {
-    name: "Smartphone",
-    featured: true,
-    description: "A powerful smartphone with advanced features",
-    variation: [
-        {
-            sku: "ABC123",
-            name: "hehe",
-            price: 799.99,
-            stock: 10,
-        },
-        {
-            // dagdag ka, maximum of 5, minimum of 1
-        },
-    ],
-    category: "Electronics",
-};
-
 export const AddProductFrame = () => {
+    const { id: editingProductId } = useParams();
+    console.log("id: ", editingProductId);
     const priceRef = useRef(null);
     const stockRef = useRef(null);
     const [selectedCategory, setSelectedCategory] = useState(16);
+    const maxImageCount = 4;
+    const [postImage, setPostImage] = useState([]);
+    const [variation, setVariation] = useState([]);
+    const [space, setSpace] = useState(0);
+    const [descriptionCharCount, setDescriptionCharCount] = useState(0);
+    const maxDescriptionCharCount = 10000;
     const [formData, setFormData] = useState({
         name: "",
         price: -1,
@@ -60,10 +52,71 @@ export const AddProductFrame = () => {
         category: productCategories[16],
     });
 
-    const maxImageCount = 4;
-    const [postImage, setPostImage] = useState([]);
-    const [variation, setVariation] = useState([]);
-    const [space, setSpace] = useState(0);
+    const getSingleProduct = useCallback(async () => {
+        try {
+            const response = await axios.get(
+                `http://localhost:5000/api/v1/products/${editingProductId}`
+            );
+            const product = response.data.product;
+            const {
+                name,
+                price,
+                stock,
+                description,
+                category,
+                variation,
+                variationClass,
+                image,
+            } = product;
+
+            // console.log("editing product:", response);
+            console.log("editing product:", product);
+            setSelectedCategory(
+                Object.keys(productCategories).find(
+                    (key) => productCategories[key] === category
+                )
+            );
+
+            setPostImage(
+                image.map((item, index) => ({
+                    key: index.toString(),
+                    base64: item,
+                }))
+            );
+
+            setVariation(
+                variation.map((item, index) => ({
+                    key: index.toString(),
+                    name: item.name,
+                    price: item.price,
+                    stock: item.stock,
+                }))
+            );
+
+            priceRef.current.value = price;
+            stockRef.current.value = stock;
+
+            setFormData({
+                name: name,
+                featured: false,
+                variationClass: variationClass || "",
+                description: description.replace(/<br>/g, "\n"),
+                category: category,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }, [editingProductId]);
+
+    useEffect(() => {
+        console.log("formData: ", formData);
+    }, [formData]);
+
+    useEffect(() => {
+        if (editingProductId) {
+            getSingleProduct();
+        }
+    }, [editingProductId, getSingleProduct]);
 
     const handleRemoveVariation = (index) => {
         setSpace((prevSpace) => prevSpace - 120);
@@ -100,10 +153,6 @@ export const AddProductFrame = () => {
     }, [postImage]);
 
     useEffect(() => {
-        // console.log("formData: ", formData);
-    }, [formData]);
-
-    useEffect(() => {
         setFormData((prev) => ({
             ...prev,
             category: productCategories[selectedCategory],
@@ -111,6 +160,8 @@ export const AddProductFrame = () => {
     }, [selectedCategory]);
 
     useEffect(() => {
+        console.log("AHAHAHHAvariation: ", variation);
+
         if (variation.length === 1) {
             priceRef.current.value = parseFloat(variation[0].price);
             stockRef.current.value = parseInt(variation[0].stock);
@@ -192,10 +243,39 @@ export const AddProductFrame = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleAddProduct = (e) => {
         e.preventDefault();
         createPost();
         // // console.log(postImage);
+    };
+
+    const handleEditProduct = (e) => {
+        e.preventDefault();
+
+        // edit formData description to replace \n with <br>
+        formData.description = formData.description.replace(/\n/g, "<br>");
+
+        updateProduct();
+    };
+
+    const updateProduct = async (e) => {
+        try {
+            const response = await axios.patch(
+                `http://localhost:5000/api/v1/products/${editingProductId}`,
+                formData
+            );
+
+            toast("💩💩 Product updated successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {}
     };
 
     const handleFileUpload = async (e) => {
@@ -251,6 +331,7 @@ export const AddProductFrame = () => {
     };
 
     const handleDescriptionChange = (e) => {
+        setDescriptionCharCount(e.target.value.length);
         setFormData({
             ...formData,
             description: e.target.value,
@@ -267,14 +348,14 @@ export const AddProductFrame = () => {
     const handlePriceChange = (e) => {
         setFormData({
             ...formData,
-            price: e.target.value,
+            price: parseFloat(e.target.value),
         });
     };
 
     const handleStockChange = (e) => {
         setFormData({
             ...formData,
-            stock: e.target.value,
+            stock: parseInt(e.target.value),
         });
     };
 
@@ -359,6 +440,7 @@ export const AddProductFrame = () => {
                         className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5 text-sm"
                         type="text"
                         placeholder="Enter product name"
+                        value={formData.name}
                         onChange={handleChangeProductName}
                     />
                 </div>
@@ -376,7 +458,7 @@ export const AddProductFrame = () => {
                     <input
                         ref={priceRef}
                         className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
-                        type="text"
+                        type="number"
                         placeholder="Enter price"
                         disabled={variation.length > 0}
                         onChange={handlePriceChange}
@@ -387,7 +469,7 @@ export const AddProductFrame = () => {
                     <input
                         ref={stockRef}
                         className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
-                        type="text"
+                        type="number"
                         placeholder="Enter stock"
                         disabled={variation.length > 0}
                         onChange={handleStockChange}
@@ -400,6 +482,7 @@ export const AddProductFrame = () => {
                         type="text"
                         placeholder="Make it descriptive!"
                         disabled={variation.length === 0}
+                        value={formData.variationClass}
                         onChange={handleVariationClassChange}
                     />
                 </div>
@@ -423,23 +506,36 @@ export const AddProductFrame = () => {
                     Add Variation
                 </button>
 
-                <div className="pb-[20px]">
+                <div className="relative pb-[20px]">
                     <textarea
                         className="border-2 px-3 w-11/12 text-sm py-1"
                         rows="5"
                         cols="80"
                         placeholder="Enter product description"
+                        value={formData.description}
                         onChange={handleDescriptionChange}
                     />
+                    <div className="text-right text-xs absolute left-0">
+                        {descriptionCharCount}/{maxDescriptionCharCount}
+                    </div>
                 </div>
 
                 <div className="flex justify-center">
-                    <button
-                        className="border-2 w-2/3 h-10 self-end m-5 p-2 hover:bg-pink-600"
-                        onClick={handleSubmit}
-                    >
-                        CONFIRM ADD PRODUCT
-                    </button>
+                    {editingProductId ? (
+                        <button
+                            className="border-2 w-2/3 h-10 self-end m-5 p-2 hover:bg-pink-600"
+                            onClick={handleEditProduct}
+                        >
+                            CONFIRM EDIT PRODUCT
+                        </button>
+                    ) : (
+                        <button
+                            className="border-2 w-2/3 h-10 self-end m-5 p-2 hover:bg-pink-600"
+                            onClick={handleAddProduct}
+                        >
+                            CONFIRM ADD PRODUCT
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

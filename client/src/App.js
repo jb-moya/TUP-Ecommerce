@@ -20,6 +20,7 @@ import { getAllItems } from "./features/cart/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import SellerSettings from "./components/SellerSettingsNew.js";
 import SellerSettingsPage from "./pages/SellerSettingsPage.js";
+import Playground from "./pages/Playground.js";
 
 const rootUrl = "http://localhost:5000/api/v1";
 function App() {
@@ -108,6 +109,10 @@ function App() {
                             element={<SellerSettings settingsMenu={4} />}
                         />
                         <Route
+                            path="addeditProduct/:id"
+                            element={<SellerSettings settingsMenu={4} />}
+                        />
+                        <Route
                             path="advertisement"
                             element={<SellerSettings settingsMenu={5} />}
                         />
@@ -117,6 +122,7 @@ function App() {
                         />
                     </Route>
 
+                    <Route path="playground" element={<Playground />} />
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/checkout" element={<CheckOutPage />} />
                     <Route path="/org/:id" element={<Organization />} />

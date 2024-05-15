@@ -63,19 +63,19 @@ export const UserAccountDetails = ({ section }) => {
                     <div className="px-3 w-4/5 flex flex-col justify-center text-sm">
                         <div className="mb-2 p-1">My Account</div>
                         <Link
-                            to="/customeraccount"
+                            to="/customer"
                             className="mb-1 p-1 hover:bg-[#211C6A] hover:text-white"
                         >
                             Profile
                         </Link>
                         <Link
-                            to="/customeraccount/password"
+                            to="/customer/password"
                             className="mb-3 p-1 hover:bg-[#211C6A] hover:text-white"
                         >
                             Set Password
                         </Link>
                         <Link
-                            to="/customeraccount/purchasehistory"
+                            to="/customer/purchasehistory"
                             className="mb-5 p-1 hover:bg-[#211C6A] hover:text-white"
                         >
                             Purchase History

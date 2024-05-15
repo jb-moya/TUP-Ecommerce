@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdDashboard } from "react-icons/md";
 import { BiPurchaseTag } from "react-icons/bi";
 import { IoBag } from "react-icons/io5";
@@ -15,6 +15,7 @@ import { AddProductFrame } from "./AddProductFrame.js";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "./NavBar.js";
 import Footer from "./Footer.js";
+import { toast } from "react-toastify";
 
 const SellerMenuButton = ({ icon, text, selected, onClick }) => (
     <button
@@ -68,17 +69,27 @@ const SellerSettings = ({ settingsMenu = 0 }) => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.user);
 
-    function rand(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
     const [selectedButton, setSelectedButton] = useState(settingsMenu);
+
+    console.log(
+        "selectedButton.js: settubngMenu: ",
+        settingsMenu,
+        "button",
+        selectedButton
+    );
 
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
-
         navigate(`/seller/${menuItems[buttonNumber].path}`);
     };
+
+    useEffect(() => {
+        setSelectedButton(settingsMenu);
+    }, [settingsMenu]);
+
+    useEffect(() => {
+        console.log("selectedButton.js: selectedButton: ", selectedButton);
+    }, [selectedButton]);
 
     return (
         <>

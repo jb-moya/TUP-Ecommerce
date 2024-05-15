@@ -302,8 +302,8 @@ const ProductDetailPage = (props) => {
                         <div className="px-8 mt-2 font-semibold text-lg leading-relaxed text-[#211c6a]">
                             Product Details
                         </div>
-                        <div className="px-8 font-light">
-                            {productDetails.description}
+                        <div className="px-8 font-light" dangerouslySetInnerHTML={{ __html: productDetails.description}}>
+                            {/* {productDetails.description} */}
                         </div>
                     </div>
                 </div>

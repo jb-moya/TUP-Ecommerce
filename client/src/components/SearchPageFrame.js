@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import {
-    useLocation,
-    useParams,
-} from "react-router-dom";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import ProductCard from "./ProductCard.js";
@@ -12,6 +9,12 @@ import { FaCaretDown } from "react-icons/fa6";
 import { FaCaretUp } from "react-icons/fa6";
 import StarRating from "./StarRating.js";
 import PaginationButtons from "./PaginationButtons";
+import debounce from "./utils/debounce.js";
+import handleMinMaxInput from "./utils/handleMinMaxInput.js";
+import {
+    buildQueryParam,
+    buildQueryArrayParam,
+} from "./utils/buildQueryParams.js";
 import { DropDownMenu } from "./utils/Dropdown";
 import { m } from "framer-motion";
 axios.defaults.withCredentials = true;
@@ -69,7 +72,7 @@ export const SearchPageFrame = () => {
     const { id: organizationIDinURL } = useParams();
     const dispatch = useDispatch();
     let location = useLocation();
-    console.log("location   vffff ", location.pathname)
+    console.log("location   vffff ", location.pathname);
     const [currentPage, setCurrentPage] = useState(1);
     const [productCount, setProductCount] = useState(0);
     const [maxPageCount, setMaxPageCount] = useState(0);
@@ -91,7 +94,6 @@ export const SearchPageFrame = () => {
         console.log("local search", location.search);
         console.log("searchParams", searchParams);
 
-
         if (searchParams.has("keyword")) {
             // toast.info(`getting ${searchParams.get("keyword")}`);
             setSearchName(searchParams.get("keyword"));
@@ -107,9 +109,9 @@ export const SearchPageFrame = () => {
 
         if (searchParams.has("minPrice") && !searchParams.has("maxPrice")) {
             // toast.info(
-                // `getting ${searchParams.get("minPrice")} and ${searchParams.get(
-                //     "maxPrice"
-                // )}`
+            // `getting ${searchParams.get("minPrice")} and ${searchParams.get(
+            //     "maxPrice"
+            // )}`
             // );
             setMinMaxPrice([parseInt(searchParams.get("minPrice"), 10), 0]);
         }
@@ -148,57 +150,17 @@ export const SearchPageFrame = () => {
             // toast.info(`getting ${searchParams.get("page")}`);
             setCurrentPage(parseInt(searchParams.get("page"), 10));
         }
-
     }, [location.search]);
 
-    const handleMinMaxPrice = (e) => {
-        e.preventDefault();
-
-        e.value = parseFloat(e.value);
-
-        const { name, value } = e.target;
-        let newValue = parseFloat(value);
-
-        if (name === "min") {
-            if (newValue < 0) {
-                e.value = 0;
-                newValue = 0;
-            }
-
-            e.value = newValue;
-        } else {
-            if (newValue < 0) {
-                e.value = minMaxPrice[0];
-                newValue = minMaxPrice[0];
-            }
-
-            e.value = newValue;
-        }
-
-        setMinMaxPrice((prevState) => {
-            if (name === "min") {
-                return [newValue, prevState[1]];
-            } else {
-                return [prevState[0], newValue];
-            }
-        });
-    };
-
-    const debounce = (func, delay) => {
-        let timeoutId;
-
-        return (...args) => {
-            clearTimeout(timeoutId);
-
-            timeoutId = setTimeout(() => {
-                func(...args);
-            }, delay);
-        };
-    };
-
     const delayedHandleMinMaxPrice = debounce((e) => {
-        handleMinMaxPrice(e);
+        // handleMinMaxPrice(e);
+        toast.info(`e.target.value ${e.target.value}`);
+        handleMinMaxInput(e, setMinMaxPrice);
     }, 1000);
+
+    useEffect(() => {
+        toast.info(`minMaxPrice ${minMaxPrice}`);
+    }, [minMaxPrice]);
 
     const delayedFetchProducts = debounce(() => {
         fetchProducts();
@@ -214,24 +176,33 @@ export const SearchPageFrame = () => {
         setOrganizations(data.sellers);
     };
 
+    const numericFilters = useMemo(() => {
+        const numericFiltersArray = [];
+
+        if (minMaxPrice[0] > 0) {
+            numericFiltersArray.push(`price>=${minMaxPrice[0]}`);
+        }
+        if (minMaxPrice[1] > 0) {
+            numericFiltersArray.push(`price<=${minMaxPrice[1]}`);
+        }
+        if (minRating > 0) {
+            numericFiltersArray.push(`averageRating>=${minRating}`);
+        }
+
+        return numericFiltersArray.join(",");
+    }, [minMaxPrice, minRating]);
+
     const fetchProducts = useCallback(async () => {
         try {
             setIsCurrentlyFetching(true);
             console.log("Fetching Products");
+
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
                 {
                     params: {
                         name: `${searchName ? searchName : ""}`,
-                        numericFilters: `${
-                            minMaxPrice[0] > 0 ? `price>=${minMaxPrice[0]}` : ""
-                        }${
-                            minMaxPrice[1] > 0
-                                ? `,price<=${minMaxPrice[1]}`
-                                : ""
-                        }${
-                            minRating > 0 ? `,averageRating>=${minRating}` : ""
-                        }`,
+                        numericFilters: numericFilters,
                         categories:
                             sortCategories.length > 0
                                 ? sortCategories.join(",")
@@ -256,6 +227,7 @@ export const SearchPageFrame = () => {
                             ? sortOrganizations.join(",")
                             : "",
                         page: currentPage,
+                        populatedFields: "createdBy",
                     },
                 }
             );
@@ -271,12 +243,13 @@ export const SearchPageFrame = () => {
         }
     }, [
         currentPage,
-        minMaxPrice,
-        minRating,
         searchName,
         sortCategories,
         toggleDateSort,
         toggleNameSort,
+        sortOrganizations,
+        organizationIDinURL,
+        numericFilters,
     ]);
 
     const handleToggleCategory = (e) => {
@@ -321,26 +294,58 @@ export const SearchPageFrame = () => {
         }
     }, [fetchProducts, searchClicked, dispatch]);
 
+    // const buildQueryParam = (key, value) => (value ? `${key}=${value}` : "");
+    // const buildQueryArrayParam = (key, array) =>
+    //     array.length > 0 ? `${key}=${array.join(",")}` : "";
+
     useEffect(() => {
         console.log("Effect triggered by dependencies:");
 
         fetchProducts();
 
-        const newUrl = `${location.pathname}?${searchName ? `keyword=${searchName}` : ""}${
-            minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""
-        }${minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""}${
-            minRating > 0 ? `&minRating=${minRating}` : ""
-        }${
-            sortCategories.length > 0
-                ? `&categories=${sortCategories.join(",")}`
-                : ""
-        }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
-            toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
-        }${currentPage !== 1 ? `&page=${currentPage}` : ""}${
-            sortOrganizations.length > 0
-                ? `&organizations=${sortOrganizations.join(",")}`
-                : ""
-        }`;
+        // const newUrl = `${location.pathname}?${
+        //     searchName ? `keyword=${searchName}` : ""
+        // }${minMaxPrice[0] > 0 ? `&minPrice=${minMaxPrice[0]}` : ""}${
+        //     minMaxPrice[1] > 0 ? `&maxPrice=${minMaxPrice[1]}` : ""
+        // }${minRating > 0 ? `&minRating=${minRating}` : ""}${
+        //     sortCategories.length > 0
+        //         ? `&categories=${sortCategories.join(",")}`
+        //         : ""
+        // }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
+        //     toggleNameSort !== 1 ? `&nameSort=${toggleNameSort}` : ""
+        // }${currentPage !== 1 ? `&page=${currentPage}` : ""}${
+        //     sortOrganizations.length > 0
+        //         ? `&organizations=${sortOrganizations.join(",")}`
+        //         : ""
+        // }`;
+
+        // window.history.replaceState({ path: newUrl }, "", newUrl);
+
+        const params = [
+            buildQueryParam("keyword", searchName),
+            buildQueryParam(
+                "minPrice",
+                minMaxPrice[0] > 0 ? minMaxPrice[0] : ""
+            ),
+            buildQueryParam(
+                "maxPrice",
+                minMaxPrice[1] > 0 ? minMaxPrice[1] : ""
+            ),
+            buildQueryParam("minRating", minRating > 0 ? minRating : ""),
+            buildQueryArrayParam("categories", sortCategories),
+            buildQueryParam(
+                "dateSort",
+                toggleDateSort !== 1 ? toggleDateSort : ""
+            ),
+            buildQueryParam(
+                "nameSort",
+                toggleNameSort !== 1 ? toggleNameSort : ""
+            ),
+            buildQueryParam("page", currentPage !== 1 ? currentPage : ""),
+            buildQueryArrayParam("organizations", sortOrganizations),
+        ].filter(Boolean); // Remove empty strings
+
+        const newUrl = `${location.pathname}?${params.join("&")}`;
 
         window.history.replaceState({ path: newUrl }, "", newUrl);
     }, [
@@ -374,15 +379,15 @@ export const SearchPageFrame = () => {
 
     return (
         <div>
-             <div className="max-w-[1220px] mx-auto h-10 mt-24 p-4">
+            <div className="max-w-[1220px] mx-auto h-10 mt-24 p-4">
                 <input
-                    className="h-12 w-full text-black border border-[#211C6A] px-4"
+                    className="h-12 w-full text-black border border-[#211C6A] px-4 rounded-xl"
                     type="text"
                     placeholder="Search"
                     onChange={delayedHandleSearchNameChange}
                 />
             </div>
-            <div className="flex max-w-[1240px] mx-auto select-none p-4 mt-4 text-[#211C6A] ">
+            <div className="flex max-w-[1240px] mx-auto select-none p-4 mt-4 text-[#211C6A]">
                 <div className="flex flex-col h-full w-[250px] p-2">
                     <div className="font-bold text-3xl ">Filters</div>
                     <hr className="border-t border-gray-300" />
@@ -485,7 +490,6 @@ export const SearchPageFrame = () => {
                     </div>
                 </div>
 
-                {/* Left Container */}
                 <div className="flex flex-col w-full">
                     <div className="flex text-[#211C6A] mb-4 mr-4 items-center justify-between">
                         <div className="font-bold text-[30px] py-2 px-2">
@@ -529,7 +533,7 @@ export const SearchPageFrame = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-9 mx-4">
+                    <div className="grid grid-cols-5 gap-4 mx-4 p-4 rounded-lg shadow-lg bg-white">
                         {!isCurrentlyFetching ? (
                             productCount !== 0 ? (
                                 products.map((product, index) => (
