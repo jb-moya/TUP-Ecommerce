@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import Stepper from './SellerRegistrationStepper/Stepper';
 import StepperControl from './SellerRegistrationStepper/StepperControl';
 import { StepperContext } from './contexts/StepperContext';
@@ -58,6 +59,14 @@ export const SellerRegistrationFrame1 = () => {
         "Complete"
     ]
 
+    useEffect(() => {
+        // Update the userData state to set the role to 'seller' when the component mounts
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            role: 'seller',
+        }));
+    }, []);
+
     const displaySteps = (step) => {
         switch(step){
             case 1: 
@@ -73,10 +82,26 @@ export const SellerRegistrationFrame1 = () => {
     
     const handleClick = (direction) => {
         let newStep = currentStep;
-
-        direction === "next" ? newStep++ : newStep--;
+    
+        direction === 'next' ? (newStep += 1) : (newStep -= 1);
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
-    }
+    
+        if (newStep === steps.length && direction === 'next') {
+          axios.post('http://localhost:5000/api/v1/auth/register', userData)
+            .then((response) => {
+              console.log('Registration submitted successfully:', response.data);
+              window.alert('Registration submitted successfully!');
+            })
+            .catch((error) => {
+              // Handle error, e.g., show error message to the user
+              console.error('Error submitting registration:', error);
+              window.alert('Error submitting registration. Please try again later.');
+            });
+        }
+    
+        console.log('Current Step:', newStep);
+        console.log('User Data:', userData);
+    };
 
     return (
         <div className='flex flex-col text-[#211C6A] items-center justify-center pt-[96px]'>

@@ -85,6 +85,35 @@ const organizationSchema = mongoose.Schema ({
         trim: true,
         lowercase: true,
     },
+    contactNumbers: [{
+        type: String,
+        required: false,
+        match: [
+            /^[0-9]{10}$/,
+            "Please provide a valid 10-digit contact number",
+        ],
+    }],
+    representative: {
+        name: {
+            type: String,
+            required: true
+        },
+        position: {
+            type: String,
+            required: true
+        },
+        email: {
+            type: String,
+            required: [true, "Email is required"],
+            match: [
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                "Please provide a valid email",
+            ],
+            unique: true,
+            trim: true,
+            lowercase: true,
+        },
+    },
     password: {
         type: String,
         required: [true, "Password is required"],
@@ -96,42 +125,39 @@ const organizationSchema = mongoose.Schema ({
         maxlength: [1000, "Description cannot be more than 1000 characters"],
         minlength: [1, "Description cannot be less than 10 characters"],
     },
-    sellerRoles: [{
-        username: {
+    affiliatedAccounts: [{
+        name: {
             type: String,
+            required: false
+        },
+        position: {
+            type: String,
+            required: false
+        },
+        email: {
+            type: String,
+            // required: [true, "Email is required"],
+            required: false,
+            match: [
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                "Please provide a valid email",
+            ],
             unique: true,
-        },
-        password: {
-            type: String,
-            minlength: [6, "Password cannot be less than 6 characters"],
-        },
+            trim: true,
+            lowercase: true,
+        }
     }],
     role: {
         type: String,
-        required: true
+        required: true,
     },
-    contactNumbers: [{
+    orgImage: {
         type: String,
         required: false,
-        match: [
-            /^[0-9]{10}$/,
-            "Please provide a valid 10-digit contact number",
-        ],
-    }],
-    emails: [{
+    },
+    accreditationDoc: {
         type: String,
-        required: false,
-        match: [
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            "Please provide a valid email",
-        ],
-        unique: true,
-        trim: true,
-        lowercase: true,
-    }],
-    image: {
-        type: String,
-        default: '',
+        required: true,
     },
 });
 

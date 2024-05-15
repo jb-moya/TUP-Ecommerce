@@ -62,27 +62,47 @@ const register = asyncWrapper(async (req, res) => {
 
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
     } else if (role == "seller") {
-        const { orgName, email, password } = req.body;
-
-        const emailAlreadyExists = await Organization.findOne({
-            email,
-        });
+        // const { orgName, email, phoneNum, password, repName, repPos, repEmail, description, orgImage, accreditationDoc } = req.body;
+        const { orgName, email, phoneNum, password, repName, repPos, repEmail, description, accreditationDoc } = req.body;
+    
+        const emailAlreadyExists = await Organization.findOne({ email });
+    
+        // console.log('Organization Name:', orgName);
+        // console.log('Email:', email);
+        // console.log('Phone Number:', phoneNum);
+        // console.log('Password:', password);
+        // console.log('Representative Name:', repName);
+        // console.log('Representative Position:', repPos);
+        // console.log('Representative Email:', repEmail);
+        // console.log('Organization Image:', orgImage);
+        console.log('Accreditation Document:', accreditationDoc);
 
         if (emailAlreadyExists) {
             return res
                 .status(StatusCodes.BAD_REQUEST)
                 .json({ error: "Email already exists" });
         }
-
+        console.log('x1');
         const org = await Organization.create({
             orgName,
             email,
+            contactNumbers: [phoneNum],
+            representative: {
+                name: repName,
+                position: repPos,
+                email: repEmail
+            },
             password,
+            description,
+            // affiliatedAccounts: [],
             role,
+           //orgImage,
+            accreditationDoc,
         });
+        console.log('x2');
         const tokenUser = createTokenUser(org);
         attachCookiesToResponse({ res, user: tokenUser });
-
+    
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
     } else {
         throw new BadRequestError("Invalid role");
