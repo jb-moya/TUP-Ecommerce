@@ -106,7 +106,7 @@ export const SellerRegistrationFrame1 = () => {
     
         if (newStep === steps.length && direction === 'next') {
             
-            if ( !userData.repName || !userData.repPos || !userData.repEmail || userData.description || !userData.accreditationDoc ) {
+            if ( !userData.repName || !userData.repPos || !userData.repEmail || !userData.description || !userData.accreditationDoc ) {
                 newStep -= 1;
                 setCurrentStep(newStep);
                 setErrorMessage('Please fill out all required fields.');
