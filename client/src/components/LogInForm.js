@@ -6,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { LoginFailure } from "./AUTHENTICATION/Failure";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
 import { logIn } from "../features/user/userSlice";
 axios.defaults.withCredentials = true;
 const LogInForm = () => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
-        email: "sample1@gmail.com",
+        email: "tupstore1@gmail.com",
         password: "sample01",
         // email: "",
         // password: "",
@@ -39,6 +38,7 @@ const LogInForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        console.log('password', formData.password)
         try {
             await dispatch(logIn(formData));
             navigate("/", { replace: true });

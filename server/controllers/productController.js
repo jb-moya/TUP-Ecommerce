@@ -143,7 +143,7 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
             });
         }
 
-        console.log("Query Object:", JSON.stringify(queryObject, null, 2));
+        // console.log("Query Object:", JSON.stringify(queryObject, null, 2));
 
         let result;
         if (populatedFields) {
@@ -174,7 +174,7 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 
         products = await result;
 
-        console.log("queryOBject", queryObject);
+        // console.log("queryOBject", queryObject);
 
         res.status(StatusCodes.OK).json({
             products,

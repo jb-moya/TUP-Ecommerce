@@ -21,9 +21,12 @@ export const logIn = createAsyncThunk("user/logIn", async (credentials, thunkAPI
             localStorage.setItem("isLoggedIn", "true");
             return data;
         }
+
+        console.log("response", response);
         return thunkAPI.rejectWithValue(data.message);
     } catch (error) {
-        return thunkAPI.rejectWithValue("An error occurred");
+        console.log("error logging in", error);
+        return thunkAPI.rejectWithValue(`An error occurred ${error.response.data.error}`);
     }
 });
 
@@ -39,9 +42,11 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
             return { user: null };
         }
 
+        console.log("response", response);
         return thunkAPI.rejectWithValue("An error occurred when logging out");
     } catch (error) {
-        return thunkAPI.rejectWithValue("An error occurred");
+        console.log("error logging out", error);
+        return thunkAPI.rejectWithValue(`An error occurred ${error}`);
     }
 });
 
@@ -79,7 +84,7 @@ export const updatePassword = createAsyncThunk("user/updatePassword", async (dat
 });
 
 export const selectUserID = (state) => state.user.user._id;
-export const getUserRole = (state) => state.user.user.role || "guest";
+export const getUserRole = (state) => state.user ? state.user.user.role : "guest";
 export const isUserLogged = (state) => state.user.isLogged;
 
 export const fetchUser = () => async (dispatch) => {

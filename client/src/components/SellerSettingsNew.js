@@ -99,10 +99,10 @@ const SellerSettings = ({ settingsMenu = 0 }) => {
                     <div className="w-[300px] flex flex-col m-4 bg-white shadow-md rounded-xl">
                         <div className="flex justify-center items-center my-4 p-2">
                             <img
-                                className="rounded-full h-[60px] w-[60px]"
+                                className="rounded-full h-[60px] w-[60px] drop-shadow-lg"
                                 src={
                                     user && user.image
-                                        ? user.image.url
+                                        ? user.image
                                         : defaultProfileImage
                                 }
                                 alt="Logo Here"

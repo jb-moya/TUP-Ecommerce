@@ -62,7 +62,17 @@ const register = asyncWrapper(async (req, res) => {
 
         res.status(StatusCodes.CREATED).json({ user: tokenUser });
     } else if (role == "seller") {
-        const { orgName, email, phoneNum, password, repName, repPos, repEmail, description, accreditationDoc } = req.body;
+        const {
+            orgName,
+            email,
+            phoneNum,
+            password,
+            repName,
+            repPos,
+            repEmail,
+            description,
+            accreditationDoc,
+        } = req.body;
 
         const emailAlreadyExists = await Organization.findOne({ email });
 
@@ -71,7 +81,7 @@ const register = asyncWrapper(async (req, res) => {
                 .status(StatusCodes.BAD_REQUEST)
                 .json({ error: "Email already exists" });
         }
-        
+
         const org = await Organization.create({
             orgName,
             email,
@@ -79,7 +89,7 @@ const register = asyncWrapper(async (req, res) => {
             representative: {
                 name: repName,
                 position: repPos,
-                email: repEmail
+                email: repEmail,
             },
             password,
             description,
@@ -115,6 +125,7 @@ const login = asyncWrapper(async (req, res) => {
             .json({ error: "Invalid email" });
     }
 
+    // console.log("user: ", user);
     const isPasswordCorrect = await user.comparePassword(password);
 
     if (!isPasswordCorrect) {
@@ -126,8 +137,10 @@ const login = asyncWrapper(async (req, res) => {
     const tokenUser = createTokenUser(user);
     attachCookiesToResponse({ res, user: tokenUser });
 
-    // console.log("tokenUser hehee: ", tokenUser);
     const token = user.createJWT({ payload: tokenUser });
+
+    // console.log("tokenUser hehee: ", tokenUser);
+    // console.log("token: ", token);
 
     res.status(StatusCodes.OK).json({ user });
 });
