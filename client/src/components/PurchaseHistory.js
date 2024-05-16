@@ -5,6 +5,10 @@ import PaginationButtons from "./PaginationButtons";
 import { useLocation, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import {
+    buildQueryParam,
+    buildQueryArrayParam,
+} from "./utils/buildQueryParams.js";
 import { toast } from "react-toastify";
 import formatData from "./utils/formatData";
 axios.defaults.withCredentials = true;
@@ -16,38 +20,48 @@ const HistoryItem = (transaction) => {
         <>
             <div className="flex bg-white rounded-lg w-full mb-4">
                 <div className="flex flex-row justify-between w-full p-4">
-                    <div className="flex flex-row w-full">
+                    <div className="flex flex-row w-full h-full">
                         <img
-                            className="h-[100px] w-[100px] rounded-lg object-cover"
+                            className="h-[100px] w-[100px] rounded-lg object-cover my-auto shadow-md"
                             src={transaction.product.image[0]}
                             alt="Logo Here"
                             loading="lazy"
                         />
                         <div className="flex flex-col w-full px-4 py-2">
-                            <h1 className="text-lg">
+                            <h1 className="text-lg pl-1 py-[1px]">
                                 {transaction.product.name}
                             </h1>
                             <div className="flex flex-col justify-between h-full">
-                                <h1 className="text-xs">
-                                    Variation:{" "}
-                                    {transaction.product.variation.map(
-                                        (variation) => {
-                                            if (
-                                                variation._id ===
-                                                transaction.variation
-                                            ) {
-                                                return variation.name;
-                                            }
-                                        }
+                                <h1 className="text-xs pl-1 py-[1px]">
+                                    {transaction.product.variation.length >
+                                        0 && (
+                                        <>
+                                            Variation:{" "}
+                                            {transaction.product.variation.map(
+                                                (variation) => {
+                                                    if (
+                                                        variation._id ===
+                                                        transaction.variation
+                                                    ) {
+                                                        return variation.name;
+                                                    }
+
+                                                    return null;
+                                                }
+                                            )}
+                                        </>
                                     )}
                                 </h1>
-                                <h1 className="text-xs">
+                                <h1 className="text-xs pl-1 py-[1px]">
                                     Quantity: {transaction.quantity}
                                 </h1>
-                                <div className="flex justify-between">
-                                    <div className="text-sm">
-                                        Order Total: ₱ {transaction.totalAmount}
-                                    </div>
+                                <div className="text-sm pl-1 py-[1px]">
+                                    Order Total: ₱ {transaction.totalAmount}
+                                </div>
+                                <div className="flex justify-between py-[1px]">
+                                    <h1 className="text-xs border border-1 rounded-lg w-fit px-2">
+                                        status: {transaction.orderStatus}
+                                    </h1>
                                     <div className="text-sm font-extralight">
                                         Date ordered: {createdAt}
                                     </div>
@@ -74,6 +88,15 @@ const HistoryItem = (transaction) => {
     );
 };
 
+const orderStatus = {
+    0: "",
+    1: "To Pay",
+    2: "To Ship",
+    3: "To Recieve",
+    4: "Completed",
+    5: "Cancelled",
+};
+
 const PurchaseHistory = () => {
     const dispatch = useDispatch();
     let location = useLocation();
@@ -86,7 +109,6 @@ const PurchaseHistory = () => {
     const [searchName, setSearchName] = useState("");
     const [selectedButton, setSelectedButton] = useState(0); // Changed initial value to 1 for Dashboard
 
-    
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
     };
@@ -115,24 +137,30 @@ const PurchaseHistory = () => {
         const searchParams = new URLSearchParams(location.search);
 
         if (searchParams.has("page")) {
-            // toast.info(`getting ${searchParams.get("page")}`);
             setCurrentPage(parseInt(searchParams.get("page"), 10));
         }
 
         if (searchParams.has("dateSort")) {
-            // toast.info(`getting ${searchParams.get("dateSort")}`);
             setToggleDateSort(parseInt(searchParams.get("dateSort"), 10));
         }
 
+        if (searchParams.has("status")) {
+            // get key using value
+            const status = searchParams.get("status");
+            const key = Object.keys(orderStatus).find(
+                (key) => orderStatus[key] === status
+            );
+            console.log("key", key);
+            setSelectedButton(parseInt(key));
+        }
+
         if (searchParams.has("priceSort")) {
-            // toast.info(`getting ${searchParams.get("priceSort")}`);
             setToggleTotalAmountSort(
                 parseInt(searchParams.get("priceSort"), 10)
             );
         }
 
         if (searchParams.has("searchName")) {
-            // toast.info(`getting ${searchParams.get("searchName")}`);
             setSearchName(searchParams.get("searchName"));
         }
     }, [location.search]);
@@ -159,6 +187,7 @@ const PurchaseHistory = () => {
                                     : "descending",
                             ],
                         ],
+                        orderStatus: orderStatus[selectedButton],
                         page: currentPage,
                     },
                 }
@@ -172,20 +201,25 @@ const PurchaseHistory = () => {
         } catch (error) {
             console.error(error);
         }
-    }, [searchName, toggleDateSort, toggleTotalAmountSort, currentPage]);
+    }, [
+        searchName,
+        toggleDateSort,
+        toggleTotalAmountSort,
+        currentPage,
+        selectedButton,
+    ]);
 
     useEffect(() => {
         console.log("Effect triggered by dependencies:");
 
         fetchTransactionHistory();
-        const newUrl = `${location.pathname}?${
-            searchName ? `keyword=${searchName}` : ""
-        }${toggleDateSort !== 1 ? `&dateSort=${toggleDateSort}` : ""}${
-            toggleTotalAmountSort !== 1
-                ? `&totalAmountSort=${toggleTotalAmountSort}`
-                : ""
-        }${currentPage !== 1 ? `&page=${currentPage}` : ""}`;
 
+        const params = [
+            buildQueryParam("page", currentPage),
+            // buildQueryParam("status", orderStatus[selectedButton]),
+        ].filter(Boolean);
+
+        const newUrl = `${location.pathname}?${params.join("&")}`;
         window.history.replaceState({ path: newUrl }, "", newUrl);
     }, [
         fetchTransactionHistory,
@@ -195,15 +229,6 @@ const PurchaseHistory = () => {
         currentPage,
         location.pathname,
     ]);
-
-    function rand(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
-    function imgUrl() {
-        const id = rand(1, 200);
-        return `https://picsum.photos/id/${id}/1920/1080`;
-    }
 
     const handleSortChange = (e) => {
         if (e.target.value === "Price") {
@@ -216,8 +241,6 @@ const PurchaseHistory = () => {
         }
     };
 
-
-    
     return (
         <div className="flex flex-col text-[#211C6A] w-[850px]">
             <div className="flex justify-between">
@@ -248,78 +271,77 @@ const PurchaseHistory = () => {
             </div>
 
             <ul className="flex border-b-2 border-gray-200 w-full px-4 justify-between text-gray-500">
-                    <li
-                        onClick={() => handleButtonClick(0)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 0
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        All
-                    </li>
-                    <li
-                        onClick={() => handleButtonClick(1)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 1
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                       To Pay
-                    </li>
-                    <li
-                        onClick={() => handleButtonClick(2)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 2
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        To Ship
-                    </li>
-                    <li
-                        onClick={() => handleButtonClick(3)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 3
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        To Receive
-                    </li>
-                    <li
-                        onClick={() => handleButtonClick(4)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 4
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        Completed
-                    </li>
-                    <li
-                        onClick={() => handleButtonClick(5)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 5
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        Cancelled
-                    </li>
-                    <li
-                        onClick={() => handleButtonClick(6)}
-                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 6
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        Return Refund
-                    </li>
-                    
-                </ul>
+                <li
+                    onClick={() => handleButtonClick(0)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 0
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    All
+                </li>
+                <li
+                    onClick={() => handleButtonClick(1)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 1
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    To Pay
+                </li>
+                <li
+                    onClick={() => handleButtonClick(2)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 2
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    To Ship
+                </li>
+                <li
+                    onClick={() => handleButtonClick(3)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 3
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    To Receive
+                </li>
+                <li
+                    onClick={() => handleButtonClick(4)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 4
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    Completed
+                </li>
+                <li
+                    onClick={() => handleButtonClick(5)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 5
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    Cancelled
+                </li>
+                <li
+                    onClick={() => handleButtonClick(6)}
+                    className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                        selectedButton === 6
+                            ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                            : ""
+                    }`}
+                >
+                    Return Refund
+                </li>
+            </ul>
 
             <div className="flex bg-white w-full mb-4"></div>
 
