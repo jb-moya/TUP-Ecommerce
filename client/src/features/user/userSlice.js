@@ -84,7 +84,7 @@ export const updatePassword = createAsyncThunk("user/updatePassword", async (dat
 });
 
 export const selectUserID = (state) => state.user._id;
-export const getUserRole = (state) => state.user ? state.user.role : "guest";
+export const getUserRole = (state) => state.user.user ? state.user.user.role : "guest";
 export const isUserLogged = (state) => state.user.isLogged;
 
 export const fetchUser = () => async (dispatch) => {

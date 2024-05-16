@@ -29,7 +29,7 @@ const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
     const userRole = useSelector(getUserRole)
-
+    // toast.info(`User Role: ${userRole}`);
     if (allowedRoles.includes(userRole) || allowGuest) {
         return <>{children}</>;
     } else {

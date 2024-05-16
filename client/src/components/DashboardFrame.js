@@ -86,6 +86,7 @@ export const DashboardFrame = () => {
                             ],
                         ],
                         page: currentPage,
+                        orderStatus: "completed",
                     },
                 }
             );

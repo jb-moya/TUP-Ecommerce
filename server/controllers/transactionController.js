@@ -85,6 +85,7 @@ const getTotalRevenue = asyncWrapper(async (req, res) => {
                     mongoose.Types.ObjectId.createFromHexString(
                         req.user.userId
                     ),
+                "orderStatus": "Completed",
             },
         },
         {

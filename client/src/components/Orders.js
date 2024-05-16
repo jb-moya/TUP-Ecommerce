@@ -29,6 +29,9 @@ const orderAction = {
 const OrderRow = ({ order }) => {
     return (
         <tr className="border-t">
+            <td className="p-2">
+                <input type="checkbox" />
+            </td>
             <td className="p-2" colSpan="4">
                 {order.product.name}
             </td>
@@ -288,6 +291,9 @@ export const Orders = () => {
                 <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-sm ">
                     <thead>
                         <tr className="text-left bg-gray-300">
+                            <th className="p-2">
+                                <input type="checkbox" />
+                            </th>
                             <th className="p-2" colSpan="4">
                                 Product(s)
                             </th>

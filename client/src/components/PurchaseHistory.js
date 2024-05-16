@@ -14,11 +14,11 @@ const HistoryItem = (transaction) => {
 
     return (
         <>
-            <div className="flex bg-white w-full mb-4">
+            <div className="flex bg-white rounded-lg w-full mb-4">
                 <div className="flex flex-row justify-between w-full p-4">
                     <div className="flex flex-row w-full">
                         <img
-                            className="h-[100px] w-[100px] rounded"
+                            className="h-[100px] w-[100px] rounded-lg object-cover"
                             src={transaction.product.image[0]}
                             alt="Logo Here"
                             loading="lazy"
