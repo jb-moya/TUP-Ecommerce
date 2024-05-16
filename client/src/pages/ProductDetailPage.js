@@ -275,7 +275,6 @@ const ProductDetailPage = (props) => {
                                         ? "pointer"
                                         : "not-allowed",
                                 }}
-                                // data-tooltip-variant="info"
                             >
                                 <div className="flex items-center">
                                     <IoCart size={28} />{" "}

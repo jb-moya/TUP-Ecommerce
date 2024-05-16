@@ -13,6 +13,15 @@ import { toast } from "react-toastify";
 import formatData from "./utils/formatData";
 axios.defaults.withCredentials = true;
 
+const orderStatus = {
+    0: "",
+    1: "To Pay",
+    2: "To Ship",
+    3: "To Recieve",
+    4: "Completed",
+    5: "Cancelled",
+};
+
 const HistoryItem = (transaction) => {
     const createdAt = formatData(transaction.createdAt);
 
@@ -31,7 +40,7 @@ const HistoryItem = (transaction) => {
                             <h1 className="text-lg pl-1 py-[1px]">
                                 {transaction.product.name}
                             </h1>
-                            <div className="flex flex-col justify-between h-full">
+                            <div className="flex flex-col h-full">
                                 <h1 className="text-xs pl-1 py-[1px]">
                                     {transaction.product.variation.length >
                                         0 && (
@@ -58,9 +67,9 @@ const HistoryItem = (transaction) => {
                                 <div className="text-sm pl-1 py-[1px]">
                                     Order Total: ₱ {transaction.totalAmount}
                                 </div>
-                                <div className="flex justify-between py-[1px]">
-                                    <h1 className="text-xs border border-1 rounded-lg w-fit px-2">
-                                        status: {transaction.orderStatus}
+                                <div className="flex justify-between py-[1px] mt-auto">
+                                    <h1 className={`text-xs border border-1 rounded-lg w-fit px-2 ${transaction.orderStatus === "Completed" ? "bg-green-100 border-0" : ""}`}>
+                                        {transaction.orderStatus}
                                     </h1>
                                     <div className="text-sm font-extralight">
                                         Date ordered: {createdAt}
@@ -69,7 +78,7 @@ const HistoryItem = (transaction) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col w-[130px] justify-between">
+                    <div className="flex flex-col w-[130px] justify-between h-[130px]">
                         <button className="flex border hover:bg-gray-200  border-[#211C6A] text-[#211C6A] text-xs items-center justify-center h-10 rounded-xl">
                             <Link
                                 className="flex justify-center items-center"
@@ -78,23 +87,20 @@ const HistoryItem = (transaction) => {
                                 <CiShop size={25} className="mr-2" /> View Shop
                             </Link>
                         </button>
-                        <button className="flex bg-[#211C6A] hover:bg-opacity-70   text-white items-center justify-center h-10 text-sm p-4 rounded-xl">
+                        <button className="flex bg-[#211C6A] hover:bg-opacity-70 text-white items-center justify-center h-10 text-sm p-4 rounded-xl">
                             Buy Again
                         </button>
+                        {(transaction.orderStatus === orderStatus[1] ||
+                            transaction.orderStatus === orderStatus[2]) && (
+                            <button className="flex border border-1 border-[#211c6a8f] hover:bg-red-500 hover:text-white hover:border-red-500 items-center justify-center h-10 text-sm p-2 rounded-xl">
+                                Cancel Order
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
         </>
     );
-};
-
-const orderStatus = {
-    0: "",
-    1: "To Pay",
-    2: "To Ship",
-    3: "To Recieve",
-    4: "Completed",
-    5: "Cancelled",
 };
 
 const PurchaseHistory = () => {
@@ -107,7 +113,7 @@ const PurchaseHistory = () => {
     const [toggleDateSort, setToggleDateSort] = useState(1);
     const [toggleTotalAmountSort, setToggleTotalAmountSort] = useState(1);
     const [searchName, setSearchName] = useState("");
-    const [selectedButton, setSelectedButton] = useState(0); // Changed initial value to 1 for Dashboard
+    const [selectedButton, setSelectedButton] = useState(0);
 
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);

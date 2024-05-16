@@ -69,6 +69,22 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
     });
 });
 
+const updateTransaction = asyncWrapper(async (req, res, next) => {
+    const { orders, orderStatus } = req.body;
+
+    if (!orderStatus) {
+        return next(createCustomError("Please provide order status", 400));
+    }
+
+    const transactions = await Transaction.updateMany(
+        { _id: { $in: orders } },
+        { orderStatus },
+        { new: true, runValidators: true }
+    );
+
+    res.status(StatusCodes.OK).json({ transactions });
+});
+
 const getTotalRevenue = asyncWrapper(async (req, res) => {
     const result = await Transaction.aggregate([
         {
@@ -120,4 +136,9 @@ const createTransaction = asyncWrapper(async (req, res) => {
     res.status(StatusCodes.CREATED).json({ transaction });
 });
 
-export { getAllTransactions, createTransaction, getTotalRevenue };
+export {
+    getAllTransactions,
+    createTransaction,
+    getTotalRevenue,
+    updateTransaction,
+};

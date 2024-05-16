@@ -9,6 +9,10 @@ import {
 import { useLocation } from "react-router-dom";
 import convertToBase64 from "./utils/convertToBase64.js";
 import ex from "../Assets/ex.png";
+import { FaCheckCircle } from "react-icons/fa";
+import { Tooltip } from "react-tooltip";
+import { toast } from "react-toastify";
+
 axios.defaults.withCredentials = true;
 
 const orderStatus = {
@@ -18,6 +22,7 @@ const orderStatus = {
     3: "To Recieve",
     4: "Completed",
     5: "Cancelled",
+    6: "Refunded",
 };
 
 const orderAction = {
@@ -142,6 +147,25 @@ export const Orders = () => {
         }
     }, [currentPage, selectedButton]);
 
+    const handleUpdateStatus = async () => {
+        try {
+            const response = await axios.patch(
+                `http://localhost:5000/api/v1/transactions`,
+                {
+                    orders: selectedOrders,
+                    orderStatus: orderStatus[selectedButton + 1],
+                }
+            );
+            console.log(response);
+            fetchAllTransactions();
+
+            toast.success("Orders have been marked as 'To Ship'!");
+        } catch (error) {
+            toast.error("An error occurred. Please try again.");
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         fetchAllTransactions();
 
@@ -221,16 +245,16 @@ export const Orders = () => {
                     >
                         Cancellation
                     </li>
-                    {/* <li
-                        onClick={() => handleButtonClick(7)}
+                    <li
+                        onClick={() => handleButtonClick(6)}
                         className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 7
+                            selectedButton === 6
                                 ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
                                 : ""
                         }`}
                     >
                         Return/Refund
-                    </li> */}
+                    </li>
                 </ul>
 
                 <div className="flex flex-row w-full items-center justify-between">
@@ -303,28 +327,84 @@ export const Orders = () => {
                                 <option value="option3">Option 3</option>
                             </select>
                         </div>
+                        <Tooltip
+                            id="my-tooltip"
+                            style={{
+                                backgroundColor: "#211c6a",
+                                color: "#fff",
+                                borderRadius: "8px",
+                            }}
+                        />
 
                         {selectedButton === 1 ? (
-                            <div className="px-4 py-2 rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                            <button
+                                type="button"
+                                className={`px-4 py-2 ${
+                                    selectedOrders.length === 0
+                                        ? `cursor-not-allowed`
+                                        : `cursor-pointer`
+                                } rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300`}
+                                data-tooltip-id="my-tooltip"
+                                data-tooltip-content={
+                                    selectedOrders.length === 0
+                                        ? "Please select orders first!"
+                                        : ""
+                                }
+                                disabled={selectedOrders.length === 0}
+                                data-tooltip-place="top"
+                                onClick={handleUpdateStatus}
+                            >
                                 <CiDeliveryTruck size={20} className="" />
                                 <div className="ml-2">
                                     {orderAction[selectedButton]}
                                 </div>
-                            </div>
+                            </button>
                         ) : selectedButton === 2 ? (
-                            <div className="px-4 py-2 rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                            <button
+                                type="button"
+                                className={`px-4 py-2 ${
+                                    selectedOrders.length === 0
+                                        ? `cursor-not-allowed`
+                                        : `cursor-pointer`
+                                } rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300`}
+                                data-tooltip-id="my-tooltip"
+                                data-tooltip-content={
+                                    selectedOrders.length === 0
+                                        ? "Please select orders first!"
+                                        : ""
+                                }
+                                disabled={selectedOrders.length === 0}
+                                data-tooltip-place="top"
+                                onClick={handleUpdateStatus}
+                            >
                                 <CiDeliveryTruck size={20} className="" />
                                 <div className="ml-2">
                                     {orderAction[selectedButton]}
                                 </div>
-                            </div>
+                            </button>
                         ) : selectedButton === 3 ? (
-                            <div className="px-4 py-2 rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
-                                <CiDeliveryTruck size={20} className="" />
+                            <button
+                                type="button"
+                                className={`px-4 py-2 ${
+                                    selectedOrders.length === 0
+                                        ? `cursor-not-allowed`
+                                        : `cursor-pointer`
+                                } rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300`}
+                                data-tooltip-id="my-tooltip"
+                                data-tooltip-content={
+                                    selectedOrders.length === 0
+                                        ? "Please select orders first!"
+                                        : ""
+                                }
+                                disabled={selectedOrders.length === 0}
+                                data-tooltip-place="top"
+                                onClick={handleUpdateStatus}
+                            >
+                                <FaCheckCircle size={20} className="" />
                                 <div className="ml-2">
                                     {orderAction[selectedButton]}
                                 </div>
-                            </div>
+                            </button>
                         ) : (
                             <></>
                         )}

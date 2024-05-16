@@ -37,7 +37,7 @@ const transactionSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        enum: ["To Pay", "To Ship", "To Recieve", "Completed", "Cancelled"],
+        enum: ["To Pay", "To Ship", "To Recieve", "Completed", "Cancelled", "Refunded"],
         default: "To Pay",
     },
     createdAt: {

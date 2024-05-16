@@ -6,6 +6,7 @@ import {
     getAllTransactions,
     createTransaction,
     getTotalRevenue,
+    updateTransaction,
 } from "../controllers/transactionController.js";
 
 router
@@ -15,10 +16,11 @@ router
         authorizePermissions("customer", "seller"),
         getAllTransactions
     )
-    .post(
+    .post(authenticateUser, authorizePermissions("customer"), createTransaction)
+    .patch(
         authenticateUser,
-        authorizePermissions("customer"),
-        createTransaction
+        authorizePermissions("customer", "seller"),
+        updateTransaction
     );
 
 router.route("/revenue").get(authenticateUser, getTotalRevenue);
