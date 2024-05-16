@@ -6,6 +6,7 @@ import { FaStar } from "react-icons/fa";
 const ProductCard = ({ product }) => {
     return (
         <Link
+            // shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
             to={`/product/${product._id}`}
             className="group relative flex flex-col h-[250px] rounded-xl border border-[#211C6A] border-opacity-20 cursor-pointer hover:scale-[1.04] hover:shadow-md transition-all duration-100 ease-in-out"
         >
@@ -18,7 +19,7 @@ const ProductCard = ({ product }) => {
                     loading="lazy"
                 />
             </div>
-            <div className="flex flex-col h-[90px] m-2 text-sm overflow-hidden">
+            <div className="flex flex-col h-[90px] p-2 text-sm overflow-hidden shadow-[0px_-24px_3px_-2px_rgba(0,0,0,0.08)] z-10">
                 <p className="line-clamp-2 leading-[17px]">
                     {product.name || "No Name"}
                 </p>
@@ -41,9 +42,9 @@ const ProductCard = ({ product }) => {
                     </div>
                 </div>
             </div>
-            <div className="">
+            <div className="z-[11]">
                 {product.createdBy.orgName && (
-                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[9px] transition-all duration-500 ease-in-out group-hover:text-[10px] px-2 text-xs top-[138px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
+                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[9px] transition-all duration-500 ease-in-out group-hover:text-[10px] px-2 text-xs top-[130px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
                         <img
                             src={product.createdBy.image || logoUnsaturated}
                             alt="Logo Here"
@@ -52,7 +53,7 @@ const ProductCard = ({ product }) => {
                         {product.createdBy.orgName}
                     </div>
                 )}
-                <div className="absolute text-[11px] top-[132px] right-0 w-fit rounded-tl-md pl-[4px] bg-white">
+                <div className="absolute text-[11px] top-[134px] right-0 w-fit rounded-tl-md pl-[4px] bg-white">
                     {product.averageRating > 0 && (
                         <div className="flex text-center justify-center align-middle items-center">
                             {product.averageRating} <FaStar color="#FFC107" />
