@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import StarRating from "./StarRating";
 import axios from "axios";
+import { Tooltip } from "react-tooltip";
+import { useSelector } from "react-redux";
+import { isUserLogged } from "../features/user/userSlice";
+
 axios.defaults.withCredentials = true;
 
 const RatingAverageBar = ({ star, percentage, count }) => {
@@ -29,6 +33,7 @@ const RatingAverageBar = ({ star, percentage, count }) => {
 };
 
 const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
+    const userLogged = useSelector(isUserLogged);
     const [totalReviews, setTotalReviews] = useState(0);
     const initialBarWidth = Array.from({ length: 5 }, (_, index) => ({
         rating: 5 - index,
@@ -112,12 +117,26 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                     ))}
                 </div>
             </div>
-
+            <Tooltip
+                id="my-tooltip"
+                style={{
+                    backgroundColor: "#211c6a",
+                    color: "#fff",
+                    borderRadius: "8px",
+                }}
+            />
             <div className="w-3/12 flex justify-center items-center">
                 <button
                     type="button"
                     className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
                     onClick={clickWriteReview}
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content={
+                        userLogged ? "" : "Please log in to buy!"
+                    }
+                    data-tooltip-place="top"
+                    disabled={!userLogged}
+                    style={{ cursor: userLogged ? "pointer" : "not-allowed" }}
                 >
                     {toggleWriteReview ? "Cancel" : "Write a review"}
                 </button>

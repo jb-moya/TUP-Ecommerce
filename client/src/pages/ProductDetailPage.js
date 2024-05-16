@@ -20,11 +20,14 @@ import { Link } from "react-router-dom";
 import { addToCart } from "../features/cart/cartSlice.js";
 import { IoCart } from "react-icons/io5";
 import formatPrice from "../components/utils/formatPrice.js";
+import { isUserLogged } from "../features/user/userSlice.js";
+import { Tooltip } from "react-tooltip";
 
 axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
     const dispatch = useDispatch();
+    const userLogged = useSelector(isUserLogged);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -93,8 +96,7 @@ const ProductDetailPage = (props) => {
         setIsOpenWriteReview(!isOpenWriteReview);
     };
 
-    const handleVariationPick = (variation) => {
-    };
+    const handleVariationPick = (variation) => {};
 
     const handleSelectedVariationChange = (variation) => {
         setSelectedVariation(variation);
@@ -103,7 +105,7 @@ const ProductDetailPage = (props) => {
         setTimeout(() => {
             setPuffAnimationPrice(false);
         }, 200); // 200 milliseconds, same duration as the CSS transition
-    }
+    };
 
     return (
         <div className="mt-32">
@@ -209,7 +211,9 @@ const ProductDetailPage = (props) => {
                                     variationClass={
                                         productDetails.variationClass
                                     }
-                                    setSelectedVariation={handleSelectedVariationChange}
+                                    setSelectedVariation={
+                                        handleSelectedVariationChange
+                                    }
                                 />
                             )
                         )}
@@ -248,10 +252,30 @@ const ProductDetailPage = (props) => {
                         </div>
                     </div>
                     <div className="w-full mt-4 flex items-center">
+                        <Tooltip
+                            id="my-tooltip"
+                            style={{
+                                backgroundColor: "#211c6a",
+                                color: "#fff",
+                                borderRadius: "8px",
+                            }}
+                        />
                         <div className="w-4/12 flex flex-col align-middle items-center">
                             <button
                                 className="w-9/12 p-2 border rounded bg-[#a6bec2] text-white hover:border-violet-500"
                                 onClick={handleAddToCart}
+                                data-tooltip-id="my-tooltip"
+                                data-tooltip-content={
+                                    userLogged ? "" : "Please log in to buy!"
+                                }
+                                data-tooltip-place="top"
+                                disabled={!userLogged}
+                                style={{
+                                    cursor: userLogged
+                                        ? "pointer"
+                                        : "not-allowed",
+                                }}
+                                // data-tooltip-variant="info"
                             >
                                 <div className="flex items-center">
                                     <IoCart size={28} />{" "}
@@ -263,6 +287,17 @@ const ProductDetailPage = (props) => {
                                 onClick={() => {
                                     handleAddToCart();
                                     navigate("/cart");
+                                }}
+                                data-tooltip-id="my-tooltip"
+                                data-tooltip-content={
+                                    userLogged ? "" : "Please log in to buy!"
+                                }
+                                data-tooltip-place="top"
+                                disabled={!userLogged}
+                                style={{
+                                    cursor: userLogged
+                                        ? "pointer"
+                                        : "not-allowed",
                                 }}
                             >
                                 Buy Now
@@ -302,7 +337,12 @@ const ProductDetailPage = (props) => {
                         <div className="px-8 mt-2 font-semibold text-lg leading-relaxed text-[#211c6a]">
                             Product Details
                         </div>
-                        <div className="px-8 font-light" dangerouslySetInnerHTML={{ __html: productDetails.description}}>
+                        <div
+                            className="px-8 font-light"
+                            dangerouslySetInnerHTML={{
+                                __html: productDetails.description,
+                            }}
+                        >
                             {/* {productDetails.description} */}
                         </div>
                     </div>

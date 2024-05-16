@@ -285,6 +285,7 @@ export const AddProductFrame = () => {
 
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
+        console.log("base64: ", base64);
         setPostImage((prev) => {
             const newPostImage = [...prev];
             newPostImage[parseInt(e.target.id, 10)] = {

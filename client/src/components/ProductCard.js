@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
                         <img
                             src={product.createdBy.image || logoUnsaturated}
                             alt="Logo Here"
-                            className="w-4 h-4 rounded-full inline-block mr-1 border border-1 border-gray-400"
+                            className="w-4 h-4 rounded-full inline-block mr-1 border-gray-400"
                         />
                         {product.createdBy.orgName}
                     </div>

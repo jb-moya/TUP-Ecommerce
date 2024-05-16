@@ -57,11 +57,47 @@ const deleteReview = asyncWrapper(async (req, res, next) => {
 
 const getAllReviews = asyncWrapper(async (req, res, next) => {
     const { id: productID } = req.params;
+    console.log("productID tite", productID);
+    const { sort, numericFilters } = req.query;
 
-    const reviews = await Review.find({ product: productID }).populate(
+    const queryObject = {};
+    queryObject.product = productID;
+
+    if (numericFilters) {
+        const operatorMap = {
+            ">": "$gt",
+            ">=": "$gte",
+            "=": "$eq",
+            "<": "$lt",
+            "<=": "$lte",
+        };
+
+        const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+        let filters = numericFilters.replace(
+            regEx,
+            (match) => `-${operatorMap[match]}-`
+        );
+
+        const options = ["rating"];
+        filters = filters.split(",").forEach((item) => {
+            const [field, operator, value] = item.split("-");
+            if (options.includes(field)) {
+                queryObject[field] = { [operator]: Number(value) };
+            }
+        });
+    }
+
+    const result = Review.find(queryObject).populate(
         "user",
         "firstName lastName image"
     );
+
+    let countTotal = await Review.countDocuments(queryObject);
+    if (sort) {
+        result.sort(sort);
+    }
+
+    let reviews = await result;
 
     if (!reviews) {
         return next(
@@ -69,9 +105,7 @@ const getAllReviews = asyncWrapper(async (req, res, next) => {
         );
     }
 
-    // // console.log("HEHE", reviews, productID);
-
-    res.status(StatusCodes.OK).json({ reviews });
+    res.status(StatusCodes.OK).json({ reviews, count: countTotal });
 });
 
 const getReviewTotals = asyncWrapper(async (req, res, next) => {

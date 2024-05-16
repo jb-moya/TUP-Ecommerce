@@ -24,6 +24,7 @@ import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 import { getUserRole } from "./features/user/userSlice.js";
 import Playground from "./pages/Playground.js";
 import { toast } from "react-toastify";
+import "react-tooltip/dist/react-tooltip.css";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
@@ -74,7 +75,6 @@ function App() {
                     <Route path="/search" element={<SearchPage />} />
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
-                    <Route path="/not-allowed" element={<NotAllowed />} />
                     <Route path="*" element={<NotFound />} />
                     <Route
                         path="sellercenter"

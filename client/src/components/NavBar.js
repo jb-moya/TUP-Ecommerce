@@ -291,7 +291,7 @@ export const NavBar = ({
                     ) : (
                         <button
                             onClick={handleClick}
-                            className={`${ColorAnnouncementText} ${bgColorAnnouncement} hover:shadow-zinc-50 hover:shadow-sm hover:scale-[1.1] font-semibold py-2 px-5 border border-[#211C6A] text-sm transition ease-in-out duration-200`}
+                            className={`${ColorAnnouncementText} ${bgColorAnnouncement} hover:shadow-zinc-50 rounded-lg hover:shadow-sm hover:scale-[1.1] font-semibold py-2 px-5 border border-[#211C6A] text-sm transition ease-in-out duration-200`}
                         >
                             Login
                         </button>

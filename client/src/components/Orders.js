@@ -7,6 +7,8 @@ import {
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
 import { useLocation } from "react-router-dom";
+import convertToBase64 from "./utils/convertToBase64.js";
+import ex from "../Assets/ex.png";
 axios.defaults.withCredentials = true;
 
 const orderStatus = {
@@ -16,6 +18,12 @@ const orderStatus = {
     3: "To Recieve",
     4: "Completed",
     5: "Cancelled",
+};
+
+const orderAction = {
+    1: "Ship my Orders",
+    2: "Mark as 'Shipping'",
+    3: "Mark as 'Completed'",
 };
 
 const OrderRow = ({ order }) => {
@@ -61,15 +69,9 @@ export const Orders = () => {
 
         console.log("selectedButton", selectedButton);
     }, [location.search, selectedButton]);
-    
+
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
-    };
-
-    const [selectedButton1, setSelectedButton1] = useState(1); // Changed initial value to 1 for Dashboard
-
-    const handleButtonClick1 = (buttonNumber1) => {
-        setSelectedButton1(buttonNumber1);
     };
 
     const fetchAllTransactions = useCallback(async () => {
@@ -255,10 +257,31 @@ export const Orders = () => {
                                 <option value="option3">Option 3</option>
                             </select>
                         </div>
-                        <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
-                            <CiDeliveryTruck size={20} className="" />
-                            <div className="ml-2">Ship My Orders</div>
-                        </div>
+
+                        {selectedButton === 1 ? (
+                            <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                                <CiDeliveryTruck size={20} className="" />
+                                <div className="ml-2">
+                                    {orderAction[selectedButton]}
+                                </div>
+                            </div>
+                        ) : selectedButton === 2 ? (
+                            <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                                <CiDeliveryTruck size={20} className="" />
+                                <div className="ml-2">
+                                    {orderAction[selectedButton]}
+                                </div>
+                            </div>
+                        ) : selectedButton === 3 ? (
+                            <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                                <CiDeliveryTruck size={20} className="" />
+                                <div className="ml-2">
+                                    {orderAction[selectedButton]}
+                                </div>
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </div>
 

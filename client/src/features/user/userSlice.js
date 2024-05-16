@@ -61,7 +61,6 @@ export const updateUser = createAsyncThunk("user/updateUser", async (data, thunk
 export const updatePassword = createAsyncThunk("user/updatePassword", async (data, thunkAPI) => {
     try {
         console.log("data", data);
-        // http://localhost:5000/api/v1
         const response = await axios.patch(
             `${rootURL}/user/updateUserPassword`,
             {
