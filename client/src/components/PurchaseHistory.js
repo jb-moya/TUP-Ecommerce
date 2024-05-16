@@ -84,6 +84,12 @@ const PurchaseHistory = () => {
     const [toggleDateSort, setToggleDateSort] = useState(1);
     const [toggleTotalAmountSort, setToggleTotalAmountSort] = useState(1);
     const [searchName, setSearchName] = useState("");
+    const [selectedButton, setSelectedButton] = useState(0); // Changed initial value to 1 for Dashboard
+
+    
+    const handleButtonClick = (buttonNumber) => {
+        setSelectedButton(buttonNumber);
+    };
 
     const debounce = (func, delay) => {
         let timeoutId;
@@ -210,6 +216,8 @@ const PurchaseHistory = () => {
         }
     };
 
+
+    
     return (
         <div className="flex flex-col text-[#211C6A] w-[850px]">
             <div className="flex justify-between">
@@ -238,6 +246,80 @@ const PurchaseHistory = () => {
                     </div>
                 </div>
             </div>
+
+            <ul className="flex border-b-2 border-gray-200 w-full px-4 justify-between text-gray-500">
+                    <li
+                        onClick={() => handleButtonClick(0)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 0
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                        All
+                    </li>
+                    <li
+                        onClick={() => handleButtonClick(1)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 1
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                       To Pay
+                    </li>
+                    <li
+                        onClick={() => handleButtonClick(2)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 2
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                        To Ship
+                    </li>
+                    <li
+                        onClick={() => handleButtonClick(3)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 3
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                        To Receive
+                    </li>
+                    <li
+                        onClick={() => handleButtonClick(4)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 4
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                        Completed
+                    </li>
+                    <li
+                        onClick={() => handleButtonClick(5)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 5
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                        Cancelled
+                    </li>
+                    <li
+                        onClick={() => handleButtonClick(6)}
+                        className={`p-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 6
+                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
+                                : ""
+                        }`}
+                    >
+                        Return Refund
+                    </li>
+                    
+                </ul>
 
             <div className="flex bg-white w-full mb-4"></div>
 
