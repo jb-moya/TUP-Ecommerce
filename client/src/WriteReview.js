@@ -3,9 +3,10 @@ import StarRating from "./components/StarRating";
 
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 axios.defaults.withCredentials = true;
 
-const WriteReview = ({ productID }) => {
+const WriteReview = ({ productID, closeWriteReviewComponent }) => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
     const [starRating, setStarRating] = useState(1);
@@ -14,43 +15,32 @@ const WriteReview = ({ productID }) => {
     const [title, setTitle] = useState("");
 
     useEffect(() => {
-        // Retrieve user data from localStorage
-        // const storedUser = localStorage.getItem("user");
-        // if (storedUser) {
-        // Parse the JSON string back into an object
-        // const userObject = JSON.parse(storedUser);
-        // // console.log("User data found in localStorage:", userObject);
-        // Now you can access properties of the user object
-        // // console.log("User ID:", userObject.user._id);
-        // // console.log("First Name:", userObject.user.firstName);
-        // // console.log("Last Name:", userObject.user.lastName);
-        // // console.log("Email:", userObject.user.email);
-        // // console.log("Role:", userObject.user.role);
-        // setUserID(userObject.user._id);
-        // Access other properties as needed
-        // Set the user object in your component state if necessary
-        // setUser(userObject);
-        // } else {
-        // // console.log("User data not found in localStorage.");
-        // }
-    }, []); // Empty dependency array ensures this effect runs only once on mount
-
-    useEffect(() => {
-        // // console.log("Star Rating: ", starRating);
     }, [starRating]);
 
-    const handleSubmitReview = () => {
+    const handleSubmitReview = async () => {
         try {
-            let response = axios.post("http://localhost:5000/api/v1/reviews", {
-                product: productID,
-                title: title,
-                comment: review,
-                rating: starRating,
-                user: user._id,
-            });
+            let response = await axios.post(
+                "http://localhost:5000/api/v1/reviews",
+                {
+                    product: productID,
+                    title: title,
+                    comment: review,
+                    rating: starRating,
+                    user: user._id,
+                }
+            );
 
-            // console.log(response);
-            // refresh page
+            console.log("writing review response", response);
+
+            if (response.status === 200 || response.status === 201) {
+                toast.success("Review submitted successfully!");
+                // refresh page
+                closeWriteReviewComponent();
+                window.location.reload();
+            } else {
+                toast.error("Failed to submit review.");
+            }
+
             window.location.reload();
         } catch (error) {
             console.error(error);

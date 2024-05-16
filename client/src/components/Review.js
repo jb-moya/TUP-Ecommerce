@@ -85,9 +85,6 @@ const Review = ({ productID }) => {
     useEffect(() => {
         fetchReviews();
 
-        // console.log(toggleDateSort, starFilter);
-        // console.log(toggleDateSort, starFilter);
-
         const params = [
             buildQueryParam("rating", starFilter > 0 ? starFilter : ""),
             buildQueryParam(

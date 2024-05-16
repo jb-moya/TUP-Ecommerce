@@ -368,7 +368,14 @@ const ProductDetailPage = (props) => {
                 <hr className="w-full rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
 
                 <div className="flex flex-col">
-                    {isOpenWriteReview && <WriteReview productID={id} />}
+                    {isOpenWriteReview && (
+                        <WriteReview
+                            productID={id}
+                            closeWriteReviewComponent={() =>
+                                setIsOpenWriteReview(false)
+                            }
+                        />
+                    )}
 
                     <div>
                         <Review productID={id} />

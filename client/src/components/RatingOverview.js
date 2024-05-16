@@ -132,7 +132,7 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                     onClick={clickWriteReview}
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={
-                        userLogged ? "" : "Please log in to buy!"
+                        userLogged ? "" : "Please log in to write a review >:("
                     }
                     data-tooltip-place="top"
                     disabled={!userLogged}
