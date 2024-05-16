@@ -4,18 +4,18 @@ import debounce from "../components/utils/debounce.js";
 
 const handleMinMaxInput = (e, setInputValue, defaultMin = 0) => {
     e.preventDefault();
-    
+
     const { name, value } = e.target;
-    
+
     let newValue = defaultMin;
     if (!isNaN(parseInt(value))) {
         newValue = parseInt(value);
     }
-    
+
     if (newValue < defaultMin) {
         newValue = defaultMin;
     }
-    
+
     // setInputValue([defaultMin, defaultMin]);
 
     if (name === "min") {
@@ -38,7 +38,7 @@ const RangeInput = ({ label, min = 0, handleOnChange, bla }) => {
         <div className="text-sm flex items-center mt-4">
             <div>{label}</div>
             <input
-                className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+                className="rounded-xl border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
                 placeholder="Input"
                 type="number"
                 min={min}
@@ -46,7 +46,7 @@ const RangeInput = ({ label, min = 0, handleOnChange, bla }) => {
             />
             ~
             <input
-                className="rounded-md border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+                className="rounded-xl border border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
                 placeholder="Input"
                 type="number"
                 min={min}

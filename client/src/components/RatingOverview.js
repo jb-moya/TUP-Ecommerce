@@ -21,7 +21,7 @@ const RatingAverageBar = ({ star, percentage, count }) => {
                 <div className="w-full bg-gray-200 text-center text-white rounded">
                     <div
                         style={{ width: `${percentage}%` }}
-                        className={`rounded h-1 bg-[#59b5c3]`}
+                        className={`rounded-lg h-1 bg-[#59b5c3]`}
                     ></div>
                 </div>
             </div>
@@ -128,7 +128,7 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
             <div className="w-3/12 flex justify-center items-center">
                 <button
                     type="button"
-                    className="p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
+                    className="p-2 border rounded-lg bg-[#59b5c3] text-white hover:border-violet-500"
                     onClick={clickWriteReview}
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={

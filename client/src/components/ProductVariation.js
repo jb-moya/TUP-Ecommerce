@@ -34,7 +34,7 @@ const ToggleButtonsComponent = ({
                             selectedOption === option._id
                                 ? "bg-[#59b5c3] text-white"
                                 : "text-gray-600"
-                        } mb-2 rounded mr-2 h-min py-1 border-[#59b4c3]  border-2 hover:border-violet-500  hover:text-violet-500`}
+                        } mb-2 rounded-lg mr-2 h-min py-1 border-[#59b4c3]  border-2 hover:border-violet-500  hover:text-violet-500`}
                     >
                         <label key={idx} className="p-1 w-14 cursor-pointer">
                             <input

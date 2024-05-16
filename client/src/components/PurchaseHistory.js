@@ -56,7 +56,7 @@ const HistoryItem = (transaction) => {
                         </div>
                     </div>
                     <div className="flex flex-col w-[130px] justify-between">
-                        <button className="flex border hover:bg-gray-200  border-[#211C6A] text-[#211C6A] text-xs items-center justify-center h-10 rounded-md">
+                        <button className="flex border hover:bg-gray-200  border-[#211C6A] text-[#211C6A] text-xs items-center justify-center h-10 rounded-xl">
                             <Link
                                 className="flex justify-center items-center"
                                 to={`/org/${transaction.product.createdBy}`}
@@ -64,7 +64,7 @@ const HistoryItem = (transaction) => {
                                 <CiShop size={25} className="mr-2" /> View Shop
                             </Link>
                         </button>
-                        <button className="flex bg-[#211C6A] hover:bg-opacity-70   text-white items-center justify-center h-10 text-sm p-4 rounded-md">
+                        <button className="flex bg-[#211C6A] hover:bg-opacity-70   text-white items-center justify-center h-10 text-sm p-4 rounded-xl">
                             Buy Again
                         </button>
                     </div>
@@ -219,7 +219,7 @@ const PurchaseHistory = () => {
                 <div className="flex flex-row items-center h-full justify-center">
                     <div className="flex justify-end text-[#211C6A]  ">
                         <select
-                            className="border border-[#211C6A] rounded-md h-9 w-32 px-2 outline-none text-sm"
+                            className="border border-[#211C6A] rounded-xl h-9 w-32 px-2 outline-none text-sm"
                             defaultValue="Filter By"
                             onChange={handleSortChange}
                         >
@@ -230,7 +230,7 @@ const PurchaseHistory = () => {
                     </div>
                     <div className="relative">
                         <input
-                            className="mx-4 bg-white border border-[#211C6A] rounded-md py-2 px-4 pl-10 text-sm appearance-none outline-none "
+                            className="mx-4 bg-white border border-[#211C6A] rounded-xl py-2 px-4 pl-10 text-sm appearance-none outline-none "
                             placeholder="Search"
                             onChange={delayedHandleSearchNameChange}
                         />

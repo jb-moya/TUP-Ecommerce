@@ -438,7 +438,7 @@ export const AddProductFrame = () => {
                 </div>
                 <div>
                     <input
-                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-5 text-sm"
+                        className="w-11/12 mb-5 h-6 border-2 rounded-xl px-3 mt-5 text-sm"
                         type="text"
                         placeholder="Enter product name"
                         value={formData.name}
@@ -458,7 +458,7 @@ export const AddProductFrame = () => {
                 <div>
                     <input
                         ref={priceRef}
-                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                        className="w-11/12 mb-5 h-6 border-2 rounded-xl px-3 mt-3 text-sm"
                         type="number"
                         placeholder="Enter price"
                         disabled={variation.length > 0}
@@ -469,7 +469,7 @@ export const AddProductFrame = () => {
                 <div>
                     <input
                         ref={stockRef}
-                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                        className="w-11/12 mb-5 h-6 border-2 rounded-xl px-3 mt-3 text-sm"
                         type="number"
                         placeholder="Enter stock"
                         disabled={variation.length > 0}
@@ -479,7 +479,7 @@ export const AddProductFrame = () => {
 
                 <div>
                     <input
-                        className="w-11/12 mb-5 h-6 border-2 rounded-md px-3 mt-3 text-sm"
+                        className="w-11/12 mb-5 h-6 border-2 rounded-xl px-3 mt-3 text-sm"
                         type="text"
                         placeholder="Make it descriptive!"
                         disabled={variation.length === 0}

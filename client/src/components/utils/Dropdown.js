@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const DropDownMenu = ({ label, options, selectedOption, onSelectOption }) => {
     return (
         <div className="relative inline-block group pr-4 pb-4 z-10">
-            <button className="w-[140px] py-1 rounded text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
+            <button className="w-[140px] py-1 rounded-lg text-base cursor-pointer bg-[#59b5c3] text-white border hover:border-violet-500 focus:ring-opacity-50">
                 {options[selectedOption] || label}
             </button>
-            <div className="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
+            <div className="absolute hidden group-hover:block bg-gray-100 border border-gray-200 rounded-lg w-40 mt-2 shadow-lg">
                 {Object.keys(options).map((option, index, array) => (
                     <button
                         key={option}
@@ -31,7 +31,6 @@ const DropDownMenu = ({ label, options, selectedOption, onSelectOption }) => {
             </div>
         </div>
     );
-    
 };
 
 const DropDownMenu_1 = ({ label, options, selectedOption, onSelectOption }) => {
@@ -41,7 +40,7 @@ const DropDownMenu_1 = ({ label, options, selectedOption, onSelectOption }) => {
         onSelectOption(option);
         setIsOpen(false);
     };
-
+ 
     return (
         <div className="relative inline-block group pr-4 pb-4 z-10">
             <div className="flex items-center">
@@ -49,12 +48,12 @@ const DropDownMenu_1 = ({ label, options, selectedOption, onSelectOption }) => {
                     type="text"
                     value={options[selectedOption] || label}
                     readOnly
-                    className="w-[140px] px-3 py-1 h-6 text-sm cursor-pointer text-black border-2 rounded-md hover:border-violet-500 focus:ring-opacity-50"
+                    className="w-[140px] px-3 py-1 h-6 text-sm cursor-pointer text-black border-2 rounded-xl hover:border-violet-500 focus:ring-opacity-50"
                     onClick={() => setIsOpen(!isOpen)}
                 />
                 <svg
                     className={`w-5 h-5 ml-2 transition-transform ${
-                        isOpen ? 'transform rotate-180' : ''
+                        isOpen ? "transform rotate-180" : ""
                     }`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -68,15 +67,15 @@ const DropDownMenu_1 = ({ label, options, selectedOption, onSelectOption }) => {
                 </svg>
             </div>
             {isOpen && (
-                <div className="absolute bg-gray-100 border border-gray-200 rounded w-40 mt-2 shadow-lg">
-                    {Object.keys(options).map(option => (
+                <div className="absolute bg-gray-100 border border-gray-200 rounded-lg w-40 mt-2 shadow-lg">
+                    {Object.keys(options).map((option) => (
                         <button
                             key={option}
                             onClick={() => handleSelect(option)}
                             className={`block w-full px-4 py-1 text-sm text-gray-700 hover:bg-purple-500 ${
                                 selectedOption === option
-                                    ? 'bg-purple-500 text-white'
-                                    : ''
+                                    ? "bg-purple-500 text-white"
+                                    : ""
                             }`}
                         >
                             {options[option]}

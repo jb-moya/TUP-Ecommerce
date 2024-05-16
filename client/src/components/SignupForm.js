@@ -10,7 +10,7 @@ import { RegistrationSuccess } from "./AUTHENTICATION/Success";
 import { RegistrationFailure } from "./AUTHENTICATION/Failure";
 
 const SignupForm = () => {
-    const [ testImage, SetTestImage ] = useState(null);
+    const [testImage, SetTestImage] = useState(null);
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -199,7 +199,7 @@ const SignupForm = () => {
                 <div className="flex flex-col mt-4 items-center w-[560px] px-2">
                     <button
                         type="submit"
-                        className="rounded-2xl text-white font-semibold mb-1 bg-[#211C6A] p-[14px] w-[530px] hover:bg-[#3C35AB]"
+                        className="rounded-xl text-white font-semibold mb-1 bg-[#211C6A] p-[14px] w-[530px] hover:bg-[#3C35AB]"
                     >
                         CREATE ACCOUNT
                     </button>

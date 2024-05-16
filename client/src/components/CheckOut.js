@@ -26,7 +26,7 @@ const CheckOut = () => {
     };
 
     return (
-        <div className="bg-white flex flex-col filter shadow-down h-[200px] w-full rounded-md m-2 p-2 sticky bottom-2">
+        <div className="bg-white flex flex-col filter shadow-down h-[200px] w-full rounded-xl m-2 p-2 sticky bottom-2">
             <div className="flex justify-between p-4">
                 <div className="flex-1 flex items-center">
                     <div className="m-2 border px-[2px] py-[1px] hover:border-violet-500 hover:text-violet-500">
@@ -72,7 +72,7 @@ const CheckOut = () => {
             <div className="p-2 self-end">
                 <button
                     type="button"
-                    className=" w-64 m-2 bg-[#211c6a] text-white p-4 rounded-md"
+                    className=" w-64 m-2 bg-[#211c6a] text-white p-4 rounded-xl"
                     onClick={handleGoToCheckoutPage}
                 >
                     Check Out

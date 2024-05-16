@@ -14,8 +14,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
     const [review, setReview] = useState("");
     const [title, setTitle] = useState("");
 
-    useEffect(() => {
-    }, [starRating]);
+    useEffect(() => {}, [starRating]);
 
     const handleSubmitReview = async () => {
         try {
@@ -49,7 +48,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
 
     return (
         <>
-            <div className="w-full mb-6 shadow-gray-400 shadow-md rounded-sm">
+            <div className="w-full mb-6 shadow-gray-400 shadow-md rounded-xl">
                 <div className="flex flex-row p-2">
                     <StarRating setStarRating={setStarRating} />
                     {starRating !== null && (
@@ -76,7 +75,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
 
                 <button
                     type="button"
-                    className="w-full p-2 text-gray-500 hover:text-white bg-slate-100 hover:bg-[#59b5c3] rounded-sm"
+                    className="w-full p-2 text-gray-500 hover:text-white bg-slate-100 hover:bg-[#59b5c3] rounded-xl"
                     onClick={handleSubmitReview}
                 >
                     Submit Review

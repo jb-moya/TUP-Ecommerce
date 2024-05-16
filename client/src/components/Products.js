@@ -68,7 +68,7 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                     {product.variation.map((v, index) => (
                         <div
                             key={`${v.name}${index}`}
-                            className="border border-1 border-gray-300 rounded-md p-[2px] font-light m-[1px]"
+                            className="border border-1 border-gray-300 rounded-xl p-[2px] font-light m-[1px]"
                         >{`${v.name} (${v.price})`}</div>
                     ))}
                 </>
@@ -93,7 +93,7 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                 <>
                     {product.variation.map((v) => (
                         <div
-                            className="border border-1 border-gray-300 rounded-md p-[2px] font-light m-[1px]"
+                            className="border border-1 border-gray-300 rounded-xl p-[2px] font-light m-[1px]"
                             key={v.name}
                         >{`${v.name} (${v.stock})`}</div>
                     ))}
@@ -116,7 +116,7 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                     {product.variation.map((v) => (
                         <div
                             key={v.name}
-                            className="border border-1 border-gray-300 rounded-md p-[2px] font-light m-[1px]"
+                            className="border border-1 border-gray-300 rounded-xl p-[2px] font-light m-[1px]"
                         >
                             {v.name}
                         </div>
@@ -228,7 +228,7 @@ const RangeInput = ({ label, min = 0, handleOnChange }) => (
     <div className="text-sm flex items-center mt-4">
         <div>{label}</div>
         <input
-            className="rounded-md border text-xs border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+            className="rounded-xl border text-xs border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
             placeholder="Input"
             type="number"
             min={min}
@@ -237,7 +237,7 @@ const RangeInput = ({ label, min = 0, handleOnChange }) => (
         />
         ~
         <input
-            className="rounded-md border text-xs border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
+            className="rounded-xl border text-xs border-[#211C6A] px-2 py-1 mx-2 w-16 text-gray-500 appearance-none outline-none bg-transparent"
             placeholder="Input"
             type="number"
             name="max"
@@ -558,7 +558,7 @@ const Products = () => {
 
                 <div className="flex flex-row w-full items-center justify-between">
                     <input
-                        className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-1 rounded-md w-[250px] mt-4 text-sm ml-6"
+                        className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-1 rounded-xl w-[250px] mt-4 text-sm ml-6"
                         placeholder="Input Product Name"
                         onChange={delayedHandleSearchName}
                     />
@@ -567,7 +567,7 @@ const Products = () => {
                         <div className="flex items-center text-sm">
                             Category
                             <select
-                                className="ml-4 border border-[#211C6A] w-[200px] rounded-md p-1 bg-transparent outline-none"
+                                className="ml-4 border border-[#211C6A] w-[200px] rounded-xl p-1 bg-transparent outline-none"
                                 onChange={handleCategoryChange}
                             >
                                 <option value="">All</option>
@@ -600,10 +600,10 @@ const Products = () => {
                 </div>
 
                 {/* <div className="mt-6 ml-6 text-sm">
-                    <button className="p-2 bg-[#211C6A] text-white rounded-md hover:bg-opacity-50 w-24 transition ease-in-out duration-300">
+                    <button className="p-2 bg-[#211C6A] text-white rounded-xl hover:bg-opacity-50 w-24 transition ease-in-out duration-300">
                         Search
                     </button>
-                    <button className="p-2 bg-transparent text-[#211C6A] hover:bg-gray-300 border w-24  border-[#211C6A] rounded-md ml-4">
+                    <button className="p-2 bg-transparent text-[#211C6A] hover:bg-gray-300 border w-24  border-[#211C6A] rounded-xl ml-4">
                         Reset
                     </button>
                 </div> */}
@@ -617,12 +617,12 @@ const Products = () => {
                         <div className="flex justify-between items-center">
                             <Link
                                 to="/seller/addeditProduct"
-                                className="flex  items-center justify-center bg-[#211C6A] text-white rounded-md mr-4 px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300"
+                                className="flex  items-center justify-center bg-[#211C6A] text-white rounded-xl mr-4 px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300"
                             >
                                 <FaPlus className="mr-2" />
                                 Add a New Product
                             </Link>
-                            <div className="flex items-center justify-center bg-red-600 text-white rounded-md px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
+                            <div className="flex items-center justify-center bg-red-600 text-white rounded-xl px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
                                 <FaTrash className="mr-2" />
                                 Delete Product
                             </div>

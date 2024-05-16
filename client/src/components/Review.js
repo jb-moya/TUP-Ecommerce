@@ -124,8 +124,8 @@ const Review = ({ productID }) => {
                         <button
                             className={
                                 toggleDateSort === 1
-                                    ? "py-1 px-2 mr-2 rounded bg-[#59b5c3] text-white"
-                                    : "py-1 px-2 mr-2 rounded bg-white text-[#211C6A]"
+                                    ? "py-1 px-2 mr-2 rounded-lg bg-[#59b5c3] text-white"
+                                    : "py-1 px-2 mr-2 rounded-lg bg-white text-[#211C6A]"
                             }
                             onClick={() => setToggleDateSort(-toggleDateSort)}
                         >

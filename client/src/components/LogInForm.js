@@ -38,7 +38,7 @@ const LogInForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log('password', formData.password)
+        console.log("password", formData.password);
         try {
             await dispatch(logIn(formData));
             navigate("/", { replace: true });
@@ -106,13 +106,13 @@ const LogInForm = () => {
                 </div>
 
                 <div className="flex flex-col mt-4 items-center w-[560px] px-2">
-                    <button className="rounded-2xl text-white font-semibold mb-3 bg-[#211C6A] p-[14px] w-[530px] hover:bg-[#3C35AB]">
+                    <button className="rounded-xl text-white font-semibold mb-3 bg-[#211C6A] p-[14px] w-[530px] hover:bg-[#3C35AB]">
                         LOGIN
                     </button>
 
                     <button
                         onClick={handleClick}
-                        className="rounded-2xl border border-gray-400 text-[#211C6A]  hover:bg-gray-200 font-semibold mb-3 bg-[#EFEFEF] p-[14px] w-[530px]"
+                        className="rounded-xl border border-gray-400 text-[#211C6A]  hover:bg-gray-200 font-semibold mb-3 bg-[#EFEFEF] p-[14px] w-[530px]"
                     >
                         CREATE AN ACCOUNT
                     </button>

@@ -26,11 +26,16 @@ const orderAction = {
     3: "Mark as 'Completed'",
 };
 
-const OrderRow = ({ order }) => {
+const OrderRow = ({ order, selectedOrder, isSelected }) => {
     return (
         <tr className="border-t">
             <td className="p-2">
-                <input type="checkbox" />
+                <input
+                    type="checkbox"
+                    className="cursor-pointer"
+                    checked={isSelected}
+                    onChange={() => selectedOrder(order._id, isSelected)}
+                />
             </td>
             <td className="p-2" colSpan="4">
                 {order.product.name}
@@ -52,6 +57,8 @@ export const Orders = () => {
     const [transactions, setTransactions] = useState([]);
     const [transactionTotalCount, setTransactionTotalCount] = useState(0);
     const [selectedButton, setSelectedButton] = useState(0); // Changed initial value to 1 for Dashboard
+    const [selectedOrders, setSelectedOrders] = useState([]);
+    const [areAllOrdersSelected, setAreAllOrdersSelected] = useState(false);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -72,6 +79,42 @@ export const Orders = () => {
 
         console.log("selectedButton", selectedButton);
     }, [location.search, selectedButton]);
+
+    const handleAddSelectedOrder = (orderId, isSelected) => {
+        if (isSelected) {
+            setSelectedOrders((prev) => prev.filter((id) => id !== orderId));
+        } else {
+            setSelectedOrders((prev) => [...prev, orderId]);
+        }
+    };
+
+    const handleAllSelectedOrders = (e) => {
+        if (e.target.checked) {
+            const allOrderIds = transactions.map(
+                (transaction) => transaction._id
+            );
+            setSelectedOrders(allOrderIds);
+        } else {
+            setSelectedOrders([]);
+        }
+
+        setAreAllOrdersSelected(e.target.checked);
+    };
+
+    useEffect(() => {
+        if (
+            selectedOrders.length === transactions.length &&
+            transactions.length > 0
+        ) {
+            setAreAllOrdersSelected(true);
+        } else {
+            setAreAllOrdersSelected(false);
+        }
+    }, [selectedOrders, transactions]);
+
+    useEffect(() => {
+        console.log("selectedOrders", selectedOrders);
+    }, [selectedOrders]);
 
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
@@ -104,7 +147,7 @@ export const Orders = () => {
 
         const params = [
             buildQueryParam("page", currentPage),
-            buildQueryParam("status", orderStatus[selectedButton]),
+            // buildQueryParam("status", orderStatus[selectedButton]),
         ].filter(Boolean);
 
         const newUrl = `${location.pathname}?${params.join("&")}`;
@@ -192,19 +235,19 @@ export const Orders = () => {
 
                 <div className="flex flex-row w-full items-center justify-between">
                     <input
-                        className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-2 rounded-md w-[250px] mt-4 text-sm ml-6"
+                        className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-2 rounded-full w-[250px] mt-4 text-sm ml-6"
                         placeholder="Search Orders"
                     />
 
                     <div className="text-sm flex items-center mt-4 ml-6">
                         <div>Order Creation Date:</div>
                         <input
-                            className="rounded-md border border-[#211C6A] px-4 py-2 mx-4 text-gray-500"
+                            className="rounded-full border border-[#211C6A] px-4 py-2 mx-4 text-gray-500"
                             type="date"
                         />
                         -
                         <input
-                            className="rounded-md border border-[#211C6A] px-4 py-2 mx-4 text-gray-500"
+                            className="rounded-full border border-[#211C6A] px-4 py-2 mx-4 text-gray-500"
                             type="date"
                         />
                     </div>
@@ -214,9 +257,9 @@ export const Orders = () => {
                     <ul className="flex w-[370px] justify-between pl-2 mb-2 ">
                         <li
                             onClick={() => handleButtonClick1(1)}
-                            className={`p-4 px-6 cursor-pointer  hover:bg-[#211C6A] hover:text-white hover:rounded-md border-[#211C6A] transition ease-in-out duration-200 ${
+                            className={`p-4 px-6 cursor-pointer  hover:bg-[#211C6A] hover:text-white hover:rounded-full border-[#211C6A] transition ease-in-out duration-200 ${
                                 selectedButton1 === 1
-                                    ? " bg-[#211C6A] rounded-md border-b-[#EFEFEF] text-white"
+                                    ? " bg-[#211C6A] rounded-full border-b-[#EFEFEF] text-white"
                                     : ""
                             }`}
                         >
@@ -225,9 +268,9 @@ export const Orders = () => {
 
                         <li
                             onClick={() => handleButtonClick1(2)}
-                            className={`p-4 px-6 cursor-pointer border-[#211C6A]  hover:bg-[#211C6A] hover:text-white hover:rounded-md transition ease-in-out duration-200 ${
+                            className={`p-4 px-6 cursor-pointer border-[#211C6A]  hover:bg-[#211C6A] hover:text-white hover:rounded-full transition ease-in-out duration-200 ${
                                 selectedButton1 === 2
-                                    ? " bg-[#211C6A] rounded-md border-b-[#EFEFEF] text-white"
+                                    ? " bg-[#211C6A] rounded-full border-b-[#EFEFEF] text-white"
                                     : ""
                             }`}
                         >
@@ -236,9 +279,9 @@ export const Orders = () => {
 
                         <li
                             onClick={() => handleButtonClick1(3)}
-                            className={`p-4 px-6 cursor-pointer border-[#211C6A] hover:bg-[#211C6A] hover:text-white hover:rounded-md  transition ease-in-out duration-200 ${
+                            className={`p-4 px-6 cursor-pointer border-[#211C6A] hover:bg-[#211C6A] hover:text-white hover:rounded-full  transition ease-in-out duration-200 ${
                                 selectedButton1 === 3
-                                    ? " bg-[#211C6A] rounded-md border-b-[#EFEFEF] text-white"
+                                    ? " bg-[#211C6A] rounded-full border-b-[#EFEFEF] text-white"
                                     : ""
                             }`}
                         >
@@ -252,7 +295,7 @@ export const Orders = () => {
                     <div className="flex items-center">
                         <div className="flex items-center text-sm">
                             Sort By:
-                            <select className="ml-2 border border-[#211C6A] rounded-md p-2 bg-transparent outline-none ">
+                            <select className="ml-2 border border-[#211C6A] rounded-full p-2 bg-transparent outline-none ">
                                 <option value="option1">
                                     Orders Confirmed
                                 </option>
@@ -262,21 +305,21 @@ export const Orders = () => {
                         </div>
 
                         {selectedButton === 1 ? (
-                            <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                            <div className="px-4 py-2 rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
                                 <CiDeliveryTruck size={20} className="" />
                                 <div className="ml-2">
                                     {orderAction[selectedButton]}
                                 </div>
                             </div>
                         ) : selectedButton === 2 ? (
-                            <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                            <div className="px-4 py-2 rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
                                 <CiDeliveryTruck size={20} className="" />
                                 <div className="ml-2">
                                     {orderAction[selectedButton]}
                                 </div>
                             </div>
                         ) : selectedButton === 3 ? (
-                            <div className="px-4 py-2 rounded-md flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
+                            <div className="px-4 py-2 rounded-full flex justify-center items-center text-white bg-[#211C6A] text-sm ml-4 cursor-pointer hover:text-[#211C6A] hover:bg-gray-300 transition ease-in-out duration-300">
                                 <CiDeliveryTruck size={20} className="" />
                                 <div className="ml-2">
                                     {orderAction[selectedButton]}
@@ -292,7 +335,13 @@ export const Orders = () => {
                     <thead>
                         <tr className="text-left bg-gray-300">
                             <th className="p-2">
-                                <input type="checkbox" />
+                                <input
+                                    type="checkbox"
+                                    className="cursor-pointer"
+                                    checked={areAllOrdersSelected}
+                                    // onClick={handleAllSelectedOrders}
+                                    onChange={handleAllSelectedOrders}
+                                />
                             </th>
                             <th className="p-2" colSpan="4">
                                 Product(s)
@@ -310,6 +359,10 @@ export const Orders = () => {
                             <OrderRow
                                 key={transaction._id}
                                 order={transaction}
+                                selectedOrder={handleAddSelectedOrder}
+                                isSelected={selectedOrders.includes(
+                                    transaction._id
+                                )}
                             />
                         ))}
                     </tbody>

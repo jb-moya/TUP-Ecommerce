@@ -40,10 +40,10 @@ const productCategories = {
 
 const minRatingComp = (currentMinRating, handleMinRating) => {
     const selectedStyle =
-        "flex px-3 py-2 items-center w-full border-2 bg-[#BCBAD2] border-opacity-8 hover:border-[#211C6A] hover:border-opacity-1 transition ease-in-out delay-50 rounded-3xl";
+        "flex px-3 py-2 items-center w-full border-2 bg-[#BCBAD2] border-opacity-8 hover:border-[#211C6A] hover:border-opacity-1 transition ease-in-out delay-50 rounded-2xl";
 
     const unselectedStyle =
-        "flex px-3 py-1 items-center w-full rounded hover:bg-gray-200 transition ease-in-out delay-50 hover:scale-[1.05] rounded-3xl";
+        "flex px-3 py-1 items-center w-full rounded-lg  hover:bg-gray-200 transition ease-in-out delay-50 hover:scale-[1.05] rounded-2xl";
 
     return (
         <>
@@ -398,7 +398,7 @@ export const SearchPageFrame = () => {
                         <div className="flex flex-row items-center">
                             <div>
                                 <input
-                                    className="rounded border border-gray-300 appearance-none outline-none w-[80px] px-2 py-1 text-sm text-gray-800"
+                                    className="rounded-lg border border-gray-300 appearance-none outline-none w-[80px] px-2 py-1 text-sm text-gray-800"
                                     type="number"
                                     placeholder="₱ MIN"
                                     min={0}
@@ -409,7 +409,7 @@ export const SearchPageFrame = () => {
                             <hr className="border border-gray-300 flex-grow mx-2"></hr>
                             <div>
                                 <input
-                                    className="rounded border border-gray-300 appearance-none outline-none w-[80px] px-2 py-1  text-sm text-gray-800"
+                                    className="rounded-lg border border-gray-300 appearance-none outline-none w-[80px] px-2 py-1  text-sm text-gray-800"
                                     type="number"
                                     placeholder="₱ MAX"
                                     name="max"
@@ -500,8 +500,8 @@ export const SearchPageFrame = () => {
                             <button
                                 className={
                                     toggleDateSort === 1
-                                        ? "py-1 px-2 mr-2 rounded bg-[#211C6A] text-white"
-                                        : "py-1 px-2 mr-2 rounded bg-white text-[#211C6A]"
+                                        ? "py-1 px-2 mr-2 rounded-lg bg-[#211C6A] text-white"
+                                        : "py-1 px-2 mr-2 rounded-lg bg-white text-[#211C6A]"
                                 }
                                 onClick={() =>
                                     setToggleDateSort(-toggleDateSort)
@@ -512,8 +512,8 @@ export const SearchPageFrame = () => {
                             <button
                                 className={
                                     toggleNameSort === 1
-                                        ? "py-1 px-2 mr-2 rounded bg-[#211C6A] text-white"
-                                        : "py-1 px-2 mr-2 rounded bg-white text-[#211C6A]"
+                                        ? "py-1 px-2 mr-2 rounded-lg bg-[#211C6A] text-white"
+                                        : "py-1 px-2 mr-2 rounded-lg bg-white text-[#211C6A]"
                                 }
                                 onClick={() =>
                                     setToggleNameSort(-toggleNameSort)
@@ -533,7 +533,7 @@ export const SearchPageFrame = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="grid grid-cols-5 gap-4 mx-4 p-4 rounded-lg shadow-lg bg-white">
+                    <div className="grid grid-cols-5 gap-4 mx-4 p-4 rounded-lg  shadow-lg bg-white">
                         {!isCurrentlyFetching ? (
                             productCount !== 0 ? (
                                 products.map((product, index) => (

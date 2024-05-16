@@ -151,7 +151,7 @@ const PasswordSetting = () => {
                 <div>
                     <button
                         type="button"
-                        className="w-[120px] rounded cursor-pointer bg-[rgba(33, 28, 106)] border hover:border-violet-500 hover:bg-[#211C6A] hover:text-white hover:font-bold focus:ring-opacity-50 text-md"
+                        className="w-[120px] rounded-lg cursor-pointer bg-[rgba(33, 28, 106)] border hover:border-violet-500 hover:bg-[#211C6A] hover:text-white hover:font-bold focus:ring-opacity-50 text-md"
                         onClick={handleConfirm}
                     >
                         Save

@@ -80,7 +80,7 @@ const HomeFrame = () => {
                 }
             );
             setProducts(data.products);
-            console.log("data.products", data.products)
+            console.log("data.products", data.products);
             setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
         } finally {
@@ -158,7 +158,7 @@ const HomeFrame = () => {
                         navigation
                         autoplay={{ delay: 3000 }}
                         pagination={{ clickable: true }}
-                        className="rounded-3xl"
+                        className="rounded-2xl"
                     >
                         {createSlide()}
                         {createSlide()}
@@ -170,13 +170,13 @@ const HomeFrame = () => {
 
                 <div className="flex flex-col w-full h-[521px] my-5 mt-4">
                     <img
-                        className="w-[220x] h-[260.5px] ml-2 mb-2 bg-cover rounded-2xl"
+                        className="w-[220x] h-[260.5px] ml-2 mb-2 bg-cover rounded-xl"
                         src={imgUrl()}
                         alt=""
                     />
 
                     <img
-                        className="w-[220x] h-[260.5px] ml-2 bg-cover rounded-2xl"
+                        className="w-[220x] h-[260.5px] ml-2 bg-cover rounded-xl"
                         src={imgUrl()}
                         alt=""
                     />
@@ -233,7 +233,7 @@ const HomeFrame = () => {
                 />
             </div>
 
-            <div className="max-w-[1240px] w-full mb-4 bg-white rounded-3xl shadow-md">
+            <div className="max-w-[1240px] w-full mb-4 bg-white rounded-2xl shadow-md">
                 <div className="max-w-[1240px] w-full">
                     <div className="font-bold h-[50px] p-4">CATEGORIES</div>
                     <hr className="border-[#211C6A]"></hr>
@@ -245,7 +245,7 @@ const HomeFrame = () => {
                                 className="flex flex-col items-center hover:scale-[1.05] transition ease-in-out duration-200"
                             >
                                 <img
-                                    className="h-[150px] w-[150px] bg-contain rounded-2xl"
+                                    className="h-[150px] w-[150px] bg-contain rounded-xl"
                                     src={require(`../Assets/categories/${category.toLowerCase()}.jpg`)}
                                     alt="Logo Here"
                                     loading="lazy"
@@ -257,7 +257,7 @@ const HomeFrame = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col bg-white h-[340px] rounded-3xl max-w-[1240px] w-full mb-4 mt-4 shadow-md">
+            <div className="flex flex-col bg-white h-[340px] rounded-2xl max-w-[1240px] w-full mb-4 mt-4 shadow-md">
                 <h1 className="font-bold p-4">TOP PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">
@@ -273,7 +273,7 @@ const HomeFrame = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col bg-white max-w-[1240px] w-full rounded-3xl shadow-md">
+            <div className="flex flex-col bg-white max-w-[1240px] w-full rounded-2xl shadow-md">
                 <h1 className="font-bold p-4">DISCOVER YOUR PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">

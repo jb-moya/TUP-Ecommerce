@@ -111,7 +111,7 @@ const ProductDetailPage = (props) => {
         <div className="mt-32">
             <NavBar />
 
-            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-2xl shadow-md">
+            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-xl shadow-md">
                 <div className="w-5/12 px-2">
                     {isLoading ? (
                         <div className="w-full h-full flex items-center justify-center">
@@ -262,7 +262,7 @@ const ProductDetailPage = (props) => {
                         />
                         <div className="w-4/12 flex flex-col align-middle items-center">
                             <button
-                                className="w-9/12 p-2 border rounded bg-[#a6bec2] text-white hover:border-violet-500"
+                                className="w-9/12 p-2 border rounded-lg bg-[#a6bec2] text-white hover:border-violet-500"
                                 onClick={handleAddToCart}
                                 data-tooltip-id="my-tooltip"
                                 data-tooltip-content={
@@ -283,7 +283,7 @@ const ProductDetailPage = (props) => {
                                 </div>
                             </button>
                             <button
-                                className="mt-2 w-9/12 p-2 border rounded bg-[#59b5c3] text-white hover:border-violet-500"
+                                className="mt-2 w-9/12 p-2 border rounded-lg bg-[#59b5c3] text-white hover:border-violet-500"
                                 onClick={() => {
                                     handleAddToCart();
                                     navigate("/cart");
@@ -303,7 +303,7 @@ const ProductDetailPage = (props) => {
                                 Buy Now
                             </button>
                         </div>
-                        <div className="w-8/12 ml-2 mr-6 p-2 border bg-[#ffffff] border-black border-opacity-25 rounded-2xl shadow-md relative">
+                        <div className="w-8/12 ml-2 mr-6 p-2 border bg-[#ffffff] border-black border-opacity-25 rounded-xl shadow-md relative">
                             <div className="flex items-center justify-center">
                                 <div className="w-20 h-20">
                                     <img
@@ -324,7 +324,7 @@ const ProductDetailPage = (props) => {
                                     </div>
                                     <Link
                                         to={`/org/${productSeller._id}`}
-                                        className="rounded px-[4px] py-[4px] border text-[#59b4c3] border-[#59b4c3] leading-none self-center"
+                                        className="rounded-lg px-[4px] py-[4px] border text-[#59b4c3] border-[#59b4c3] leading-none self-center"
                                     >
                                         View Seller
                                     </Link>
@@ -348,7 +348,7 @@ const ProductDetailPage = (props) => {
                     </div>
                 </div>
 
-                <hr className="w-full rounded border-t-1 border-black border-opacity-25 mt-4"></hr>
+                <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
                 <div className="w-full flex flex-col items-center my-4">
                     <div className="font-semibold text-lg mb-4 leading-relaxed text-[#211c6a]">
@@ -365,7 +365,7 @@ const ProductDetailPage = (props) => {
                     />
                 </div>
 
-                <hr className="w-full rounded border-t-1 border-black border-opacity-25 mb-4"></hr>
+                <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mb-4"></hr>
 
                 <div className="flex flex-col">
                     {isOpenWriteReview && (

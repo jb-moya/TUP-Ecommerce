@@ -251,7 +251,7 @@ const EditProfileDetails = () => {
             </div>
             <div>
                 <button
-                    className="mt-3 w-[120px] py-1 rounded cursor-pointer bg-[rgba(33, 28, 106)] border hover:border-violet-500 hover:bg-[#211C6A] hover:text-white hover:font-bold focus:ring-opacity-50 text-md"
+                    className="mt-3 w-[120px] py-1 rounded-lg cursor-pointer bg-[rgba(33, 28, 106)] border hover:border-violet-500 hover:bg-[#211C6A] hover:text-white hover:font-bold focus:ring-opacity-50 text-md"
                     onClick={updateAccountDetails}
                 >
                     Save

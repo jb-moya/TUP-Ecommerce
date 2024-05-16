@@ -73,7 +73,7 @@ const Address = () => {
             </div>
             <div className="flex w-full justify-between">
                 <div className="w-[250px] mr-2">
-                    <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded relative">
+                    <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded-lg relative">
                         <select
                             onChange={handleChange}
                             value={userData["country"] || ""}

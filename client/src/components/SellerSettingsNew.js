@@ -20,13 +20,13 @@ import { toast } from "react-toastify";
 const SellerMenuButton = ({ icon, text, selected, onClick }) => (
     <button
         onClick={onClick}
-        className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 transition ease-in-out duration-200 hover:text-white mt-4 ${
+        className={`flex flex-col hover:bg-[#211C6A] hover:opacity-50 mx-4 transition ease-in-out duration-200 hover:text-white mt-2 rounded-xl ${
             selected ? "bg-[#211C6A] text-white" : ""
         }`}
     >
-        <div className="flex items-center mx-8">
+        <div className="flex items-center m-2">
             {icon}
-            <p className="p-4 font-medium text-sm">{text}</p>
+            <p className="px-2 py-1 font-medium text-sm">{text}</p>
         </div>
     </button>
 );

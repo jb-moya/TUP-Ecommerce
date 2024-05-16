@@ -16,8 +16,8 @@ const SortButton = ({ fieldName, toggle, setterToggle }) => {
             <button
                 className={
                     toggle === 1
-                        ? "py-1 px-2 mr-2 rounded-md bg-[#211C6A] text-white border border-[#211C6A]"
-                        : "py-1 px-2 mr-2 rounded-md bg-white text-[#211C6A] border border-black border-opacity-30"
+                        ? "py-1 px-2 mr-2 rounded-xl bg-[#211C6A] text-white border border-[#211C6A]"
+                        : "py-1 px-2 mr-2 rounded-xl bg-white text-[#211C6A] border border-black border-opacity-30"
                 }
                 onClick={() => setterToggle(toggle * -1)}
             >
@@ -147,7 +147,7 @@ export const DashboardFrame = () => {
                     </div>
 
                     <div className="flex flex-row w-full justify-between mb-4">
-                        <div className="w-[280px] h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
+                        <div className="w-[280px] h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
@@ -161,7 +161,7 @@ export const DashboardFrame = () => {
                             </div>
                         </div>
 
-                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
+                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
@@ -182,7 +182,7 @@ export const DashboardFrame = () => {
                             </div>
                         </div>
 
-                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-md">
+                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">203</h2>
@@ -193,7 +193,7 @@ export const DashboardFrame = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white w-full shadow-lg p-6 rounded-2xl">
+                    <div className="bg-white w-full shadow-lg p-6 rounded-xl">
                         <div className="text-lg font-bold text-[#211C6A] w-full px-2">
                             Sales
                         </div>
@@ -242,7 +242,7 @@ export const DashboardFrame = () => {
                                             {transaction.product.name}
                                         </td>
                                         <td className="p-2">
-                                        {transaction.quantity}
+                                            {transaction.quantity}
                                         </td>
                                         <td className="p-2">
                                             {transaction.variation

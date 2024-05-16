@@ -31,7 +31,7 @@ const Payment = () => {
                         <button
                             className={`text-${
                                 clickedButton === 0 ? "blue" : "gray"
-                            }-500 flex items-center justify-center rounded border w-[200px] h-[50px] ${
+                            }-500 flex items-center justify-center rounded-lg border w-[200px] h-[50px] ${
                                 clickedButton === 0
                                     ? "border-[#211C6A]"
                                     : "border-gray-500"
@@ -52,7 +52,7 @@ const Payment = () => {
                         <button
                             className={`text-${
                                 clickedButton === 1 ? "blue" : "gray"
-                            }-500 border rounded w-[200px] h-[50px] ${
+                            }-500 border rounded-lg w-[200px] h-[50px] ${
                                 clickedButton === 1
                                     ? "border-[#211C6A]"
                                     : "border-gray-500"
