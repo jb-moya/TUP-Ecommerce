@@ -10,15 +10,35 @@ body {
     /* Font Style */
     --body: Poppins;
 
-    --rt-color-white: #fff;
-    --rt-color-dark: #222;
-    --rt-color-success: #8dc572;
-    --rt-color-error: #be6464;
-    --rt-color-warning: #f0ad4e;
-    --rt-color-info: #211c6a;
-    --rt-opacity: 0.9;
-    --rt-transition-show-delay: 0.15s;
-    --rt-transition-closing-delay: 0.15s;
+    --rt-color-white: #fff !important;
+    --rt-color-dark: #222 !important;
+    --rt-color-success: #8dc572 !important;
+    --rt-color-error: #be6464 !important;
+    --rt-color-warning: #f0ad4e !important;
+    --rt-color-info: #211c6a !important;
+    --rt-opacity: 0.9 !important;
+    --rt-transition-show-delay: 0.15s !important;
+    --rt-transition-closing-delay: 0.15s !important;
+
+    --toastify-color-light: #fff !important;
+    --toastify-color-dark: #121212 !important;
+    --toastify-color-info: #3498db !important;
+    --toastify-color-success: #211C6A !important;
+    --toastify-color-warning: #f1c40f !important;
+    --toastify-color-error: #e74c3c !important;
+    --toastify-color-transparent: rgba(255, 255, 255, 0.7) !important;
+
+    --toastify-icon-color-info: var(--toastify-color-info) !important;
+    --toastify-icon-color-success: var(--toastify-color-success) !important;
+    --toastify-icon-color-warning: var(--toastify-color-warning) !important;
+    --toastify-icon-color-error: var(--toastify-color-error) !important;
+
+    --toastify-toast-width: 320px !important;
+    --toastify-toast-background: #fff !important;
+    --toastify-toast-min-height: 64px !important;
+    --toastify-toast-max-height: 800px !important;
+    --toastify-font-family: sans-serif !important;
+    --toastify-z-index: 9999 !important;
 }
 
 .mySwiper {

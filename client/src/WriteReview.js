@@ -8,6 +8,11 @@ axios.defaults.withCredentials = true;
 
 const WriteReview = ({ productID, closeWriteReviewComponent }) => {
     const dispatch = useDispatch();
+    const maxTitleCharCount = 500;
+    const maxCommentCharCount = 5000;
+    const [titleCharCount, setTitleCharCount] = useState(0);
+    const [commentCharCount, setCommentCharCount] = useState(0);
+
     const { user } = useSelector((state) => state.user);
     const [starRating, setStarRating] = useState(1);
     const ratingLabels = ["Terrible", "Bad", "Okay", "Good", "Excellent"];
@@ -46,9 +51,27 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
         }
     };
 
+    const handleTitleChange = (e) => {
+        if (e.target.value.length > maxTitleCharCount) {
+            return;
+        }
+
+        setTitleCharCount(e.target.value.length);
+        setTitle(e.target.value);
+    };
+
+    const handleCommentChange = (e) => {
+        if (e.target.value.length > maxCommentCharCount) {
+            return;
+        }
+
+        setCommentCharCount(e.target.value.length);
+        setReview(e.target.value);
+    };
+
     return (
         <>
-            <div className="w-full mb-6 shadow-gray-400 shadow-md rounded-xl">
+            <div className="w-[600px] mb-6 shadow-gray-400 shadow-md rounded-xl">
                 <div className="flex flex-row p-2">
                     <StarRating setStarRating={setStarRating} />
                     {starRating !== null && (
@@ -58,20 +81,31 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
                     )}
                 </div>
 
-                <input
-                    type="text"
-                    className="w-full p-2 border-b-2 mb-2"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
+                <div className="w-full relative">
+                    <input
+                        type="text"
+                        className="w-full p-2 mb-2"
+                        placeholder="Title"
+                        value={title}
+                        onChange={handleTitleChange}
+                    />
 
-                <textarea
-                    className="w-full h-32 p-2 "
-                    placeholder="Write your review here..."
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                ></textarea>
+                    <div className="text-right text-xs pointer-events-none absolute left-0 z-50 p-1 text-gray-400 right-0 top-0">
+                        {titleCharCount}/{maxTitleCharCount}
+                    </div>
+                </div>
+                <div className="w-full relative">
+                    <textarea
+                        className="w-full p-2"
+                        placeholder="Write your review here..."
+                        value={review}
+                        onChange={handleCommentChange}
+                    ></textarea>
+
+                    <div className="text-right text-xs pointer-events-none absolute left-0 z-50 p-1 text-gray-400 right-0 top-0">
+                        {commentCharCount}/{maxCommentCharCount}
+                    </div>
+                </div>
 
                 <button
                     type="button"

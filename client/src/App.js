@@ -28,7 +28,7 @@ import "react-tooltip/dist/react-tooltip.css";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
-    const userRole = useSelector(getUserRole)
+    const userRole = useSelector(getUserRole);
     // toast.info(`User Role: ${userRole}`);
     if (allowedRoles.includes(userRole) || allowGuest) {
         return <>{children}</>;
@@ -63,7 +63,7 @@ function App() {
     }, [isLogged, dispatch, user]);
 
     return (
-        <div className="box-border">
+        <div className="box-border bg-slate-100">
             <BrowserRouter>
                 <Routes>
                     <Route path="/not-allowed" element={<NotAllowed />} />

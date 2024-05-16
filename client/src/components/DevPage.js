@@ -7,36 +7,42 @@ import yul from "../Assets/dev4.jpg";
 const DevPage = () => {
     return (
         <div style={{ textAlign: "center" }}>
-            <div className='flex items-center justify-center flex-col h-[100px] bg-[#EFEFEF]'>
-                <h1 className='text-[#211C6A] font-extrabold mt-[30px] mb-12 text-[30px] md:text-[50px] sm:text-[40px]'>MEET THE TEAM OF T1</h1>
+            <div className="flex items-center justify-center flex-col h-[100px] bg-slate-100">
+                <h1 className="text-[#211C6A] font-extrabold mt-[30px] mb-12 text-[30px] md:text-[50px] sm:text-[40px]">
+                    MEET THE TEAM OF T1
+                </h1>
             </div>
             <table style={{ margin: "auto", borderCollapse: "collapse" }}>
                 <tr>
                     <td style={{ padding: "10px", paddingTop: "20px" }}>
-                        <img 
+                        <img
+                            className="rounded-full"
                             src={enzo}
-                            alt="Enzo Image"
+                            alt="Enzo"
                             style={{ width: "200px", height: "200px" }} // Adjust the width and height as needed
                         />
                     </td>
                     <td style={{ padding: "10px", paddingTop: "20px" }}>
-                        <img 
+                        <img
+                            className="rounded-full"
                             src={david}
-                            alt="David Image"
+                            alt="David"
                             style={{ width: "200px", height: "200px" }} // Adjust the width and height as needed
                         />
                     </td>
                     <td style={{ padding: "10px", paddingTop: "20px" }}>
-                        <img 
+                        <img
+                            className="rounded-full"
                             src={jb}
-                            alt="JB Image"
+                            alt="JB"
                             style={{ width: "200px", height: "200px" }} // Adjust the width and height as needed
                         />
                     </td>
                     <td style={{ padding: "10px", paddingTop: "20px" }}>
-                        <img 
+                        <img
+                            className="rounded-full"
                             src={yul}
-                            alt="Yul Image"
+                            alt="Yul"
                             style={{ width: "200px", height: "200px" }} // Adjust the width and height as needed
                         />
                     </td>
@@ -50,6 +56,6 @@ const DevPage = () => {
             </table>
         </div>
     );
-}
+};
 
 export default DevPage;

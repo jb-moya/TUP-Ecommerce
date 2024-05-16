@@ -112,7 +112,7 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
 };
 
 export const NavBar = ({
-    bgColor = "bg-[#EFEFEF]",
+    bgColor = "bg-slate-100",
     bgColorAnnouncement = "bg-[#211C6A]",
     ColorAnnouncementText = "text-[#EFEFEF]",
     textColor = "text-[#211C6A]",
@@ -205,10 +205,7 @@ export const NavBar = ({
                         <LinkRoute to="/" text="Contact" />
                     </li>
                     <li className="p-4">
-                        <LinkRoute
-                            to="/sellercenter"
-                            text="Seller Centre"
-                        />
+                        <LinkRoute to="/sellercenter" text="Seller Centre" />
                     </li>
                 </ul>
 
@@ -291,7 +288,7 @@ export const NavBar = ({
                     ) : (
                         <button
                             onClick={handleClick}
-                            className={`${ColorAnnouncementText} ${bgColorAnnouncement} hover:shadow-zinc-50 rounded-lg hover:shadow-sm hover:scale-[1.1] font-semibold py-2 px-5 border border-[#211C6A] text-sm transition ease-in-out duration-200`}
+                            className={`${ColorAnnouncementText} ${bgColorAnnouncement} hover:shadow-zinc-50 rounded-full hover:shadow-sm hover:scale-[1.1] font-semibold py-2 px-5 border border-[#211C6A] text-sm transition ease-in-out duration-200`}
                         >
                             Login
                         </button>

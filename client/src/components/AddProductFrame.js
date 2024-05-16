@@ -332,6 +332,10 @@ export const AddProductFrame = () => {
     };
 
     const handleDescriptionChange = (e) => {
+        if (e.target.value.length > maxDescriptionCharCount) {
+            return;
+        }
+
         setDescriptionCharCount(e.target.value.length);
         setFormData({
             ...formData,
