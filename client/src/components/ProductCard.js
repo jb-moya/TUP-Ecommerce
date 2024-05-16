@@ -44,7 +44,7 @@ const ProductCard = ({ product }) => {
             </div>
             <div className="z-[11]">
                 {product.createdBy.orgName && (
-                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[9px] transition-all duration-500 ease-in-out group-hover:text-[10px] px-2 text-xs top-[130px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
+                    <div className="line-clamp-1 absolute text-[#211C6A] left-0 shadow text-[9px] transition-all duration-500 ease-in-out group-hover:text-[10px] px-2 text-xs top-[134px] bg-white rounded-r-md shadow-[#211c6a2c] font-semibold w-fit align-middle">
                         <img
                             src={product.createdBy.image || logoUnsaturated}
                             alt="Logo Here"
