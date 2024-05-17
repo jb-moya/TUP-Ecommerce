@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { NavBar } from "../components/NavBar.js";
 import ImageSwiper from "../components/Swiper.js";
 import StarRating from "../components/StarRating.js";
@@ -22,7 +22,9 @@ import { IoCart } from "react-icons/io5";
 import formatPrice from "../components/utils/formatPrice.js";
 import { isUserLogged } from "../features/user/userSlice.js";
 import { Tooltip } from "react-tooltip";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Pagination } from "swiper/modules";
+import ProductCard from "../components/ProductCard.js";
 axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
@@ -41,32 +43,65 @@ const ProductDetailPage = (props) => {
     const [userName, setUserName] = useState("");
     const [quantity, setQuantity] = useState(1);
     const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
+    const [sameSellerProducts, setSameSellerProducts] = useState([]);
+    const [sameCategoryProducts, setCategoryProducts] = useState([]);
+
+    const fetchProducts = useCallback(async (additionalParams = {}, setter) => {
+        try {
+            const { data } = await axios.get(
+                "http://localhost:5000/api/v1/products",
+                {
+                    params: additionalParams,
+                }
+            );
+            console.log("data", data);
+            setter(data.products);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }, []);
+
+    const fetchData = useCallback(async () => {
+        const root = `${rootUrl}/products/${id}`;
+
+        try {
+            const response = await axios.get(root);
+            // console.log("response", response);
+
+            setProductDetails(response.data.product);
+            setProductSeller(response.data.product.createdBy);
+
+            if (response.data.product.variation.length > 0) {
+                setSelectedVariation(response.data.product.variation[0]);
+            } else {
+                setSelectedVariation(null);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [id]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const root = `${rootUrl}/products/${id}`;
-
-            try {
-                const response = await axios.get(root);
-                console.log("response", response);
-
-                setProductDetails(response.data.product);
-                setProductSeller(response.data.product.createdBy);
-
-                if (response.data.product.variation.length > 0) {
-                    setSelectedVariation(response.data.product.variation[0]);
-                } else {
-                    setSelectedVariation(null);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         fetchData();
-    }, [id]);
+        fetchProducts(
+            {
+                createdBy: productSeller._id,
+                limit: 20,
+                populatedFields: "createdBy",
+            },
+            setSameSellerProducts
+        );
+        fetchProducts(
+            {
+                categories: productDetails.category,
+                limit: 20,
+                populatedFields: "createdBy",
+            },
+            setCategoryProducts
+        );
+    }, [productSeller, productDetails, fetchData, fetchProducts]);
 
     useEffect(() => {
         setQuantity(1);
@@ -104,7 +139,7 @@ const ProductDetailPage = (props) => {
         setPuffAnimationPrice(true);
         setTimeout(() => {
             setPuffAnimationPrice(false);
-        }, 200); // 200 milliseconds, same duration as the CSS transition
+        }, 200);
     };
 
     return (
@@ -349,6 +384,33 @@ const ProductDetailPage = (props) => {
 
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
+                {sameSellerProducts.length > 0 && <div className="w-full mt-4">
+                    <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
+                        From the same Seller
+                    </div>
+                    <Swiper
+                        modules={[FreeMode, Pagination]}
+                        spaceBetween={20}
+                        slidesPerView={5}
+                        freeMode={true}
+                        navigation
+                        pagination={{ clickable: true }}
+                    >
+                        {sameSellerProducts
+                            .filter((product) => product._id !== id)
+                            .map((product) => (
+                                <SwiperSlide
+                                    key={product._id}
+                                    className="h-[300px] mt-4 mb-10"
+                                >
+                                    <ProductCard product={product} />
+                                </SwiperSlide>
+                            ))}
+                    </Swiper>
+                </div>}
+
+                <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
+
                 <div className="w-full flex flex-col items-center my-4">
                     <div className="font-semibold text-lg mb-4 leading-relaxed text-[#211c6a]">
                         Product Ratings
@@ -380,6 +442,33 @@ const ProductDetailPage = (props) => {
                         <Review productID={id} />
                     </div>
                 </div>
+
+                <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
+
+                {sameCategoryProducts.length > 0 && <div className="w-full mt-4">
+                    <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
+                        With the same Category: {productDetails.category}
+                    </div>
+                    <Swiper
+                        modules={[FreeMode, Pagination]}
+                        spaceBetween={20}
+                        slidesPerView={5}
+                        freeMode={true}
+                        navigation
+                        pagination={{ clickable: true }}
+                    >
+                        {sameCategoryProducts
+                            .filter((product) => product._id !== id)
+                            .map((product) => (
+                                <SwiperSlide
+                                    key={product._id}
+                                    className="h-[300px] mt-4 mb-10"
+                                >
+                                    <ProductCard product={product} />
+                                </SwiperSlide>
+                            ))}
+                    </Swiper>
+                </div>}
             </div>
 
             <Footer />
