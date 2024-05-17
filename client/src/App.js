@@ -27,6 +27,7 @@ import AdminMainPage from "./pages/AdminMainPage.js";
 import AddProductViolation from "./pages/AddProductViolation.js";
 import { toast } from "react-toastify";
 import "react-tooltip/dist/react-tooltip.css";
+import { SellerReviewFormPage, ProductReviewFormPage } from "./pages/ReviewFormPage.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
@@ -78,6 +79,12 @@ function App() {
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
                     <Route path="*" element={<NotFound />} />
+
+                    <Route path="/seller-review-form" element={<SellerReviewFormPage />} /> 
+                    <Route path="/product-review-form" element={<ProductReviewFormPage />} /> 
+
+
+
                     <Route
                         path="sellercenter"
                         element={<SellerRegistration />}
