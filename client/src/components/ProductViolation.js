@@ -22,21 +22,20 @@ const NoImage = () => {
     );
 };
 
-
 const ProductRow = ({ product, index, deleteProduct }) => {
     const renderImage = () => {
         if (product.image.length) {
             return (
                 <img
-                src={product.image[0] || defaultProfileImage}
-                className="w-12 h-12 rounded"
-                alt=""
+                    src={product.image[0] || defaultProfileImage}
+                    className="w-12 h-12 rounded"
+                    alt=""
                 />
             );
         }
         return <NoImage />;
     };
-    
+
     /* <th className="p-2">img</th>
     <th className="p-2">Product Name</th>
     <th className="p-2 text-center">Variation Class</th>
@@ -168,6 +167,10 @@ const ProductViolation = () => {
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
 
+        if (searchParams.has("keyword")) {
+            setSearchName(searchParams.get("keyword"));
+        }
+
         if (searchParams.has("page")) {
             setCurrentPage(parseInt(searchParams.get("page")));
         }
@@ -204,33 +207,51 @@ const ProductViolation = () => {
     useEffect(() => {
         fetchProducts();
 
-        const params = [buildQueryParam("page", currentPage)].filter(Boolean);
+        const params = [
+            buildQueryParam("page", currentPage),
+            buildQueryParam("keyword", searchName),
+            // buildQueryParam("category", selectCategory),
+            // buildQueryParam("minPrice", minPrice),
+        ].filter(Boolean);
 
         const newUrl = `${location.pathname}?${params.join("&")}`;
         window.history.replaceState({ path: newUrl }, "", newUrl);
     }, [currentPage, fetchProducts, location.pathname]);
 
+    const delayedHandleSearchName = debounce((e) => {
+        setSearchName(e.target.value);
+    }, 1000);
+
     return (
         <div>
-            <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
-                <thead>
-                    <tr className="text-left bg-gray-300">
-                        {/* <th className="p-2">
+            <div className="flex flex-col w-full">
+                <div className="text-3xl pl-4 font-bold text-[#211C6A] w-full mb-4">
+                    Product Violations
+                </div>
+                <input
+                    className=" appearance-none outline-none bg-transparent border border-[#211C6A] px-4 py-1 rounded-xl w-[250px] mt-4 text-sm ml-6"
+                    placeholder="Input Product Name"
+                    onChange={delayedHandleSearchName}
+                />
+                <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
+                    <thead>
+                        <tr className="text-left bg-gray-300">
+                            {/* <th className="p-2">
                             <input type="checkbox" />
                         </th> */}
-                        <th className="p-2">img</th>
-                        <th className="p-2">Product Name</th>
-                        <th className="p-2 text-center">Variation Class</th>
-                        <th className="p-2">Variation</th>
-                        <th className="p-2">Violation Type</th>
-                        <th className="p-2">Violation Reason</th>
-                        <th className="p-2">Suggestion</th>
-                        <th className="p-2">Category</th>
-                        <th className="p-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody className="">
-                    {/* {products.map((product, index) => (
+                            <th className="p-2">img</th>
+                            <th className="p-2">Product Name</th>
+                            <th className="p-2 text-center">Variation Class</th>
+                            <th className="p-2">Variation</th>
+                            <th className="p-2">Violation Type</th>
+                            <th className="p-2">Violation Reason</th>
+                            <th className="p-2">Suggestion</th>
+                            <th className="p-2">Category</th>
+                            <th className="p-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="">
+                        {/* {products.map((product, index) => (
                         <ProductRow
                             key={product._id}
                             index={index}
@@ -240,8 +261,14 @@ const ProductViolation = () => {
                             }
                         />
                     ))} */}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+                <PaginationButtons
+                    currentPage={currentPage}
+                    maxPageCount={maxPageCount}
+                    setCurrentPage={setCurrentPage}
+                />
+            </div>
         </div>
     );
 };

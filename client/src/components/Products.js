@@ -43,7 +43,7 @@ const NoImage = () => {
     );
 };
 
-const ProductRow = ({ product, index, deleteProduct }) => {
+const ProductRow = ({ product, index, openViolationTabs, deleteProduct }) => {
     const renderImage = () => {
         if (product.image.length) {
             return (
@@ -78,11 +78,6 @@ const ProductRow = ({ product, index, deleteProduct }) => {
     };
 
     const renderStock = () => {
-        console.log(
-            "product HANEP NA YAN stockkkk",
-            product.name,
-            product.stock
-        );
         if (product.variation.length > 0) {
             const totalStock = product.variation.reduce(
                 (total, v) => total + v.stock,
@@ -158,26 +153,42 @@ const ProductRow = ({ product, index, deleteProduct }) => {
             <td>
                 <div className="px-1">{product.name}</div>
             </td>
-            <td className={product.price === -1 ? "p-1 flex-col" : "p-1"}>
-                {renderPrice()}
-            </td>
-            <td className="p-1">{product.soldCount}</td>
-            <td
-                className={
-                    product.variation.length > 0 ? "p-1 flex-col" : "p-1"
-                }
-            >
-                {renderStock()}
-            </td>
-            <td
-                className={
-                    product.variationClass
-                        ? "p-1"
-                        : "p-1 font-light text-gray-400"
-                }
-            >
-                {product.variationClass || "n/a"}
-            </td>
+            {openViolationTabs ? (
+                <>
+                    <td className="p-1">{product.violationType}</td>
+                    <td className="p-1">{product.violationReason}</td>
+                    <td className="p-1">{product.suggestion}</td>
+                </>
+            ) : (
+                <>
+                    <td
+                        className={
+                            product.price === -1 ? "p-1 flex-col" : "p-1"
+                        }
+                    >
+                        {renderPrice()}
+                    </td>
+                    <td className="p-1">{product.soldCount}</td>
+                    <td
+                        className={
+                            product.variation.length > 0
+                                ? "p-1 flex-col"
+                                : "p-1"
+                        }
+                    >
+                        {renderStock()}
+                    </td>
+                    <td
+                        className={
+                            product.variationClass
+                                ? "p-1"
+                                : "p-1 font-light text-gray-400"
+                        }
+                    >
+                        {product.variationClass || "n/a"}
+                    </td>
+                </>
+            )}
             <td
                 className={`p-1 text-left ${
                     product.variation.length === 0
@@ -188,7 +199,6 @@ const ProductRow = ({ product, index, deleteProduct }) => {
                 {renderVariationNames()}
             </td>
             <td className="p-1">{product.category}</td>
-
             <td className="">
                 {/* <td className="text-center"> */}
                 <button
@@ -286,6 +296,9 @@ const Products = () => {
         }
         if (searchParams.has("outOfStock")) {
             setOutOfStock(true);
+        }
+        if (searchParams.has("violation")) {
+            setSelectedButton(3);
         }
         if (searchParams.has("minStock") && !searchParams.has("maxStock")) {
             setMinMaxStock([parseInt(searchParams.get("minStock"), 10), 0]);
@@ -393,6 +406,9 @@ const Products = () => {
                         numericFilters: numericFilters,
                         categories: selectCategory ? selectCategory : "",
                         name: `${searchName ? searchName : ""}`,
+                        hasViolation: selectedButton === 3 ? true : false,
+                        populatedFields:
+                            selectedButton === 3 ? "violation" : "",
                     },
                 }
             );
@@ -429,6 +445,7 @@ const Products = () => {
                 "minStock",
                 minMaxStock[0] > 0 ? minMaxStock[0] : ""
             ),
+            buildQueryParam("violation", selectedButton === 3 ? "true" : ""),
             buildQueryParam(
                 "maxStock",
                 minMaxStock[1] > 0 ? minMaxStock[1] : ""
@@ -454,6 +471,7 @@ const Products = () => {
         currentPage,
         searchName,
         minMaxPrice,
+        selectedButton,
         outOfStock,
         selectCategory,
         minMaxStock,
@@ -475,6 +493,12 @@ const Products = () => {
     };
 
     const handleDefault = (buttonNumber) => {
+        console.log(buttonNumber);
+        setSelectedButton(buttonNumber);
+        setOutOfStock(false);
+    };
+
+    const handleViolationFilter = (buttonNumber) => {
         console.log(buttonNumber);
         setSelectedButton(buttonNumber);
         setOutOfStock(false);
@@ -514,16 +538,6 @@ const Products = () => {
                     >
                         All
                     </li>
-                    {/* <li
-                        onClick={() => handleButtonClick(2)}
-                        className={`p-4  mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 2
-                                ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
-                                : ""
-                        }`}
-                    >
-                        Live
-                    </li> */}
                     <li
                         onClick={() => handleSoldOut(2)}
                         className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
@@ -534,16 +548,16 @@ const Products = () => {
                     >
                         Sold Out
                     </li>
-                    {/* <li
-                        onClick={() => handleButtonClick(4)}
+                    <li
+                        onClick={() => handleViolationFilter(3)}
                         className={`p-4 mr-4  cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 4
+                            selectedButton === 3
                                 ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
                                 : ""
                         }`}
                     >
-                        Suspended 1
-                    </li> */}
+                        Violation
+                    </li>
                     {/* <li
                         onClick={() => handleButtonClick(5)}
                         className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
@@ -622,10 +636,10 @@ const Products = () => {
                                 <FaPlus className="mr-2" />
                                 Add a New Product
                             </Link>
-                            <div className="flex items-center justify-center bg-red-600 text-white rounded-xl px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
+                            {/* <div className="flex items-center justify-center bg-red-600 text-white rounded-xl px-4 py-3 cursor-pointer hover:bg-opacity-50 transition ease-in-out duration-300">
                                 <FaTrash className="mr-2" />
                                 Delete Product
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
@@ -637,14 +651,28 @@ const Products = () => {
                                 </th> */}
                                 <th className="p-2">img</th>
                                 <th className="p-2">Product Name</th>
-                                <th className="p-2">Price</th>
-                                <th className="p-2">Sold Count</th>
-                                <th className="p-2">
-                                    Stocks / variants' stock
-                                </th>
-                                <th className="p-2 text-center">
-                                    Variation Class
-                                </th>
+                                {selectedButton === 3 ? (
+                                    <>
+                                        <th className="p-2">Violation Type</th>
+                                        <th className="p-2">
+                                            Violation Reason
+                                        </th>
+                                        <th className="p-2">
+                                            Suggested Action
+                                        </th>
+                                    </>
+                                ) : (
+                                    <>
+                                        <th className="p-2">Price</th>
+                                        <th className="p-2">Sold Count</th>
+                                        <th className="p-2">
+                                            Stocks / variants' stock
+                                        </th>
+                                        <th className="p-2 text-center">
+                                            Variation Class
+                                        </th>
+                                    </>
+                                )}
                                 <th className="p-2">Variation</th>
                                 <th className="p-2">Category</th>
                                 <th className="p-2">Actions</th>
@@ -656,6 +684,7 @@ const Products = () => {
                                     key={product._id}
                                     index={index}
                                     product={product}
+                                    openViolationTabs={selectedButton === 3}
                                     deleteProduct={() =>
                                         handleDeleteProduct(product._id)
                                     }

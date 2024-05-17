@@ -12,7 +12,6 @@ import { IoSettingsOutline } from "react-icons/io5";
 import SellerAccountSettings from "./SellerAccountSettings.js";
 import { RiAddLargeFill } from "react-icons/ri";
 import { AddProductFrame } from "./AddProductFrame.js";
-import ProductViolation from "./ProductViolation.js";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "./NavBar.js";
 import Footer from "./Footer.js";
@@ -64,11 +63,6 @@ const menuItems = [
         icon: <RiAdvertisementFill size={iconSize} />,
         text: "Advertisement",
         path: "Advertisement",
-    },
-    {
-        icon: <FaBan size={iconSize} />,
-        text: "Product Violations",
-        path: "productsViolation",
     },
 ];
 
@@ -141,7 +135,14 @@ const SellerSettings = ({ settingsMenu = 0 }) => {
                         {selectedButton === 2 && <Orders />}
                         {selectedButton === 3 && <Products />}
                         {selectedButton === 4 && <AddProductFrame />}
-                        {selectedButton === 6 && <ProductViolation />}
+                        {selectedButton === 5 && (
+                            <div className="flex flex-col items-center justify-center">
+                                <FaBan size={100} className="text-red-500" />
+                                <p className="text-xl font-semibold">
+                                    Advertisement Feature is not yet available.
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
