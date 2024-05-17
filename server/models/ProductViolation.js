@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const productViolationSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,7 +15,11 @@ const productViolationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    details: {
+    violationReason: {
+        type: String,
+        required: true,
+    },
+    suggestion: {
         type: String,
         required: true,
     },
@@ -23,4 +29,7 @@ const productViolationSchema = new mongoose.Schema({
     },
 });
 
-const Violation = mongoose.model("ProductViolation", productViolationSchema);
+export const ProductViolation = mongoose.model(
+    "ProductViolation",
+    productViolationSchema
+);

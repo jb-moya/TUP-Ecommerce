@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import PaginationButtons from "./PaginationButtons.js";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import defaultProfileImage from "../Assets/defaultPP.png";
-import { Link } from "react-router-dom";
-import ConfirmationModal from "../components/Confirmation.js";
-
-axios.defaults.withCredentials = true;
+import handleMinMaxInput from "./utils/handleMinMaxInput.js";
+import debounce from "./utils/debounce.js";
+import {
+    buildQueryParam,
+    buildQueryArrayParam,
+} from "./utils/buildQueryParams.js";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import ConfirmationModal from "./Confirmation.js";
 
 const NoImage = () => {
     return (
@@ -15,71 +22,30 @@ const NoImage = () => {
     );
 };
 
+
 const ProductRow = ({ product, index, deleteProduct }) => {
     const renderImage = () => {
         if (product.image.length) {
             return (
                 <img
-                    src={product.image[0] || defaultProfileImage}
-                    className="w-12 h-12 rounded"
-                    alt=""
+                src={product.image[0] || defaultProfileImage}
+                className="w-12 h-12 rounded"
+                alt=""
                 />
             );
         }
         return <NoImage />;
     };
-
-    const renderPrice = () => {
-        if (product.price !== -1) {
-            return product.price;
-        }
-
-        if (product.variation.length > 0) {
-            return (
-                <>
-                    {product.variation.map((v, index) => (
-                        <div
-                            key={`${v.name}${index}`}
-                            className="border border-1 border-gray-300 rounded-xl p-[2px] font-light m-[1px]"
-                        >{`${v.name} (${v.price})`}</div>
-                    ))}
-                </>
-            );
-        }
-        return product.price;
-    };
-
-    const renderStock = () => {
-        console.log(
-            "product HANEP NA YAN stockkkk",
-            product.name,
-            product.stock
-        );
-        if (product.variation.length > 0) {
-            const totalStock = product.variation.reduce(
-                (total, v) => total + v.stock,
-                0
-            );
-
-            return (
-                <>
-                    {product.variation.map((v) => (
-                        <div
-                            className="border border-1 border-gray-300 rounded-xl p-[2px] font-light m-[1px]"
-                            key={v.name}
-                        >{`${v.name} (${v.stock})`}</div>
-                    ))}
-                    <div className="font-light">total: {totalStock}</div>
-                </>
-            );
-        } else if (product.stock && product.stock !== -1) {
-            return product.stock;
-        } else if (product.stock === 0) {
-            return <div className="text-red-400">SOLD OUT</div>;
-        } else {
-            return "error";
-        }
-    };
+    
+    /* <th className="p-2">img</th>
+    <th className="p-2">Product Name</th>
+    <th className="p-2 text-center">Variation Class</th>
+    <th className="p-2">Variation</th>
+    <th className="p-2">Violation Type</th>
+    <th className="p-2">Violation Reason</th>
+    <th className="p-2">Suggestion</th>
+    <th className="p-2">Category</th>
+    <th className="p-2">Actions</th> */
 
     const renderVariationNames = () => {
         if (product.variation.length > 0) {
@@ -130,17 +96,6 @@ const ProductRow = ({ product, index, deleteProduct }) => {
             <td>
                 <div className="px-1">{product.name}</div>
             </td>
-            <td className={product.price === -1 ? "p-1 flex-col" : "p-1"}>
-                {renderPrice()}
-            </td>
-            <td className="p-1">{product.soldCount}</td>
-            <td
-                className={
-                    product.variation.length > 0 ? "p-1 flex-col" : "p-1"
-                }
-            >
-                {renderStock()}
-            </td>
             <td
                 className={
                     product.variationClass
@@ -159,18 +114,22 @@ const ProductRow = ({ product, index, deleteProduct }) => {
             >
                 {renderVariationNames()}
             </td>
+            {/* <th className="p-2">Violation Type</th>
+            <th className="p-2">Violation Reason</th>
+            <th className="p-2">Suggestion</th> */}
             <td className="p-1">{product.category}</td>
 
             <td className="">
+                {/* <td className="text-center"> */}
                 <button
                     type="button"
                     className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] w-full cursor-pointer"
                 >
                     <Link
-                        to={`/admin/addProductViolation/${product._id}`}
+                        to={`/seller/addeditProduct/${product._id}`}
                         className="button-link"
                     >
-                        Add Violation
+                        Edit
                     </Link>
                 </button>
                 <>
@@ -195,88 +154,61 @@ const ProductRow = ({ product, index, deleteProduct }) => {
     );
 };
 
-const AdminMainPage = () => {
-    const [orgs, setOrgs] = useState([]);
-    const [customers, setCustomers] = useState([]);
-    const [admins, setAdmins] = useState([]);
-
-    const [orgCount, setOrgCount] = useState(0);
-    const [customerCount, setCustomerCount] = useState(0);
-    const [adminCount, setAdminCount] = useState(0);
-
+const ProductViolation = () => {
+    const location = useLocation();
+    const { user } = useSelector((state) => state.user);
     const [products, setProducts] = useState([]);
-    const [pendingProductCount, setPendingProductCount] = useState(0);
-
+    const [productCount, setProductCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(1);
+    const [searchName, setSearchName] = useState("");
+    // const [selectedProducts, setSelectedProducts] = useState([]);
+    // const [areAllProductsSelected, setAreAllProductsSelected] = useState(false);
 
-    const fetchPendingProduct = useCallback(async () => {
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+
+        if (searchParams.has("page")) {
+            setCurrentPage(parseInt(searchParams.get("page")));
+        }
+    }, [location.search]);
+
+    const fetchProducts = useCallback(async () => {
         try {
+            console.log("user", user);
+
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
                 {
                     params: {
                         page: currentPage,
-                        productStatus: "pending",
+                        createdBy: user._id,
+                        hasViolation: true,
+                        populatedFields: "violation",
+                        // numericFilters: numericFilters,
+                        // categories: selectCategory ? selectCategory : "",
+                        name: `${searchName ? searchName : ""}`,
                     },
                 }
             );
-
-            console.log(`violated product`, data);
+            console.log("HAHAf", data.products);
             setProducts(data.products);
-            setPendingProductCount(data.products.length);
+            setProductCount(data.count);
             setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
-            console.error(error);
         } finally {
             toast.success("Products loaded successfully");
         }
-    }, [currentPage]);
-
-    const fetchUser = useCallback(
-        async (role, setUsers, setCount, additionalParams = {}) => {
-            try {
-                const { data } = await axios.get(
-                    "http://localhost:5000/api/v1/user",
-                    {
-                        params: {
-                            page: currentPage,
-                            role: role,
-                            ...additionalParams,
-                        },
-                    }
-                );
-
-                console.log(`HAHAf ${role}`, data);
-                setUsers(data.users);
-                setCount(data.users.length);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                toast.success("Products loaded successfully");
-            }
-        },
-        [currentPage]
-    );
-
-    const handleDeleteProduct = (productID) => {
-        try {
-            axios.delete(`http://localhost:5000/api/v1/products/${productID}`);
-            setProducts(
-                products.filter((product) => product._id !== productID)
-            );
-            toast.success("Product deleted successfully");
-        } catch (error) {
-            toast.error("Error deleting product");
-        }
-    };
+    }, [currentPage, user, searchName]);
 
     useEffect(() => {
-        fetchUser("organization", setOrgs, setOrgCount);
-        fetchUser("customer", setCustomers, setCustomerCount);
-        fetchUser("admin", setAdmins, setAdminCount);
-        fetchPendingProduct();
-    }, [fetchUser, fetchPendingProduct]);
+        fetchProducts();
+
+        const params = [buildQueryParam("page", currentPage)].filter(Boolean);
+
+        const newUrl = `${location.pathname}?${params.join("&")}`;
+        window.history.replaceState({ path: newUrl }, "", newUrl);
+    }, [currentPage, fetchProducts, location.pathname]);
 
     return (
         <div>
@@ -284,21 +216,21 @@ const AdminMainPage = () => {
                 <thead>
                     <tr className="text-left bg-gray-300">
                         {/* <th className="p-2">
-                                    <input type="checkbox" />
-                                </th> */}
+                            <input type="checkbox" />
+                        </th> */}
                         <th className="p-2">img</th>
                         <th className="p-2">Product Name</th>
-                        <th className="p-2">Price</th>
-                        <th className="p-2">Sold Count</th>
-                        <th className="p-2">Stocks / variants' stock</th>
                         <th className="p-2 text-center">Variation Class</th>
                         <th className="p-2">Variation</th>
+                        <th className="p-2">Violation Type</th>
+                        <th className="p-2">Violation Reason</th>
+                        <th className="p-2">Suggestion</th>
                         <th className="p-2">Category</th>
                         <th className="p-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody className="">
-                    {products.map((product, index) => (
+                    {/* {products.map((product, index) => (
                         <ProductRow
                             key={product._id}
                             index={index}
@@ -307,11 +239,11 @@ const AdminMainPage = () => {
                                 handleDeleteProduct(product._id)
                             }
                         />
-                    ))}
+                    ))} */}
                 </tbody>
             </table>
         </div>
     );
 };
 
-export default AdminMainPage;
+export default ProductViolation;

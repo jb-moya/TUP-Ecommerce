@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ProductViolation } from "./ProductViolation.js";
 
 const productCategories = [
     "Electronics",
@@ -110,6 +111,11 @@ const productSchema = new mongoose.Schema(
         hasViolation: {
             type: Boolean,
             default: false,
+        },
+        violation: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "ProductViolation",
+            default: null,
         },
     },
     { timestamps: true }

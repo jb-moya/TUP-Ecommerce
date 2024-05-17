@@ -1,15 +1,7 @@
 import connectDB from "./db/connect.js";
-
-// might use express-async-errors
-// might use express-async-errors
-
 import express from "express";
 import bodyParser from "body-parser";
-// import connection from "./database.js";
-// import mockPool from "./__mocks__/MockDatabase.js";
-// import Query from "./Query.js";
 import cors from "cors";
-// import CustomerRouter from "./routes/CustomerRoute.js";1
 import CartRouter from "./routes/CartRoute.js";
 import OrderRouter from "./routes/OrderRoute.js";
 import ProductRouter from "./routes/ProductRoute.js";
@@ -60,30 +52,77 @@ app.use(errorMiddleware);
 
 const port = process.env.PORT || 5000;
 
-const updateExistingProducts = async () => {
-    try {
-        await await Product.updateMany(
-            {},
-            {
-                $set: {
-                    productStatus: "pending",
-                    hasViolation: false,
-                },
-            }
-        );
+// const updateExistingProducts = async () => {
+//     try {
+//         await await Product.updateMany(
+//             {},
+//             {
+//                 $set: {
+//                     productStatus: "pending",
+//                     hasViolation: false,
+//                 },
+//             }
+//         );
 
-        console.log("All products have been updated with new fields");
-    } catch (err) {
-        console.error("Error updating products", err);
-    } finally {
-        mongoose.connection.close();
-    }
-};
+//         console.log("All products have been updated with new fields");
+//     } catch (err) {
+//         console.error("Error updating products", err);
+//     } finally {
+//         mongoose.connection.close();
+//     }
+// };
+
+// const updateExistingProducts = async () => {
+//     try {
+//         await await Product.updateMany(
+//             {},
+//             {
+//                 $set: {
+//                     violation: null,
+//                 },
+//             }
+//         );
+
+//         console.log("All products have been updated with new fields");
+//     } catch (err) {
+//         console.error("Error updating products", err);
+//     } finally {
+//         mongoose.connection.close();
+//     }
+// };
+
+// const setRandomProductWithViolation = async () => {
+//     try {
+//         // Fetch a random product
+//         const randomProduct = await Product.aggregate([
+//             { $sample: { size: 1 } },
+//         ]);
+
+//         if (randomProduct.length > 0) {
+//             const productId = randomProduct[0]._id;
+
+//             // Update the product's hasViolation field to true
+//             await Product.updateOne(
+//                 { _id: productId },
+//                 { $set: { hasViolation: true } }
+//             );
+
+//             console.log(
+//                 `Product with ID ${productId} has been updated with hasViolation set to true`
+//             );
+//         } else {
+//             console.log("No products found");
+//         }
+//     } catch (err) {
+//         console.error("Error updating random product", err);
+//     } finally {
+//         mongoose.connection.close();
+//     }
+// };
 
 const start = async () => {
     try {
         await connectDB(process.env.MONGODB_URI);
-        // await updateExistingProducts();
         app.listen(port, console.log(`Server running on port ${port}`));
     } catch (error) {
         console.log(error);

@@ -58,6 +58,7 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
         categories,
         createdBy,
         populatedFields,
+        hasViolation,
     } = req.query;
 
     const queryObject = {};
@@ -73,6 +74,10 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 
         if (categories) {
             queryObject.category = { $in: categories.split(",") };
+        }
+
+        if (hasViolation) {
+            queryObject.hasViolation = hasViolation === "true" ? true : false;
         }
 
         if (createdBy) {

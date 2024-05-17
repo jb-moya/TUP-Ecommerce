@@ -24,6 +24,7 @@ import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 import { getUserRole } from "./features/user/userSlice.js";
 import Playground from "./pages/Playground.js";
 import AdminMainPage from "./pages/AdminMainPage.js";
+import AddProductViolation from "./pages/AddProductViolation.js";
 import { toast } from "react-toastify";
 import "react-tooltip/dist/react-tooltip.css";
 const rootUrl = "http://localhost:5000/api/v1";
@@ -164,6 +165,14 @@ function App() {
                             }
                         />
                         <Route
+                            path="productsViolation"
+                            element={
+                                <RestrictedRoute allowedRoles={["seller"]}>
+                                    <SellerSettings settingsMenu={6} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
                             path="addeditProduct"
                             element={
                                 <RestrictedRoute allowedRoles={["seller"]}>
@@ -195,6 +204,14 @@ function App() {
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
                                     <AdminMainPage />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="addProductViolation/:id"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <AddProductViolation />
                                 </RestrictedRoute>
                             }
                         />
