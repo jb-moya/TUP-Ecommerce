@@ -50,11 +50,11 @@ const ProductRow = ({ product, index, deleteProduct }) => {
     };
 
     const renderStock = () => {
-        console.log(
-            "product HANEP NA YAN stockkkk",
-            product.name,
-            product.stock
-        );
+        // console.log(
+        //     "product HANEP NA YAN stockkkk",
+        //     product.name,
+        //     product.stock
+        // );
         if (product.variation.length > 0) {
             const totalStock = product.variation.reduce(
                 (total, v) => total + v.stock,
@@ -222,7 +222,7 @@ const AdminMainPage = () => {
                 }
             );
 
-            console.log(`violated product`, data);
+            // console.log(`violated product`, data);
             setProducts(data.products);
             setPendingProductCount(data.products.length);
             setMaxPageCount(Math.ceil(data.count / 10));
@@ -247,7 +247,7 @@ const AdminMainPage = () => {
                     }
                 );
 
-                console.log(`HAHAf ${role}`, data);
+                // console.log(`HAHAf ${role}`, data);
                 setUsers(data.users);
                 setCount(data.users.length);
             } catch (error) {

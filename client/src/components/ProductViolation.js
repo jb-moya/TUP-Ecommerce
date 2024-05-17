@@ -75,7 +75,7 @@ const ProductRow = ({ product, index, deleteProduct }) => {
     };
 
     const handleConfirmDelete = () => {
-        console.log("Product Deleted");
+        // console.log("Product Deleted");
         deleteProduct();
         setIsModalOpen(false);
     };
@@ -178,7 +178,7 @@ const ProductViolation = () => {
 
     const fetchProducts = useCallback(async () => {
         try {
-            console.log("user", user);
+            // console.log("user", user);
 
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
@@ -194,7 +194,7 @@ const ProductViolation = () => {
                     },
                 }
             );
-            console.log("HAHAf", data.products);
+            // console.log("HAHAf", data.products);
             setProducts(data.products);
             setProductCount(data.count);
             setMaxPageCount(Math.ceil(data.count / 10));

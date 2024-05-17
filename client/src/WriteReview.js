@@ -34,7 +34,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
                 }
             );
 
-            console.log("writing review response", response);
+            // console.log("writing review response", response);
 
             if (response.status === 200 || response.status === 201) {
                 toast.success("Review submitted successfully!");

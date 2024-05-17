@@ -72,12 +72,12 @@ const SellerSettings = ({ settingsMenu = 0 }) => {
 
     const [selectedButton, setSelectedButton] = useState(settingsMenu);
 
-    console.log(
-        "selectedButton.js: settubngMenu: ",
-        settingsMenu,
-        "button",
-        selectedButton
-    );
+    // console.log(
+    //     "selectedButton.js: settubngMenu: ",
+    //     settingsMenu,
+    //     "button",
+    //     selectedButton
+    // );
 
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
@@ -89,7 +89,7 @@ const SellerSettings = ({ settingsMenu = 0 }) => {
     }, [settingsMenu]);
 
     useEffect(() => {
-        console.log("selectedButton.js: selectedButton: ", selectedButton);
+        // console.log("selectedButton.js: selectedButton: ", selectedButton);
     }, [selectedButton]);
 
     return (

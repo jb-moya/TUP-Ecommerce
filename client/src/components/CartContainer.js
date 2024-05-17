@@ -19,7 +19,7 @@ const CartContainer = () => {
         if (cartItems) {
             dispatch(calculateTotals());
         }
-        console.log("CartItems          ddddddddddd", cartItems);
+        // console.log("CartItems          ddddddddddd", cartItems);
     }, [dispatch, cartItems]);
 
     if (cartItems === undefined) {

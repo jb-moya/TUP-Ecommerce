@@ -470,7 +470,6 @@ const ProductDetailPage = (props) => {
                     </Swiper>
                 </div>}
             </div>
-
             <Footer />
         </div>
     );

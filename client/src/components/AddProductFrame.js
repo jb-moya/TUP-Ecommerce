@@ -30,7 +30,7 @@ const productCategories = {
 
 export const AddProductFrame = () => {
     const { id: editingProductId } = useParams();
-    console.log("id: ", editingProductId);
+    // console.log("id: ", editingProductId);
     const priceRef = useRef(null);
     const stockRef = useRef(null);
     const [selectedCategory, setSelectedCategory] = useState(16);
@@ -70,7 +70,7 @@ export const AddProductFrame = () => {
             } = product;
 
             // console.log("editing product:", response);
-            console.log("editing product:", product);
+            // console.log("editing product:", product);
             setSelectedCategory(
                 Object.keys(productCategories).find(
                     (key) => productCategories[key] === category
@@ -109,7 +109,7 @@ export const AddProductFrame = () => {
     }, [editingProductId]);
 
     useEffect(() => {
-        console.log("formData: ", formData);
+        // console.log("formData: ", formData);
     }, [formData]);
 
     useEffect(() => {
@@ -160,7 +160,7 @@ export const AddProductFrame = () => {
     }, [selectedCategory]);
 
     useEffect(() => {
-        console.log("AHAHAHHAvariation: ", variation);
+        // console.log("AHAHAHHAvariation: ", variation);
 
         if (variation.length === 1) {
             priceRef.current.value = parseFloat(variation[0].price);
@@ -285,7 +285,7 @@ export const AddProductFrame = () => {
 
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
-        console.log("base64: ", base64);
+        // console.log("base64: ", base64);
         setPostImage((prev) => {
             const newPostImage = [...prev];
             newPostImage[parseInt(e.target.id, 10)] = {

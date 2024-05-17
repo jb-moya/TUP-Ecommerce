@@ -25,8 +25,8 @@ const PasswordSetting = () => {
             newPassword1 !== "" &&
             newPassword2 !== ""
         ) {
-            console.log("currentPassword", currentPassword);
-            console.log("newPassword1", newPassword1);
+            // console.log("currentPassword", currentPassword);
+            // console.log("newPassword1", newPassword1);
             dispatch(
                 updatePassword({
                     currentPassword: currentPassword,
@@ -34,8 +34,8 @@ const PasswordSetting = () => {
                 })
             );
             setAttemptedUpdatingPassword(true);
-            console.log("isUpdatePasswordSuccess", isUpdatePasswordSuccess);
-            console.log("updatePasswordMessage", updatePasswordMessage);
+            // console.log("isUpdatePasswordSuccess", isUpdatePasswordSuccess);
+            // console.log("updatePasswordMessage", updatePasswordMessage);
         } else if (newPassword1 === "" && newPassword2 === "") {
             setResponse("Input fields are empty");
         } else if (newPassword1 !== newPassword2) {

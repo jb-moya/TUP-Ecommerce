@@ -59,7 +59,7 @@ export const deleteItemFromDB = createAsyncThunk(
                 `http://localhost:5000/api/v1/cart/deleteItem/${cart[0]._id}/${itemId}`
             );
 
-            console.log("response >:(", response.data);
+            // console.log("response >:(", response.data);
             return response.data.cart.orderItems;
         } catch (error) {
             console.error(error);
@@ -73,7 +73,7 @@ export const getAllItems = createAsyncThunk(
         const { getState } = thunkAPI;
         try {
             const cart = await getCart(null, thunkAPI);
-            console.log("cart gotten", cart);
+            // console.log("cart gotten", cart);
             if (cart.length === 0) {
                 return [];
             } else {

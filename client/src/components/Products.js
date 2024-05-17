@@ -133,7 +133,7 @@ const ProductRow = ({ product, index, openViolationTabs, deleteProduct }) => {
     };
 
     const handleConfirmDelete = () => {
-        console.log("Product Deleted");
+        // console.log("Product Deleted");
         deleteProduct();
         setIsModalOpen(false);
     };
@@ -366,7 +366,7 @@ const Products = () => {
     const numericFilters = useMemo(() => {
         const numericFiltersArray = [];
 
-        console.log("minMaxSales :--", minMaxSales);
+        // console.log("minMaxSales :--", minMaxSales);
 
         if (minMaxPrice[0] > 0) {
             numericFiltersArray.push(`price>=${minMaxPrice[0]}`);
@@ -395,7 +395,7 @@ const Products = () => {
 
     const fetchProducts = useCallback(async () => {
         try {
-            console.log("user", user);
+            // console.log("user", user);
 
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
@@ -412,7 +412,7 @@ const Products = () => {
                     },
                 }
             );
-            console.log("HAHAf", data.products);
+            // console.log("HAHAf", data.products);
             setProducts(data.products);
             setProductCount(data.count);
             setMaxPageCount(Math.ceil(data.count / 10));
@@ -461,7 +461,7 @@ const Products = () => {
             buildQueryParam("categories", selectCategory),
         ].filter(Boolean);
 
-        console.log("params", params);
+        // console.log("params", params);
 
         const newUrl = `${location.pathname}?${params.join("&")}`;
 
@@ -481,31 +481,31 @@ const Products = () => {
 
     useEffect(() => {
         toast.info(`minMaxPrice changed ${minMaxPrice}`);
-        console.log("minMaxPrice DITO", minMaxPrice);
+        // console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 
     const handleButtonClick = (buttonNumber) => {};
 
     const handleSoldOut = (buttonNumber) => {
-        console.log(buttonNumber);
+        // console.log(buttonNumber);
         setSelectedButton(buttonNumber);
         setOutOfStock(true);
     };
 
     const handleDefault = (buttonNumber) => {
-        console.log(buttonNumber);
+        // console.log(buttonNumber);
         setSelectedButton(buttonNumber);
         setOutOfStock(false);
     };
 
     const handleViolationFilter = (buttonNumber) => {
-        console.log(buttonNumber);
+        // console.log(buttonNumber);
         setSelectedButton(buttonNumber);
         setOutOfStock(false);
     };
 
     const handleCategoryChange = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setselectCategory(e.target.value);
     };
 

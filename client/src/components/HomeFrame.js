@@ -80,7 +80,7 @@ const HomeFrame = () => {
                 }
             );
             setProducts(data.products);
-            console.log("data.products", data.products);
+            // console.log("data.products", data.products);
             setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
         } finally {

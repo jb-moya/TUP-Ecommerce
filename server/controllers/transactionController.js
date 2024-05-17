@@ -10,7 +10,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     const { sort, productName, orderStatus } = req.query;
 
-    console.log("productName", productName)
+    // console.log("productName", productName)
 
     if (productName) {
         queryObject["product"] = {
@@ -24,7 +24,7 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
         queryObject.orderStatus = orderStatus;
     }
 
-    console.log("queryObject", queryObject.product)
+    // console.log("queryObject", queryObject.product)
 
     let transactions;
     if (req.user && req.user.role === "seller") {

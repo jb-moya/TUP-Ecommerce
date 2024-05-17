@@ -22,7 +22,7 @@ export const logIn = createAsyncThunk("user/logIn", async (credentials, thunkAPI
             return data;
         }
 
-        console.log("response", response);
+        // console.log("response", response);
         return thunkAPI.rejectWithValue(data.message);
     } catch (error) {
         console.log("error logging in", error);
@@ -42,7 +42,7 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
             return { user: null };
         }
 
-        console.log("response", response);
+        // console.log("response", response);
         return thunkAPI.rejectWithValue("An error occurred when logging out");
     } catch (error) {
         console.log("error logging out", error);
@@ -65,7 +65,7 @@ export const updateUser = createAsyncThunk("user/updateUser", async (data, thunk
 
 export const updatePassword = createAsyncThunk("user/updatePassword", async (data, thunkAPI) => {
     try {
-        console.log("data", data);
+        // console.log("data", data);
         const response = await axios.patch(
             `${rootURL}/user/updateUserPassword`,
             {
@@ -147,13 +147,13 @@ const userSlice = createSlice({
         builder.addCase(updatePassword.fulfilled, (state, action) => {
             state.isUpdatePasswordSuccess = true;
             state.updatePasswordMessage = action.payload;
-            console.log("updatePassword.fulfilled", action.payload);
+            // console.log("updatePassword.fulfilled", action.payload);
             toast.success(action.payload);
         });
         builder.addCase(updatePassword.rejected, (state, action) => {
             state.isUpdatePasswordSuccess = false;
             state.updatePasswordMessage = action.payload;
-            console.log("updatePassword.rejected", action.payload);
+            // console.log("updatePassword.rejected", action.payload);
             toast.error(action.payload);
         });
     },

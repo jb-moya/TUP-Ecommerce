@@ -134,10 +134,10 @@ export const SellerRegistrationFrame1 = () => {
                         userData
                     )
                     .then((response) => {
-                        console.log(
-                            "Registration submitted successfully:",
-                            response.data
-                        );
+                        // console.log(
+                        //     "Registration submitted successfully:",
+                        //     response.data
+                        // );
                         window.alert("Registration submitted successfully!");
                     })
                     .catch((error) => {

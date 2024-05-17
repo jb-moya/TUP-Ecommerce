@@ -15,8 +15,8 @@ axios.defaults.withCredentials = true;
 export const UserAccountDetails = ({ section }) => {
     const { user } = useSelector((state) => state.user);
 
-    console.log("userData", user);
-    console.log("user", user);
+    // console.log("userData", user);
+    // console.log("user", user);
 
     return (
         <div className="flex w-full mx-auto">

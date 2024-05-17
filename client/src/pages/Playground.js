@@ -62,7 +62,7 @@ const Playground = () => {
     const numericFilters = useMemo(() => {
         const numericFiltersArray = [];
 
-        console.log("minMaxPrice :--", minMaxPrice);
+        // console.log("minMaxPrice :--", minMaxPrice);
 
         if (minMaxPrice && minMaxPrice[0] > 0) {
             numericFiltersArray.push(`price>=${minMaxPrice[0]}`);
@@ -80,7 +80,7 @@ const Playground = () => {
 
     useEffect(() => {
         toast.info(`minMaxPrice changed ${minMaxPrice}`);
-        console.log("minMaxPrice DITO", minMaxPrice);
+        // console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 
     return (

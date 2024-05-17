@@ -38,7 +38,7 @@ const LogInForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log("password", formData.password);
+        // console.log("password", formData.password);
         try {
             await dispatch(logIn(formData));
             navigate("/", { replace: true });

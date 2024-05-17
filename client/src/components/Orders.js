@@ -78,11 +78,11 @@ export const Orders = () => {
             const key = Object.keys(orderStatus).find(
                 (key) => orderStatus[key] === status
             );
-            console.log("key", key);
+            // console.log("key", key);
             setSelectedButton(parseInt(key));
         }
 
-        console.log("selectedButton", selectedButton);
+        // console.log("selectedButton", selectedButton);
     }, [location.search, selectedButton]);
 
     const handleAddSelectedOrder = (orderId, isSelected) => {
@@ -118,7 +118,7 @@ export const Orders = () => {
     }, [selectedOrders, transactions]);
 
     useEffect(() => {
-        console.log("selectedOrders", selectedOrders);
+        // console.log("selectedOrders", selectedOrders);
     }, [selectedOrders]);
 
     const handleButtonClick = (buttonNumber) => {
@@ -137,7 +137,7 @@ export const Orders = () => {
                 }
             );
             const data = await response.data;
-            console.log(response);
+            // console.log(response);
 
             setTransactions(data.transactions);
             setTransactionTotalCount(data.transactionTotalCount);
@@ -156,13 +156,13 @@ export const Orders = () => {
                     orderStatus: orderStatus[selectedButton + 1],
                 }
             );
-            console.log(response);
+            // console.log(response);
             fetchAllTransactions();
 
             toast.success("Orders have been marked as 'To Ship'!");
         } catch (error) {
             toast.error("An error occurred. Please try again.");
-            console.error(error);
+            // console.error(error);
         }
     };
 

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 const Final = () => {
     const { userData, setUserData } = useContext(CheckOutStepperContext);
 
-    console.log(`Final userData`, userData);
+    // console.log(`Final userData`, userData);
     toast.info(`Order is being processed ${userData.fName} ${userData.lName}!`);
 
     return (
