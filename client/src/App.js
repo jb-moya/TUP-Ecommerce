@@ -165,14 +165,6 @@ function App() {
                             }
                         />
                         <Route
-                            path="productsViolation"
-                            element={
-                                <RestrictedRoute allowedRoles={["seller"]}>
-                                    <SellerSettings settingsMenu={6} />
-                                </RestrictedRoute>
-                            }
-                        />
-                        <Route
                             path="addeditProduct"
                             element={
                                 <RestrictedRoute allowedRoles={["seller"]}>
