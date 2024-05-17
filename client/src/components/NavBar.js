@@ -8,7 +8,12 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { TbLetterX } from "react-icons/tb";
 import defaultProfileImage from "../Assets/defaultPP.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setLogged, logOut, isUserLogged } from "../features/user/userSlice.js";
+import {
+    setLogged,
+    logOut,
+    isUserLogged,
+    getUserRole,
+} from "../features/user/userSlice.js";
 import { Link } from "react-router-dom";
 import { setSearchClicked } from "../features/searchSlice.js";
 import { toast } from "react-toastify";
@@ -17,6 +22,7 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.user);
+    const userRole = useSelector(getUserRole);
 
     const sellerMenus = [
         {
@@ -70,6 +76,7 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
                 <div className="px-1 self-center">
                     {user.firstName && user.firstName}
                     {user.orgName && user.orgName}
+                    {userRole === "admin" && "Admin"}
                 </div>
             </div>
             {isProfileMenuOpen && (
@@ -87,7 +94,8 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
                                       </Link>
                                   );
                               })
-                            : customerMenus.map((link, index) => {
+                            : user.role === "seller"
+                            ? customerMenus.map((link, index) => {
                                   return (
                                       <Link
                                           to={link.to}
@@ -97,7 +105,8 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
                                           {link.menu}
                                       </Link>
                                   );
-                              })}
+                              })
+                            : null}
                         <div
                             className="py-2 px-4 hover:bg-gray-300"
                             onClick={handleLogOut}
@@ -123,6 +132,7 @@ export const NavBar = ({
     const userLogged = useSelector(isUserLogged);
     const { productCount } = useSelector((store) => store.cart);
     const { user } = useSelector((state) => state.user);
+    const userRole = useSelector(getUserRole);
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const navigate = useNavigate();
     let [searchParams, setSearchParams] = useSearchParams();
@@ -207,6 +217,11 @@ export const NavBar = ({
                     <li className="p-4">
                         <LinkRoute to="/sellercenter" text="Seller Centre" />
                     </li>
+                    {userRole === "admin" && (
+                        <li className="p-4">
+                            <LinkRoute to="/admin" text="Admin" />
+                        </li>
+                    )}
                 </ul>
 
                 <div className="flex p-2 items-center justify-between">

@@ -23,6 +23,7 @@ import SellerSettings from "./components/SellerSettingsNew.js";
 import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 import { getUserRole } from "./features/user/userSlice.js";
 import Playground from "./pages/Playground.js";
+import AdminMainPage from "./pages/AdminMainPage.js";
 import { toast } from "react-toastify";
 import "react-tooltip/dist/react-tooltip.css";
 const rootUrl = "http://localhost:5000/api/v1";
@@ -63,7 +64,7 @@ function App() {
     }, [isLogged, dispatch, user]);
 
     return (
-        <div className="box-border bg-slate-100">
+        <div className="box-border ">
             <BrowserRouter>
                 <Routes>
                     <Route path="/not-allowed" element={<NotAllowed />} />
@@ -183,6 +184,17 @@ function App() {
                             element={
                                 <RestrictedRoute allowedRoles={["seller"]}>
                                     <SellerSettings settingsMenu={5} />
+                                </RestrictedRoute>
+                            }
+                        />
+                    </Route>
+
+                    <Route path="admin">
+                        <Route
+                            path=""
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <AdminMainPage />
                                 </RestrictedRoute>
                             }
                         />

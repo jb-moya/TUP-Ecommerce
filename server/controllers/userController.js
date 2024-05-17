@@ -13,8 +13,22 @@ import { attachCookiesToResponse, createTokenUser } from "../utils/index.js";
 
 // ADMIN FUNCTIONS
 const getAllUsers = asyncWrapper(async (req, res) => {
-    const users = await Admin.find({}, "-password");
-    res.status(StatusCodes.OK).json({ users });
+    const { role } = req.query;
+
+    if (role === "customer") {
+        const users = await Customer.find({}, "-password");
+        return res.status(StatusCodes.OK).json({ users });
+    } else if (role === "organization") {
+        const users = await Organization.find({}, "-password");
+        return res.status(StatusCodes.OK).json({ users });
+    } else if (role === "admin") {
+        const users = await Admin.find({}, "-password");
+        return res.status(StatusCodes.OK).json({ users });
+    } else {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ error: "Invalid role" });
+    }
 });
 
 const getAllOrganization = asyncWrapper(async (req, res) => {

@@ -20,6 +20,8 @@ import FeedbackRouter from "./routes/FeedbackRoute.js";
 import cookieParser from "cookie-parser";
 import TempRoute from "./routes/TempRoute.js";
 import TransactionRouter from "./routes/TransactionRoute.js";
+import { Product } from "./models/Product.js";
+import mongoose from "mongoose";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -58,9 +60,30 @@ app.use(errorMiddleware);
 
 const port = process.env.PORT || 5000;
 
+const updateExistingProducts = async () => {
+    try {
+        await await Product.updateMany(
+            {},
+            {
+                $set: {
+                    productStatus: "pending",
+                    hasViolation: false,
+                },
+            }
+        );
+
+        console.log("All products have been updated with new fields");
+    } catch (err) {
+        console.error("Error updating products", err);
+    } finally {
+        mongoose.connection.close();
+    }
+};
+
 const start = async () => {
     try {
         await connectDB(process.env.MONGODB_URI);
+        // await updateExistingProducts();
         app.listen(port, console.log(`Server running on port ${port}`));
     } catch (error) {
         console.log(error);
@@ -68,22 +91,3 @@ const start = async () => {
 };
 
 start();
-// app.use(express.json());
-// app.use(cors());
-
-// const mockConnection = await mockPool.getConnection();
-// Query.getDBConnection(mockConnection);
-
-// const flm = await mockConnection.query("SELECT * FROM student", []);
-// console.log("flm: ", flm);
-
-// app.use("/customer", CustomerRouter);
-// app.use("/product", ProductRouter);
-
-// // app.get("/api", (req, res) => {
-// //     res.json({
-// //         product: ["tinapay", "console", "tshirt", "house&lot"],
-// //     });
-// // });
-
-// app.listen(port, () => console.log("Server running on port 5000"));

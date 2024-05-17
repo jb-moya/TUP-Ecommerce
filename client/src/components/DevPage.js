@@ -7,7 +7,7 @@ import yul from "../Assets/dev4.jpg";
 const DevPage = () => {
     return (
         <div style={{ textAlign: "center" }}>
-            <div className="flex items-center justify-center flex-col h-[100px] bg-slate-100">
+            <div className="flex items-center justify-center flex-col h-[100px] ">
                 <h1 className="text-[#211C6A] font-extrabold mt-[30px] mb-12 text-[30px] md:text-[50px] sm:text-[40px]">
                     MEET THE TEAM OF T1
                 </h1>

@@ -60,7 +60,6 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
         populatedFields,
     } = req.query;
 
-
     const queryObject = {};
 
     try {
@@ -187,6 +186,67 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
     }
 });
 
+const updateProducts = asyncWrapper(async (req, res, next) => {
+    // if product is edited or is new, set status to pending
+
+    const product = await Product.updateMany(
+        {},
+        {
+            $set: {
+                productStatus: "pending",
+                hasViolation: false,
+            },
+        }
+    );
+
+    if (!product) {
+        return next(
+            createCustomError(`No product with id : ${ProductID}`, 404)
+        );
+    }
+
+    res.status(200).json({ product });
+});
+
+const deleteProduct = asyncWrapper(async (req, res, next) => {
+    const { id: ProductID } = req.params;
+    const product = await Product.findOneAndDelete({ _id: ProductID });
+
+    if (!product) {
+        return next(
+            createCustomError(`No product with id : ${ProductID}`, 404)
+        );
+    }
+
+    res.status(200).json({ product });
+});
+
+const updateProduct = asyncWrapper(async (req, res, next) => {
+    const { id: ProductID } = req.params;
+
+    const product = await Product.findOneAndUpdate(
+        { _id: ProductID },
+        req.body,
+        { new: true, runValidators: true }
+    );
+
+    if (!product) {
+        return next(
+            createCustomError(`No product with id : ${ProductID}`, 404)
+        );
+    }
+
+    res.status(200).json({ product });
+});
+
+export {
+    getSingleProduct,
+    getAllProducts,
+    deleteProduct,
+    updateProduct,
+    createProduct,
+    tempProductRoute,
+};
 
 // const getAllProducts = asyncWrapper(async (req, res, next) => {
 //     let products;
@@ -204,7 +264,6 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 
 //     const queryObject = {};
 //     // console.log(JSON.stringify(queryOBject, null, 2));
-
 
 //     if (featured) {
 //         queryObject.featured = featured === "true" ? true : false;
@@ -310,50 +369,10 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 
 //     products = await result;
 //     // console.dir(queryOBject, { depth: null });
-    
+
 //     res.status(StatusCodes.OK).json({
 //         products,
 //         productTotalCount: countTotal,
 //         count: products.length,
 //     });
 // });
-
-const deleteProduct = asyncWrapper(async (req, res, next) => {
-    const { id: ProductID } = req.params;
-    const product = await Product.findOneAndDelete({ _id: ProductID });
-
-    if (!product) {
-        return next(
-            createCustomError(`No product with id : ${ProductID}`, 404)
-        );
-    }
-
-    res.status(200).json({ product });
-});
-
-const updateProduct = asyncWrapper(async (req, res, next) => {
-    const { id: ProductID } = req.params;
-
-    const product = await Product.findOneAndUpdate(
-        { _id: ProductID },
-        req.body,
-        { new: true, runValidators: true }
-    );
-
-    if (!product) {
-        return next(
-            createCustomError(`No product with id : ${ProductID}`, 404)
-        );
-    }
-
-    res.status(200).json({ product });
-});
-
-export {
-    getSingleProduct,
-    getAllProducts,
-    deleteProduct,
-    updateProduct,
-    createProduct,
-    tempProductRoute,
-};

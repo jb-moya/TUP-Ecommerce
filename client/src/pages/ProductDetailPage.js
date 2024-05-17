@@ -108,7 +108,7 @@ const ProductDetailPage = (props) => {
     };
 
     return (
-        <div className="mt-32 bg-slate-100">
+        <div className="mt-32 ">
             <NavBar />
 
             <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-xl shadow-md">

@@ -71,7 +71,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
 
     return (
         <>
-            <div className="w-[600px] mb-6 shadow-gray-400 shadow-md rounded-xl">
+            <div className="w-[600px] mb-6 shadow-gray-400 shadow-md rounded-xl mx-auto">
                 <div className="flex flex-row p-2">
                     <StarRating setStarRating={setStarRating} />
                     {starRating !== null && (
@@ -109,7 +109,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
 
                 <button
                     type="button"
-                    className="w-full p-2 text-gray-500 hover:text-white bg-slate-100 hover:bg-[#59b5c3] rounded-xl"
+                    className="w-full p-2 text-gray-500 hover:text-white  hover:bg-[#59b5c3] rounded-xl"
                     onClick={handleSubmitReview}
                 >
                     Submit Review

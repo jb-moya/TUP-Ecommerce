@@ -10,7 +10,7 @@ const VariationHolder = ({
 }) => {
     return (
         <div
-            className="w-11/12 border-2 bg-slate-100 relative px-2 py-2 flex justify-between"
+            className="w-11/12 border-2  relative px-2 py-2 flex justify-between"
             key={index}
         >
             <div className="flex flex-col w-3/12 py-2">
