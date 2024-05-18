@@ -420,7 +420,7 @@ const Products = () => {
         } finally {
             toast.success("Products loaded successfully");
         }
-    }, [currentPage, user, selectCategory, numericFilters, searchName]);
+    }, [currentPage, user, selectCategory, numericFilters, searchName, selectedButton]);
 
     useEffect(() => {
         // ensure that this only triggers when the location pathname only has /seller, nothing else

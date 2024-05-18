@@ -13,27 +13,47 @@ const initialState = {
     updatePasswordMessage: "",
 };
 
-export const logIn = createAsyncThunk("user/logIn", async (credentials, thunkAPI) => {
-    try {
-        const response = await axios.post(`${rootURL}/auth/login`, credentials);
-        const data = await response.data;
-        if (response.status === 200) {
-            localStorage.setItem("isLoggedIn", "true");
-            return data;
-        }
+export const logIn = createAsyncThunk(
+    "user/logIn",
+    async (credentials, thunkAPI) => {
+        try {
+            const response = await axios.post(
+                `${rootURL}/auth/login`,
+                credentials
+            );
+            const data = response.data;
 
-        // console.log("response", response);
-        return thunkAPI.rejectWithValue(data.message);
-    } catch (error) {
-        console.log("error logging in", error);
-        return thunkAPI.rejectWithValue(`An error occurred ${error.response.data.error}`);
+            if (data.user.status === "banned") {
+                return thunkAPI.rejectWithValue({
+                    message:
+                        "Your account has been banned. If you believe this is a mistake, please contact the administrator for assistance.",
+                });
+            }
+
+            if (data.user.status === "pending") {
+                return thunkAPI.rejectWithValue({ message: "Account pending" });
+            }
+
+            if (response.status === 200) {
+                localStorage.setItem("isLoggedIn", "true");
+                return data;
+            }
+
+            // console.log("response", response);
+            return thunkAPI.rejectWithValue(data);
+        } catch (error) {
+            console.log("error logging in", error);
+            return thunkAPI.rejectWithValue(
+                `An error occurred ${error.response.data.error}`
+            );
+        }
     }
-});
+);
 
 export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
     try {
         const response = await axios.post(`${rootURL}/auth/logout`);
-        
+
         if (response.status === 200) {
             localStorage.removeItem("isLoggedIn");
 
@@ -50,41 +70,51 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
     }
 });
 
-export const updateUser = createAsyncThunk("user/updateUser", async (data, thunkAPI) => {
-    try {
-        const response = await axios.put(`${rootURL}/user/updatedUser`, data);
-        const resData = await response.data;
-        if (response.status === 200) {
-            return resData;
-        }
-        return thunkAPI.rejectWithValue(resData.message);
-    } catch (error) {
-        return thunkAPI.rejectWithValue("An error occurred");
-    }
-});
-
-export const updatePassword = createAsyncThunk("user/updatePassword", async (data, thunkAPI) => {
-    try {
-        // console.log("data", data);
-        const response = await axios.patch(
-            `${rootURL}/user/updateUserPassword`,
-            {
-                currentPassword: data.currentPassword,
-                newPassword: data.newPassword,
+export const updateUser = createAsyncThunk(
+    "user/updateUser",
+    async (data, thunkAPI) => {
+        try {
+            const response = await axios.put(
+                `${rootURL}/user/updatedUser`,
+                data
+            );
+            const resData = await response.data;
+            if (response.status === 200) {
+                return resData;
             }
-        );
-        const resData = await response.data;
-        if (response.status === 200) {
-            return resData;
+            return thunkAPI.rejectWithValue(resData.message);
+        } catch (error) {
+            return thunkAPI.rejectWithValue("An error occurred");
         }
-        return thunkAPI.rejectWithValue(resData.message);
-    } catch (error) {
-        return thunkAPI.rejectWithValue("An error occurred");
     }
-});
+);
+
+export const updatePassword = createAsyncThunk(
+    "user/updatePassword",
+    async (data, thunkAPI) => {
+        try {
+            // console.log("data", data);
+            const response = await axios.patch(
+                `${rootURL}/user/updateUserPassword`,
+                {
+                    currentPassword: data.currentPassword,
+                    newPassword: data.newPassword,
+                }
+            );
+            const resData = await response.data;
+            if (response.status === 200) {
+                return resData;
+            }
+            return thunkAPI.rejectWithValue(resData.message);
+        } catch (error) {
+            return thunkAPI.rejectWithValue("An error occurred");
+        }
+    }
+);
 
 export const selectUserID = (state) => state.user._id;
-export const getUserRole = (state) => state.user.user ? state.user.user.role : "guest";
+export const getUserRole = (state) =>
+    state.user.user ? state.user.user.role : "guest";
 export const isUserLogged = (state) => state.user.isLogged;
 
 export const fetchUser = () => async (dispatch) => {
@@ -127,7 +157,7 @@ const userSlice = createSlice({
             toast.success(`Logged in successfully ${state.user.role}`);
         });
         builder.addCase(logIn.rejected, (state, action) => {
-            toast.error(action.payload);
+            toast.error(action.payload.message);
         });
         builder.addCase(logOut.fulfilled, (state) => {
             state.isLogged = false;

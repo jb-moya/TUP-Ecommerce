@@ -38,10 +38,16 @@ const LogInForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // console.log("password", formData.password);
         try {
-            await dispatch(logIn(formData));
-            navigate("/", { replace: true });
+            const resultAction = await dispatch(logIn(formData));
+            // const user = resultAction;
+            // console.log("user", user);
+            if (logIn.fulfilled.match(resultAction)) {
+                navigate("/", { replace: true });
+            } else {
+                console.error("Login error:", resultAction);
+                setLoginErrorMessage(resultAction.payload.message);
+            }
         } catch (error) {
             console.error("Login error:", error);
         }

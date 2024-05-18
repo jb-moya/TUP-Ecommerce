@@ -23,7 +23,6 @@ export const RegistrationFailure = ({ errorMessage, onTryAgainClick }) => {
                 <p className="text-center text-red-500 text-lg font-semibold">
                     {errorMessage}
                 </p>{" "}
-                {/* Display the error message */}
                 <button
                     className="block mx-auto mt-4 px-4 py-2 rounded-xl text-white font-semibold mb-1 bg-[#211C6A]  hover:bg-[#3C35AB]"
                     onClick={handleTryAgainClick}
@@ -44,7 +43,7 @@ export const RegistrationFailure = ({ errorMessage, onTryAgainClick }) => {
 export const LoginFailure = ({ errorMessage }) => {
     return (
         <div>
-            <p className="text-center text-red-500 text-lg font- italic py-5">
+            <p className="text-center text-red-500 text-lg font- italic py-5 transition-all duration-200">
                 ERROR: {errorMessage}
             </p>{" "}
             {/* Display the error message */}

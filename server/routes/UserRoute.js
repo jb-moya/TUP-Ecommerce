@@ -8,6 +8,7 @@ import {
     updateUserPassword,
     getSingleUser,
     getAllOrganization,
+    updateStatusOrganization,
     getSingleOrganization,
 } from "../controllers/userController.js";
 
@@ -23,6 +24,12 @@ router.route("/showMe").get(authenticateUser, showCurrentUser);
 router.route("/getAccountDetails").get(authenticateUser, getSingleUser);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
+router
+    .route("/updateStatusOrganization")
+    .patch(
+        [authenticateUser, authorizePermissions("admin")],
+        updateStatusOrganization
+    );
 
 // router.route("/:id").get(authenticateUser, getSingleUser);
 

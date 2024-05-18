@@ -24,10 +24,13 @@ import SellerSettingsPage from "./pages/SellerSettingsPage.js";
 import { getUserRole } from "./features/user/userSlice.js";
 import Playground from "./pages/Playground.js";
 import AdminMainPage from "./pages/AdminMainPage.js";
-import AddProductViolation from "./pages/AddProductViolation.js";
+import { AiOutlineStop } from "react-icons/ai";
 import { toast } from "react-toastify";
 import "react-tooltip/dist/react-tooltip.css";
-import { SellerReviewFormPage, ProductReviewFormPage } from "./pages/ReviewFormPage.js";
+import {
+    SellerReviewFormPage,
+    ProductReviewFormPage,
+} from "./pages/ReviewFormPage.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
@@ -63,6 +66,20 @@ function App() {
             dispatch(getAllItems());
         } else {
         }
+
+        if (user && user.status === "pending" && user.role === "seller") {
+            console.log(`User is pending ${user.status} ${user.role} ${user._id}`);
+            toast.warning("Warning, your account is currently pending! You cannot sell", {
+                position: "bottom-right",
+                hideProgressBar: false,
+                autoClose: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
     }, [isLogged, dispatch, user]);
 
     return (
@@ -79,11 +96,6 @@ function App() {
                     <Route path="/org/:id" element={<Organization />} />
                     <Route path="/about" element={<About />} />
                     <Route path="*" element={<NotFound />} />
-
-                    <Route path="/seller-review-form" element={<SellerReviewFormPage />} /> 
-                    <Route path="/product-review-form" element={<ProductReviewFormPage />} /> 
-
-
 
                     <Route
                         path="sellercenter"
@@ -199,10 +211,58 @@ function App() {
 
                     <Route path="admin">
                         <Route
+                            path="seller-review-form/:id"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <SellerReviewFormPage />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="product-review-form/:id"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <ProductReviewFormPage />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
                             path=""
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AdminMainPage />
+                                    <AdminMainPage settingsMenu={0} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="manageUsers"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <AdminMainPage settingsMenu={1} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="manageProducts"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <AdminMainPage settingsMenu={2} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="manageCategories"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <AdminMainPage settingsMenu={3} />
+                                </RestrictedRoute>
+                            }
+                        />
+                        <Route
+                            path="addProductViolation"
+                            element={
+                                <RestrictedRoute allowedRoles={["admin"]}>
+                                    <AdminMainPage settingsMenu={4} />
                                 </RestrictedRoute>
                             }
                         />
@@ -210,7 +270,7 @@ function App() {
                             path="addProductViolation/:id"
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AddProductViolation />
+                                    <AdminMainPage settingsMenu={4} />
                                 </RestrictedRoute>
                             }
                         />

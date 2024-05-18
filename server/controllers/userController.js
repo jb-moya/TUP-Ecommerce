@@ -13,22 +13,28 @@ import { attachCookiesToResponse, createTokenUser } from "../utils/index.js";
 
 // ADMIN FUNCTIONS
 const getAllUsers = asyncWrapper(async (req, res) => {
-    const { role } = req.query;
+    const { role, status } = req.query;
 
+    const queryObject = {};
+
+    if (status) {
+        queryObject.status = status;
+    }
+
+    let users;
     if (role === "customer") {
-        const users = await Customer.find({}, "-password");
-        return res.status(StatusCodes.OK).json({ users });
+        users = await Customer.find(queryObject, "-password");
     } else if (role === "organization") {
-        const users = await Organization.find({}, "-password");
-        return res.status(StatusCodes.OK).json({ users });
+        users = await Organization.find(queryObject, "-password");
     } else if (role === "admin") {
-        const users = await Admin.find({}, "-password");
-        return res.status(StatusCodes.OK).json({ users });
+        users = await Admin.find(queryObject, "-password");
     } else {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .json({ error: "Invalid role" });
     }
+
+    res.status(StatusCodes.OK).json({ users });
 });
 
 const getAllOrganization = asyncWrapper(async (req, res) => {
@@ -44,34 +50,23 @@ const getSingleOrganization = asyncWrapper(async (req, res) => {
 });
 
 const getSingleUser = asyncWrapper(async (req, res, next) => {
-    // // console.log("req.user", req.user);
-
-    // check for role
     let user = null;
     if (req.user.role === "customer") {
-        // // console.log("req rolee", req.user.role);
-        // // console.log("req.user", req.user);
         user = await Customer.findOne({ _id: req.user.userId });
     } else if (req.user.role === "organization") {
         user = await Organization.findOne({ _id: req.user.userId });
     } else if (req.user.role === "admin") {
         user = await Admin.findOne({ _id: req.user.userId });
     }
-
-    // const { id: userId } = req.params;
-    // const user = await User.findOne({ _id: req.user.userId });
-
     if (!user) {
         return next(createCustomError(`No user with id : ${userId}`, 404));
     }
 
     checkPermissions(req.user, user._id);
-    // res.status(StatusCodes.OK).json();
     res.status(StatusCodes.OK).json({ user });
 });
 
 const showCurrentUser = asyncWrapper(async (req, res) => {
-    // // console.log(" r e q . u s e r", req.user);
     res.status(StatusCodes.OK).json({ user: req.user });
 });
 
@@ -99,6 +94,23 @@ const updateUser = asyncWrapper(async (req, res) => {
         attachCookiesToResponse({ res, user: tokenUser });
         res.status(StatusCodes.OK).json({ user });
     }
+});
+
+const updateStatusOrganization = asyncWrapper(async (req, res) => {
+    const { id, status } = req.body;
+
+    const seller = await Organization.findById(id);
+
+    if (!seller) {
+        return res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ error: "Seller not found" });
+    }
+
+    seller.status = status;
+    await seller.save();
+
+    res.status(StatusCodes.OK).json({ seller });
 });
 
 const updateUserPassword = asyncWrapper(async (req, res) => {
@@ -141,5 +153,6 @@ export {
     updateUser,
     getSingleOrganization,
     getAllOrganization,
+    updateStatusOrganization,
     updateUserPassword,
 };

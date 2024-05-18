@@ -13,6 +13,11 @@ import cookieParser from "cookie-parser";
 import TempRoute from "./routes/TempRoute.js";
 import TransactionRouter from "./routes/TransactionRoute.js";
 import { Product } from "./models/Product.js";
+
+import Users from "./models/User.js";
+
+const { Customer, Organization, Admin } = Users;
+
 import mongoose from "mongoose";
 
 import dotenv from "dotenv";
@@ -72,6 +77,46 @@ const port = process.env.PORT || 5000;
 //     }
 // };
 
+const updateUserProducts = async () => {
+    try {
+        await Organization.updateMany({}, { $set: { status: "approved" } });
+
+        console.log("All orgs have been updated with pending status");
+    } catch (err) {
+        console.error("Error updating orgs", err);
+    } finally {
+        mongoose.connection.close();
+    }
+};
+
+// const updateUserProducts = async () => {
+//     try {
+//         await Organization.updateMany(
+//             {}, // Match all documents
+//             { $set: { createdAt: new Date("2023-01-01T00:00:00Z") } },
+//             { multi: true } // Update multiple documents
+//         );
+
+//         console.log("All orgs have been updated with timestamps");
+//     } catch (err) {
+//         console.error("Error updating orgs", err);
+//     } finally {
+//         mongoose.connection.close();
+//     }
+// };
+
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGODB_URI);
+        // await updateUserProducts();
+        app.listen(port, console.log(`Server running on port ${port}`));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+start();
+
 // const updateExistingProducts = async () => {
 //     try {
 //         await await Product.updateMany(
@@ -119,14 +164,3 @@ const port = process.env.PORT || 5000;
 //         mongoose.connection.close();
 //     }
 // };
-
-const start = async () => {
-    try {
-        await connectDB(process.env.MONGODB_URI);
-        app.listen(port, console.log(`Server running on port ${port}`));
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-start();

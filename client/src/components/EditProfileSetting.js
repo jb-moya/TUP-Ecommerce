@@ -116,6 +116,7 @@ const EditProfileDetails = () => {
         const userLocal = JSON.parse(localStorage.getItem("user"));
         localStorage.setItem("user", JSON.stringify(userLocal));
     };
+    
     return (
         <div className="w-[950px] flex-wrap flex flex-col px-10 py-6 bg-white">
             <p className="text-xl">My Profile</p>

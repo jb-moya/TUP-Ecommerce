@@ -70,13 +70,6 @@ export const SellerRegistrationFrame1 = () => {
 
     const steps = ["Shop Information", "Business Information", "Complete"];
 
-    // useEffect(() => {
-    //     setUserData((prevUserData) => ({
-    //         ...prevUserData,
-    //         role: 'seller',
-    //     }));
-    // }, []);
-
     const displaySteps = (step) => {
         switch (step) {
             case 1:
