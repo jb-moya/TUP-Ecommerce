@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
     cart: cartReducer,
     search: searchReducer,
 });
-
+// testing
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
