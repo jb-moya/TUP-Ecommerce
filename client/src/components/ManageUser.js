@@ -112,7 +112,7 @@ export const ManageUser = () => {
                 {
                     params: {
                         page: currentPage,
-                        role: "organization",
+                        role: "seller",
                         status: status[selectedButton],
                     },
                 }

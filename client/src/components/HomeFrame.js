@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import PaginationButtons from "./PaginationButtons";
+import defaultProfileImage from "../Assets/defaultPP.png";
 
 import Logo1 from "../OrganizationAssets/logoipsum-329.svg";
 import Logo2 from "../OrganizationAssets/logoipsum-330.svg";
@@ -16,7 +17,7 @@ import Logo7 from "../OrganizationAssets/logoipsum-325.svg";
 // Slider
 import LoadingSymbol from "./loadingScreen";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, FreeMode } from "swiper/modules";
 import { isUserLogged } from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "./ProductCard";
@@ -52,6 +53,28 @@ const HomeFrame = () => {
     const [popularProducts, setPopularProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(0);
+    const [sellers, setSellers] = useState([]);
+
+    const fetchUser = useCallback(async () => {
+        try {
+            const { data } = await axios.get(
+                "http://localhost:5000/api/v1/user",
+                {
+                    params: {
+                        role: "seller",
+                        status: "approved",
+                        limit: 30,
+                    },
+                }
+            );
+            console.log("data", data);
+            setSellers(data.users);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            toast.success("Products loaded successfully");
+        }
+    }, []);
 
     const fetchPopularProducts = useCallback(async () => {
         try {
@@ -81,7 +104,6 @@ const HomeFrame = () => {
                 }
             );
             setProducts(data.products);
-            // console.log("data.products", data.products);
             setMaxPageCount(Math.ceil(data.productTotalCount / 10));
         } catch (error) {
         } finally {
@@ -95,7 +117,8 @@ const HomeFrame = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [fetchProducts, currentPage]);
+        fetchUser();
+    }, [fetchProducts, fetchUser]);
 
     const navigate = useNavigate();
 
@@ -182,55 +205,46 @@ const HomeFrame = () => {
                     />
                 </div>
             </div>
-            <div className="flex flex-row justify-between max-w-[1240px] w-[1000px] h-20 mb-4 mx-auto">
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo1}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
 
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo2}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
+            {sellers.length !== 0 && (
+                <div className="max-w-[1240px] w-[1000px] pb-4">
+                    <Swiper
+                        modules={[FreeMode, Pagination]}
+                        spaceBetween={20}
+                        slidesPerView={4}
+                        freeMode={true}
+                        navigation
+                        pagination={{ clickable: true }}
+                        className=""
+                    >
+                        {sellers.map((seller, index) => (
+                            <SwiperSlide
+                                key={index}
+                                className="w-fit my-6"
+                                style={{ width: "fit-content" }}
+                            >
+                                <Link
+                                    to={`/org/${seller._id}`}
+                                    className="group my-6"
+                                >
+                                    <img
+                                        className="w-20 h-20 rounded-full drop-shadow-sm mx-auto group-hover:scale-125 group-hover:shadow-lg transition-all ease-in-out duration-200"
+                                        src={
+                                            seller.image || defaultProfileImage
+                                        }
+                                        alt="Logo Here"
+                                        loading="lazy"
+                                    />
+                                    <p className="mt-6 text-sm text-center line-clamp-2 transition-all ease-in-out duration-200">
+                                        {seller.orgName}
+                                    </p>
+                                </Link>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+            )}
 
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo3}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
-
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo4}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo5}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
-
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo6}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
-
-                <img
-                    className="w-20 h-20 rounded-lg drop-shadow-sm"
-                    src={Logo7}
-                    alt="Logo Here"
-                    loading="lazy"
-                />
-            </div>
             <div className="max-w-[1240px] w-full mb-4 bg-white rounded-2xl shadow-md">
                 <div className="max-w-[1240px] w-full">
                     <div className="font-bold h-[50px] p-4">CATEGORIES</div>

@@ -24,7 +24,7 @@ const getAllUsers = asyncWrapper(async (req, res) => {
     let users;
     if (role === "customer") {
         users = await Customer.find(queryObject, "-password");
-    } else if (role === "organization") {
+    } else if (role === "seller") {
         users = await Organization.find(queryObject, "-password");
     } else if (role === "admin") {
         users = await Admin.find(queryObject, "-password");
