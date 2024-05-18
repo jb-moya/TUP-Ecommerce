@@ -25,6 +25,8 @@ import { Tooltip } from "react-tooltip";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
 import ProductCard from "../components/ProductCard.js";
+import LoadingSymbol from "../components/loadingScreen.js";
+
 axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
@@ -146,12 +148,10 @@ const ProductDetailPage = (props) => {
         <div className="mt-32 ">
             <NavBar />
 
-            <div className="w-[1100px] flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-xl shadow-md">
-                <div className="w-5/12 px-2">
+            <div className="w-[1100px] h-full flex-wrap flex mx-auto justify-center px-2 py-6 bg-white rounded-xl shadow-md">
+                <div className="w-5/12 px-2 h-full">
                     {isLoading ? (
-                        <div className="w-full h-full flex items-center justify-center">
-                            Loading Images...
-                        </div>
+                        <LoadingSymbol showWhen={isLoading} />
                     ) : productDetails.image.length > 0 ? (
                         <ImageSwiper images={productDetails.image} />
                     ) : (
@@ -384,30 +384,32 @@ const ProductDetailPage = (props) => {
 
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
-                {sameSellerProducts.length > 0 && <div className="w-full mt-4">
-                    <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
-                        From the same Seller
+                {sameSellerProducts.length > 0 && (
+                    <div className="w-full mt-4">
+                        <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
+                            From the same Seller
+                        </div>
+                        <Swiper
+                            modules={[FreeMode, Pagination]}
+                            spaceBetween={20}
+                            slidesPerView={5}
+                            freeMode={true}
+                            navigation
+                            pagination={{ clickable: true }}
+                        >
+                            {sameSellerProducts
+                                .filter((product) => product._id !== id)
+                                .map((product) => (
+                                    <SwiperSlide
+                                        key={product._id}
+                                        className="h-[300px] mt-4 mb-10"
+                                    >
+                                        <ProductCard product={product} />
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper>
                     </div>
-                    <Swiper
-                        modules={[FreeMode, Pagination]}
-                        spaceBetween={20}
-                        slidesPerView={5}
-                        freeMode={true}
-                        navigation
-                        pagination={{ clickable: true }}
-                    >
-                        {sameSellerProducts
-                            .filter((product) => product._id !== id)
-                            .map((product) => (
-                                <SwiperSlide
-                                    key={product._id}
-                                    className="h-[300px] mt-4 mb-10"
-                                >
-                                    <ProductCard product={product} />
-                                </SwiperSlide>
-                            ))}
-                    </Swiper>
-                </div>}
+                )}
 
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
@@ -445,30 +447,32 @@ const ProductDetailPage = (props) => {
 
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
-                {sameCategoryProducts.length > 0 && <div className="w-full mt-4">
-                    <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
-                        With the same Category: {productDetails.category}
+                {sameCategoryProducts.length > 0 && (
+                    <div className="w-full mt-4">
+                        <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
+                            With the same Category: {productDetails.category}
+                        </div>
+                        <Swiper
+                            modules={[FreeMode, Pagination]}
+                            spaceBetween={20}
+                            slidesPerView={5}
+                            freeMode={true}
+                            navigation
+                            pagination={{ clickable: true }}
+                        >
+                            {sameCategoryProducts
+                                .filter((product) => product._id !== id)
+                                .map((product) => (
+                                    <SwiperSlide
+                                        key={product._id}
+                                        className="h-[300px] mt-4 mb-10"
+                                    >
+                                        <ProductCard product={product} />
+                                    </SwiperSlide>
+                                ))}
+                        </Swiper>
                     </div>
-                    <Swiper
-                        modules={[FreeMode, Pagination]}
-                        spaceBetween={20}
-                        slidesPerView={5}
-                        freeMode={true}
-                        navigation
-                        pagination={{ clickable: true }}
-                    >
-                        {sameCategoryProducts
-                            .filter((product) => product._id !== id)
-                            .map((product) => (
-                                <SwiperSlide
-                                    key={product._id}
-                                    className="h-[300px] mt-4 mb-10"
-                                >
-                                    <ProductCard product={product} />
-                                </SwiperSlide>
-                            ))}
-                    </Swiper>
-                </div>}
+                )}
             </div>
             <Footer />
         </div>

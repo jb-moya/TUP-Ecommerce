@@ -14,7 +14,7 @@ import Logo6 from "../OrganizationAssets/logoipsum-323.svg";
 import Logo7 from "../OrganizationAssets/logoipsum-325.svg";
 
 // Slider
-
+import LoadingSymbol from "./loadingScreen";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { isUserLogged } from "../features/user/userSlice";
@@ -25,6 +25,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
+import { TbHexagonLetterPFilled } from "react-icons/tb";
 
 const productCategories = [
     "Electronics",
@@ -149,7 +150,6 @@ const HomeFrame = () => {
                     )}
                 </div>
             </div>
-
             <div className="flex max-w-[1240px] w-full ">
                 <div className=" w-[800px] h-[521px] my-5 mt-4">
                     <Swiper
@@ -182,7 +182,6 @@ const HomeFrame = () => {
                     />
                 </div>
             </div>
-
             <div className="flex flex-row justify-between max-w-[1240px] w-[1000px] h-20 mb-4 mx-auto">
                 <img
                     className="w-20 h-20 rounded-lg drop-shadow-sm"
@@ -232,7 +231,6 @@ const HomeFrame = () => {
                     loading="lazy"
                 />
             </div>
-
             <div className="max-w-[1240px] w-full mb-4 bg-white rounded-2xl shadow-md">
                 <div className="max-w-[1240px] w-full">
                     <div className="font-bold h-[50px] p-4">CATEGORIES</div>
@@ -256,35 +254,28 @@ const HomeFrame = () => {
                     </div>
                 </div>
             </div>
-
             <div className="flex flex-col bg-white h-[340px] rounded-2xl max-w-[1240px] w-full mb-4 mt-4 shadow-md">
                 <h1 className="font-bold p-4">TOP PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">
-                    {popularProducts.length !== 0 ? (
+                    {popularProducts.length !== 0 &&
                         popularProducts.map((product, index) => (
                             <ProductCard key={index} product={product} />
-                        ))
-                    ) : (
-                        <div className="flex justify-center align-middle">
-                            ...Loading Popular Products...
-                        </div>
-                    )}
+                        ))}
                 </div>
+                <LoadingSymbol showWhen={popularProducts.length === 0} />
             </div>
-
             <div className="flex flex-col bg-white max-w-[1240px] w-full rounded-2xl shadow-md">
                 <h1 className="font-bold p-4">DISCOVER YOUR PRODUCTS</h1>
                 <hr className="border-[#211C6A]"></hr>
                 <div className="grid grid-cols-6 gap-4 m-4">
-                    {products.length !== 0 ? (
+                    {products.length !== 0 &&
                         products.map((product, index) => (
                             <ProductCard key={index} product={product} />
-                        ))
-                    ) : (
-                        <div>...Loading Products...</div>
-                    )}
+                        ))}
                 </div>
+
+                <LoadingSymbol showWhen={products.length === 0} />
 
                 <PaginationButtons
                     pageCount={maxPageCount > 0 ? maxPageCount : 1}

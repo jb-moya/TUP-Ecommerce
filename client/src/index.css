@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+.rotateZ {
+    animation: myAnim 2s infinite ease-in-out;
+    pointer-events: none;
+    user-select: none;
+}
+
+@keyframes myAnim {
+	0%, 100% {
+        transform: rotate3d(0, 1, 0, 0deg) translateY(-25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        opacity: 1;
+    }
+    
+    50% {
+        transform: rotate3d(0, 1, 0, 180deg) translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        opacity: 0;
+    }
+}
+
+
 body {
     --tw-bg-opacity: 1;
     background-color: rgb(241 245 249 / var(--tw-bg-opacity));
@@ -24,7 +45,7 @@ body {
     --toastify-color-light: #fff !important;
     --toastify-color-dark: #121212 !important;
     --toastify-color-info: #3498db !important;
-    --toastify-color-success: #211C6A !important;
+    --toastify-color-success: #211c6a !important;
     --toastify-color-warning: #f1c40f !important;
     --toastify-color-error: #e74c3c !important;
     --toastify-color-transparent: rgba(255, 255, 255, 0.7) !important;

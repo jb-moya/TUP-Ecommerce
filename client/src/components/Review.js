@@ -4,6 +4,7 @@ import { DropDownMenu } from "./utils/Dropdown.js";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { buildQueryParam } from "./utils/buildQueryParams.js";
+import LoadingSymbol from "./loadingScreen.js";
 axios.defaults.withCredentials = true;
 
 const Review = ({ productID }) => {
@@ -134,7 +135,9 @@ const Review = ({ productID }) => {
                     </>
                 )}
                 {isLoading ? (
-                    <div className="text-center">Fetching reviews</div>
+                    <div className="text-center">
+                        <LoadingSymbol showWhen={true} message="Fetching reviews"/>
+                    </div>
                 ) : userReviews.length === 0 ? (
                     <div className="text-center">No reviews available</div>
                 ) : (

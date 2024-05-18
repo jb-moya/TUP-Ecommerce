@@ -1,5 +1,4 @@
 import React from "react";
-
 const AboutPage = () => {
     return (
         <div className="w-[1100px] mx-auto ">
@@ -7,7 +6,6 @@ const AboutPage = () => {
                 <h1 className="text-[#211C6A] font-extrabold mt-[30px] mb-12 text-[30px] md:text-[50px] sm:text-[40px]">
                     ABOUT
                 </h1>
-
                 <div className="paragraph-container text-center">
                     <p style={{ margin: "0px 100px" }}>
                         TUP Merch Co. is an Ecommerce site that aims to
