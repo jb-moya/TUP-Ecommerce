@@ -17,7 +17,7 @@ import { authorizePermissions } from "../middleware/authorization.js";
 
 router
     .route("/")
-    .get(authenticateUser, getAllUsers);
+    .get(getAllUsers);
 router.route("/organizations").get(getAllOrganization);
 router.route("/singleOrganization").get(getSingleOrganization);
 router.route("/showMe").get(authenticateUser, showCurrentUser);

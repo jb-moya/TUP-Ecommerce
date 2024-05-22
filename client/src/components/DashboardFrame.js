@@ -182,7 +182,7 @@ export const DashboardFrame = () => {
                             </div>
                         </div>
 
-                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
+                        {/* <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">203</h2>
@@ -190,7 +190,7 @@ export const DashboardFrame = () => {
                                 </div>
                                 <TbBasketCancel className="mr-4" size={40} />
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="bg-white w-full shadow-lg p-6 rounded-xl">

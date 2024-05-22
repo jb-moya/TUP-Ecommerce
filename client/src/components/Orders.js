@@ -317,7 +317,7 @@ export const Orders = () => {
                 <div className="flex justify-between mt-2 p-4 ">
                     <div className="text-lg">Orders</div>
                     <div className="flex items-center">
-                        <div className="flex items-center text-sm">
+                        {/* <div className="flex items-center text-sm">
                             Sort By:
                             <select className="ml-2 border border-[#211C6A] rounded-full p-2 bg-transparent outline-none ">
                                 <option value="option1">
@@ -326,7 +326,7 @@ export const Orders = () => {
                                 <option value="option2">Option 2</option>
                                 <option value="option3">Option 3</option>
                             </select>
-                        </div>
+                        </div> */}
                         <Tooltip
                             id="my-tooltip"
                             style={{
