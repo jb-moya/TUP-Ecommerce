@@ -71,7 +71,20 @@ export const CheckOutFrame = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const { cartItems, total, amount } = useSelector((store) => store.cart);
-    const [userData, setUserData] = useState("");
+
+    const [userData, setUserData] = useState({
+        address: "",
+        city: "",
+        country: "",
+        eWalletName: "",
+        eWalletNumber: "",
+        fName: "",
+        lName: "",
+        paymentMethod: "",
+        shippingMethod: "",
+        zipcode: "",
+    });
+
     const [finalData, setFinalData] = useState([]);
     const [valueShipping, setValueShipping] = useState(0);
     const steps = ["Address", "Shipping", "Payment", "Complete"];
@@ -105,6 +118,38 @@ export const CheckOutFrame = () => {
 
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function shippingAddressFilled() {
+        console.log(userData);
+        console.log(`shipping address checking.,,`);
+
+        return (
+            userData.fName &&
+            userData.lName &&
+            userData.address &&
+            userData.city &&
+            userData.country &&
+            userData.zipcode
+        );
+    }
+
+    function shippingMethodFilled() {
+        console.log(userData);
+
+        console.log("shipping method checking.,,");
+        return userData.shippingMethod;
+    }
+
+    function paymentMethodFilled() {
+        console.log(userData);
+
+        console.log("payment method checking.,,");
+        if (userData.paymentMethod === "GCash") {
+            return userData.eWalletName && userData.eWalletNumber;
+        } else {
+            return true;
+        }
     }
 
     const makeTransaction = async () => {
@@ -203,6 +248,15 @@ export const CheckOutFrame = () => {
 
                     {currentStep !== steps.length && (
                         <CheckOutStepperControl
+                            canProceed={
+                                currentStep === 1
+                                    ? shippingAddressFilled()
+                                    : currentStep === 2
+                                    ? shippingMethodFilled()
+                                    : currentStep === 3
+                                    ? paymentMethodFilled()
+                                    : true
+                            }
                             handleClick={handleClick}
                             currentStep={currentStep}
                             steps={steps}
