@@ -24,26 +24,53 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
         queryObject.orderStatus = orderStatus;
     }
 
-    // console.log("queryObject", queryObject.product)
-
     let transactions;
     if (req.user && req.user.role === "seller") {
+        console.log("req.user.userId ;;;", req.user.userId);
         // queryObject["product.createdBy"] = req.user.userId;
-        transactions = Transaction.find(queryObject).populate({
-            path: "product",
-            match: { createdBy: req.user.userId },
-        });
+
+        // transactions = Transaction.find(queryObject).populate({
+        //     path: "product",
+        // });
+
+        transactions = Transaction.aggregate([
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "product",
+                    foreignField: "_id",
+                    as: "productInfo",
+                },
+            },
+            {
+                $match: {
+                    "productInfo.createdBy":
+                        mongoose.Types.ObjectId.createFromHexString(
+                            req.user.userId
+                        ),
+                },
+            },
+        ]);
+
+        // transactions = Transaction.find(queryObject).populate({
+        //     path: "product",
+        //     match: {
+        //         createdBy: mongoose.Types.ObjectId.createFromHexString(
+        //             req.user.userId
+        //         ),
+        //     },
+        // });
     }
-    
+
     if (req.user && req.user.role === "customer") {
+        console.log("req.user.userId", req.user.userId);
         queryObject.user = mongoose.Types.ObjectId.createFromHexString(
             req.user.userId
         );
 
-        transactions = Transaction.find(queryObject)
-            .populate({
-                path: "product",
-            });
+        transactions = Transaction.find(queryObject).populate({
+            path: "product",
+        });
     }
 
     if (sort) {
@@ -101,7 +128,7 @@ const getTotalRevenue = asyncWrapper(async (req, res) => {
                     mongoose.Types.ObjectId.createFromHexString(
                         req.user.userId
                     ),
-                "orderStatus": "Completed",
+                orderStatus: "Completed",
             },
         },
         {

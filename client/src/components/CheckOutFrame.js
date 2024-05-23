@@ -109,17 +109,7 @@ export const CheckOutFrame = () => {
         direction === "next" ? newStep++ : newStep--;
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
-
-    function imgUrl() {
-        const id = rand(1, 200);
-        // // console.log(id);
-        return `https://picsum.photos/id/${id}/1920/1080`;
-    }
-
-    function rand(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
+    
     function shippingAddressFilled() {
         console.log(userData);
         console.log(`shipping address checking.,,`);

@@ -14,6 +14,7 @@ import TempRoute from "./routes/TempRoute.js";
 import TransactionRouter from "./routes/TransactionRoute.js";
 import ProductViolationRouter from "./routes/ProductViolationRoute.js";
 import { Product } from "./models/Product.js";
+import { Transaction } from "./models/Transaction.js";
 
 import Users from "./models/User.js";
 
@@ -90,6 +91,18 @@ const port = process.env.PORT || 5000;
 //         mongoose.connection.close();
 //     }
 // };
+
+const deleteAllTransactions = async () => {
+    try {
+        await Transaction.deleteMany({});
+
+        console.log("All transactions have been deleted");
+    } catch (err) {
+        console.error("Error deleting transactions", err);
+    } finally {
+        mongoose.connection.close();
+    }
+};
 
 // const updateUserProducts = async () => {
 //     try {

@@ -32,6 +32,8 @@ const orderAction = {
 };
 
 const OrderRow = ({ order, selectedOrder, isSelected }) => {
+    console.log(":(", order.product)
+
     return (
         <tr className="border-t">
             <td className="p-2">
@@ -64,6 +66,7 @@ export const Orders = () => {
     const [selectedButton, setSelectedButton] = useState(0); // Changed initial value to 1 for Dashboard
     const [selectedOrders, setSelectedOrders] = useState([]);
     const [areAllOrdersSelected, setAreAllOrdersSelected] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -127,6 +130,7 @@ export const Orders = () => {
 
     const fetchAllTransactions = useCallback(async () => {
         try {
+            setLoading(true);
             const response = await axios.get(
                 `http://localhost:5000/api/v1/transactions`,
                 {
@@ -144,6 +148,8 @@ export const Orders = () => {
             setMaxPageCount(Math.ceil(data.transactionTotalCount / 10));
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     }, [currentPage, selectedButton]);
 
@@ -398,7 +404,16 @@ export const Orders = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {transactions.length > 1 &&
+                        {loading && (
+                            <tr>
+                                <td colSpan="100" className="text-center p-4">
+                                    Loading...
+                                </td>
+                            </tr>
+                        )}
+
+                        {!loading &&
+                            transactions.length > 0 &&
                             transactions.map((transaction) => (
                                 <OrderRow
                                     key={transaction._id}
@@ -409,7 +424,7 @@ export const Orders = () => {
                                     )}
                                 />
                             ))}
-                        {transactions.length === 0 && (
+                        {!loading && transactions.length === 0 && (
                             <tr>
                                 <td colSpan="100" className="text-center p-4">
                                     No orders found.
