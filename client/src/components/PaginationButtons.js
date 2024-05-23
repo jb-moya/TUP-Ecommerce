@@ -36,7 +36,7 @@ const PaginationButtons = ({ pageCount, setCurrentPage }) => {
             <ReactPaginate
                 breakLabel={<span className="mr-4">...</span>}
                 nextLabel={
-                    <span className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full">
+                    <span className="w-10 h-10 flex items-center justify-center hover:text-white hover:bg-blue-500 transistion-all duration-200 ease-in-out bg-gray-300 rounded-full">
                         <BsChevronRight />
                     </span>
                 }
@@ -44,14 +44,15 @@ const PaginationButtons = ({ pageCount, setCurrentPage }) => {
                 pageRangeDisplayed={5}
                 pageCount={pageCount}
                 previousLabel={
-                    <span className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded-full mr-4">
+                    <span className="w-10 h-10 flex items-center justify-center hover:text-white hover:bg-blue-500 transistion-all duration-200 ease-in-out bg-gray-300 rounded-full mr-4">
                         <BsChevronLeft />
                     </span>
                 }
                 renderOnZeroPageCount={null}
                 containerClassName="flex items-center justify-center mt-8 mb-4"
-                pageClassName="block border- border-solid border-gray-300 hover:bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full mr-4"
+                pageClassName="block border- border-solid border-gray-300 hover:bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full mr-4 transition-all ease-in-out duration-200"
                 activeClassName="bg-[#211C6A] text-white hover:text-[#211C6A]"
+                pageLinkClassName="w-full h-full flex items-center justify-center"
             />
         </motion.div>
     );

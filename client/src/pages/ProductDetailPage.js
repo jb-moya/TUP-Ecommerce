@@ -31,9 +31,12 @@ axios.defaults.withCredentials = true;
 
 const ProductDetailPage = (props) => {
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.user);
     const userLogged = useSelector(isUserLogged);
     const navigate = useNavigate();
     const { id } = useParams();
+
+    console.log("user", user);
 
     const [puffAnimationPrice, setPuffAnimationPrice] = useState(false);
     const [productDetails, setProductDetails] = useState({});
@@ -297,6 +300,7 @@ const ProductDetailPage = (props) => {
                     <div className="w-full mt-4 flex items-center">
                         <Tooltip
                             id="my-tooltip"
+                            className="z-50"
                             style={{
                                 backgroundColor: "#211c6a",
                                 color: "#fff",
@@ -309,15 +313,23 @@ const ProductDetailPage = (props) => {
                                 onClick={handleAddToCart}
                                 data-tooltip-id="my-tooltip"
                                 data-tooltip-content={
-                                    userLogged ? "" : "Please log in to buy!"
+                                    userLogged
+                                        ? user.role === "customer"
+                                            ? ""
+                                            : "customer can only perform this"
+                                        : "Please log in to buy!"
                                 }
-                                data-tooltip-place="top"
-                                disabled={!userLogged}
+                                disabled={
+                                    !userLogged || user.role !== "customer"
+                                }
                                 style={{
                                     cursor: userLogged
-                                        ? "pointer"
+                                        ? user.role === "customer"
+                                            ? "pointer"
+                                            : "not-allowed"
                                         : "not-allowed",
                                 }}
+                                data-tooltip-place="top"
                             >
                                 <div className="flex items-center">
                                     <IoCart size={28} />{" "}
@@ -332,15 +344,23 @@ const ProductDetailPage = (props) => {
                                 }}
                                 data-tooltip-id="my-tooltip"
                                 data-tooltip-content={
-                                    userLogged ? "" : "Please log in to buy!"
+                                    userLogged
+                                        ? user.role === "customer"
+                                            ? ""
+                                            : "customer can only perform this"
+                                        : "Please log in to buy!"
                                 }
-                                data-tooltip-place="top"
-                                disabled={!userLogged}
+                                disabled={
+                                    !userLogged || user.role !== "customer"
+                                }
                                 style={{
                                     cursor: userLogged
-                                        ? "pointer"
+                                        ? user.role === "customer"
+                                            ? "pointer"
+                                            : "not-allowed"
                                         : "not-allowed",
                                 }}
+                                data-tooltip-place="top"
                             >
                                 Buy Now
                             </button>

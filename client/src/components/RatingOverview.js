@@ -33,6 +33,7 @@ const RatingAverageBar = ({ star, percentage, count }) => {
 };
 
 const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
+    const { user } = useSelector((state) => state.user);
     const userLogged = useSelector(isUserLogged);
     const [totalReviews, setTotalReviews] = useState(0);
     const initialBarWidth = Array.from({ length: 5 }, (_, index) => ({
@@ -132,11 +133,21 @@ const RatingOverview = ({ productID, averageRating, handleWriteReview }) => {
                     onClick={clickWriteReview}
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={
-                        userLogged ? "" : "Please log in to write a review >:("
+                        userLogged
+                            ? user.role === "customer"
+                                ? ""
+                                : "customer can only perform this"
+                            : "Please log in to write a review!"
                     }
+                    disabled={!userLogged || user.role !== "customer"}
+                    style={{
+                        cursor: userLogged
+                            ? user.role === "customer"
+                                ? "pointer"
+                                : "not-allowed"
+                            : "not-allowed",
+                    }}
                     data-tooltip-place="top"
-                    disabled={!userLogged}
-                    style={{ cursor: userLogged ? "pointer" : "not-allowed" }}
                 >
                     {toggleWriteReview ? "Cancel" : "Write a review"}
                 </button>

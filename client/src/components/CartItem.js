@@ -7,6 +7,7 @@ import {
 } from "../features/cart/cartSlice";
 import { deleteItemFromDB } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
+import formatPrice from "./utils/formatPrice";
 
 const NoImage = () => {
     return (
@@ -28,6 +29,8 @@ const ItemStock = ({ stock }) => {
 };
 
 const CartItem = ({ cartItem }) => {
+    console.log("cartItem", cartItem);
+
     const dispatch = useDispatch();
 
     const handleQuantityChange = (newQuantity) => {
@@ -48,8 +51,9 @@ const CartItem = ({ cartItem }) => {
                     readOnly
                     checked={cartItem.checked}
                 />
-                <div className="w-32 h-32 mr-4 rounded">
-                    {cartItem.productDetails.image && cartItem.productDetails.image.length !== 0 ? (
+                <div className="w-32 h-32 mr-4 rounded border-1 border shadow-sm">
+                    {cartItem.productDetails.image &&
+                    cartItem.productDetails.image.length !== 0 ? (
                         <img
                             className="w-full h-full object-cover rounded"
                             src={cartItem.productDetails.image[0]}
@@ -60,12 +64,8 @@ const CartItem = ({ cartItem }) => {
                     )}
                 </div>
                 <div className="flex flex-1 flex-col">
-                    <div className="font-medium text-lg text-left leading-tight">
-                        {cartItem.name}
-                    </div>
-
-                    <div className="text-left leading-6">
-                        {cartItem.productDetails.description}
+                    <div className="text-left font-semibold">
+                        {cartItem.productDetails.name}
                     </div>
                     <div className="text-left leading-6 text-sm">
                         {cartItem.variation
@@ -75,7 +75,7 @@ const CartItem = ({ cartItem }) => {
 
                     <div className="flex flex-1 items-end">
                         <button
-                            className="px-[2px] py-[1px] w-max text-[#211c6a] hover:text-violet-500 border hover:border-violet-500"
+                            className="px-[2px] py-[1px] w-max text-red-500 hover:text-violet-500 border hover:border-violet-500"
                             onClick={() => {
                                 dispatch(removeItem({ id: cartItem._id }));
                                 dispatch(deleteItemFromDB(cartItem._id));
@@ -114,12 +114,13 @@ const CartItem = ({ cartItem }) => {
                     </div>
                 </div>
                 <div className="col-span-4">
-                    {(
+                    <span className="pr-1">₱</span>
+                    {formatPrice(
                         (cartItem.productDetails.price !== -1
                             ? cartItem.productDetails.price
                             : cartItem.productDetails.variation[0].price) *
-                        cartItem.quantity
-                    ).toFixed(2)}
+                            cartItem.quantity
+                    )}
                 </div>
             </div>
 

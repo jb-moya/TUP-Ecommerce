@@ -67,16 +67,21 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
 
     return (
         <div className="cursor-pointer" onClick={handleProfileMenuToggle}>
-            <div className="flex flex-row">
+            <div className="flex items-center">
                 <img
                     src={user && user.image ? user.image : defaultProfileImage}
                     alt="MY FACE"
-                    className="w-8 h-8 border-2 border-blue-900 rounded-full object-cover"
+                    className="w-8 h-8 mr-[5px] border-2 border-blue-900 rounded-full object-cover"
                 />
-                <div className="px-1 self-center">
-                    {user.firstName && user.firstName}
-                    {user.orgName && user.orgName}
-                    {userRole === "admin" && "Admin"}
+                <div className="flex flex-col">
+                    <div className="">
+                        {user.firstName && user.firstName}
+                        {user.orgName && user.orgName}
+                        {userRole === "admin" && "Admin"}
+                    </div>
+                    <div className="text-[10px] text-center leading-none select-none">
+                        logged in as {user.role}
+                    </div>
                 </div>
             </div>
             {isProfileMenuOpen && (
@@ -180,6 +185,16 @@ export const NavBar = ({
         window.location.reload();
     };
 
+    const links = [
+        { to: "/", text: "Home" },
+        { to: "/about", text: "About" },
+        { to: "/sellercenter", text: "Seller Centre" },
+    ];
+
+    if (userRole === "admin") {
+        links.push({ to: "/admin", text: "Admin" });
+    }
+
     return (
         <div
             className={`${bgColor} border-b-[1px] ${border} fixed top-0 left-0 w-full z-50`}
@@ -204,22 +219,17 @@ export const NavBar = ({
                     <h1 className="text-xl">TUP Merch Co.</h1>
                 </div>
 
-                <ul className="hidden md:flex text-based font-semibold">
-                    <li className="p-4">
-                        <LinkRoute to="/" text="Home" />
-                    </li>
-                    <li className="p-4">
-                        <LinkRoute to="/about" text="About" />
-                    </li>
-                    <li className="p-4">
-                        <LinkRoute to="/sellercenter" text="Seller Centre" />
-                    </li>
-                    {userRole === "admin" && (
-                        <li className="p-4">
-                            <LinkRoute to="/admin" text="Admin" />
-                        </li>
-                    )}
-                </ul>
+                <div className="hidden md:flex text-based font-semibold h-full justify-center">
+                    {links.map((link, index) => (
+                        <Link
+                            key={index}
+                            className="w-full h-full px-4 content-center hover:text-[#0084ff] hover:border-b-2 hover:border-[#0084ff] transition ease-in-out duration-200"
+                            to={link.to}
+                        >
+                            {link.text}
+                        </Link>
+                    ))}
+                </div>
 
                 <div className="flex p-2 items-center justify-between">
                     {user && user.role === "customer" && (

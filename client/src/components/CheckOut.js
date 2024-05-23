@@ -8,20 +8,13 @@ import {
 
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
+import formatPrice from "./utils/formatPrice";
 const CheckOut = () => {
     const { total } = useSelector((store) => store.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // dispatch(calculateTotals());
-        // console.log("total", total);
-    }, [total]);
-
     const handleGoToCheckoutPage = () => {
-        // dispatch(calculateTotals());
-        // dispatch(checkAll());
         navigate("/checkout");
     };
 
@@ -65,7 +58,7 @@ const CheckOut = () => {
                         Total:
                     </div>
                     <div className="text-[#211c6a] text-xl font-semibold">
-                        ${total}
+                        ₱ {formatPrice(total)}
                     </div>
                 </div>
             </div>

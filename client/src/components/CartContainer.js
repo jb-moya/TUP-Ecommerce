@@ -19,7 +19,6 @@ const CartContainer = () => {
         if (cartItems) {
             dispatch(calculateTotals());
         }
-        // console.log("CartItems          ddddddddddd", cartItems);
     }, [dispatch, cartItems]);
 
     if (cartItems === undefined) {
@@ -46,7 +45,7 @@ const CartContainer = () => {
     } else {
         return (
             <>
-                <div className="w-full mx-4 grid grid-cols-12 gap-2 items-center text-center leading-none">
+                <div className="w-full mx-4 mb-4 grid grid-cols-12 gap-2 items-center text-center leading-none">
                     <div className="col-span-full font-semibold text-xl text-[#211c6a] text-left">
                         <div>Shopping Cart</div>
                     </div>
@@ -62,7 +61,7 @@ const CartContainer = () => {
 
                 <hr className="col-span-full my-2"></hr>
 
-                <div className="min-h-[650px]">
+                <div className="w-full min-h-[650px]">
                     {cartItems.map((item) => (
                         <CartItem key={item._id} cartItem={item} />
                     ))}
