@@ -16,11 +16,6 @@ import { Tooltip } from "react-tooltip";
 const iconSize = 20;
 const menuItems = [
     {
-        icon: <IoSettingsOutline size={iconSize} />,
-        text: "Account Settings",
-        path: "accountSettings",
-    },
-    {
         icon: <FaHouseUser size={iconSize} />,
         text: "Manage Users",
         path: "manageUsers",
@@ -30,11 +25,6 @@ const menuItems = [
         text: "Manage Products",
         path: "manageProducts",
     },
-    // {
-    //     icon: <MdCategory size={iconSize} />,
-    //     text: "Manage Categories",
-    //     path: "manageCategories",
-    // },
     {
         icon: <FaBan size={iconSize} />,
         text: "File a Product Violations",
@@ -125,19 +115,15 @@ const AdminMainPage = ({ settingsMenu = 0 }) => {
                                 text={item.text}
                                 selected={selectedButton === index}
                                 onClick={() => handleButtonClick(index)}
-                                disabled={index === 3}
+                                disabled={index === 2}
                             />
                         ))}
                     </div>
 
                     <div className="font-semibold p-4 max-w-[900px] w-full">
-                        {selectedButton === 0 && (
-                            <div>Content for Admin Account Settings</div>
-                        )}
-                        {selectedButton === 1 && <ManageUser />}
-                        {selectedButton === 2 && <ManageProducts />}
-                        {selectedButton === 3 && <ManageCategories />}
-                        {selectedButton === 4 && <ProductViolationForm />}
+                        {selectedButton === 0 && <ManageUser />}
+                        {selectedButton === 1 && <ManageProducts />}
+                        {selectedButton === 2 && <ProductViolationForm />}
                     </div>
                 </div>
             </div>

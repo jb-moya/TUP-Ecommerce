@@ -8,6 +8,7 @@ import {
     buildQueryParam,
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
+import classNames from "classnames";
 axios.defaults.withCredentials = true;
 
 const SellerRow = ({ seller }) => {
@@ -34,6 +35,13 @@ const SellerRow = ({ seller }) => {
         }
     };
 
+    const statusColor = classNames({
+        "text-green-500": seller.status === "approved",
+        "text-yellow-500": seller.status === "pending",
+        "text-red-500": seller.status === "banned",
+        "text-black bg-black": seller.status === "rejected",
+    });
+
     return (
         <tr>
             <td className="p-2">
@@ -44,12 +52,30 @@ const SellerRow = ({ seller }) => {
                 />
             </td>
             <td className="p-2">{seller.orgName}</td>
-            <td className="p-2">{seller.status}</td>
+            <td className={`p-2 ${statusColor}`}>{seller.status}</td>
             <td className="p-2">{formatData(seller.createdAt)}</td>
             <td className="p-2 text-center">
+                {seller.status === "pending" && (
+                    <>
+                        <button
+                            type="button"
+                            className="text-green-500 hover:text-green-700 mx-2 hover:scale-150"
+                            onClick={() => updateStatusOrganization("approved")}
+                        >
+                            Approve
+                        </button>
+                        <button
+                            type="button"
+                            className="text-black bg-red hover:text-red-700 mx-2 hover:scale-150"
+                            onClick={() => updateStatusOrganization("rejected")}
+                        >
+                            Reject
+                        </button>
+                    </>
+                )}
                 <button
                     type="button"
-                    className="text-blue-500 hover:text-blue-700 mx-2"
+                    className="text-blue-500 hover:text-blue-700 mx-2 hover:scale-150"
                     onClick={handleReviewButtonClick}
                 >
                     Review
@@ -196,7 +222,7 @@ export const ManageUser = () => {
                     Rejected
                 </li>
             </ul>
-            
+
             <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
                 <thead>
                     <tr className="text-left bg-gray-300">

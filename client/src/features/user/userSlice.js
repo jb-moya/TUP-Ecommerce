@@ -23,15 +23,14 @@ export const logIn = createAsyncThunk(
             );
             const data = response.data;
 
-            if (data.user.status === "banned") {
-                return thunkAPI.rejectWithValue({
-                    message:
-                        "Your account has been banned. If you believe this is a mistake, please contact the administrator for assistance.",
-                });
-            }
-
-            if (data.user.status === "pending") {
-                return thunkAPI.rejectWithValue({ message: "Account pending" });
+            if (
+                data.user.status === "pending" ||
+                data.user.status === "rejected" ||
+                data.user.status === "banned"
+            ) {
+                return thunkAPI.rejectWithValue(
+                    `An error occurred: ${data.user.status} status`
+                );
             }
 
             if (response.status === 200) {

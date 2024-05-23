@@ -1,12 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PDFHolder from "../utils/pdfHolder";
 import convertToBase64 from "../utils/convertToBase64";
 import { StepperContext } from "../contexts/StepperContext";
 
 export const Details = () => {
     const { userData, setUserData } = useContext(StepperContext);
+    const [descriptionCharCount, setDescriptionCharCount] = useState(0);
+    const maxDescriptionCharCount = 1000;
+
     const handleChange = (e) => {
+        if (e.target.value.length > maxDescriptionCharCount) return;
+
         const { name, value } = e.target;
+        setDescriptionCharCount(e.target.value.length);
         setUserData({ ...userData, [name]: value });
     };
 
@@ -68,7 +74,7 @@ export const Details = () => {
                 <div className="font-bold h-6 mt-4 text-gray-500 text-xs leading-8 uppercase">
                     Provide a brief description about the organization
                 </div>
-                <div className="bg-white my-2 p-1 flex border border-gray-200 rounded">
+                <div className="relative bg-white my-2 p-1 flex border border-gray-200 rounded">
                     {" "}
                     {/* ORGANIZATION DESCRIPTION */}
                     <textarea
@@ -78,6 +84,9 @@ export const Details = () => {
                         placeholder="Enter here..."
                         className="p-1 px-2 appearance-none outline-none w-full h-[100px] text-gray-800"
                     />
+                    <div className="text-right text-xs absolute right-0 -bottom-5">
+                        {descriptionCharCount}/{maxDescriptionCharCount}
+                    </div>
                 </div>
             </div>
 

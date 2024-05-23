@@ -11,6 +11,9 @@ import {
 } from "./utils/buildQueryParams.js";
 import { toast } from "react-toastify";
 import formatData from "./utils/formatData";
+import classNames from "classnames";
+import defaultProfileImage from "../Assets/defaultPP.png";
+
 axios.defaults.withCredentials = true;
 
 const orderStatus = {
@@ -22,13 +25,13 @@ const orderStatus = {
     5: "Cancelled",
 };
 
-const handleCancelOrder = async (order) => {
+const handleOrderStatusChange = async (order, status) => {
     try {
         const response = await axios.patch(
             `http://localhost:5000/api/v1/transactions`,
             {
                 orders: order,
-                orderStatus: "Cancelled",
+                orderStatus: status,
             }
         );
         console.log(response);
@@ -43,6 +46,17 @@ const handleCancelOrder = async (order) => {
 const HistoryItem = (transaction) => {
     const createdAt = formatData(transaction.createdAt);
 
+    const orderStatusClassName = classNames({
+        "text-xs border border-1 rounded-lg w-fit px-2": true,
+        "bg-green-100 border-0": transaction.orderStatus === "Completed",
+        "bg-red-100 border-0": transaction.orderStatus === "Cancelled",
+        "bg-yellow-100 border-0": transaction.orderStatus === "To Pay",
+        "bg-blue-100 border-0": transaction.orderStatus === "To Ship",
+        "bg-purple-100 border-0": transaction.orderStatus === "To Receive",
+        "bg-black text-white border-0":
+            transaction.orderStatus === "Return Refund",
+    });
+
     return (
         <>
             <div className="flex bg-white shadow-md rounded-lg w-full mb-4">
@@ -56,7 +70,21 @@ const HistoryItem = (transaction) => {
                         />
                         <div className="flex flex-col w-full px-4 py-2">
                             <h1 className="text-lg pl-1 py-[1px]">
-                                {transaction.product.name}
+                                <div className="flex justify-between">
+                                    <div>{transaction.product.name}</div>
+                                    <div className="flex text-sm items-center">
+                                        <img
+                                            src={
+                                                transaction.product.createdBy
+                                                    .image ||
+                                                defaultProfileImage
+                                            }
+                                            alt="Logo Here"
+                                            className="h-5 w-5 mr-2 rounded-full"
+                                        />
+                                        {transaction.product.createdBy.orgName}
+                                    </div>
+                                </div>
                             </h1>
                             <div className="flex flex-col h-full">
                                 <h1 className="text-xs pl-1 py-[1px]">
@@ -86,14 +114,7 @@ const HistoryItem = (transaction) => {
                                     Order Total: ₱ {transaction.totalAmount}
                                 </div>
                                 <div className="flex justify-between py-[1px] mt-auto">
-                                    <h1
-                                        className={`text-xs border border-1 rounded-lg w-fit px-2 ${
-                                            transaction.orderStatus ===
-                                            "Completed"
-                                                ? "bg-green-100 border-0"
-                                                : ""
-                                        }`}
-                                    >
+                                    <h1 className={orderStatusClassName}>
                                         {transaction.orderStatus}
                                     </h1>
                                     <div className="text-sm font-extralight">
@@ -104,14 +125,12 @@ const HistoryItem = (transaction) => {
                         </div>
                     </div>
                     <div className="flex flex-col w-[130px] justify-between h-[130px]">
-                        <button className="flex border hover:bg-gray-200  border-[#211C6A] text-[#211C6A] text-xs items-center justify-center h-10 rounded-xl">
-                            <Link
-                                className="flex justify-center items-center"
-                                to={`/org/${transaction.product.createdBy}`}
-                            >
-                                <CiShop size={25} className="mr-2" /> View Shop
-                            </Link>
-                        </button>
+                        <Link
+                            className="flex border hover:bg-gray-200 border-[#211C6A] text-[#211C6A] text-xs items-center justify-center h-10 rounded-xl"
+                            to={`/org/${transaction.product.createdBy}`}
+                        >
+                            <CiShop size={25} className="mr-2" /> View Shop
+                        </Link>
                         <Link
                             className="flex bg-[#211C6A] hover:bg-opacity-70 text-white items-center justify-center h-10 text-sm p-4 rounded-xl"
                             to={`/product/${transaction.product._id}`}
@@ -121,10 +140,30 @@ const HistoryItem = (transaction) => {
                         {(transaction.orderStatus === orderStatus[1] ||
                             transaction.orderStatus === orderStatus[2]) && (
                             <button
+                                type="button"
                                 className="flex border border-1 border-[#211c6a8f] hover:bg-red-500 hover:text-white hover:border-red-500 items-center justify-center h-10 text-sm p-2 rounded-xl"
-                                onClick={handleCancelOrder(transaction._id)}
+                                onClick={() =>
+                                    handleOrderStatusChange(
+                                        transaction._id,
+                                        orderStatus[5]
+                                    )
+                                }
                             >
                                 Cancel Order
+                            </button>
+                        )}
+                        {transaction.orderStatus === orderStatus[3] && (
+                            <button
+                                type="button"
+                                className="flex border border-1 border-[#211c6a8f] hover:bg-red-500 hover:text-white hover:border-red-500 items-center justify-center h-10 text-sm p-2 rounded-xl"
+                                onClick={() =>
+                                    handleOrderStatusChange(
+                                        transaction._id,
+                                        orderStatus[4]
+                                    )
+                                }
+                            >
+                                Return Refund
                             </button>
                         )}
                     </div>

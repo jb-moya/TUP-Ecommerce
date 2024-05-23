@@ -212,9 +212,6 @@ export const NavBar = ({
                         <LinkRoute to="/about" text="About" />
                     </li>
                     <li className="p-4">
-                        <LinkRoute to="/" text="Contact" />
-                    </li>
-                    <li className="p-4">
                         <LinkRoute to="/sellercenter" text="Seller Centre" />
                     </li>
                     {userRole === "admin" && (

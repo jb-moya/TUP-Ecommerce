@@ -38,11 +38,8 @@ const ProductDetailPage = (props) => {
     const [puffAnimationPrice, setPuffAnimationPrice] = useState(false);
     const [productDetails, setProductDetails] = useState({});
     const [productSeller, setProductSeller] = useState({});
-    const [productReviews, setProductReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedVariation, setSelectedVariation] = useState();
-    const [profilePicture, setProfilePicture] = useState("");
-    const [userName, setUserName] = useState("");
     const [quantity, setQuantity] = useState(1);
     const [isOpenWriteReview, setIsOpenWriteReview] = useState(false);
     const [sameSellerProducts, setSameSellerProducts] = useState([]);
@@ -396,30 +393,40 @@ const ProductDetailPage = (props) => {
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
                 {sameSellerProducts.length > 0 && (
-                    <div className="w-full mt-4">
-                        <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
-                            From the same Seller
+                    <>
+                        <div className="w-full mt-4">
+                            <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
+                                From the same Seller
+                            </div>
+                            <Swiper
+                                modules={[FreeMode, Pagination]}
+                                spaceBetween={20}
+                                slidesPerView={5}
+                                freeMode={true}
+                                navigation
+                                pagination={{ clickable: true }}
+                            >
+                                {sameSellerProducts
+                                    .filter((product) => product._id !== id)
+                                    .map((product) => (
+                                        <SwiperSlide
+                                            key={product._id}
+                                            className="h-[300px] mt-4 mb-10"
+                                        >
+                                            <ProductCard product={product} />
+                                        </SwiperSlide>
+                                    ))}
+                            </Swiper>
                         </div>
-                        <Swiper
-                            modules={[FreeMode, Pagination]}
-                            spaceBetween={20}
-                            slidesPerView={5}
-                            freeMode={true}
-                            navigation
-                            pagination={{ clickable: true }}
-                        >
-                            {sameSellerProducts
-                                .filter((product) => product._id !== id)
-                                .map((product) => (
-                                    <SwiperSlide
-                                        key={product._id}
-                                        className="h-[300px] mt-4 mb-10"
-                                    >
-                                        <ProductCard product={product} />
-                                    </SwiperSlide>
-                                ))}
-                        </Swiper>
-                    </div>
+                        <div className="my-6">
+                            <Link
+                                to={`/org/${productSeller._id}`}
+                                className="border-1 border rounded-lg hover:scale-105 shadow-sm px-4 py-2 bg-[#59b4c3] text-white hover:bg-[#211c6a] transition-all duration-200 ease-in-out"
+                            >
+                                View more products from {productSeller.orgName}
+                            </Link>
+                        </div>
+                    </>
                 )}
 
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
@@ -459,30 +466,42 @@ const ProductDetailPage = (props) => {
                 <hr className="w-full rounded-lg border-t-1 border-black border-opacity-25 mt-4"></hr>
 
                 {sameCategoryProducts.length > 0 && (
-                    <div className="w-full mt-4">
-                        <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
-                            With the same Category: {productDetails.category}
+                    <>
+                        <div className="w-full mt-4">
+                            <div className="font-semibold text-center text-lg leading-relaxed text-[#211c6a]">
+                                With the same Category:{" "}
+                                {productDetails.category}
+                            </div>
+                            <Swiper
+                                modules={[FreeMode, Pagination]}
+                                spaceBetween={20}
+                                slidesPerView={5}
+                                freeMode={true}
+                                navigation
+                                pagination={{ clickable: true }}
+                            >
+                                {sameCategoryProducts
+                                    .filter((product) => product._id !== id)
+                                    .map((product) => (
+                                        <SwiperSlide
+                                            key={product._id}
+                                            className="h-[300px] mt-4 mb-10"
+                                        >
+                                            <ProductCard product={product} />
+                                        </SwiperSlide>
+                                    ))}
+                            </Swiper>
                         </div>
-                        <Swiper
-                            modules={[FreeMode, Pagination]}
-                            spaceBetween={20}
-                            slidesPerView={5}
-                            freeMode={true}
-                            navigation
-                            pagination={{ clickable: true }}
-                        >
-                            {sameCategoryProducts
-                                .filter((product) => product._id !== id)
-                                .map((product) => (
-                                    <SwiperSlide
-                                        key={product._id}
-                                        className="h-[300px] mt-4 mb-10"
-                                    >
-                                        <ProductCard product={product} />
-                                    </SwiperSlide>
-                                ))}
-                        </Swiper>
-                    </div>
+                        <div className="my-4">
+                            <Link
+                                to={`/search?categories=${productDetails.category}`}
+                                className="border-1 border rounded-lg hover:scale-105 shadow-sm px-4 py-2 bg-[#59b4c3] text-white hover:bg-[#211c6a] transition-all duration-200 ease-in-out"
+                            >
+                                View more products from{" "}
+                                {productDetails.category}
+                            </Link>
+                        </div>
+                    </>
                 )}
             </div>
             <Footer />

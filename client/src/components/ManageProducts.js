@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import defaultProfileImage from "../Assets/defaultPP.png";
-import { Link } from "react-router-dom";
 import ConfirmationModal from "../components/Confirmation.js";
 import { NavBar } from "../components/NavBar.js";
 import Footer from "../components/Footer.js";
-
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import PaginationButtons from "./PaginationButtons.js";
+import { buildQueryParam } from "./utils/buildQueryParams.js";
 axios.defaults.withCredentials = true;
 
 const NoImage = () => {
@@ -217,6 +219,9 @@ const productStatus = {
 };
 
 export const ManageProducts = () => {
+    let location = useLocation();
+    const navigate = useNavigate();
+
     const [selectedButton, setSelectedButton] = useState(0);
     const [products, setProducts] = useState([]);
     const [pendingProductCount, setPendingProductCount] = useState(0);
@@ -228,7 +233,15 @@ export const ManageProducts = () => {
         setSelectedButton(buttonNumber);
     };
 
-    const fetchPendingProduct = useCallback(async () => {
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+
+        if (searchParams.has("page")) {
+            setCurrentPage(parseInt(searchParams.get("page"), 10));
+        }
+    }, [location.search]);
+
+    const fetchProducts = useCallback(async () => {
         try {
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
@@ -236,6 +249,7 @@ export const ManageProducts = () => {
                     params: {
                         page: currentPage,
                         productStatus: productStatus[selectedButton],
+                        limit: 15,
                     },
                 }
             );
@@ -243,7 +257,7 @@ export const ManageProducts = () => {
             console.log(`violated product`, data);
             setProducts(data.products);
             setPendingProductCount(data.products.length);
-            setMaxPageCount(Math.ceil(data.count / 10));
+            setMaxPageCount(Math.ceil(data.count / 15));
         } catch (error) {
             console.error(error);
         } finally {
@@ -264,8 +278,17 @@ export const ManageProducts = () => {
     };
 
     useEffect(() => {
-        fetchPendingProduct();
-    }, [fetchPendingProduct]);
+        if (location.pathname !== "/admin/manageProducts") {
+            return;
+        }
+
+        fetchProducts();
+        const params = [buildQueryParam("page", currentPage)].filter(Boolean);
+
+        const newUrl = `${location.pathname}?${params.join("&")}`;
+
+        window.history.replaceState({ path: newUrl }, "", newUrl);
+    }, [fetchProducts, currentPage, location.pathname]);
 
     return (
         <div className="flex flex-col p-4">
@@ -299,7 +322,7 @@ export const ManageProducts = () => {
                             : ""
                     }`}
                 >
-                    Approved Products
+                    Approved (enabled) Products
                 </li>
             </ul>
 
@@ -332,6 +355,11 @@ export const ManageProducts = () => {
                     ))}
                 </tbody>
             </table>
+
+            <PaginationButtons
+                pageCount={maxPageCount > 0 ? maxPageCount : 1}
+                setCurrentPage={setCurrentPage}
+            />
         </div>
     );
 };

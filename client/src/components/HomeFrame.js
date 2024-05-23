@@ -181,9 +181,9 @@ const HomeFrame = () => {
                     {!isLogged && (
                         <button
                             onClick={handleSignUpClick}
-                            className="border border-[#211C6A] rounded-full mt-4 text-[#211C6A] hover:bg-[#e8e8e8] font-semibold p-[10px] w-[150px]"
+                            className="border border-[#211C6A] rounded-full mt-4 text-[#211C6A] hover:bg-[#e8e8e8] font-semibold p-[10px] w-[250px]"
                         >
-                            Sign Up
+                            Sign Up as Customer
                         </button>
                     )}
                 </div>

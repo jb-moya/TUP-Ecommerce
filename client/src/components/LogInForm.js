@@ -50,6 +50,7 @@ const LogInForm = () => {
             }
         } catch (error) {
             console.error("Login error:", error);
+            setLoginErrorMessage("An unknown error occurred");
         }
     };
 

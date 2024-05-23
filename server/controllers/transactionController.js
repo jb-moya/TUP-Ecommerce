@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 const getAllTransactions = asyncWrapper(async (req, res) => {
     const queryObject = {};
 
-    const { sort, productName, orderStatus } = req.query;
+    const { sort, productName, orderStatus, populatedFields } = req.query;
 
     // console.log("productName", productName)
 
@@ -26,13 +26,6 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     let transactions;
     if (req.user && req.user.role === "seller") {
-        console.log("req.user.userId ;;;", req.user.userId);
-        // queryObject["product.createdBy"] = req.user.userId;
-
-        // transactions = Transaction.find(queryObject).populate({
-        //     path: "product",
-        // });
-
         transactions = Transaction.aggregate([
             {
                 $lookup: {
@@ -48,18 +41,10 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
                         mongoose.Types.ObjectId.createFromHexString(
                             req.user.userId
                         ),
+                    ...queryObject,
                 },
             },
         ]);
-
-        // transactions = Transaction.find(queryObject).populate({
-        //     path: "product",
-        //     match: {
-        //         createdBy: mongoose.Types.ObjectId.createFromHexString(
-        //             req.user.userId
-        //         ),
-        //     },
-        // });
     }
 
     if (req.user && req.user.role === "customer") {
@@ -70,6 +55,10 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
         transactions = Transaction.find(queryObject).populate({
             path: "product",
+            populate: {
+                path: "createdBy",
+                select: ["orgName", "image"],
+            },
         });
     }
 
@@ -88,8 +77,6 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
     transactions = transactions.skip(skip).limit(limit);
 
     transactions = await transactions;
-    // console.log("transactions eeee", transactions);
-    // console.log("queryobject", queryObject);
     res.status(StatusCodes.OK).json({
         transactions,
         count: countTotal,

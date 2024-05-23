@@ -238,7 +238,7 @@ function App() {
                             path="manageUsers"
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AdminMainPage settingsMenu={1} />
+                                    <AdminMainPage settingsMenu={0} />
                                 </RestrictedRoute>
                             }
                         />
@@ -246,15 +246,7 @@ function App() {
                             path="manageProducts"
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AdminMainPage settingsMenu={2} />
-                                </RestrictedRoute>
-                            }
-                        />
-                        <Route
-                            path="manageCategories"
-                            element={
-                                <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AdminMainPage settingsMenu={3} />
+                                    <AdminMainPage settingsMenu={1} />
                                 </RestrictedRoute>
                             }
                         />
@@ -262,7 +254,7 @@ function App() {
                             path="addProductViolation"
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AdminMainPage settingsMenu={4} />
+                                    <AdminMainPage settingsMenu={2} />
                                 </RestrictedRoute>
                             }
                         />
@@ -270,7 +262,7 @@ function App() {
                             path="addProductViolation/:id"
                             element={
                                 <RestrictedRoute allowedRoles={["admin"]}>
-                                    <AdminMainPage settingsMenu={4} />
+                                    <AdminMainPage settingsMenu={2} />
                                 </RestrictedRoute>
                             }
                         />
