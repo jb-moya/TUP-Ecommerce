@@ -15,8 +15,6 @@ import {
     buildQueryParam,
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
-import { DropDownMenu } from "./utils/Dropdown";
-import { m } from "framer-motion";
 axios.defaults.withCredentials = true;
 
 const productCategories = {
@@ -153,12 +151,27 @@ export const SearchPageFrame = () => {
 
     const fetchAllOrganization = async () => {
         setIsCurrentlyFetching(true);
-        // console.log("Fetching All Organizations");
-        const { data } = await axios.get(
-            "http://localhost:5000/api/v1/user/organizations"
-        );
-        // console.log("org", data);
-        setOrganizations(data.sellers);
+        try {
+            const { data } = await axios.get(
+                "http://localhost:5000/api/v1/user",
+                {
+                    params: {
+                        page: currentPage,
+                        role: "seller",
+                        status: "approved",
+                    },
+                }
+            );
+            console.log("data", data);
+            setOrganizations(data.users);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            toast.success("Products loaded successfully");
+        }
+        // const { data } = await axios.get(
+        //     "http://localhost:5000/api/v1/user/organizations"
+        // );
     };
 
     const numericFilters = useMemo(() => {
@@ -213,6 +226,7 @@ export const SearchPageFrame = () => {
                             : "",
                         page: currentPage,
                         populatedFields: "createdBy",
+                        productStatus: "enabled",
                     },
                 }
             );

@@ -33,6 +33,7 @@ const Address = () => {
                             name="fName"
                             placeholder="First Name"
                             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                            required
                         />
                     </div>
                 </div>
@@ -45,6 +46,7 @@ const Address = () => {
                             name="lName"
                             placeholder="Last Name"
                             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                            required
                         />
                     </div>
                 </div>
@@ -57,6 +59,7 @@ const Address = () => {
                         name="address"
                         placeholder="Address"
                         className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        required
                     />
                 </div>
             </div>
@@ -68,6 +71,7 @@ const Address = () => {
                         name="city"
                         placeholder="City"
                         className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        required
                     />
                 </div>
             </div>
@@ -113,6 +117,7 @@ const Address = () => {
                             name="zipcode"
                             placeholder="Zip Code"
                             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                            required
                         />
                     </div>
                 </div>

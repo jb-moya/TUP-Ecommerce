@@ -21,10 +21,9 @@ router
 router
     .route("/:id")
     .get(getSingleProduct)
-    .patch([authenticateUser, authorizePermissions("seller")], updateProduct)
-    .delete([authenticateUser, authorizePermissions("seller")], deleteProduct);
+    .patch([authenticateUser, authorizePermissions("seller", "admin")], updateProduct)
+    .delete([authenticateUser, authorizePermissions("seller", "admin")], deleteProduct);
 
 router.route("/temp/").post(tempProductRoute);
 
 export default router;
-

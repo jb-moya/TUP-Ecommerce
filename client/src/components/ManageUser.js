@@ -105,7 +105,7 @@ export const ManageUser = () => {
         console.log("searchParams", searchParams);
     }, [location.search]);
 
-    const fetchUser = useCallback(async () => {
+    const fetchAllUsers = useCallback(async () => {
         try {
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/user",
@@ -128,7 +128,7 @@ export const ManageUser = () => {
     }, [currentPage, selectedButton]);
 
     useEffect(() => {
-        fetchUser();
+        fetchAllUsers();
 
         const params = [
             buildQueryParam("page", currentPage),
@@ -139,7 +139,7 @@ export const ManageUser = () => {
         const newUrl = `${location.pathname}?${params.join("&")}`;
 
         window.history.pushState({ path: newUrl }, "", newUrl);
-    }, [fetchUser, currentPage, selectedButton, location]);
+    }, [fetchAllUsers, currentPage, selectedButton, location]);
 
     return (
         <div className="flex flex-col p-4">
@@ -196,6 +196,7 @@ export const ManageUser = () => {
                     Rejected
                 </li>
             </ul>
+            
             <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
                 <thead>
                     <tr className="text-left bg-gray-300">

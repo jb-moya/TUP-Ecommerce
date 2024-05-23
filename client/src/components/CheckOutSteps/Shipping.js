@@ -11,13 +11,14 @@ const Shipping = () => {
     return (
         <div>
             <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded-lg relative">
+                <h1 className="text-gray-300 font-extralight text-center">Shipping Method</h1>
                 <select
                     onChange={handleChange}
                     value={userData["shippingMethod"] || ""}
                     name="shippingMethod"
                     className="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-transparent "
+                    required
                 >
-                    <option value="">Shipping Method</option>
                     <option value="Door-to-Door Delivery">
                         Door-to-Door Delivery
                     </option>

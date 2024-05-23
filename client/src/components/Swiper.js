@@ -39,7 +39,6 @@ const ImageSwiper = ({ images }) => {
 
             <Swiper
                 onClick={setThumbsSwiper}
-                // onSwiper={setThumbsSwiper}
                 spaceBetween={2}
                 slidesPerView={4}
                 freeMode={true}
@@ -48,10 +47,7 @@ const ImageSwiper = ({ images }) => {
                 className="mySwiper h-[100px] rounded-xl mt-2"
             >
                 {images.map((base64, index) => (
-                    <SwiperSlide
-                        key={index}
-                        // className="w-full h-[550px] object-cover"
-                    >
+                    <SwiperSlide key={index}>
                         <img
                             src={base64}
                             alt=""

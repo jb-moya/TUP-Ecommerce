@@ -97,25 +97,6 @@ export const CheckOutFrame = () => {
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
 
-    //      fName: 'a', lName: 'b', address: 'c', city: 'd', country: 'USA', …}
-    //      address :  "c"
-    //      city :  "d"
-    //      country :  "USA"
-    //      zipcode :  "11"
-    //      eWalletName :  "11"
-    //      eWalletNumber :  "11"
-    //      fName :  "a"
-    //      lName :  "b"
-    //      shippingMethod :  "Door-to-Door Delivery"
- 
-    //      address: "1";
-    //      city: "1";
-    //      country: "USA";
-    //      zipcode: "1";
-    //      fName: "1";
-    //      lName: "1";
-    //      shippingMethod: "Self-PickUp";
-
     function imgUrl() {
         const id = rand(1, 200);
         // // console.log(id);
@@ -220,7 +201,6 @@ export const CheckOutFrame = () => {
                         </div>
                     </div>
 
-                    {/* Navigation Control */}
                     {currentStep !== steps.length && (
                         <CheckOutStepperControl
                             handleClick={handleClick}
@@ -230,7 +210,6 @@ export const CheckOutFrame = () => {
                     )}
                 </div>
 
-                {/* Cart */}
                 <div className="flex flex-col mt-4 w-[500px] p-4">
                     <div className="text-lg mb-4">Your Cart</div>
                     <div>

@@ -197,21 +197,19 @@ const ProductRow = ({ product, index, deleteProduct }) => {
     );
 };
 
+const productStatus = {
+    0: "",
+    1: "pending",
+    3: "enabled",
+    2: "disabled",
+}
+
 const ProductFilter = () => {
-    const [orgs, setOrgs] = useState([]);
-    const [customers, setCustomers] = useState([]);
-    const [admins, setAdmins] = useState([]);
-
-    const [orgCount, setOrgCount] = useState(0);
-    const [customerCount, setCustomerCount] = useState(0);
-    const [adminCount, setAdminCount] = useState(0);
-
     const [products, setProducts] = useState([]);
     const [pendingProductCount, setPendingProductCount] = useState(0);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(1);
-    
 
     const fetchPendingProduct = useCallback(async () => {
         try {
@@ -236,32 +234,6 @@ const ProductFilter = () => {
         }
     }, [currentPage]);
 
-    const fetchUser = useCallback(
-        async (role, setUsers, setCount, additionalParams = {}) => {
-            try {
-                const { data } = await axios.get(
-                    "http://localhost:5000/api/v1/user",
-                    {
-                        params: {
-                            page: currentPage,
-                            role: role,
-                            ...additionalParams,
-                        },
-                    }
-                );
-
-                console.log(`HAHAf ${role}`, data);
-                setUsers(data.users);
-                setCount(data.users.length);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                toast.success("Products loaded successfully");
-            }
-        },
-        [currentPage]
-    );
-
     const handleDeleteProduct = (productID) => {
         try {
             axios.delete(`http://localhost:5000/api/v1/products/${productID}`);
@@ -275,20 +247,14 @@ const ProductFilter = () => {
     };
 
     useEffect(() => {
-        fetchUser("organization", setOrgs, setOrgCount);
-        fetchUser("customer", setCustomers, setCustomerCount);
-        fetchUser("admin", setAdmins, setAdminCount);
         fetchPendingProduct();
-    }, [fetchUser, fetchPendingProduct]);
+    }, [fetchPendingProduct]);
 
     return (
         <div>
             <table className="border-collapse border border-[#211C6A] text-[#211C6A] w-full mt-4 text-xs">
                 <thead>
                     <tr className="text-left bg-gray-300">
-                        {/* <th className="p-2">
-                                    <input type="checkbox" />
-                                </th> */}
                         <th className="p-2">img</th>
                         <th className="p-2">Product Name</th>
                         <th className="p-2">Price</th>

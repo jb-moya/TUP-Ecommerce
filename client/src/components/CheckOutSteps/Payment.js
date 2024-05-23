@@ -78,6 +78,7 @@ const Payment = () => {
                                         name="eWalletName"
                                         placeholder="Gcash Name"
                                         className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                        required
                                     />
                                 </div>
                                 <div className="w-full mr-2">
@@ -90,6 +91,7 @@ const Payment = () => {
                                             name="eWalletNumber"
                                             placeholder="GCash Number"
                                             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                            required
                                         />
                                     </div>
                                 </div>

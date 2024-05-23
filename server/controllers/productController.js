@@ -6,18 +6,13 @@ import { StatusCodes } from "http-status-codes";
 const getSingleProduct = asyncWrapper(async (req, res, next) => {
     const productId = req.params.id;
     console.log("productId", productId);
-    // const product = await Product.findOne({
-    //     _id: productId,
-    // });
 
     const product = await Product.findOne({
         _id: productId,
     }).populate({
         path: "createdBy",
-        select: "-password", // Exclude the 'password' field
+        select: "-password",
     });
-
-    // console.log("hehe", hehe);
 
     if (!product) {
         return next(
@@ -59,11 +54,16 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
         createdBy,
         populatedFields,
         hasViolation,
+        productStatus,
     } = req.query;
 
     const queryObject = {};
 
     try {
+        if (productStatus) {
+            queryObject.productStatus = productStatus;
+        }
+
         if (featured) {
             queryObject.featured = featured === "true" ? true : false;
         }
@@ -147,8 +147,6 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
             });
         }
 
-        // console.log("Query Object:", JSON.stringify(queryObject, null, 2));
-
         let result;
         if (populatedFields) {
             result = Product.find(queryObject).populate(
@@ -178,12 +176,9 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 
         products = await result;
 
-        // console.log("queryOBject", queryObject);
-
         res.status(StatusCodes.OK).json({
             products,
             count: countTotal,
-            // count: products.length,
         });
     } catch (error) {
         console.error("Error processing query:", error);
@@ -192,8 +187,6 @@ const getAllProducts = asyncWrapper(async (req, res, next) => {
 });
 
 const updateProducts = asyncWrapper(async (req, res, next) => {
-    // if product is edited or is new, set status to pending
-
     const product = await Product.updateMany(
         {},
         {

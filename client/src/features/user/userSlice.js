@@ -157,7 +157,7 @@ const userSlice = createSlice({
             toast.success(`Logged in successfully ${state.user.role}`);
         });
         builder.addCase(logIn.rejected, (state, action) => {
-            toast.error(action.payload.message);
+            toast.error(action.payload);
         });
         builder.addCase(logOut.fulfilled, (state) => {
             state.isLogged = false;

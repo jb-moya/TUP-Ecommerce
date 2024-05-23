@@ -199,36 +199,41 @@ const ProductRow = ({ product, index, openViolationTabs, deleteProduct }) => {
                 {renderVariationNames()}
             </td>
             <td className="p-1">{product.category}</td>
+            <td className="p-1">{product.productStatus}</td>
             <td className="">
                 {/* <td className="text-center"> */}
-                <button
-                    type="button"
-                    className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] w-full cursor-pointer"
-                >
-                    <Link
-                        to={`/seller/addeditProduct/${product._id}`}
-                        className="button-link"
-                    >
-                        Edit
-                    </Link>
-                </button>
-                <>
-                    <button
-                        type="button"
-                        className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] hover:text-red-500 text-red-300 cursor-pointer w-full"
-                        onClick={handleOpenModal}
-                    >
-                        Delete
-                    </button>
-                    {isModalOpen && (
-                        <ConfirmationModal
-                            className="transition-none ease-out duration-300"
-                            isOpen={isModalOpen}
-                            onClose={handleCloseModal}
-                            onConfirm={handleConfirmDelete}
-                        />
-                    )}
-                </>
+                {product.productStatus !== "disabled" && (
+                    <>
+                        <button
+                            type="button"
+                            className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] w-full cursor-pointer"
+                        >
+                            <Link
+                                to={`/seller/addeditProduct/${product._id}`}
+                                className="button-link"
+                            >
+                                Edit
+                            </Link>
+                        </button>
+                        <>
+                            <button
+                                type="button"
+                                className="hover:scale-[1.15] hover:[text-shadow:_0_1px_0_rgb(0_0_0_/_40%)] hover:text-red-500 text-red-300 cursor-pointer w-full"
+                                onClick={handleOpenModal}
+                            >
+                                Delete
+                            </button>
+                            {isModalOpen && (
+                                <ConfirmationModal
+                                    className="transition-none ease-out duration-300"
+                                    isOpen={isModalOpen}
+                                    onClose={handleCloseModal}
+                                    onConfirm={handleConfirmDelete}
+                                />
+                            )}
+                        </>
+                    </>
+                )}
             </td>
         </tr>
     );
@@ -409,10 +414,11 @@ const Products = () => {
                         hasViolation: selectedButton === 3 ? true : false,
                         populatedFields:
                             selectedButton === 3 ? "violation" : "",
+                        productStatus: selectedButton === 4 ? "disabled" : "",
                     },
                 }
             );
-            // console.log("HAHAf", data.products);
+            console.log("HAHAf", data.products);
             setProducts(data.products);
             setProductCount(data.count);
             setMaxPageCount(Math.ceil(data.count / 10));
@@ -420,10 +426,16 @@ const Products = () => {
         } finally {
             toast.success("Products loaded successfully");
         }
-    }, [currentPage, user, selectCategory, numericFilters, searchName, selectedButton]);
+    }, [
+        currentPage,
+        user,
+        selectCategory,
+        numericFilters,
+        searchName,
+        selectedButton,
+    ]);
 
     useEffect(() => {
-        // ensure that this only triggers when the location pathname only has /seller, nothing else
         if (location.pathname !== "/seller/productsOverview") {
             return;
         }
@@ -511,9 +523,13 @@ const Products = () => {
 
     const handleDeleteProduct = (productID) => {
         try {
-            axios.delete(`http://localhost:5000/api/v1/products/${productID}`);
+            axios.patch(`http://localhost:5000/api/v1/products/${productID}`, {
+                productStatus: "disabled",
+            });
             setProducts(
-                products.filter((product) => product._id !== productID)
+                products.filter(
+                    (product) => product.productStatus !== "disabled"
+                )
             );
             toast.success("Product deleted successfully");
         } catch (error) {
@@ -558,16 +574,16 @@ const Products = () => {
                     >
                         Violation
                     </li>
-                    {/* <li
-                        onClick={() => handleButtonClick(5)}
-                        className={`p-4 mr-4 cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
-                            selectedButton === 5
+                    <li
+                        onClick={() => handleViolationFilter(4)}
+                        className={`p-4 mr-4  cursor-pointer hover:border-b-2 hover:border-b-[#211C6A] transition ease-in-out duration-200 ${
+                            selectedButton === 4
                                 ? "border-b-[#211C6A] border-b-2 text-[#211C6A]"
                                 : ""
                         }`}
                     >
-                        Unlisted
-                    </li> */}
+                        Deleted (Disabled)
+                    </li>
                 </ul>
 
                 <div className="flex flex-row w-full items-center justify-between">
@@ -675,6 +691,7 @@ const Products = () => {
                                 )}
                                 <th className="p-2">Variation</th>
                                 <th className="p-2">Category</th>
+                                <th className="p-2">status</th>
                                 <th className="p-2">Actions</th>
                             </tr>
                         </thead>

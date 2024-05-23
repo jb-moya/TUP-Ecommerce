@@ -12,6 +12,7 @@ import FeedbackRouter from "./routes/FeedbackRoute.js";
 import cookieParser from "cookie-parser";
 import TempRoute from "./routes/TempRoute.js";
 import TransactionRouter from "./routes/TransactionRoute.js";
+import ProductViolationRouter from "./routes/ProductViolationRoute.js";
 import { Product } from "./models/Product.js";
 
 import Users from "./models/User.js";
@@ -45,6 +46,7 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use("/api/v1/auth", AuthenticationRoute);
 app.use("/api/v1/user", UserRoute);
 app.use("/api/v1/products", ProductRouter);
+app.use("/api/v1/violations", ProductViolationRouter);
 app.use("/api/v1/reviews", ReviewRouter);
 app.use("/api/v1/cart", CartRouter);
 app.use("/api/v1/feedback", FeedbackRouter);
@@ -63,8 +65,8 @@ const port = process.env.PORT || 5000;
 //             {},
 //             {
 //                 $set: {
-//                     productStatus: "pending",
-//                     hasViolation: false,
+//                     productStatus: "enabled",
+//                     // hasViolation: false,
 //                 },
 //             }
 //         );
@@ -77,17 +79,17 @@ const port = process.env.PORT || 5000;
 //     }
 // };
 
-const updateUserProducts = async () => {
-    try {
-        await Organization.updateMany({}, { $set: { status: "approved" } });
+// const updateUserProducts = async () => {
+//     try {
+//         await Organization.updateMany({}, { $set: { status: "approved" } });
 
-        console.log("All orgs have been updated with pending status");
-    } catch (err) {
-        console.error("Error updating orgs", err);
-    } finally {
-        mongoose.connection.close();
-    }
-};
+//         console.log("All orgs have been updated with pending status");
+//     } catch (err) {
+//         console.error("Error updating orgs", err);
+//     } finally {
+//         mongoose.connection.close();
+//     }
+// };
 
 // const updateUserProducts = async () => {
 //     try {
@@ -108,7 +110,6 @@ const updateUserProducts = async () => {
 const start = async () => {
     try {
         await connectDB(process.env.MONGODB_URI);
-        // await updateUserProducts();
         app.listen(port, console.log(`Server running on port ${port}`));
     } catch (error) {
         console.log(error);

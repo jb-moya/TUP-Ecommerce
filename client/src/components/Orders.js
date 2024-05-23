@@ -137,7 +137,7 @@ export const Orders = () => {
                 }
             );
             const data = await response.data;
-            // console.log(response);
+            console.log("transaction nya", response);
 
             setTransactions(data.transactions);
             setTransactionTotalCount(data.transactionTotalCount);
@@ -156,7 +156,7 @@ export const Orders = () => {
                     orderStatus: orderStatus[selectedButton + 1],
                 }
             );
-            // console.log(response);
+            console.log(response);
             fetchAllTransactions();
 
             toast.success("Orders have been marked as 'To Ship'!");
@@ -276,43 +276,6 @@ export const Orders = () => {
                         />
                     </div>
                 </div>
-
-                {/* <div className="flex border-b-2 border-gray-200 px-4 justify-between w-full text-gray-500  text-sm mt-16">
-                    <ul className="flex w-[370px] justify-between pl-2 mb-2 ">
-                        <li
-                            onClick={() => handleButtonClick1(1)}
-                            className={`p-4 px-6 cursor-pointer  hover:bg-[#211C6A] hover:text-white hover:rounded-full border-[#211C6A] transition ease-in-out duration-200 ${
-                                selectedButton1 === 1
-                                    ? " bg-[#211C6A] rounded-full border-b-[#EFEFEF] text-white"
-                                    : ""
-                            }`}
-                        >
-                            All 0
-                        </li>
-
-                        <li
-                            onClick={() => handleButtonClick1(2)}
-                            className={`p-4 px-6 cursor-pointer border-[#211C6A]  hover:bg-[#211C6A] hover:text-white hover:rounded-full transition ease-in-out duration-200 ${
-                                selectedButton1 === 2
-                                    ? " bg-[#211C6A] rounded-full border-b-[#EFEFEF] text-white"
-                                    : ""
-                            }`}
-                        >
-                            To Process 0
-                        </li>
-
-                        <li
-                            onClick={() => handleButtonClick1(3)}
-                            className={`p-4 px-6 cursor-pointer border-[#211C6A] hover:bg-[#211C6A] hover:text-white hover:rounded-full  transition ease-in-out duration-200 ${
-                                selectedButton1 === 3
-                                    ? " bg-[#211C6A] rounded-full border-b-[#EFEFEF] text-white"
-                                    : ""
-                            }`}
-                        >
-                            Processed 0
-                        </li>
-                    </ul>
-                </div> */}
 
                 <div className="flex justify-between mt-2 p-4 ">
                     <div className="text-lg">Orders</div>
@@ -435,16 +398,24 @@ export const Orders = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {transactions.map((transaction) => (
-                            <OrderRow
-                                key={transaction._id}
-                                order={transaction}
-                                selectedOrder={handleAddSelectedOrder}
-                                isSelected={selectedOrders.includes(
-                                    transaction._id
-                                )}
-                            />
-                        ))}
+                        {transactions.length > 1 &&
+                            transactions.map((transaction) => (
+                                <OrderRow
+                                    key={transaction._id}
+                                    order={transaction}
+                                    selectedOrder={handleAddSelectedOrder}
+                                    isSelected={selectedOrders.includes(
+                                        transaction._id
+                                    )}
+                                />
+                            ))}
+                        {transactions.length === 0 && (
+                            <tr>
+                                <td colSpan="100" className="text-center p-4">
+                                    No orders found.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
 

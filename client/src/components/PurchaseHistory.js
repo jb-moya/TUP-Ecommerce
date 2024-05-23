@@ -22,12 +22,30 @@ const orderStatus = {
     5: "Cancelled",
 };
 
+const handleCancelOrder = async (order) => {
+    try {
+        const response = await axios.patch(
+            `http://localhost:5000/api/v1/transactions`,
+            {
+                orders: order,
+                orderStatus: "Cancelled",
+            }
+        );
+        console.log(response);
+
+        toast.success("Orders have been marked as 'Cancelled'!");
+    } catch (error) {
+        toast.error("An error occurred. Please try again.");
+        // console.error(error);
+    }
+};
+
 const HistoryItem = (transaction) => {
     const createdAt = formatData(transaction.createdAt);
 
     return (
         <>
-            <div className="flex bg-white rounded-lg w-full mb-4">
+            <div className="flex bg-white shadow-md rounded-lg w-full mb-4">
                 <div className="flex flex-row justify-between w-full p-4">
                     <div className="flex flex-row w-full h-full">
                         <img
@@ -68,7 +86,14 @@ const HistoryItem = (transaction) => {
                                     Order Total: ₱ {transaction.totalAmount}
                                 </div>
                                 <div className="flex justify-between py-[1px] mt-auto">
-                                    <h1 className={`text-xs border border-1 rounded-lg w-fit px-2 ${transaction.orderStatus === "Completed" ? "bg-green-100 border-0" : ""}`}>
+                                    <h1
+                                        className={`text-xs border border-1 rounded-lg w-fit px-2 ${
+                                            transaction.orderStatus ===
+                                            "Completed"
+                                                ? "bg-green-100 border-0"
+                                                : ""
+                                        }`}
+                                    >
                                         {transaction.orderStatus}
                                     </h1>
                                     <div className="text-sm font-extralight">
@@ -87,12 +112,18 @@ const HistoryItem = (transaction) => {
                                 <CiShop size={25} className="mr-2" /> View Shop
                             </Link>
                         </button>
-                        <button className="flex bg-[#211C6A] hover:bg-opacity-70 text-white items-center justify-center h-10 text-sm p-4 rounded-xl">
+                        <Link
+                            className="flex bg-[#211C6A] hover:bg-opacity-70 text-white items-center justify-center h-10 text-sm p-4 rounded-xl"
+                            to={`/product/${transaction.product._id}`}
+                        >
                             Buy Again
-                        </button>
+                        </Link>
                         {(transaction.orderStatus === orderStatus[1] ||
                             transaction.orderStatus === orderStatus[2]) && (
-                            <button className="flex border border-1 border-[#211c6a8f] hover:bg-red-500 hover:text-white hover:border-red-500 items-center justify-center h-10 text-sm p-2 rounded-xl">
+                            <button
+                                className="flex border border-1 border-[#211c6a8f] hover:bg-red-500 hover:text-white hover:border-red-500 items-center justify-center h-10 text-sm p-2 rounded-xl"
+                                onClick={handleCancelOrder(transaction._id)}
+                            >
                                 Cancel Order
                             </button>
                         )}

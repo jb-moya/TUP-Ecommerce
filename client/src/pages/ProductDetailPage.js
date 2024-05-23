@@ -53,7 +53,12 @@ const ProductDetailPage = (props) => {
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
                 {
-                    params: additionalParams,
+                    params: {
+                        ...additionalParams,
+                        limit: 20,
+                        populatedFields: "createdBy",
+                        productStatus: "enabled",
+                    },
                 }
             );
             console.log("data", data);
@@ -87,23 +92,29 @@ const ProductDetailPage = (props) => {
 
     useEffect(() => {
         fetchData();
-        fetchProducts(
-            {
-                createdBy: productSeller._id,
-                limit: 20,
-                populatedFields: "createdBy",
-            },
-            setSameSellerProducts
-        );
-        fetchProducts(
-            {
-                categories: productDetails.category,
-                limit: 20,
-                populatedFields: "createdBy",
-            },
-            setCategoryProducts
-        );
-    }, [productSeller, productDetails, fetchData, fetchProducts]);
+    }, [id, fetchData]);
+
+    useEffect(() => {
+        if (productSeller?._id) {
+            fetchProducts(
+                {
+                    createdBy: productSeller._id,
+                },
+                setSameSellerProducts
+            );
+        }
+    }, [productSeller, fetchProducts]);
+
+    useEffect(() => {
+        if (productDetails?.category) {
+            fetchProducts(
+                {
+                    categories: productDetails.category,
+                },
+                setCategoryProducts
+            );
+        }
+    }, [productDetails, fetchProducts]);
 
     useEffect(() => {
         setQuantity(1);

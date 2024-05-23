@@ -46,6 +46,8 @@ export const DashboardFrame = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [toggleDateSort, setToggleDateSort] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(0);
+    const [itemsOrderedLoading, setItemsOrderedLoading] = useState(true);
+    const [totalRevenueLoading, setTotalRevenueLoading] = useState(true);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -67,6 +69,7 @@ export const DashboardFrame = () => {
 
     const fetchAllTransactions = useCallback(async () => {
         try {
+            setItemsOrderedLoading(true);
             const response = await axios.get(
                 `http://localhost:5000/api/v1/transactions`,
                 {
@@ -98,11 +101,14 @@ export const DashboardFrame = () => {
             setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
             console.error(error);
+        } finally {
+            setItemsOrderedLoading(false);
         }
     }, [currentPage, toggleTotalAmountSort, toggleDateSort]);
 
     const fetchTotalRevenue = async () => {
         try {
+            setTotalRevenueLoading(true);
             const response = await axios.get(
                 `http://localhost:5000/api/v1/transactions/revenue`
             );
@@ -112,6 +118,8 @@ export const DashboardFrame = () => {
             console.log(data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setTotalRevenueLoading(false);
         }
     };
 
@@ -151,7 +159,7 @@ export const DashboardFrame = () => {
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
-                                        {totalItemsOrdered
+                                        {!totalRevenueLoading
                                             ? totalItemsOrdered
                                             : "loading"}
                                     </h2>
@@ -165,7 +173,7 @@ export const DashboardFrame = () => {
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
                                     <h2 className="text-3xl mb-2">
-                                        {totalRevenue ? (
+                                        {!totalRevenueLoading ? (
                                             <div className="flex flex-row justify-center align-middle text-center">
                                                 <div className="pr-2">₱</div>
                                                 <div className="self-center">
@@ -267,6 +275,29 @@ export const DashboardFrame = () => {
                                         </td>
                                     </tr>
                                 ))}
+
+                                {itemsOrderedLoading && (
+                                    <tr>
+                                        <td
+                                            colSpan="1000"
+                                            className="p-2 text-center"
+                                        >
+                                            Loading...
+                                        </td>
+                                    </tr>
+                                )}
+
+                                {transactions.length === 0 &&
+                                    !itemsOrderedLoading && (
+                                        <tr>
+                                            <td
+                                                colSpan="1000"
+                                                className="p-2 text-center"
+                                            >
+                                                No transactions found
+                                            </td>
+                                        </tr>
+                                    )}
                             </tbody>
                         </table>
 

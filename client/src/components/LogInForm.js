@@ -46,7 +46,7 @@ const LogInForm = () => {
                 navigate("/", { replace: true });
             } else {
                 console.error("Login error:", resultAction);
-                setLoginErrorMessage(resultAction.payload.message);
+                setLoginErrorMessage(resultAction.payload);
             }
         } catch (error) {
             console.error("Login error:", error);

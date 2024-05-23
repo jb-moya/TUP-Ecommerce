@@ -54,6 +54,9 @@ const HomeFrame = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(0);
     const [sellers, setSellers] = useState([]);
+    const [loadingFetchProducts, setLoadingFetchProducts] = useState(true);
+    const [loadingFetchPopularProducts, setLoadingFetchPopularProducts] =
+        useState(true);
 
     const fetchUser = useCallback(async () => {
         try {
@@ -78,6 +81,7 @@ const HomeFrame = () => {
 
     const fetchPopularProducts = useCallback(async () => {
         try {
+            setLoadingFetchPopularProducts(true);
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
                 {
@@ -85,11 +89,17 @@ const HomeFrame = () => {
                         sort: [["soldCount", "ascending"]],
                         limit: 6,
                         populatedFields: "createdBy",
+                        productStatus: "enabled",
                     },
                 }
             );
+            console.log("fetching products popular", data.products);
             setPopularProducts(data.products);
-        } catch (error) {}
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoadingFetchPopularProducts(false);
+        }
     }, []);
 
     const fetchProducts = useCallback(async () => {
@@ -99,15 +109,20 @@ const HomeFrame = () => {
                 {
                     params: {
                         page: currentPage,
+                        limit: 40,
                         populatedFields: "createdBy",
+                        productStatus: "enabled",
                     },
                 }
             );
+            console.log("fetching products", data.products);
             setProducts(data.products);
-            setMaxPageCount(Math.ceil(data.productTotalCount / 10));
+            setMaxPageCount(Math.ceil(data.count / 40));
         } catch (error) {
+            console.error(error);
         } finally {
             toast.success("Products loaded successfully");
+            setLoadingFetchProducts(false);
         }
     }, [currentPage]);
 
@@ -277,7 +292,18 @@ const HomeFrame = () => {
                             <ProductCard key={index} product={product} />
                         ))}
                 </div>
-                <LoadingSymbol showWhen={popularProducts.length === 0} />
+                <LoadingSymbol
+                    showWhen={
+                        popularProducts.length === 0 &&
+                        loadingFetchPopularProducts
+                    }
+                />
+                {!loadingFetchPopularProducts &&
+                    popularProducts.length === 0 && (
+                        <div className="flex justify-center items-center">
+                            No products found
+                        </div>
+                    )}
             </div>
             <div className="flex flex-col bg-white max-w-[1240px] w-full rounded-2xl shadow-md">
                 <h1 className="font-bold p-4">DISCOVER YOUR PRODUCTS</h1>
@@ -289,7 +315,14 @@ const HomeFrame = () => {
                         ))}
                 </div>
 
-                <LoadingSymbol showWhen={products.length === 0} />
+                <LoadingSymbol
+                    showWhen={products.length === 0 && loadingFetchProducts}
+                />
+                {!loadingFetchProducts && products.length === 0 && (
+                    <div className="flex justify-center items-center">
+                        No products found
+                    </div>
+                )}
 
                 <PaginationButtons
                     pageCount={maxPageCount > 0 ? maxPageCount : 1}

@@ -94,7 +94,7 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
                                       </Link>
                                   );
                               })
-                            : user.role === "seller"
+                            : user.role === "customer"
                             ? customerMenus.map((link, index) => {
                                   return (
                                       <Link

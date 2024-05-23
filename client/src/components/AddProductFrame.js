@@ -6,7 +6,7 @@ import { DropDownMenu_1 } from "./utils/Dropdown";
 import ImageHolder from "./utils/imageHolder";
 import { MdCancel } from "react-icons/md";
 import VariationHolder from "./AddVariation";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const productCategories = {
@@ -30,7 +30,7 @@ const productCategories = {
 
 export const AddProductFrame = () => {
     const { id: editingProductId } = useParams();
-    // console.log("id: ", editingProductId);
+    const navigate = useNavigate();
     const priceRef = useRef(null);
     const stockRef = useRef(null);
     const [selectedCategory, setSelectedCategory] = useState(16);
@@ -69,8 +69,6 @@ export const AddProductFrame = () => {
                 image,
             } = product;
 
-            // console.log("editing product:", response);
-            // console.log("editing product:", product);
             setSelectedCategory(
                 Object.keys(productCategories).find(
                     (key) => productCategories[key] === category
@@ -238,8 +236,20 @@ export const AddProductFrame = () => {
             );
 
             // console.log(response);
+            toast("Product added successfully!", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            navigate("/seller/productsOverview");
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     };
 
@@ -265,7 +275,7 @@ export const AddProductFrame = () => {
                 formData
             );
 
-            toast("💩💩 Product updated successfully!", {
+            toast("Product updated successfully!", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -275,7 +285,11 @@ export const AddProductFrame = () => {
                 progress: undefined,
                 theme: "light",
             });
-        } catch (error) {}
+
+            navigate("/seller/productsOverview");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleFileUpload = async (e) => {
@@ -447,6 +461,7 @@ export const AddProductFrame = () => {
                         placeholder="Enter product name"
                         value={formData.name}
                         onChange={handleChangeProductName}
+                        required
                     />
                 </div>
 
@@ -467,6 +482,7 @@ export const AddProductFrame = () => {
                         placeholder="Enter price"
                         disabled={variation.length > 0}
                         onChange={handlePriceChange}
+                        required
                     />
                 </div>
 
@@ -478,6 +494,7 @@ export const AddProductFrame = () => {
                         placeholder="Enter stock"
                         disabled={variation.length > 0}
                         onChange={handleStockChange}
+                        required
                     />
                 </div>
 
@@ -489,6 +506,7 @@ export const AddProductFrame = () => {
                         disabled={variation.length === 0}
                         value={formData.variationClass}
                         onChange={handleVariationClassChange}
+                        required
                     />
                 </div>
 
@@ -519,6 +537,7 @@ export const AddProductFrame = () => {
                         placeholder="Enter product description"
                         value={formData.description}
                         onChange={handleDescriptionChange}
+                        required
                     />
                     <div className="text-right text-xs absolute left-0">
                         {descriptionCharCount}/{maxDescriptionCharCount}
