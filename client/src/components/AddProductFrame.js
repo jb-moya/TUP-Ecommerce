@@ -21,9 +21,9 @@ const productCategories = {
     9: "Toys",
     10: "Sports",
     11: "Outdoors",
-    12: "Automotive",
+    12: "Groceries",
     13: "Accessories",
-    14: "Industrial",
+    14: "Gaming",
     15: "Handmade",
     16: "Other",
 };

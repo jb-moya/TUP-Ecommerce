@@ -27,6 +27,7 @@ import { FreeMode, Pagination } from "swiper/modules";
 import ProductCard from "../components/ProductCard.js";
 import LoadingSymbol from "../components/loadingScreen.js";
 import customTooltip from "../components/utils/tooltip.js";
+import toNumberShortcut from "../components/utils/toNumberShortcut.js";
 
 axios.defaults.withCredentials = true;
 
@@ -74,7 +75,7 @@ const ProductDetailPage = (props) => {
 
         try {
             const response = await axios.get(root);
-            // console.log("response", response);
+            console.log("response", response);
 
             setProductDetails(response.data.product);
             setProductSeller(response.data.product.createdBy);
@@ -180,7 +181,7 @@ const ProductDetailPage = (props) => {
                 <div className="w-7/12">
                     <div className="w-full flex h-min">
                         <div className="w-7/12">
-                            <div className="text-2xl px-8 font-bold text-[#211c6a]">
+                            <div className="text-2xl px-[30px] font-bold text-[#211c6a]">
                                 {productDetails.name}
                             </div>
                             <div className="flex align-baseline">
@@ -194,7 +195,12 @@ const ProductDetailPage = (props) => {
                                 </div>
                                 <div className="pl-2 pr-2 flex leading-tight font-light border-r-[1px] border-[#000000] border-opacity-40">
                                     <span className="text-lg leading-none font-light pr-1">
-                                        {productDetails.soldCount}
+                                        {productDetails.soldCount &&
+                                        productDetails.soldCount !== 0
+                                            ? toNumberShortcut(
+                                                  productDetails.soldCount
+                                              )
+                                            : "0"}
                                     </span>{" "}
                                     <span className="font-extralight">
                                         Sold
@@ -293,7 +299,7 @@ const ProductDetailPage = (props) => {
                                     {selectedVariation
                                         ? selectedVariation.stock
                                         : productDetails.stock}{" "}
-                                    stock available
+                                    <span className="font-light">stock available</span>
                                 </div>
                             )}
                         </div>

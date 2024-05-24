@@ -86,7 +86,7 @@ const HomeFrame = () => {
                 "http://localhost:5000/api/v1/products",
                 {
                     params: {
-                        sort: [["soldCount", "ascending"]],
+                        sort: [["soldCount", "descending"]],
                         limit: 6,
                         populatedFields: "createdBy",
                         productStatus: "enabled",

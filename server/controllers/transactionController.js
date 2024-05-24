@@ -10,7 +10,9 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     const { sort, productName, orderStatus, populatedFields } = req.query;
 
-    // console.log("productName", productName)
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
     if (productName) {
         queryObject["product"] = {
@@ -26,23 +28,44 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
 
     let transactions;
     if (req.user && req.user.role === "seller") {
+        const sortObject = {};
+        if (sort) {
+            sort.forEach(([key, order]) => {
+                sortObject[key] = order === "ascending" ? 1 : -1;
+            });
+        } else {
+            sortObject.createdAt = 1;
+        }
+
         transactions = Transaction.aggregate([
             {
                 $lookup: {
                     from: "products",
                     localField: "product",
                     foreignField: "_id",
-                    as: "productInfo",
+                    as: "product",
                 },
             },
             {
+                $unwind: "$product", // Deconstruct the product array
+            },
+            {
                 $match: {
-                    "productInfo.createdBy":
+                    "product.createdBy":
                         mongoose.Types.ObjectId.createFromHexString(
                             req.user.userId
                         ),
                     ...queryObject,
                 },
+            },
+            {
+                $sort: sortObject,
+            },
+            {
+                $skip: (page - 1) * limit,
+            },
+            {
+                $limit: limit,
             },
         ]);
     }
@@ -60,22 +83,17 @@ const getAllTransactions = asyncWrapper(async (req, res) => {
                 select: ["orgName", "image"],
             },
         });
+
+        if (sort) {
+            transactions = transactions.sort(sort);
+        } else {
+            transactions = transactions.sort("createdAt");
+        }
+
+        transactions = transactions.skip(skip).limit(limit);
     }
 
-    if (sort) {
-        transactions = transactions.sort(sort);
-    } else {
-        transactions = transactions.sort("createdAt");
-    }
-
-    let countTotal = await Transaction.countDocuments(queryObject); // !! ilter to only seller
-
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    transactions = transactions.skip(skip).limit(limit);
-
+    let countTotal = await Transaction.countDocuments(queryObject);
     transactions = await transactions;
     res.status(StatusCodes.OK).json({
         transactions,

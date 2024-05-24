@@ -80,17 +80,37 @@ const port = process.env.PORT || 5000;
 //     }
 // };
 
-// const updateUserProducts = async () => {
-//     try {
-//         await Organization.updateMany({}, { $set: { status: "approved" } });
+const updateUserProducts = async () => {
+    try {
+        await Organization.updateMany({}, { $set: { status: "approved" } });
 
-//         console.log("All orgs have been updated with pending status");
-//     } catch (err) {
-//         console.error("Error updating orgs", err);
-//     } finally {
-//         mongoose.connection.close();
-//     }
-// };
+        console.log("All orgs have been updated with pending status");
+    } catch (err) {
+        console.error("Error updating orgs", err);
+    } finally {
+        mongoose.connection.close();
+    }
+};
+
+const updateUserProductsSoldCount = async () => {
+    try {
+        const products = await Product.find({});
+        const updatePromises = products.map((product) => {
+            const randomSoldCount = Math.floor(Math.random() * 9000) + 1000; // Random number between 1000 and 10000
+            return Product.updateOne(
+                { _id: product._id },
+                { $set: { soldCount: randomSoldCount } }
+            );
+        });
+
+        await Promise.all(updatePromises);
+        console.log("All products have been updated with random sold counts");
+    } catch (err) {
+        console.error("Error updating orgs or products", err);
+    } finally {
+        mongoose.connection.close();
+    }
+};
 
 const deleteAllTransactions = async () => {
     try {
@@ -123,6 +143,7 @@ const deleteAllTransactions = async () => {
 const start = async () => {
     try {
         await connectDB(process.env.MONGODB_URI);
+        // await updateUserProductsSoldCount();
         app.listen(port, console.log(`Server running on port ${port}`));
     } catch (error) {
         console.log(error);

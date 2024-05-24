@@ -67,19 +67,19 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
 
     return (
         <div className="cursor-pointer" onClick={handleProfileMenuToggle}>
-            <div className="flex items-center">
+            <div className="flex items-center hover:text-blue-500 duration-200 ease-in-out transition-all hover:scale-105">
                 <img
                     src={user && user.image ? user.image : defaultProfileImage}
                     alt="MY FACE"
                     className="w-8 h-8 mr-[5px] border-2 border-blue-900 rounded-full object-cover"
                 />
                 <div className="flex flex-col">
-                    <div className="">
+                    <div className="leading-none">
                         {user.firstName && user.firstName}
                         {user.orgName && user.orgName}
                         {userRole === "admin" && "Admin"}
                     </div>
-                    <div className="text-[10px] text-center leading-none select-none">
+                    <div className="text-[10px] font-light text-center leading-none select-none">
                         logged in as {user.role}
                     </div>
                 </div>

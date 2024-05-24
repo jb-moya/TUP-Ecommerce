@@ -94,7 +94,7 @@ export const DashboardFrame = () => {
                 }
             );
             const data = await response.data;
-            console.log(response);
+            console.log("BOY", response);
 
             setTransactions(data.transactions);
             setTransactionTotalCount(data.count);

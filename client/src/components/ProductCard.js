@@ -3,10 +3,11 @@ import logoUnsaturated from "../Assets/LogoUnSaturated.png";
 import formatPrice from "./utils/formatPrice";
 import StarRating from "./StarRating";
 import { FaStar } from "react-icons/fa";
+import toNumberShortcut from "./utils/toNumberShortcut";
+
 const ProductCard = ({ product }) => {
     return (
         <Link
-            // shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]
             to={`/product/${product._id}`}
             className="group relative flex flex-col h-[250px] rounded-xl border border-[#211C6A] border-opacity-20 cursor-pointer hover:scale-[1.04] hover:shadow-md transition-all duration-100 ease-in-out"
         >
@@ -34,7 +35,7 @@ const ProductCard = ({ product }) => {
                         </p>
                         {product.soldCount ? (
                             <div className="font-light text-xs self-center">
-                                {product.soldCount} sold
+                                {toNumberShortcut(product.soldCount)} sold
                             </div>
                         ) : (
                             ""

@@ -12,7 +12,8 @@ import ex from "../Assets/ex.png";
 import { FaCheckCircle } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import { toast } from "react-toastify";
-
+import classNames from "classnames";
+import formatPrice from "./utils/formatPrice.js";
 axios.defaults.withCredentials = true;
 
 const orderStatus = {
@@ -32,7 +33,15 @@ const orderAction = {
 };
 
 const OrderRow = ({ order, selectedOrder, isSelected }) => {
-    console.log(":(", order.product)
+    console.log(":(", order.product);
+
+    const statusColor = classNames({
+        "text-yellow-300": order.orderStatus === "To Pay",
+        "text-violet-300": order.orderStatus === "To Ship",
+        "text-green-500": order.orderStatus === "Completed",
+        "text-red-400": order.orderStatus === "Cancelled",
+        "text-black": order.orderStatus === "Refunded",
+    });
 
     return (
         <tr className="border-t">
@@ -48,8 +57,8 @@ const OrderRow = ({ order, selectedOrder, isSelected }) => {
                 {order.product.name}
             </td>
             <td className="p-2">x{order.quantity}</td>
-            <td className="p-2">P {order.totalAmount}</td>
-            <td className="p-2">{order.orderStatus}</td>
+            <td className="p-2">P {formatPrice(order.totalAmount)}</td>
+            <td className={classNames("p-2", statusColor)}>{order.orderStatus}</td>
             <td className="p-2">{order.shippingMethod}</td>
             <td className="p-2">{order.paymentMethod}</td>
             <td className="p-2"></td>

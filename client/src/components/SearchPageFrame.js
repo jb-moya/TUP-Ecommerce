@@ -15,6 +15,7 @@ import {
     buildQueryParam,
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
+import LoadingSymbol from "../components/loadingScreen.js";
 axios.defaults.withCredentials = true;
 
 const productCategories = {
@@ -29,9 +30,9 @@ const productCategories = {
     9: "Toys",
     10: "Sports",
     11: "Outdoors",
-    12: "Automotive",
+    12: "Groceries",
     13: "Accessories",
-    14: "Industrial",
+    14: "Gaming",
     15: "Handmade",
     16: "Other",
 };
@@ -85,6 +86,7 @@ export const SearchPageFrame = () => {
     const [searchName, setSearchName] = useState("");
     const [products, setProducts] = useState([]);
     const [organizations, setOrganizations] = useState([]);
+    const limit = 30;
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -227,15 +229,15 @@ export const SearchPageFrame = () => {
                         page: currentPage,
                         populatedFields: "createdBy",
                         productStatus: "enabled",
+                        limit: limit,
                     },
                 }
             );
-            // console.log("Products", data);
             toast.success(`Products fetched successfully ${data.count}`);
             setProducts(data.products);
             setProductCount(data.count);
 
-            setMaxPageCount(Math.ceil(data.count / 10));
+            setMaxPageCount(Math.ceil(data.count / limit));
         } catch (error) {
         } finally {
             setIsCurrentlyFetching(false);
@@ -522,9 +524,13 @@ export const SearchPageFrame = () => {
                                     filters...
                                 </div>
                             )
-                        ) : (
-                            <div>...Fetching Products...</div>
-                        )}
+                        ) : null}
+
+                        <div className="col-span-full my-20">
+                            {isCurrentlyFetching && (
+                                <LoadingSymbol showWhen={isCurrentlyFetching} />
+                            )}
+                        </div>
                     </div>
                     <PaginationButtons
                         pageCount={maxPageCount > 0 ? maxPageCount : 1}
