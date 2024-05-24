@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import StarRating from "./components/StarRating";
 
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 axios.defaults.withCredentials = true;
 
 const WriteReview = ({ productID, closeWriteReviewComponent }) => {
-    const dispatch = useDispatch();
     const maxTitleCharCount = 500;
     const maxCommentCharCount = 5000;
     const [titleCharCount, setTitleCharCount] = useState(0);
@@ -34,11 +33,8 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
                 }
             );
 
-            // console.log("writing review response", response);
-
             if (response.status === 200 || response.status === 201) {
                 toast.success("Review submitted successfully!");
-                // refresh page
                 closeWriteReviewComponent();
                 window.location.reload();
             } else {
@@ -48,6 +44,7 @@ const WriteReview = ({ productID, closeWriteReviewComponent }) => {
             window.location.reload();
         } catch (error) {
             console.error(error);
+            toast.error("Failed. Already reviewed this product.");
         }
     };
 

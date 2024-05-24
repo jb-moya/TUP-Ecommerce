@@ -23,6 +23,7 @@ const orderStatus = {
     3: "To Recieve",
     4: "Completed",
     5: "Cancelled",
+    6: "Refunded",
 };
 
 const handleOrderStatusChange = async (order, status) => {
@@ -36,7 +37,7 @@ const handleOrderStatusChange = async (order, status) => {
         );
         console.log(response);
 
-        toast.success("Orders have been marked as 'Cancelled'!");
+        toast.success(`Orders have been marked as ${status}!`);
     } catch (error) {
         toast.error("An error occurred. Please try again.");
         // console.error(error);
@@ -53,8 +54,7 @@ const HistoryItem = (transaction) => {
         "bg-yellow-100 border-0": transaction.orderStatus === "To Pay",
         "bg-blue-100 border-0": transaction.orderStatus === "To Ship",
         "bg-purple-100 border-0": transaction.orderStatus === "To Receive",
-        "bg-black text-white border-0":
-            transaction.orderStatus === "Return Refund",
+        "bg-black text-white border-0": transaction.orderStatus === "Refunded",
     });
 
     return (
@@ -62,12 +62,14 @@ const HistoryItem = (transaction) => {
             <div className="flex bg-white shadow-md rounded-lg w-full mb-4">
                 <div className="flex flex-row justify-between w-full p-4">
                     <div className="flex flex-row w-full h-full">
-                        <img
-                            className="h-[100px] w-[100px] rounded-lg object-cover my-auto shadow-md"
-                            src={transaction.product.image[0]}
-                            alt="Logo Here"
-                            loading="lazy"
-                        />
+                        <div className="w-2/12 flex items-center justify-center">
+                            <img
+                                className="h-[100px] w-[100px] rounded-lg object-cover my-auto shadow-md"
+                                src={transaction.product.image[0]}
+                                alt="Logo Here"
+                                loading="lazy"
+                            />
+                        </div>
                         <div className="flex flex-col w-full px-4 py-2">
                             <h1 className="text-lg pl-1 py-[1px]">
                                 <div className="flex justify-between">
@@ -159,7 +161,7 @@ const HistoryItem = (transaction) => {
                                 onClick={() =>
                                     handleOrderStatusChange(
                                         transaction._id,
-                                        orderStatus[4]
+                                        orderStatus[6]
                                     )
                                 }
                             >

@@ -12,13 +12,17 @@ import formatPrice from "./utils/formatPrice";
 import classNames from "classnames";
 
 const CheckOut = () => {
-    const { total, productCount } = useSelector((store) => store.cart);
+    const { cartItems, total, productCount } = useSelector(
+        (store) => store.cart
+    );
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleGoToCheckoutPage = () => {
         navigate("/checkout");
     };
+
+    const areItemsUnselected = cartItems.every((item) => !item.checked);
 
     return (
         <div className="bg-white flex flex-col filter shadow-down h-[200px] w-full rounded-xl m-2 p-2 sticky bottom-2">
@@ -78,17 +82,25 @@ const CheckOut = () => {
                     data-tooltip-content={
                         productCount === 0
                             ? "Please add items to your cart!"
+                            : areItemsUnselected
+                            ? "Please select items!"
                             : ""
                     }
-                    disabled={productCount === 0}
+                    disabled={productCount === 0 || areItemsUnselected}
                     style={{
-                        cursor: productCount === 0 ? "not-allowed" : "pointer",
+                        cursor:
+                            productCount === 0
+                                ? "not-allowed"
+                                : areItemsUnselected
+                                ? "not-allowed"
+                                : "pointer",
                     }}
                     data-tooltip-place="top"
                     type="button"
                     className={classNames(
                         "w-64 m-2 bg-[#211c6a] text-white p-4 rounded-xl",
-                        { "opacity-50": productCount === 0 }
+                        { "opacity-50": productCount === 0 },
+                        { "opacity-50": areItemsUnselected }
                     )}
                     onClick={handleGoToCheckoutPage}
                 >

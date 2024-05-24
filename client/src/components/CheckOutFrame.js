@@ -11,8 +11,6 @@ import axios from "axios";
 import {
     clearCart,
     calculateTotals,
-    getAllItems,
-    getStateCart,
     deleteCart,
     deleteItemFromDB,
     clearCheckedItems,
