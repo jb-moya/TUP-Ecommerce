@@ -22,6 +22,7 @@ const EditProfileDetails = () => {
         gender: "",
         image: "",
     });
+
     const updateAccountDetails = async () => {
         try {
             let dataToSend = newUserData;
@@ -68,6 +69,7 @@ const EditProfileDetails = () => {
             gender: user.gender,
         });
     }, [user]);
+
     useEffect(() => {
         if (user.image) {
             setPostImage(user.image);
@@ -104,6 +106,11 @@ const EditProfileDetails = () => {
 
     const handleFileUpload = async (e) => {
         e.preventDefault();
+
+        if (e.target.files.length === 0) {
+            return;
+        }
+
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setPostImage(base64);
@@ -116,7 +123,7 @@ const EditProfileDetails = () => {
         const userLocal = JSON.parse(localStorage.getItem("user"));
         localStorage.setItem("user", JSON.stringify(userLocal));
     };
-    
+
     return (
         <div className="w-[950px] flex-wrap flex flex-col px-10 py-6 bg-white">
             <p className="text-xl">My Profile</p>

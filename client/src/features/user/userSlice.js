@@ -92,7 +92,6 @@ export const updatePassword = createAsyncThunk(
     "user/updatePassword",
     async (data, thunkAPI) => {
         try {
-            // console.log("data", data);
             const response = await axios.patch(
                 `${rootURL}/user/updateUserPassword`,
                 {
@@ -100,13 +99,19 @@ export const updatePassword = createAsyncThunk(
                     newPassword: data.newPassword,
                 }
             );
-            const resData = await response.data;
+            const resData = response.data;
+            // console.log("dap a k", data);
+            // console.log("resData", resData);
+
             if (response.status === 200) {
                 return resData;
             }
             return thunkAPI.rejectWithValue(resData.message);
         } catch (error) {
-            return thunkAPI.rejectWithValue("An error occurred");
+            console.log("error updating password", error);
+            return thunkAPI.rejectWithValue(
+                `An error occurred ${error.response?.data?.error}`
+            );
         }
     }
 );
@@ -136,6 +141,9 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+        setImage: (state, action) => {
+            state.user.image = action.payload;
+        },
         setLoading: (state, action) => {
             state.isLoading = action.payload;
         },
@@ -177,11 +185,14 @@ const userSlice = createSlice({
             state.isUpdatePasswordSuccess = true;
             state.updatePasswordMessage = action.payload;
             // console.log("updatePassword.fulfilled", action.payload);
+            toast.success("JHAHAHHAAHAHAHAHAHAHAHAHAHAAH");
             toast.success(action.payload);
         });
         builder.addCase(updatePassword.rejected, (state, action) => {
             state.isUpdatePasswordSuccess = false;
             state.updatePasswordMessage = action.payload;
+            toast.success(".....................");
+
             // console.log("updatePassword.rejected", action.payload);
             toast.error(action.payload);
         });
@@ -190,4 +201,4 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const { setLoading, setUser, setLogged } = userSlice.actions;
+export const { setLoading, setUser, setLogged, setImage } = userSlice.actions;

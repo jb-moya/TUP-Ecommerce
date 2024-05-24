@@ -18,6 +18,11 @@ export const Details = () => {
 
     const handleFileUpload = async (e) => {
         e.preventDefault();
+
+        if (e.target.files.length === 0) {
+            return;
+        }
+
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
         setUserData({ ...userData, accreditationDoc: base64 });

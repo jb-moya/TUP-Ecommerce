@@ -95,6 +95,37 @@ const updateUser = asyncWrapper(async (req, res) => {
         attachCookiesToResponse({ res, user: tokenUser });
         res.status(StatusCodes.OK).json({ user });
     }
+
+    if (req.user.role == "seller") {
+        const user = await Organization.findOne({ _id: req.user.userId });
+
+        if (!user) {
+            return res
+                .status(StatusCodes.NOT_FOUND)
+                .json({ error: "User not found" });
+        }
+
+        user.orgName = req.body.orgName || user.orgName;
+        user.email = req.body.email || user.email;
+        user.contactNumbers = req.body.contactNumbers || user.contactNumbers;
+        user.representative.name = req.body.representative
+            ? req.body.representative.name
+            : user.representative.name;
+        user.representative.position = req.body.representative
+            ? req.body.representative.position
+            : user.representative.position;
+        user.representative.email = req.body.representative
+            ? req.body.representative.email
+            : user.representative.email;
+        user.description = req.body.description || user.description;
+        user.image = req.body.image || user.image;
+
+        await user.save();
+
+        const tokenUser = createTokenUser(user);
+        attachCookiesToResponse({ res, user: tokenUser });
+        res.status(StatusCodes.OK).json({ user });
+    }
 });
 
 const updateStatusOrganization = asyncWrapper(async (req, res) => {
@@ -115,36 +146,38 @@ const updateStatusOrganization = asyncWrapper(async (req, res) => {
 });
 
 const updateUserPassword = asyncWrapper(async (req, res) => {
-    if (req.user.role === "customer") {
-        const { currentPassword, newPassword } = req.body;
+    const { role } = req.user;
+    const { currentPassword, newPassword } = req.body;
 
-        if (!currentPassword || !newPassword) {
-            return res.json({
-                error: "Please provide current and new password",
-            });
-        }
-
-        const user = await Customer.findOne({ _id: req.user.userId }).select(
-            "+password"
-        );
-
-        const isPasswordCorrect = await user.comparePassword(currentPassword);
-
-        if (!isPasswordCorrect) {
-            return res.json({ error: "Invalid credentials" });
-        }
-
-        if (newPassword.length < 6) {
-            return res.json({
-                error: `New password must be at least 6 characters long`,
-            });
-        }
-
-        user.password = newPassword;
-        await user.save();
-
-        return res.json({ msg: "Password updated successfully" });
+    if (!currentPassword || !newPassword) {
+        return res.json({ error: "Please provide current and new password" });
     }
+
+    const userModel = role === "customer" ? Customer : Organization;
+    const user = await userModel
+        .findOne({ _id: req.user.userId })
+        .select("+password");
+
+    const isPasswordCorrect = await user.comparePassword(currentPassword);
+
+    if (!isPasswordCorrect) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ error: "Invalid credentials" });
+    }
+
+    if (newPassword.length < 6) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            error: "New password must be at least 6 characters long",
+        });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res
+        .status(StatusCodes.OK)
+        .json({ msg: "Password updated successfully" });
 });
 
 export {

@@ -29,6 +29,14 @@ const SellerRow = ({ seller }) => {
             );
             console.log("response", response.data);
             toast.info(`Organization ${status} successfully`);
+
+            // alert
+            alert(`Organization ${status} successfully`);
+
+            // reload the page after 1 second
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         } catch (error) {
             console.error(error);
             toast.error(`Failed to ${status} organization`);
