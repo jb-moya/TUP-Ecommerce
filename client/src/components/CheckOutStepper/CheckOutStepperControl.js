@@ -43,12 +43,14 @@ const CheckOutStepperControl = ({
 
             {/* back button */}
             <button
-                onClick={() => handleClick()}
-                className={`bg-white text-[#211C6A] uppercase py-2 px-4 rounded-xl font-semibold cursor-pointer border-2 border-[#211C6A] hover:bg-[#211C6A]  hover:text-white transition duration-200 ease-in-out ${
-                    currentStep === 1 || currentStep === 2
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                }`}
+                onClick={() => {
+                    if (currentStep === 1) {
+                        handleClick("return home");
+                    } else {
+                        handleClick();
+                    }
+                }}
+                className={`bg-white text-[#211C6A] uppercase py-2 px-4 rounded-xl font-semibold cursor-pointer border-2 border-[#211C6A] hover:bg-[#211C6A]  hover:text-white transition duration-200 ease-in-out`}
             >
                 Back
             </button>

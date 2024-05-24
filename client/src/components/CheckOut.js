@@ -5,12 +5,14 @@ import {
     checkAll,
     deselectAll,
 } from "../features/cart/cartSlice";
-
+import { Tooltip } from "react-tooltip";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import formatPrice from "./utils/formatPrice";
+import classNames from "classnames";
+
 const CheckOut = () => {
-    const { total } = useSelector((store) => store.cart);
+    const { total, productCount } = useSelector((store) => store.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -63,9 +65,31 @@ const CheckOut = () => {
                 </div>
             </div>
             <div className="p-2 self-end">
+                <Tooltip
+                    id="my-tooltip"
+                    style={{
+                        backgroundColor: "#211c6a",
+                        color: "#fff",
+                        borderRadius: "8px",
+                    }}
+                />
                 <button
+                    data-tooltip-id="my-tooltip"
+                    data-tooltip-content={
+                        productCount === 0
+                            ? "Please add items to your cart!"
+                            : ""
+                    }
+                    disabled={productCount === 0}
+                    style={{
+                        cursor: productCount === 0 ? "not-allowed" : "pointer",
+                    }}
+                    data-tooltip-place="top"
                     type="button"
-                    className=" w-64 m-2 bg-[#211c6a] text-white p-4 rounded-xl"
+                    className={classNames(
+                        "w-64 m-2 bg-[#211c6a] text-white p-4 rounded-xl",
+                        { "opacity-50": productCount === 0 }
+                    )}
                     onClick={handleGoToCheckoutPage}
                 >
                     Check Out

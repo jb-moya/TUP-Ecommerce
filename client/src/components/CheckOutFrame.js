@@ -106,14 +106,16 @@ export const CheckOutFrame = () => {
     const handleClick = (direction) => {
         let newStep = currentStep;
 
+        if (direction === "return home") {
+            navigate("/");
+            return;
+        }
+
         direction === "next" ? newStep++ : newStep--;
         newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
     };
-    
-    function shippingAddressFilled() {
-        console.log(userData);
-        console.log(`shipping address checking.,,`);
 
+    function shippingAddressFilled() {
         return (
             userData.fName &&
             userData.lName &&
@@ -125,16 +127,10 @@ export const CheckOutFrame = () => {
     }
 
     function shippingMethodFilled() {
-        console.log(userData);
-
-        console.log("shipping method checking.,,");
         return userData.shippingMethod;
     }
 
     function paymentMethodFilled() {
-        console.log(userData);
-
-        console.log("payment method checking.,,");
         if (userData.paymentMethod === "GCash") {
             return userData.eWalletName && userData.eWalletNumber;
         } else {

@@ -26,6 +26,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
 import ProductCard from "../components/ProductCard.js";
 import LoadingSymbol from "../components/loadingScreen.js";
+import customTooltip from "../components/utils/tooltip.js";
 
 axios.defaults.withCredentials = true;
 
@@ -298,15 +299,7 @@ const ProductDetailPage = (props) => {
                         </div>
                     </div>
                     <div className="w-full mt-4 flex items-center">
-                        <Tooltip
-                            id="my-tooltip"
-                            className="z-50"
-                            style={{
-                                backgroundColor: "#211c6a",
-                                color: "#fff",
-                                borderRadius: "8px",
-                            }}
-                        />
+                        <customTooltip id="my-tooltip" />
                         <div className="w-4/12 flex flex-col align-middle items-center">
                             <button
                                 className="w-9/12 p-2 border rounded-lg bg-[#a6bec2] text-white hover:border-violet-500"

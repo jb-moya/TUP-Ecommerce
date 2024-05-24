@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
 const CheckOutStepper = ({ steps, currentStep }) => {
     const [newStep, setNewStep] = useState([]);
@@ -9,7 +9,6 @@ const CheckOutStepper = ({ steps, currentStep }) => {
         let count = 0;
 
         while (count < newSteps.length) {
-            // current step
             if (count === stepNumber) {
                 newSteps[count] = {
                     ...newSteps[count],
@@ -18,9 +17,7 @@ const CheckOutStepper = ({ steps, currentStep }) => {
                     complete: true,
                 };
                 count++;
-            }
-            // step completed
-            else if (count < stepNumber) {
+            } else if (count < stepNumber) {
                 newSteps[count] = {
                     ...newSteps[count],
                     highlighted: false,
@@ -28,9 +25,7 @@ const CheckOutStepper = ({ steps, currentStep }) => {
                     complete: true,
                 };
                 count++;
-            }
-            // step pending
-            else {
+            } else {
                 newSteps[count] = {
                     ...newSteps[count],
                     highlighted: false,
@@ -55,21 +50,27 @@ const CheckOutStepper = ({ steps, currentStep }) => {
         setNewStep(current);
     }, [steps, currentStep]);
 
-
     const displaySteps = newStep.map((step) => (
-        <div>
+        <div
+            key={step.description}
+            className={`flex flex-col items-center ${
+                step.highlighted ? "text-gray-900" : "text-gray-400"
+            }`}
+        >
             <div
-                className={`text-center w-24 text-xs font-medium uppercase ${step.highlighted ? 'text-gray-900' : 'text-gray-400'
-                    }`}>
+                className={`text-center w-24 text-xs font-medium uppercase ${
+                    step.highlighted ? "text-gray-900" : "text-gray-400"
+                }`}
+            >
                 {/* Display Description */}
                 {step.description}
-                <hr className='border border-black opacity-10 mt-2'></hr>
+                <hr className="border border-black opacity-10 mt-2"></hr>
             </div>
         </div>
     ));
 
     return (
-        <div className='flex  justify-between items-center '>
+        <div className="flex  justify-between items-center ">
             {displaySteps}
         </div>
     );

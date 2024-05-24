@@ -59,7 +59,12 @@ export const deleteItemFromDB = createAsyncThunk(
                 `http://localhost:5000/api/v1/cart/deleteItem/${cart[0]._id}/${itemId}`
             );
 
-            // console.log("response >:(", response.data);
+            if (Object.keys(response.data).length === 0) {
+                await deleteCart(null, thunkAPI);
+                return [];
+            }
+
+            console.log("response >:(", response.data);
             return response.data.cart.orderItems;
         } catch (error) {
             console.error(error);

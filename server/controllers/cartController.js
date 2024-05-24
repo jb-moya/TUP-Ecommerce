@@ -31,7 +31,6 @@ const getCartPipeline = (userId) => [
         },
     },
 
-    // get only the variation in orderItems.variationDetails.variation array that matches the orderItems.variation
     {
         $set: {
             "orderItems.productDetails.variation": {

@@ -84,7 +84,9 @@ const Address = () => {
                             name="country"
                             className="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-transparent "
                         >
-                            <option selected disabled value="">Select an option</option>
+                            <option disabled value="">
+                                Select an option
+                            </option>
                             <option value="USA">United States</option>
                             <option value="UK">United Kingdom</option>
                             <option value="Canada">Canada</option>
