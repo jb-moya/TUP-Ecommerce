@@ -297,9 +297,13 @@ const ProductDetailPage = (props) => {
                             ) : (
                                 <div>
                                     {selectedVariation
-                                        ? selectedVariation.stock
-                                        : productDetails.stock}{" "}
-                                    <span className="font-light">stock available</span>
+                                        ? formatPrice(selectedVariation.stock)
+                                        : formatPrice(
+                                              productDetails.stock
+                                          )}{" "}
+                                    <span className="font-light">
+                                        stock available
+                                    </span>
                                 </div>
                             )}
                         </div>

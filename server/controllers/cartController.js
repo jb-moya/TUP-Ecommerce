@@ -90,7 +90,6 @@ const getSingleCart = asyncWrapper(async (req, res, next) => {
 const getUserCart = asyncWrapper(async (req, res, next) => {
     const cart = await Cart.aggregate(getCartPipeline(req.user.userId));
 
-    console.log("cart NG HANEP", cart);
     console.dir(cart[0], { depth: null }); // Use console.dir for better object visualization
 
     res.status(200).json({ cart });

@@ -53,11 +53,12 @@ const getSingleUser = asyncWrapper(async (req, res, next) => {
     let user = null;
     if (req.user.role === "customer") {
         user = await Customer.findOne({ _id: req.user.userId });
-    } else if (req.user.role === "organization") {
+    } else if (req.user.role === "seller") {
         user = await Organization.findOne({ _id: req.user.userId });
     } else if (req.user.role === "admin") {
         user = await Admin.findOne({ _id: req.user.userId });
     }
+
     if (!user) {
         return next(createCustomError(`No user with id : ${userId}`, 404));
     }

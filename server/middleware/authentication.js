@@ -25,6 +25,7 @@ const authenticateUser = async (req, res, next) => {
         );
 
         req.user = { name, userId, role };
+        console.log("req.user", req.user);
         next();
     } catch (error) {
         throw new UnauthenticatedError("Authentication invalid");
