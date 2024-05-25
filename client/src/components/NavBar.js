@@ -67,7 +67,7 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
 
     return (
         <div className="cursor-pointer" onClick={handleProfileMenuToggle}>
-            <div className="flex items-center hover:text-blue-500 duration-200 ease-in-out transition-all hover:scale-105">
+            <div className="flex items-center hover:text-blue-500 duration-500 ease-in-out transition-all hover:scale-105">
                 <img
                     src={user && user.image ? user.image : defaultProfileImage}
                     alt="MY FACE"
@@ -85,7 +85,7 @@ const ProfileMenu = ({ handleProfileMenuToggle, isProfileMenuOpen }) => {
                 </div>
             </div>
             {isProfileMenuOpen && (
-                <div className="absolute transition duration-200 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded-lg shadow-lg">
+                <div className="absolute transition-all duration-500 ease-in-out text-[#211C6A] top-20 right-4 lg:right-[150px] bg-white border border-gray-200 rounded-lg shadow-lg">
                     <div className="flex flex-col text-center">
                         {user.role === "seller"
                             ? sellerMenus.map((link, index) => {
@@ -223,7 +223,7 @@ export const NavBar = ({
                     {links.map((link, index) => (
                         <Link
                             key={index}
-                            className="w-full h-full px-4 content-center hover:text-[#0084ff] hover:border-b-2 hover:border-[#0084ff] transition ease-in-out duration-200"
+                            className="w-full h-full px-4 content-center hover:text-[#0084ff] hover:border-b-2 hover:border-[#0084ff] transition-all ease-in-out duration-300"
                             to={link.to}
                         >
                             {link.text}

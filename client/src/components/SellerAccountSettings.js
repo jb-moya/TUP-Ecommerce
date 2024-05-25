@@ -232,7 +232,8 @@ const SellerAccountSettings = () => {
             !newUserData?.representative?.name &&
             !newUserData?.representative?.position &&
             !newUserData?.representative?.email &&
-            !newUserData?.description
+            !newUserData?.description &&
+            !postImage
         );
     }
 

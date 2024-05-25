@@ -31,6 +31,7 @@ import {
     SellerReviewFormPage,
     ProductReviewFormPage,
 } from "./pages/ReviewFormPage.js";
+import ScrollToTop from "./components/utils/ScrollToTop.js";
 const rootUrl = "http://localhost:5000/api/v1";
 
 function RestrictedRoute({ allowedRoles, allowGuest, children }) {
@@ -85,6 +86,7 @@ function App() {
     return (
         <div className="box-border ">
             <BrowserRouter>
+                <ScrollToTop />
                 <Routes>
                     <Route path="/not-allowed" element={<NotAllowed />} />
                     <Route path="/" element={<Home />} />

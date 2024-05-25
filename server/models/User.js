@@ -98,15 +98,12 @@ const organizationSchema = mongoose.Schema(
         representative: {
             name: {
                 type: String,
-                required: true,
             },
             position: {
                 type: String,
-                required: true,
             },
             email: {
                 type: String,
-                required: [true, "Email is required"],
                 match: [
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                     "Please provide a valid email",
@@ -163,11 +160,17 @@ const organizationSchema = mongoose.Schema(
         },
         accreditationDoc: {
             type: String,
-            required: true,
         },
         status: {
             type: String,
-            enum: ["enabled", "disabled", "pending", "approved", "rejected", "banned"],
+            enum: [
+                "enabled",
+                "disabled",
+                "pending",
+                "approved",
+                "rejected",
+                "banned",
+            ],
             default: "pending",
         },
         createdAt: {

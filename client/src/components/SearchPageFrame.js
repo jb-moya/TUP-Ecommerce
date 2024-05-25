@@ -509,7 +509,7 @@ export const SearchPageFrame = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="grid grid-cols-5 gap-4 mx-4 p-4 rounded-lg  shadow-lg bg-white">
+                    <div className="grid grid-cols-5 gap-4 mx-4 p-4 rounded-lg shadow-lg bg-white">
                         {!isCurrentlyFetching ? (
                             productCount !== 0 ? (
                                 products.map((product, index) => (
@@ -519,7 +519,7 @@ export const SearchPageFrame = () => {
                                     />
                                 ))
                             ) : (
-                                <div>
+                                <div className="col-span-full text-center mt-20">
                                     ...No Products found. Try changing your
                                     filters...
                                 </div>

@@ -226,7 +226,7 @@ const HomeFrame = () => {
                     <Swiper
                         modules={[FreeMode, Pagination]}
                         spaceBetween={20}
-                        slidesPerView={4}
+                        slidesPerView={5}
                         freeMode={true}
                         navigation
                         pagination={{ clickable: true }}
@@ -243,7 +243,7 @@ const HomeFrame = () => {
                                     className="group my-6"
                                 >
                                     <img
-                                        className="w-20 h-20 rounded-full drop-shadow-sm mx-auto group-hover:scale-125 group-hover:shadow-lg transition-all ease-in-out duration-200"
+                                        className="w-20 h-20 object-cover rounded-full drop-shadow-sm mx-auto group-hover:scale-125 group-hover:shadow-lg transition-all ease-in-out duration-200"
                                         src={
                                             seller.image || defaultProfileImage
                                         }
@@ -272,7 +272,7 @@ const HomeFrame = () => {
                                 className="flex flex-col items-center hover:scale-[1.05] transition ease-in-out duration-200"
                             >
                                 <img
-                                    className="h-[150px] w-[150px] bg-contain rounded-xl"
+                                    className="h-[150px] w-[150px] object-cover rounded-xl"
                                     src={require(`../Assets/categories/${category.toLowerCase()}.jpg`)}
                                     alt="Logo Here"
                                     loading="lazy"
