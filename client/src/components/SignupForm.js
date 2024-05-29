@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import TMCLogo from "../Assets/Logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import axios from "axios";
 import defaultPP from "../Assets/defaultPP.png";
 import { RegistrationSuccess } from "./AUTHENTICATION/Success";
 import { RegistrationFailure } from "./AUTHENTICATION/Failure";
+import { WarningMessage } from "./AUTHENTICATION/Warning";
 
 const SignupForm = () => {
     const [testImage, SetTestImage] = useState(null);
@@ -19,6 +20,7 @@ const SignupForm = () => {
         email: "",
         contactNumber: "",
         password: "",
+        confirmPassword: "",
         role: "customer",
         image: "",
     });
@@ -42,8 +44,11 @@ const SignupForm = () => {
     const [showConfirmPassword, setConfirmPassword] = useState(false);
 
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
-    const [registrationErrorMessage, setRegistrationErrorMessage] =
-        useState("");
+    const [registrationErrorMessage, setRegistrationErrorMessage] = useState("");
+
+    const [fieldEmpty, checkFieldEmpty] = useState(false);
+    const [passwordsMatch, checkPasswordsMatch] = useState(true);
+    const [passwordLength, checkPasswordLength] = useState(true);
 
     const handleShowPassword = () => {
         setPassword(!showPassword);
@@ -56,32 +61,55 @@ const SignupForm = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData(prevData => ({
+            ...prevData,
             [name]: value,
-        });
+        }));
     };
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // console.log(formData);
+        if (formData.firstName === "" || formData.lastName === "" || formData.dateOfBirth === "" 
+            || formData.email === "" || formData.contactNumber === "" || formData.password === ""
+                || formData.confirmPassword === ""){
+            
+                checkFieldEmpty(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                return;
+        } 
+
+        if (formData.password !== formData.confirmPassword) {
+            checkPasswordsMatch(false);
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            checkPasswordLength(false);
+            return;
+        }
+
+        // console.log("OK!");
         axios
-            .post("http://localhost:5000/api/v1/auth/register", formData)
-            .then((res) => {
-                setRegistrationSuccess(true);
-            })
-            .catch((err) => {
-                if (
-                    err.response &&
-                    err.response.data &&
-                    err.response.data.error
-                ) {
-                    setRegistrationErrorMessage(err.response.data.error);
-                } else {
-                    setRegistrationErrorMessage(
-                        "An error occurred. Please try again."
-                    );
-                }
-            });
+        .post("http://localhost:5000/api/v1/auth/register", formData)
+        .then((res) => {
+            setRegistrationSuccess(true);
+        })
+        .catch((err) => {
+            if (
+                err.response &&
+                err.response.data &&
+                err.response.data.error
+            ) {
+                setRegistrationErrorMessage(err.response.data.error);
+            } else {
+                setRegistrationErrorMessage(
+                    "An error occurred. Please try again."
+                );
+            }
+        });     
     };
 
     const handleClick = () => {
@@ -95,21 +123,12 @@ const SignupForm = () => {
 
     return (
         <div className="text-[#211C6A] mt-[96px]">
-            {/* <div>
-                <div>
-                    <img src={testImage} alt="test" />
-                </div>
-            </div> */}
+
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col max-w-[800px] h-full w-full mx-auto text-center items-center select-none"
             >
-                <img
-                    className="w-56 h-56"
-                    src={TMCLogo}
-                    alt=""
-                    loading="lazy"
-                />
+                <img className="w-40 h-40" src={TMCLogo} alt="" loading="lazy"/>
 
                 <h2 className="w-96 text-2xl mt-[-26px] font-bold p-2">
                     Creating Your Account
@@ -120,12 +139,16 @@ const SignupForm = () => {
                     seamless shopping. Join us today!
                 </h4>
 
-                <div className="flex-start flex-col mt-[28px] w-[560px] text-left px-4 items-center">
+                {fieldEmpty && (
+                    <WarningMessage message="All fields are required" onClose={() => checkFieldEmpty(false)} />
+                )}
+
+                <div className="flex-start flex-col mt-5 w-[560px] text-left px-4 items-center">
                     <h3 className="font-bold pb-1 px-2">First Name</h3>
                     <InputField
                         type="text"
                         name="firstName"
-                        value={formData.firstName}
+                        // value={formData.firstName}
                         onChange={handleChange}
                         placeholder="Enter your first name"
                     />
@@ -133,7 +156,7 @@ const SignupForm = () => {
                     <InputField
                         type="text"
                         name="lastName"
-                        value={formData.lastName}
+                        // value={formData.lastName || ""}
                         onChange={handleChange}
                         placeholder="Enter your last name"
                     />
@@ -141,7 +164,7 @@ const SignupForm = () => {
                     <InputField
                         type="date"
                         name="dateOfBirth"
-                        value={formData.dateOfBirth}
+                        // value={formData.dateOfBirth || ""}
                         onChange={handleChange}
                         placeholder="Enter your date of birth"
                     />
@@ -149,7 +172,7 @@ const SignupForm = () => {
                     <InputField
                         type="Email"
                         name="email"
-                        value={formData.email}
+                        // value={formData.email || ""}
                         onChange={handleChange}
                         placeholder="Enter your email address"
                     />
@@ -157,7 +180,7 @@ const SignupForm = () => {
                     <InputField
                         type="text"
                         name="contactNumber"
-                        value={formData.contactNumber}
+                        // value={formData.contactNumber || ""}
                         onChange={handleChange}
                         placeholder="Enter your contact number"
                     />
@@ -174,7 +197,6 @@ const SignupForm = () => {
                     <InputField
                         type={!showPassword ? "Password" : "text"}
                         name="password"
-                        value={formData.password}
                         onChange={handleChange}
                         placeholder="Enter your password"
                     />
@@ -190,11 +212,19 @@ const SignupForm = () => {
                     </div>
                     <InputField
                         type={!showConfirmPassword ? "Password" : "text"}
-                        // name="password"
-                        // value={formData.password}
+                        name="confirmPassword"
+                        onChange={handleChange}
                         placeholder="Confirm your password"
                     />
                 </div>
+
+                {!passwordsMatch && (
+                    <WarningMessage message="Passwords do not match" onClose={() => checkPasswordsMatch(true)} />
+                )}
+
+                {!passwordLength && (
+                    <WarningMessage message="Password must be of minimum 6 characters length" onClose={() => checkPasswordLength(true)} />
+                )}
 
                 <div className="flex flex-col mt-4 items-center w-[560px] px-2">
                     <button
