@@ -82,68 +82,67 @@ export const SellerRegistrationFrame1 = () => {
         }
     };
 
-    const handleClick = (direction) => {
+    const handleClick = async (direction) => {
         let newStep = currentStep;
-
+    
+        const validateFields = (fields) => {
+            for (let field of fields) {
+                if (!userData[field]) {
+                    setErrorMessage("Please fill out all required fields.");
+                    setShowModal(true);
+                    return false;
+                }
+            }
+            return true;
+        };
+    
         if (direction === "next") {
-            // Check if any required field is empty
-            if (
-                !userData.orgName ||
-                !userData.email ||
-                !userData.phoneNum ||
-                !userData.password ||
-                !userData.confirmPassword
-            ) {
-                setErrorMessage("Please fill out all required fields.");
-                setShowModal(true);
+            
+            if (!validateFields(['orgName', 'email', 'phoneNum', 'password', 'confirmPassword'])) {
                 return;
-            } else if (userData.password !== userData.confirmPassword) {
+            }
+    
+            if (userData.password !== userData.confirmPassword) {
                 setErrorMessage("Passwords do not match.");
                 setShowModal(true);
                 return;
             }
-        }
-
-        direction === "next" ? (newStep += 1) : (newStep -= 1);
-        newStep > 0 && newStep <= steps.length && setCurrentStep(newStep);
-
-        if (newStep === steps.length && direction === "next") {
-            if (
-                !userData.repName ||
-                !userData.repPos ||
-                !userData.repEmail ||
-                !userData.description ||
-                !userData.accreditationDoc
-            ) {
-                newStep -= 1;
-                setCurrentStep(newStep);
-                setErrorMessage("Please fill out all required fields.");
+    
+            if (userData.password.length < 6) {
+                setErrorMessage("Password must be a minimum of 6 characters length.");
                 setShowModal(true);
                 return;
-            } else {
-                axios
-                    .post(
-                        "http://localhost:5000/api/v1/auth/register",
-                        userData
-                    )
-                    .then((response) => {
-                        // console.log(
-                        //     "Registration submitted successfully:",
-                        //     response.data
-                        // );
-                        window.alert("Registration submitted successfully!");
-                    })
-                    .catch((error) => {
-                        // Handle error, e.g., show error message to the user
-                        console.error("Error submitting registration:", error);
-                        window.alert(
-                            "Error submitting registration. Please try again later."
-                        );
-                    });
             }
+    
+            if (newStep === steps.length - 1) {  // if it's the final step before submission
+                if (!validateFields(['repName', 'repPos', 'repEmail', 'description', 'accreditationDoc'])) {
+                    return;
+                }
+    
+                try {
+                    const response = await axios.post("http://localhost:5000/api/v1/auth/register", userData);
+                    // Handle successful response if needed
+                    newStep += 1;
+                    setCurrentStep(newStep);
+                } catch (err) {
+                    if (err.response && err.response.data && err.response.data.error) {
+                        setErrorMessage(err.response.data.error);
+                    } else {
+                        setErrorMessage("An error occurred. Please try again.");
+                    }
+                    setShowModal(true);
+                }
+            } else {
+                newStep += 1;
+                setCurrentStep(newStep);
+            }
+        } else {
+            newStep -= 1;
+            setCurrentStep(newStep);
         }
     };
-
+    
+    
     const closeModal = () => {
         setShowModal(false);
     };

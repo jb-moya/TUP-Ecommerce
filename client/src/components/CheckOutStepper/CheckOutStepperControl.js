@@ -36,9 +36,9 @@ const CheckOutStepperControl = ({
                     cursor: canProceed ? "pointer" : "not-allowed",
                 }}
             >
-                {currentStep === 1 ? "Continue to shipping" : ""}
-                {currentStep === 2 ? "Continue to payment" : ""}
-                {currentStep === 3 ? "Confirm" : ""}
+                {currentStep === 1 ? "Continue to payment" : ""}
+                {currentStep === 2 ? "Confirm" : ""}
+                {/* {currentStep === 3 ? "Confirm" : ""} */}
             </button>
 
             {/* back button */}

@@ -72,30 +72,24 @@ export const CheckOutFrame = () => {
 
     const [userData, setUserData] = useState({
         address: "",
-        city: "",
-        country: "",
-        eWalletName: "",
-        eWalletNumber: "",
         fName: "",
         lName: "",
         paymentMethod: "",
         shippingMethod: "",
-        zipcode: "",
     });
 
     const [finalData, setFinalData] = useState([]);
     const [valueShipping, setValueShipping] = useState(0);
-    const steps = ["Address", "Shipping", "Payment", "Complete"];
+    // const steps = ["Shipping", "Address", "Payment", "Complete"];
+    const steps = ["Shipping", "Payment", "Complete"];
 
     const displaySteps = (step) => {
         switch (step) {
             case 1:
-                return <Address />;
-            case 2:
                 return <Shipping />;
-            case 3:
+            case 2:
                 return <Payment />;
-            case 4:
+            case 3:
                 return <Final />;
             default:
         }
@@ -117,10 +111,7 @@ export const CheckOutFrame = () => {
         return (
             userData.fName &&
             userData.lName &&
-            userData.address &&
-            userData.city &&
-            userData.country &&
-            userData.zipcode
+            userData.address
         );
     }
 
@@ -129,11 +120,12 @@ export const CheckOutFrame = () => {
     }
 
     function paymentMethodFilled() {
-        if (userData.paymentMethod === "GCash") {
-            return userData.eWalletName && userData.eWalletNumber;
-        } else {
-            return true;
-        }
+        // if (userData.paymentMethod === "GCash") {
+        //     return userData.eWalletName && userData.eWalletNumber;
+        // } else {
+        //     return true;
+        // }
+        return true;
     }
 
     const makeTransaction = async () => {
@@ -216,7 +208,7 @@ export const CheckOutFrame = () => {
                             currentStep={currentStep}
                         />
 
-                        <div className="my-8">
+                        <div className="my-5">
                             <CheckOutStepperContext.Provider
                                 value={{
                                     userData,
@@ -234,10 +226,8 @@ export const CheckOutFrame = () => {
                         <CheckOutStepperControl
                             canProceed={
                                 currentStep === 1
-                                    ? shippingAddressFilled()
+                                    ? shippingMethodFilled() && shippingAddressFilled()
                                     : currentStep === 2
-                                    ? shippingMethodFilled()
-                                    : currentStep === 3
                                     ? paymentMethodFilled()
                                     : true
                             }

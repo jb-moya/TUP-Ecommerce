@@ -1,40 +1,139 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { CheckOutStepperContext } from "../contexts/CheckOutStepperContext";
+import { useSelector } from "react-redux";
 
 const Shipping = () => {
+    const { user } = useSelector((state) => state.user);
     const { userData, setUserData } = useContext(CheckOutStepperContext);
+
+    useEffect(() => {
+        if (user) {
+            setUserData((prevUserData) => ({
+                ...prevUserData,
+                fName: user.firstName,
+                lName: user.lastName,
+                userAddress: user.address,
+            }));
+        }
+    }, [user, setUserData]);
+
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        if (name === 'shippingMethod') {
+            if (value === 'Self-PickUp') {
+                setUserData({ ...userData, ...selfPickupAddress, [name]: value });
+            } else if (value === 'Door-to-Door Delivery') {
+                setUserData({ ...userData, address: '', [name]: value });
+            }
+        } else if (name === 'sameAsAddress') {
+            if (checked) {
+                setUserData({ ...userData, address: userData['userAddress'], [name]: value});
+            } else {
+                setUserData({ ...userData, address: '', [name]: value });
+            }
+        
+        } else {
+            setUserData({ ...userData, [name]: type === 'checkbox' ? checked : value });
+        }
+    };
+
+    const selfPickupAddress = {
+        address: "San Marcelino St, Ayala Blvd, Ermita, Manila, 1000"
     };
 
     return (
         <div>
-            <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded-lg relative">
-                <select
-                    onChange={handleChange}
-                    value={userData["shippingMethod"] || ""}
-                    name="shippingMethod"
-                    className="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-transparent "
-                    required
-                >
-                    <option selected disabled value="">
-                        Shipping method
-                    </option>
-                    <option value="Door-to-Door Delivery">
-                        Door-to-Door Delivery
-                    </option>
-                    <option value="Self-PickUp">Self-Pickup</option>
-                    {/* Add more options as needed */}
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg
-                        className="w-4 h-4 fill-current text-gray-600"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M10 12l-4-4h8l-4 4z" />
-                    </svg>
+            <div className="p-1 flex flex-col relative">
+                <strong className="my-1">Shipping Method</strong>
+                <div className="p-1 px-2">
+                    <div>
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                name="shippingMethod"
+                                value="Door-to-Door Delivery"
+                                checked={userData.shippingMethod === "Door-to-Door Delivery"}
+                                onChange={handleChange}
+                                className="form-radio text-indigo-600"
+                                required
+                            />
+                            <span className="ml-2">Door-to-Door Delivery</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                name="shippingMethod"
+                                value="Self-PickUp"
+                                checked={userData.shippingMethod === "Self-PickUp"}
+                                onChange={handleChange}
+                                className="form-radio text-indigo-600"
+                                required
+                            />
+                            <span className="ml-2">Self-Pickup</span>
+                        </label>
+                    </div>
+                </div>
+                <div className="mt-3 my-1">
+                    <strong className="block my-1">Shipping Address</strong>
+
+                    <label className="block inline-flex items-center">
+                        <input
+                            type="checkbox"
+                            name="sameAsAddress"
+                            // checked={userData.sameAsAddress}
+                            onChange={handleChange}
+                            className="form-checkbox text-indigo-600"
+                            disabled={userData.shippingMethod === 'Self-PickUp'}
+                        />
+                        <span className="ml-2">Same as my address</span>
+                    </label>
+
+                    <div className="flex w-full justify-between">
+                        <div className="w-[250px] mr-2">
+                            <div className={`my-2 p-1 flex border border-[#211C6A] rounded ${userData["fName"] ? 'bg-gray-200' : 'bg-white'}`}>
+                                <input
+                                    onChange={handleChange}
+                                    value={userData["fName"] || ""}
+                                    name="fName"
+                                    placeholder="First Name"
+                                    className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                    disabled={userData["fName"] !== ""}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-[250px]">
+                            <div className={`my-2 p-1 flex border border-[#211C6A] rounded ${userData["fName"] ? 'bg-gray-200' : 'bg-white'}`}>
+                                <input
+                                    onChange={handleChange}
+                                    value={userData["lName"] || ""}
+                                    name="lName"
+                                    placeholder="Last Name"
+                                    className={`p-1 px-2 appearance-none outline-none w-full text-gray-800`}
+                                    disabled={userData["fName"] !== ""}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-full">
+                        <div className={`my-2 p-1 flex border border-[#211C6A] rounded ${userData.shippingMethod === 'Self-PickUp' ? 'bg-gray-200' : 'bg-white'}`}> 
+                                {/* ayaw gumana ng background color change sa part na to */}
+                            <input
+                                onChange={handleChange}
+                                value={userData["address"] || ""}
+                                name="address"
+                                placeholder="Address"
+                                className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                                disabled={userData.shippingMethod === 'Self-PickUp'}
+                                required
+                            />
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>

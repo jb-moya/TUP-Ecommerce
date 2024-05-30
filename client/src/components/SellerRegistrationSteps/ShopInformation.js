@@ -8,25 +8,10 @@ export const ShopInformation= () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
   
-    if (name === "password" || name === "confirmPassword") {
-      // Update the userData state
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        [name]: value,
-      }));
-  
-      if (name === "confirmPassword" && value !== userData.password) {
-        console.log("Passwords do not match!");
-      } else {
-        // Clear the error message if passwords match
-        // setError("");
-      }
-    } else {
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        [name]: value,
-      }));
-    }
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }));  
   };
   
 

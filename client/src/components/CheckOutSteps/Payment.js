@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CheckOutStepperContext } from "../contexts/CheckOutStepperContext";
 import GcashLogo from "../../Assets/GCASHLOGO.png";
+import SampleQr from "../../Assets/sample_qr.jpg";
 
 const Payment = () => {
     const [clickedButton, setClickedButton] = useState(0);
@@ -10,10 +11,10 @@ const Payment = () => {
     };
 
     const { userData, setUserData } = useContext(CheckOutStepperContext);
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
-    };
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setUserData({ ...userData, [name]: value });
+    // };
 
     useEffect(() => {
         setUserData((prevUserData) => ({
@@ -69,34 +70,35 @@ const Payment = () => {
 
                 <div className="flex mt-4">
                     {clickedButton === 0 && (
-                        <div className="w-full">
-                            <div className="w-full mr-2">
-                                <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded">
-                                    <input
-                                        onChange={handleChange}
-                                        value={userData["eWalletName"] || ""}
-                                        name="eWalletName"
-                                        placeholder="Gcash Name"
-                                        className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-                                        required
-                                    />
-                                </div>
-                                <div className="w-full mr-2">
-                                    <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded">
-                                        <input
-                                            onChange={handleChange}
-                                            value={
-                                                userData["eWalletNumber"] || ""
-                                            }
-                                            name="eWalletNumber"
-                                            placeholder="GCash Number"
-                                            className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        // <div className="w-full">
+                        //     <div className="w-full mr-2">
+                        //         <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded">
+                        //             <input
+                        //                 onChange={handleChange}
+                        //                 value={userData["eWalletName"] || ""}
+                        //                 name="eWalletName"
+                        //                 placeholder="Gcash Name"
+                        //                 className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        //                 required
+                        //             />
+                        //         </div>
+                        //         <div className="w-full mr-2">
+                        //             <div className="bg-white my-2 p-1 flex border border-[#211C6A] rounded">
+                        //                 <input
+                        //                     onChange={handleChange}
+                        //                     value={
+                        //                         userData["eWalletNumber"] || ""
+                        //                     }
+                        //                     name="eWalletNumber"
+                        //                     placeholder="GCash Number"
+                        //                     className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        //                     required
+                        //                 />
+                        //             </div>
+                        //         </div>
+                        //     </div>
+                        // </div>
+                        <img src={SampleQr} alt="Sample QR" />
                     )}
                     {clickedButton === 1 && (
                         <div className="font-semibold p-4">
