@@ -6,6 +6,7 @@ import { StepperContext } from "./contexts/StepperContext";
 import { ShopInformation } from "./SellerRegistrationSteps/ShopInformation";
 import { Details } from "./SellerRegistrationSteps/Details";
 import { Final } from "./SellerRegistrationSteps/Final";
+import { WarningMessage } from "./AUTHENTICATION/Warning";
 
 export const SellerRegistrationFrame = () => {
     const [step1, setStep1] = useState(0); // 0 for SellerRegistrationFrame, 1 for SellerRegistrationFrame1
@@ -68,6 +69,10 @@ export const SellerRegistrationFrame1 = () => {
     const [showModal, setShowModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    const [fieldEmpty, checkFieldEmpty] = useState(false);
+    const [passwordsMatch, checkPasswordsMatch] = useState(true);
+    const [passwordLength, checkPasswordLength] = useState(true);
+
     const steps = ["Shop Information", "Business Information", "Complete"];
 
     const displaySteps = (step) => {
@@ -88,9 +93,9 @@ export const SellerRegistrationFrame1 = () => {
         const validateFields = (fields) => {
             for (let field of fields) {
                 if (!userData[field]) {
-                    setErrorMessage("Please fill out all required fields.");
-                    setShowModal(true);
-                    return false;
+                    checkFieldEmpty(true);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
                 }
             }
             return true;
@@ -103,14 +108,12 @@ export const SellerRegistrationFrame1 = () => {
             }
     
             if (userData.password !== userData.confirmPassword) {
-                setErrorMessage("Passwords do not match.");
-                setShowModal(true);
+                checkPasswordsMatch(false);
                 return;
             }
     
             if (userData.password.length < 6) {
-                setErrorMessage("Password must be a minimum of 6 characters length.");
-                setShowModal(true);
+                checkPasswordLength(false);
                 return;
             }
     
@@ -142,29 +145,11 @@ export const SellerRegistrationFrame1 = () => {
         }
     };
     
-    
-    const closeModal = () => {
-        setShowModal(false);
-    };
 
     return (
         <div className="flex flex-col text-[#211C6A] items-center justify-center pt-[96px]">
-            {/* Modal for displaying error message */}
-            {showModal && (
-                <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center">
-                    {/* <div className="fixed inset-0 bg-gray-500 opacity-75"></div> */}
-                    <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-300">
-                        <h2 className="text-xl font-bold mb-4">Error</h2>
-                        <p className="text-red-500 mb-4">{errorMessage}</p>
-                        <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                            onClick={closeModal}
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            )}
+            
+            
 
             <div className="bg-white rounded-xl shadow-md w-full px-10 max-w-[1000px] mx-auto select-none z-1">
                 <div className="container horizontal mt-5">
@@ -174,6 +159,11 @@ export const SellerRegistrationFrame1 = () => {
                     {/* Display Components */}
 
                     <div className="my-10 p-10">
+
+                        {fieldEmpty && (
+                            <WarningMessage message="All fields are required" onClose={() => checkFieldEmpty(false)} />
+                        )}
+
                         <StepperContext.Provider
                             value={{
                                 userData,
@@ -184,6 +174,15 @@ export const SellerRegistrationFrame1 = () => {
                         >
                             {displaySteps(currentStep)}
                         </StepperContext.Provider>
+
+                        {!passwordsMatch && (
+                            <WarningMessage message="Passwords do not match" onClose={() => checkPasswordsMatch(true)} />
+                        )}
+
+                        {!passwordLength && (
+                            <WarningMessage message="Password must be of minimum 6 characters length" onClose={() => checkPasswordLength(true)} />
+                        )}
+
                     </div>
                 </div>
 
