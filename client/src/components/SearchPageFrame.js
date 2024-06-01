@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -71,7 +71,6 @@ export const SearchPageFrame = () => {
     const { id: organizationIDinURL } = useParams();
     const dispatch = useDispatch();
     let location = useLocation();
-    // console.log("location   vffff ", location.pathname);
     const [currentPage, setCurrentPage] = useState(1);
     const [productCount, setProductCount] = useState(0);
     const [maxPageCount, setMaxPageCount] = useState(0);
@@ -88,7 +87,10 @@ export const SearchPageFrame = () => {
     const [organizations, setOrganizations] = useState([]);
     const limit = 30;
 
+    const hasMounted = useRef(false);
+
     useEffect(() => {
+        toast.info("location.search", location.search);
         const searchParams = new URLSearchParams(location.search);
 
         // console.log("local search", location.search);
@@ -118,6 +120,7 @@ export const SearchPageFrame = () => {
         }
 
         if (searchParams.has("categories")) {
+            toast.info("bat kas ina yan")
             setSortCategories(searchParams.get("categories").split(","));
         }
 
@@ -143,14 +146,6 @@ export const SearchPageFrame = () => {
         handleMinMaxInput(e, setMinMaxPrice);
     }, 1000);
 
-    useEffect(() => {
-        toast.info(`minMaxPrice ${minMaxPrice}`);
-    }, [minMaxPrice]);
-
-    const delayedFetchProducts = debounce(() => {
-        fetchProducts();
-    }, DEBOUNCE_DELAY);
-
     const fetchAllOrganization = async () => {
         setIsCurrentlyFetching(true);
         try {
@@ -169,11 +164,8 @@ export const SearchPageFrame = () => {
         } catch (error) {
             console.error(error);
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
         }
-        // const { data } = await axios.get(
-        //     "http://localhost:5000/api/v1/user/organizations"
-        // );
     };
 
     const numericFilters = useMemo(() => {
@@ -195,7 +187,17 @@ export const SearchPageFrame = () => {
     const fetchProducts = useCallback(async () => {
         try {
             setIsCurrentlyFetching(true);
-            // console.log("Fetching Products");
+            console.log(
+                "lmao",
+                currentPage,
+                searchName,
+                sortCategories,
+                toggleDateSort,
+                toggleNameSort,
+                sortOrganizations,
+                organizationIDinURL,
+                numericFilters
+            );
 
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
@@ -233,7 +235,7 @@ export const SearchPageFrame = () => {
                     },
                 }
             );
-            toast.success(`Products fetched successfully ${data.count}`);
+            toast.success(`W H A T ${data.count}`);
             setProducts(data.products);
             setProductCount(data.count);
 
@@ -247,7 +249,7 @@ export const SearchPageFrame = () => {
         searchName,
         sortCategories,
         toggleDateSort,
-        toggleNameSort,
+        toggleNameSort, 
         sortOrganizations,
         organizationIDinURL,
         numericFilters,
@@ -284,18 +286,24 @@ export const SearchPageFrame = () => {
         setMinRating(parseInt(value, 10));
     };
 
-    useEffect(() => {
-        if (searchClicked) {
-            fetchProducts();
-            const timer = setTimeout(() => {
-                dispatch(setSearchClicked(false));
-            }, 2000);
+    // useEffect(() => {
+    //     if (searchClicked) {
+    //         fetchProducts();
+    //         const timer = setTimeout(() => {
+    //             dispatch(setSearchClicked(false));
+    //         }, 2000);
 
-            return () => clearTimeout(timer);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [fetchProducts, searchClicked, dispatch]);
+
+    useEffect(() => {
+        if (!hasMounted.current) {
+            hasMounted.current = true;
+            return;
         }
-    }, [fetchProducts, searchClicked, dispatch]);
 
-    useEffect(() => {
+        toast.info("LUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
         fetchProducts();
         const params = [
             buildQueryParam("keyword", searchName),
@@ -340,10 +348,6 @@ export const SearchPageFrame = () => {
     useEffect(() => {
         fetchAllOrganization();
     }, []);
-
-    useEffect(() => {
-        toast.info(`org ${sortOrganizations}`);
-    }, [sortOrganizations]);
 
     const handleSearchNameChange = (e) => {
         setSearchName(e.target.value);
