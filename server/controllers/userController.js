@@ -10,7 +10,7 @@ import asyncWrapper from "../middleware/async.js";
 import { BadRequestError } from "../errors/index.js";
 import { UnauthenticatedError } from "../errors/index.js";
 import { attachCookiesToResponse, createTokenUser } from "../utils/index.js";
-
+import { sendEmail } from "../emailSender/emailSender.js";
 // ADMIN FUNCTIONS
 const getAllUsers = asyncWrapper(async (req, res) => {
     const { role, status } = req.query;
@@ -133,11 +133,23 @@ const updateStatusOrganization = asyncWrapper(async (req, res) => {
 
     const seller = await Organization.findById(id);
 
+    const sellerEmail = seller.representative.email;
+
     if (!seller) {
         return res
             .status(StatusCodes.NOT_FOUND)
             .json({ error: "Seller not found" });
     }
+
+    let mailOptions = {
+        from: "jbvhert.moya@tup.edu.ph", // Sender address
+        to: sellerEmail, // List of recipients
+        subject: "Account Status Update",
+        text: `Your account status has been updated to ${status}`, // Plain text body
+        html: `<b>Your account status has been updated to ${status}</b>`, // HTML body
+    };
+
+    sendEmail(req, res, mailOptions);
 
     seller.status = status;
     await seller.save();
