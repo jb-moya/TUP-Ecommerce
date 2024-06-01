@@ -13,7 +13,6 @@ export const ShopInformation= () => {
       [name]: value,
     }));  
   };
-  
 
   return (
     <div className='flex flex-col'>

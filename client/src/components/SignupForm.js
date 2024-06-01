@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import TMCLogo from "../Assets/Logo.png";
+import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import InputField from "./InputField";
 import convertToBase64 from "./utils/convertToBase64";
-import axios from "axios";
 import defaultPP from "../Assets/defaultPP.png";
 import { RegistrationSuccess } from "./AUTHENTICATION/Success";
 import { RegistrationFailure } from "./AUTHENTICATION/Failure";
@@ -14,15 +14,15 @@ const SignupForm = () => {
     const [testImage, SetTestImage] = useState(null);
 
     const [formData, setFormData] = useState({
-        firstName: "",
-        lastName: "",
-        dateOfBirth: "",
-        email: "",
-        contactNumber: "",
-        password: "",
-        confirmPassword: "",
-        role: "customer",
-        image: "",
+        firstName: '',
+        lastName: '',
+        dateOfBirth: '',
+        email: '',
+        contactNumber: '',
+        password: '',
+        confirmPassword: '',
+        role: 'customer',
+        image: '',
     });
 
     useEffect(() => {
@@ -165,7 +165,7 @@ const SignupForm = () => {
                     <InputField
                         type="text"
                         name="firstName"
-                        // value={formData.firstName}
+                        value={formData.firstName}
                         onChange={handleChange}
                         placeholder="Enter your first name"
                     />
@@ -173,7 +173,7 @@ const SignupForm = () => {
                     <InputField
                         type="text"
                         name="lastName"
-                        // value={formData.lastName || ""}
+                        value={formData.lastName}
                         onChange={handleChange}
                         placeholder="Enter your last name"
                     />
@@ -181,7 +181,7 @@ const SignupForm = () => {
                     <InputField
                         type="date"
                         name="dateOfBirth"
-                        // value={formData.dateOfBirth || ""}
+                        value={formData.dateOfBirth}
                         onChange={handleChange}
                         placeholder="Enter your date of birth"
                     />
@@ -189,7 +189,7 @@ const SignupForm = () => {
                     <InputField
                         type="Email"
                         name="email"
-                        // value={formData.email || ""}
+                        value={formData.email}
                         onChange={handleChange}
                         placeholder="Enter your email address"
                     />
@@ -197,7 +197,7 @@ const SignupForm = () => {
                     <InputField
                         type="text"
                         name="contactNumber"
-                        // value={formData.contactNumber || ""}
+                        value={formData.contactNumber}
                         onChange={handleChange}
                         placeholder="Enter your contact number"
                     />
