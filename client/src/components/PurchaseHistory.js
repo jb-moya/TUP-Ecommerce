@@ -73,7 +73,12 @@ const HistoryItem = (transaction) => {
                         <div className="flex flex-col w-full px-4 py-2">
                             <h1 className="text-lg pl-1 py-[1px]">
                                 <div className="flex justify-between">
-                                    <div>{transaction.product.name}</div>
+                                    <Link
+                                        to={`/product/${transaction.product._id}`}
+                                        className="text-[#211C6A] hover:underline"
+                                    >
+                                        {transaction.product.name}
+                                    </Link>
                                     <div className="flex text-sm items-center">
                                         <img
                                             src={

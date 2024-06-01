@@ -1,6 +1,8 @@
 import defaultProductImage from "../../Assets/NoImage.png";
 
-const ImageHolder = ({ index = "0", source, handleFileUpload }) => {
+const ImageHolder = ({ index = "0", source, handleFileUpload, inputRef = null }) => {
+    console.log("ImageHolder", inputRef);
+
     return (
         <>
             <label className="" htmlFor={index}>
@@ -16,6 +18,7 @@ const ImageHolder = ({ index = "0", source, handleFileUpload }) => {
                 type="file"
                 label="product image"
                 name="productImage"
+                ref={inputRef}
                 id={index}
                 accept=".jpg, .jpeg, .png"
                 onChange={(e) => handleFileUpload(e)}

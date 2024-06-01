@@ -162,6 +162,58 @@ const createTransaction = asyncWrapper(async (req, res) => {
         item.user = user;
     });
 
+    for (const item of items) {
+        const product = await Product.findById(item.product);
+
+        if (!product) {
+            return next(
+                createCustomError(
+                    `Product with id ${item.product} not found`,
+                    404
+                )
+            );
+        }
+
+        if (item.variation) {
+            const variation = product.variation.find(
+                (v) => v._id.toString() === item.variation
+            );
+
+            if (!variation) {
+                return next(
+                    createCustomError(
+                        `Variation with id ${item.variation} not found`,
+                        404
+                    )
+                );
+            }
+
+            if (variation.stock < item.quantity) {
+                return next(
+                    createCustomError(
+                        `Product ${product.name} has insufficient stock`,
+                        400
+                    )
+                );
+            }
+
+            variation.stock -= item.quantity;
+            await product.save();
+        } else {
+            if (product.stock < item.quantity) {
+                return next(
+                    createCustomError(
+                        `Product ${product.name} has insufficient stock`,
+                        400
+                    )
+                );
+            }
+
+            product.stock -= item.quantity;
+            await product.save();
+        }
+    }
+
     console.log("items hehe", items);
     const transaction = await Transaction.insertMany(items);
     // res.status(StatusCodes.CREATED).json({ msg: "Transaction created"});
