@@ -133,7 +133,8 @@ const updateStatusOrganization = asyncWrapper(async (req, res) => {
 
     const seller = await Organization.findById(id);
 
-    const sellerEmail = seller.representative.email;
+    const sellerEmail = seller.email;
+    const sellerRepresentativeEmail = seller.representative.email;
 
     if (!seller) {
         return res
@@ -143,10 +144,10 @@ const updateStatusOrganization = asyncWrapper(async (req, res) => {
 
     let mailOptions = {
         from: "jbvhert.moya@tup.edu.ph", // Sender address
-        to: sellerEmail, // List of recipients
+        to: [sellerEmail, sellerRepresentativeEmail], // List of recipients
         subject: "TUP Merch Co. Account Status Update",
-        text: `Your account status has been updated to ${status}`, // Plain text body
-        html: `<b>Your account status has been updated to ${status}</b>`, // HTML body
+        text: `Your account status has been updated to "${status}"`, // Plain text body
+        html: `<b>Your account status has been updated to "${status}"</b>`, // HTML body
     };
 
     sendEmail(req, res, mailOptions);

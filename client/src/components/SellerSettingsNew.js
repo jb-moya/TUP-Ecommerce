@@ -96,8 +96,8 @@ const SellerSettings = ({ settingsMenu = 0 }) => {
         <>
             <NavBar />
             <div className="flex text-[#211C6A] pt-[96px]">
-                <div className="flex w-full max-w-[1240px] h-full mx-auto p-4">
-                    <div className="w-[300px] flex flex-col m-4 bg-white shadow-md rounded-xl">
+                <div className="flex w-full max-w-[1240px] h-full mx-auto mb-4 p-4">
+                    <div className="w-[300px] flex flex-col m-4 pb-4 bg-white shadow-md rounded-xl">
                         <div className="flex justify-center items-center my-4 p-2">
                             <img
                                 className="rounded-full h-[60px] w-[60px] drop-shadow-lg"
