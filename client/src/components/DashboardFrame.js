@@ -9,6 +9,9 @@ import axios from "axios";
 import formatData from "./utils/formatData";
 import { useLocation } from "react-router-dom";
 import formatPrice from "./utils/formatPrice";
+import { FaInfoCircle } from "react-icons/fa";
+import { Tooltip } from "react-tooltip";
+
 axios.defaults.withCredentials = true;
 
 const SortButton = ({ fieldName, toggle, setterToggle }) => {
@@ -193,6 +196,24 @@ export const DashboardFrame = () => {
                             </div>
                         </div>
 
+                        <Tooltip
+                            className="z-50 rounded-lg"
+                            id="my-tooltip"
+                            style={{ borderRadius: `10px` }}
+                        >
+                            <div className="w-96 font-light rounded-lg">
+                                <h3>Total Revenue</h3>
+                                <p className="my-3">
+                                    Transaction Fee is a handling fee that
+                                    covers the cost of payment transactions.
+                                </p>
+                                <p>
+                                    A Transaction fee of 2.5% is deducted from
+                                    every transaction.
+                                </p>
+                            </div>
+                        </Tooltip>
+
                         <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
                             <div className="flex items-center justify-between  p-6 text-white w-full">
                                 <div className="flex flex-col">
@@ -201,14 +222,32 @@ export const DashboardFrame = () => {
                                             <div className="flex flex-row justify-center align-middle text-center">
                                                 <div className="pr-2">₱</div>
                                                 <div className="self-center">
-                                                    {formatPrice(totalRevenue * 0.975)}
+                                                    {formatPrice(
+                                                        transactions.reduce(
+                                                            (
+                                                                acc,
+                                                                transaction
+                                                            ) =>
+                                                                acc +
+                                                                transaction.totalAmount * 0.975,
+                                                            0
+                                                        )
+                                                    )}
                                                 </div>
                                             </div>
                                         ) : (
                                             "loading"
                                         )}
                                     </h2>
-                                    <p className="text-sm">Total Revenue</p>
+                                    <div className="flex">
+                                        <p className="text-sm">Total Revenue</p>
+                                        <FaInfoCircle
+                                            size={20}
+                                            className="leading-none ml-2"
+                                            data-tooltip-id="my-tooltip"
+                                            data-tooltip-place="bottom"
+                                        />
+                                    </div>
                                 </div>
                                 <IoMdCash className="mr-4" size={40} />
                             </div>
