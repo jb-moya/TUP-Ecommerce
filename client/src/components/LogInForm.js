@@ -9,6 +9,66 @@ import { LoginFailure } from "./AUTHENTICATION/Failure";
 import { useDispatch } from "react-redux";
 import { logIn } from "../features/user/userSlice";
 axios.defaults.withCredentials = true;
+
+const LoadingSVG = () => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 200 200"
+            class="h-full w-10 mr-3"
+        >
+            <radialGradient
+                id="a12"
+                cx=".66"
+                fx=".66"
+                cy=".3125"
+                fy=".3125"
+                gradientTransform="scale(1.5)"
+            >
+                <stop offset="0" stop-color="#FF156D"></stop>
+                <stop offset=".3" stop-color="#FF156D" stop-opacity=".9"></stop>
+                <stop offset=".6" stop-color="#FF156D" stop-opacity=".6"></stop>
+                <stop offset=".8" stop-color="#FF156D" stop-opacity=".3"></stop>
+                <stop offset="1" stop-color="#FF156D" stop-opacity="0"></stop>
+            </radialGradient>
+            <circle
+                transform-origin="center"
+                fill="none"
+                stroke="url(#a12)"
+                stroke-width="15"
+                stroke-linecap="round"
+                stroke-dasharray="200 1000"
+                stroke-dashoffset="0"
+                cx="100"
+                cy="100"
+                r="70"
+            >
+                <animateTransform
+                    type="rotate"
+                    attributeName="transform"
+                    calcMode="spline"
+                    dur="2"
+                    values="360;0"
+                    keyTimes="0;1"
+                    keySplines="0 0 1 1"
+                    repeatCount="indefinite"
+                ></animateTransform>
+            </circle>
+            <circle
+                transform-origin="center"
+                fill="none"
+                opacity=".2"
+                stroke="#FF156D"
+                stroke-width="15"
+                stroke-linecap="round"
+                cx="100"
+                cy="100"
+                r="70"
+            ></circle>
+        </svg>
+    );
+};
+
 const LogInForm = () => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
@@ -20,6 +80,7 @@ const LogInForm = () => {
 
     const [showPassword, setPassword] = useState(false);
     const [loginErrorMessage, setLoginErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleShowPassword = () => {
         setPassword(!showPassword);
@@ -39,6 +100,7 @@ const LogInForm = () => {
         e.preventDefault();
 
         try {
+            setLoading(true);
             const resultAction = await dispatch(logIn(formData));
             // const user = resultAction;
             // console.log("user", user);
@@ -51,6 +113,8 @@ const LogInForm = () => {
         } catch (error) {
             console.error("Login error:", error);
             setLoginErrorMessage("An unknown error occurred");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -114,7 +178,14 @@ const LogInForm = () => {
 
                 <div className="flex flex-col mt-4 items-center w-[560px] px-2">
                     <button className="rounded-xl text-white font-semibold mb-3 bg-[#211C6A] p-[14px] w-[530px] hover:bg-[#3C35AB]">
-                        LOGIN
+                        {loading ? (
+                            <div className="flex items-center justify-center">
+                                <LoadingSVG />
+                                <span>Logging in...</span>
+                            </div>
+                        ) : (
+                            "LOGIN"
+                        )}
                     </button>
 
                     <button

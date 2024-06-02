@@ -8,6 +8,7 @@ import { FaCaretUp } from "react-icons/fa6";
 import axios from "axios";
 import formatData from "./utils/formatData";
 import { useLocation } from "react-router-dom";
+import formatPrice from "./utils/formatPrice";
 axios.defaults.withCredentials = true;
 
 const SortButton = ({ fieldName, toggle, setterToggle }) => {
@@ -163,7 +164,9 @@ export const DashboardFrame = () => {
                                             ? totalItemsOrdered
                                             : "loading"}
                                     </h2>
-                                    <p className="text-sm">Items Ordered</p>
+                                    <p className="text-sm">
+                                        Total Items Ordered
+                                    </p>
                                 </div>
                                 <FaShoppingCart className="mr-4" size={40} />
                             </div>
@@ -177,7 +180,28 @@ export const DashboardFrame = () => {
                                             <div className="flex flex-row justify-center align-middle text-center">
                                                 <div className="pr-2">₱</div>
                                                 <div className="self-center">
-                                                    {totalRevenue}
+                                                    {formatPrice(totalRevenue)}
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            "loading"
+                                        )}
+                                    </h2>
+                                    <p className="text-sm">Total Sales</p>
+                                </div>
+                                <IoMdCash className="mr-4" size={40} />
+                            </div>
+                        </div>
+
+                        <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
+                            <div className="flex items-center justify-between  p-6 text-white w-full">
+                                <div className="flex flex-col">
+                                    <h2 className="text-3xl mb-2">
+                                        {!totalRevenueLoading ? (
+                                            <div className="flex flex-row justify-center align-middle text-center">
+                                                <div className="pr-2">₱</div>
+                                                <div className="self-center">
+                                                    {formatPrice(totalRevenue * 0.975)}
                                                 </div>
                                             </div>
                                         ) : (
@@ -189,16 +213,6 @@ export const DashboardFrame = () => {
                                 <IoMdCash className="mr-4" size={40} />
                             </div>
                         </div>
-
-                        {/* <div className="w-[280px]  h-[150px] bg-gradient-to-br from-[#b1ade6] to-[#211C6A] rounded-xl">
-                            <div className="flex items-center justify-between  p-6 text-white w-full">
-                                <div className="flex flex-col">
-                                    <h2 className="text-3xl mb-2">203</h2>
-                                    <p className="text-sm">Cancelled Orders</p>
-                                </div>
-                                <TbBasketCancel className="mr-4" size={40} />
-                            </div>
-                        </div> */}
                     </div>
 
                     <div className="bg-white w-full shadow-lg p-6 rounded-xl">
