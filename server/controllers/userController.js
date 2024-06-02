@@ -144,7 +144,7 @@ const updateStatusOrganization = asyncWrapper(async (req, res) => {
     let mailOptions = {
         from: "jbvhert.moya@tup.edu.ph", // Sender address
         to: sellerEmail, // List of recipients
-        subject: "Account Status Update",
+        subject: "TUP Merch Co. Account Status Update",
         text: `Your account status has been updated to ${status}`, // Plain text body
         html: `<b>Your account status has been updated to ${status}</b>`, // HTML body
     };

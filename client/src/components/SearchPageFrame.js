@@ -90,7 +90,7 @@ export const SearchPageFrame = () => {
     const hasMounted = useRef(false);
 
     useEffect(() => {
-        toast.info("location.search", location.search);
+        // toast.info("location.search", location.search);
         const searchParams = new URLSearchParams(location.search);
 
         // console.log("local search", location.search);
@@ -120,7 +120,6 @@ export const SearchPageFrame = () => {
         }
 
         if (searchParams.has("categories")) {
-            toast.info("bat kas ina yan")
             setSortCategories(searchParams.get("categories").split(","));
         }
 
@@ -142,7 +141,7 @@ export const SearchPageFrame = () => {
     }, [location.search]);
 
     const delayedHandleMinMaxPrice = debounce((e) => {
-        toast.info(`e.target.value ${e.target.value}`);
+        // toast.info(`e.target.value ${e.target.value}`);
         handleMinMaxInput(e, setMinMaxPrice);
     }, 1000);
 
@@ -235,7 +234,7 @@ export const SearchPageFrame = () => {
                     },
                 }
             );
-            toast.success(`W H A T ${data.count}`);
+            // toast.success(`W H A T ${data.count}`);
             setProducts(data.products);
             setProductCount(data.count);
 
@@ -303,7 +302,7 @@ export const SearchPageFrame = () => {
             return;
         }
 
-        toast.info("LUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+        // toast.info("LUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
         fetchProducts();
         const params = [
             buildQueryParam("keyword", searchName),

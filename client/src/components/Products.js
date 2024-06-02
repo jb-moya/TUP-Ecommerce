@@ -424,7 +424,7 @@ const Products = () => {
             setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
         }
     }, [
         currentPage,
@@ -492,7 +492,7 @@ const Products = () => {
     ]);
 
     useEffect(() => {
-        toast.info(`minMaxPrice changed ${minMaxPrice}`);
+        // toast.info(`minMaxPrice changed ${minMaxPrice}`);
         // console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 

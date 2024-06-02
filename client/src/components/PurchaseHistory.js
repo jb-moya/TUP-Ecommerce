@@ -39,7 +39,7 @@ const handleOrderStatusChange = async (order, status) => {
 
         toast.success(`Orders have been marked as ${status}!`);
     } catch (error) {
-        toast.error("An error occurred. Please try again.");
+        toast.error("Status change error occurred. Please try again.");
         // console.error(error);
     }
 };
@@ -250,7 +250,7 @@ const PurchaseHistory = () => {
 
     const fetchTransactionHistory = useCallback(async () => {
         try {
-            toast.success(`searchName: ${searchName}`);
+            // toast.success(`searchName: ${searchName}`);
             const response = await axios.get(
                 `http://localhost:5000/api/v1/transactions`,
                 {

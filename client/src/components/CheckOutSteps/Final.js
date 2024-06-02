@@ -5,7 +5,7 @@ const Final = () => {
     const { userData, setUserData } = useContext(CheckOutStepperContext);
 
     // console.log(`Final userData`, userData);
-    toast.info(`Order is being processed ${userData.fName} ${userData.lName}!`);
+    // toast.info(`Order is being processed ${userData.fName} ${userData.lName}!`);
 
     return (
         <div className="container md:mt-10">

@@ -17,7 +17,7 @@ root.render(
             <App tab="home" />
             <ToastContainer
                 position="top-left"
-                autoClose={1000}
+                autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={true}
                 closeOnClick

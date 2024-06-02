@@ -79,7 +79,7 @@ const Playground = () => {
     }, 500);
 
     useEffect(() => {
-        toast.info(`minMaxPrice changed ${minMaxPrice}`);
+        // toast.info(`minMaxPrice changed ${minMaxPrice}`);
         // console.log("minMaxPrice DITO", minMaxPrice);
     }, [minMaxPrice]);
 

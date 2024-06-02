@@ -185,13 +185,13 @@ const userSlice = createSlice({
             state.isUpdatePasswordSuccess = true;
             state.updatePasswordMessage = action.payload;
             // console.log("updatePassword.fulfilled", action.payload);
-            toast.success("JHAHAHHAAHAHAHAHAHAHAHAHAHAAH");
+            // toast.success("JHAHAHHAAHAHAHAHAHAHAHAHAHAAH");
             toast.success(action.payload);
         });
         builder.addCase(updatePassword.rejected, (state, action) => {
             state.isUpdatePasswordSuccess = false;
             state.updatePasswordMessage = action.payload;
-            toast.success(".....................");
+            // toast.success(".....................");
 
             // console.log("updatePassword.rejected", action.payload);
             toast.error(action.payload);
