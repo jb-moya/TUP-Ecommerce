@@ -96,13 +96,13 @@ export const ProductReviewForm = () => {
                             <label className="font-semibold mr-4 w-40">
                                 Product Name:
                             </label>
-                            <span>TShirt ni Gaspar</span>
+                            <span>{productDetails.name}</span>
                         </div>
                         <div className="flex px-4 pb-4">
                             <label className="font-semibold mr-4 w-40">
                                 Product Category:
                             </label>
-                            <span>Tops</span>
+                            <span>{productDetails.category}</span>
                         </div>
                         <div className="flex px-4 pb-4">
                             <label className="font-semibold mr-4 w-40">
