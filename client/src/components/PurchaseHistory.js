@@ -39,7 +39,7 @@ const handleOrderStatusChange = async (order, status) => {
 
         toast.success(`Orders have been marked as ${status}!`);
     } catch (error) {
-        toast.error("An error occurred. Please try again.");
+        toast.error("Status change error occurred. Please try again.");
         // console.error(error);
     }
 };
@@ -73,7 +73,12 @@ const HistoryItem = (transaction) => {
                         <div className="flex flex-col w-full px-4 py-2">
                             <h1 className="text-lg pl-1 py-[1px]">
                                 <div className="flex justify-between">
-                                    <div>{transaction.product.name}</div>
+                                    <Link
+                                        to={`/product/${transaction.product._id}`}
+                                        className="text-[#211C6A] hover:underline"
+                                    >
+                                        {transaction.product.name}
+                                    </Link>
                                     <div className="flex text-sm items-center">
                                         <img
                                             src={
@@ -245,7 +250,7 @@ const PurchaseHistory = () => {
 
     const fetchTransactionHistory = useCallback(async () => {
         try {
-            toast.success(`searchName: ${searchName}`);
+            // toast.success(`searchName: ${searchName}`);
             const response = await axios.get(
                 `http://localhost:5000/api/v1/transactions`,
                 {

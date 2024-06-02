@@ -479,7 +479,7 @@ const SellerAccountSettings = () => {
                     )}
                     onClick={() => {
                         if (allPasswordFieldsFilled() && canUpdatePassword()) {
-                            toast.info("Updating password");
+                            // toast.info("Updating password");
                             handleUpdatePassword();
                         }
 

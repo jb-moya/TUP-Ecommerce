@@ -15,7 +15,7 @@ import TransactionRouter from "./routes/TransactionRoute.js";
 import ProductViolationRouter from "./routes/ProductViolationRoute.js";
 import { Product } from "./models/Product.js";
 import { Transaction } from "./models/Transaction.js";
-
+import nodemailer from "nodemailer";
 import Users from "./models/User.js";
 
 const { Customer, Organization, Admin } = Users;
@@ -144,6 +144,12 @@ const start = async () => {
     try {
         await connectDB(process.env.MONGODB_URI);
         // await updateUserProductsSoldCount();
+        // transporter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         return console.log(error);
+        //     }
+        //     console.log("Email sent: " + info.response);;
+        // });
         app.listen(port, console.log(`Server running on port ${port}`));
     } catch (error) {
         console.log(error);

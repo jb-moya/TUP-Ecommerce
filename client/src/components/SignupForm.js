@@ -44,7 +44,8 @@ const SignupForm = () => {
     const [showConfirmPassword, setConfirmPassword] = useState(false);
 
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
-    const [registrationErrorMessage, setRegistrationErrorMessage] = useState("");
+    const [registrationErrorMessage, setRegistrationErrorMessage] =
+        useState("");
 
     const [fieldEmpty, checkFieldEmpty] = useState(false);
     const [passwordsMatch, checkPasswordsMatch] = useState(true);
@@ -59,27 +60,36 @@ const SignupForm = () => {
     };
     const navigate = useNavigate();
 
+    useEffect(() => {
+        console.log(formData);
+    }, [formData]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // console.log(formData);
-        if (formData.firstName === "" || formData.lastName === "" || formData.dateOfBirth === "" 
-            || formData.email === "" || formData.contactNumber === "" || formData.password === ""
-                || formData.confirmPassword === ""){
-            
-                checkFieldEmpty(true);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                
-                return;
-        } 
+        if (
+            formData.firstName === "" ||
+            formData.lastName === "" ||
+            formData.dateOfBirth === "" ||
+            formData.email === "" ||
+            formData.contactNumber === "" ||
+            formData.password === "" ||
+            formData.confirmPassword === ""
+        ) {
+            checkFieldEmpty(true);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+            return;
+        }
 
         if (formData.password !== formData.confirmPassword) {
             checkPasswordsMatch(false);
@@ -93,23 +103,23 @@ const SignupForm = () => {
 
         // console.log("OK!");
         axios
-        .post("http://localhost:5000/api/v1/auth/register", formData)
-        .then((res) => {
-            setRegistrationSuccess(true);
-        })
-        .catch((err) => {
-            if (
-                err.response &&
-                err.response.data &&
-                err.response.data.error
-            ) {
-                setRegistrationErrorMessage(err.response.data.error);
-            } else {
-                setRegistrationErrorMessage(
-                    "An error occurred. Please try again."
-                );
-            }
-        });     
+            .post("http://localhost:5000/api/v1/auth/register", formData)
+            .then((res) => {
+                setRegistrationSuccess(true);
+            })
+            .catch((err) => {
+                if (
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.error
+                ) {
+                    setRegistrationErrorMessage(err.response.data.error);
+                } else {
+                    setRegistrationErrorMessage(
+                        "An error occurred. Please try again."
+                    );
+                }
+            });
     };
 
     const handleClick = () => {
@@ -123,12 +133,16 @@ const SignupForm = () => {
 
     return (
         <div className="text-[#211C6A] mt-[96px]">
-
             <form
                 onSubmit={handleSubmit}
                 className="flex flex-col max-w-[800px] h-full w-full mx-auto text-center items-center select-none"
             >
-                <img className="w-40 h-40" src={TMCLogo} alt="" loading="lazy"/>
+                <img
+                    className="w-40 h-40"
+                    src={TMCLogo}
+                    alt=""
+                    loading="lazy"
+                />
 
                 <h2 className="w-96 text-2xl mt-[-26px] font-bold p-2">
                     Creating Your Account
@@ -140,7 +154,10 @@ const SignupForm = () => {
                 </h4>
 
                 {fieldEmpty && (
-                    <WarningMessage message="All fields are required" onClose={() => checkFieldEmpty(false)} />
+                    <WarningMessage
+                        message="All fields are required"
+                        onClose={() => checkFieldEmpty(false)}
+                    />
                 )}
 
                 <div className="flex-start flex-col mt-5 w-[560px] text-left px-4 items-center">
@@ -219,11 +236,17 @@ const SignupForm = () => {
                 </div>
 
                 {!passwordsMatch && (
-                    <WarningMessage message="Passwords do not match" onClose={() => checkPasswordsMatch(true)} />
+                    <WarningMessage
+                        message="Passwords do not match"
+                        onClose={() => checkPasswordsMatch(true)}
+                    />
                 )}
 
                 {!passwordLength && (
-                    <WarningMessage message="Password must be of minimum 6 characters length" onClose={() => checkPasswordLength(true)} />
+                    <WarningMessage
+                        message="Password must be of minimum 6 characters length"
+                        onClose={() => checkPasswordLength(true)}
+                    />
                 )}
 
                 <div className="flex flex-col mt-4 items-center w-[560px] px-2">

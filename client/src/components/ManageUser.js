@@ -9,6 +9,7 @@ import {
     buildQueryArrayParam,
 } from "./utils/buildQueryParams.js";
 import classNames from "classnames";
+import LoadingSymbol from "./loadingScreen.js";
 axios.defaults.withCredentials = true;
 
 const SellerRow = ({ seller }) => {
@@ -47,7 +48,7 @@ const SellerRow = ({ seller }) => {
         "text-green-500": seller.status === "approved",
         "text-yellow-500": seller.status === "pending",
         "text-red-500": seller.status === "banned",
-        "text-black bg-black": seller.status === "rejected",
+        "text-black": seller.status === "rejected",
     });
 
     return (
@@ -88,13 +89,24 @@ const SellerRow = ({ seller }) => {
                 >
                     Review
                 </button>
-                <button
-                    type="button"
-                    className="text-red-500 hover:font-bold hover:scale-150 mx-2"
-                    onClick={() => updateStatusOrganization("banned")}
-                >
-                    Ban
-                </button>
+                {seller.status !== "banned" && (
+                    <button
+                        type="button"
+                        className="text-red-500 hover:font-bold hover:scale-150 mx-2"
+                        onClick={() => updateStatusOrganization("banned")}
+                    >
+                        Ban
+                    </button>
+                )}
+                {seller.status === "banned" && (
+                    <button
+                        type="button"
+                        className="text-orange-300 hover:font-bold hover:scale-150 mx-2"
+                        onClick={() => updateStatusOrganization("pending")}
+                    >
+                        Unbanned
+                    </button>
+                )}
             </td>
         </tr>
     );
@@ -118,6 +130,7 @@ export const ManageUser = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [users, setUsers] = useState([]);
     const [count, setCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
@@ -141,6 +154,7 @@ export const ManageUser = () => {
 
     const fetchAllUsers = useCallback(async () => {
         try {
+            setIsLoading(true);
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/user",
                 {
@@ -157,7 +171,7 @@ export const ManageUser = () => {
         } catch (error) {
             console.error(error);
         } finally {
-            toast.success("Products loaded successfully");
+            setIsLoading(false);
         }
     }, [currentPage, selectedButton]);
 
@@ -242,6 +256,21 @@ export const ManageUser = () => {
                     </tr>
                 </thead>
                 <tbody className="">
+                    <tr>
+                        <td colSpan="5" className="p-2 text-center">
+                            <LoadingSymbol
+                                showWhen={isLoading}
+                                message="Loading users"
+                            />
+                        </td>
+                    </tr>
+                    {!isLoading && count === 0 && (
+                        <tr>
+                            <td colSpan="5" className="h-20 text-center">
+                                No users found for this status
+                            </td>
+                        </tr>
+                    )}
                     {users.map((user) => (
                         <SellerRow key={user._id} seller={user} />
                     ))}

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import PaginationButtons from "./PaginationButtons.js";
 import { buildQueryParam } from "./utils/buildQueryParams.js";
+import LoadingSymbol from "./loadingScreen.js";
 axios.defaults.withCredentials = true;
 
 const NoImage = () => {
@@ -229,6 +230,8 @@ export const ManageProducts = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [maxPageCount, setMaxPageCount] = useState(1);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     const handleButtonClick = (buttonNumber) => {
         setSelectedButton(buttonNumber);
     };
@@ -243,6 +246,7 @@ export const ManageProducts = () => {
 
     const fetchProducts = useCallback(async () => {
         try {
+            setIsLoading(true);
             const { data } = await axios.get(
                 "http://localhost:5000/api/v1/products",
                 {
@@ -261,7 +265,8 @@ export const ManageProducts = () => {
         } catch (error) {
             console.error(error);
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
+            setIsLoading(false);
         }
     }, [currentPage, selectedButton]);
 
@@ -342,6 +347,19 @@ export const ManageProducts = () => {
                     </tr>
                 </thead>
                 <tbody className="">
+                    <td colSpan="10" className="text-center">
+                        <LoadingSymbol
+                            showWhen={isLoading}
+                            message="Loading products"
+                        />
+                    </td>
+                    {products.length === 0 && !isLoading && (
+                        <tr>
+                            <td colSpan="10" className="h-20 text-center">
+                                No products found with the selected status
+                            </td>
+                        </tr>
+                    )}
                     {products.map((product, index) => (
                         <ProductRow
                             key={product._id}

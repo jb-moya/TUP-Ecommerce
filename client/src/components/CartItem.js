@@ -8,6 +8,7 @@ import {
 import { deleteItemFromDB } from "../features/cart/cartSlice";
 import { useDispatch } from "react-redux";
 import formatPrice from "./utils/formatPrice";
+import { Link } from "react-router-dom";
 
 const NoImage = () => {
     return (
@@ -64,9 +65,12 @@ const CartItem = ({ cartItem }) => {
                     )}
                 </div>
                 <div className="flex flex-1 flex-col">
-                    <div className="text-left font-semibold">
+                    <Link
+                        to={`/product/${cartItem.product}`}
+                        className="text-left font-semibold underline"
+                    >
                         {cartItem.productDetails.name}
-                    </div>
+                    </Link>
                     <div className="text-left leading-6 text-sm">
                         {cartItem.variation
                             ? cartItem.productDetails.variation[0].name
@@ -91,14 +95,20 @@ const CartItem = ({ cartItem }) => {
                 <div className="col-span-4">
                     {cartItem.productDetails.price !== -1
                         ? cartItem.productDetails.price
-                        : cartItem.productDetails.variation[0].price}
+                        : cartItem.productDetails.variation.filter((v) => {
+                              return v._id === cartItem.variation;
+                          })[0].price}
                 </div>
                 <div className="col-span-4">
                     <OrderQuantity
                         maximum={
-                            cartItem.productDetails.stock
-                                ? cartItem.productDetails.stock
-                                : cartItem.productDetails.variation[0].stock
+                            cartItem.productDetails.variation.length > 0
+                                ? cartItem.productDetails.variation.filter(
+                                      (v) => {
+                                          return v._id === cartItem.variation;
+                                      }
+                                  )[0].stock
+                                : cartItem.productDetails.stock
                         }
                         quantity={cartItem.quantity}
                         onQuantityChange={handleQuantityChange}
@@ -106,9 +116,15 @@ const CartItem = ({ cartItem }) => {
                     <div className="mt-2">
                         <ItemStock
                             stock={
-                                cartItem.productDetails.stock
-                                    ? cartItem.productDetails.stock
-                                    : cartItem.productDetails.variation[0].stock
+                                cartItem.productDetails.variation.length > 0
+                                    ? cartItem.productDetails.variation.filter(
+                                          (v) => {
+                                              return (
+                                                  v._id === cartItem.variation
+                                              );
+                                          }
+                                      )[0].stock
+                                    : cartItem.productDetails.stock
                             }
                         />
                     </div>

@@ -91,7 +91,7 @@ const AdminMainPage = ({ settingsMenu = 0 }) => {
                 <div className="flex w-full max-w-[1240px] h-full mx-auto p-4">
                     <div className="w-[300px] flex flex-col m-4 bg-white shadow-md rounded-xl pb-4">
                         <div className="flex justify-center items-center">
-                            <div className="flex justify-between w-[220px] items-center my-4 p-2">
+                            <div className="flex justify-center w-[220px] items-center my-4 p-2">
                                 <img
                                     className="rounded-full h-[60px] w-[60px] drop-shadow-lg"
                                     src={defaultProfileImage}

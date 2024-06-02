@@ -153,6 +153,8 @@ export const CheckOutFrame = () => {
                     };
                 });
 
+            console.log("RECORD", record);
+
             const response = await axios.post(
                 `http://localhost:5000/api/v1/transactions`,
                 {
@@ -166,13 +168,15 @@ export const CheckOutFrame = () => {
     };
 
     useEffect(() => {
-        if (currentStep === 3) {
+        console.log("currentStep", currentStep);
+
+        if (currentStep === 2) {
             setValueShipping(89);
         } else {
             setValueShipping(0);
         }
 
-        if (currentStep === 4) {
+        if (currentStep === 3) {
             toast.success("Transaction Successful");
             console.log("cartItems cartItems", cartItems);
 

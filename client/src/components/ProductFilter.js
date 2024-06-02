@@ -230,7 +230,7 @@ const ProductFilter = () => {
         } catch (error) {
             console.error(error);
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
         }
     }, [currentPage]);
 

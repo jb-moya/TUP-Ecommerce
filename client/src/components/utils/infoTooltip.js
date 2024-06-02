@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 
-const customTooltip = ({ id }) => {
+const InfoTooltip = ({ id }) => {
     return (
         <Tooltip
             id={id}
@@ -15,4 +15,4 @@ const customTooltip = ({ id }) => {
     );
 };
 
-export default customTooltip;
+export default InfoTooltip;

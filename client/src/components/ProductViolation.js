@@ -200,7 +200,7 @@ const ProductViolation = () => {
             setMaxPageCount(Math.ceil(data.count / 10));
         } catch (error) {
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
         }
     }, [currentPage, user, searchName]);
 

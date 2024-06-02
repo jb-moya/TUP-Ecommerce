@@ -75,7 +75,7 @@ const HomeFrame = () => {
         } catch (error) {
             console.error(error);
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
         }
     }, []);
 
@@ -121,7 +121,7 @@ const HomeFrame = () => {
         } catch (error) {
             console.error(error);
         } finally {
-            toast.success("Products loaded successfully");
+            // toast.success("Products loaded successfully");
             setLoadingFetchProducts(false);
         }
     }, [currentPage]);
